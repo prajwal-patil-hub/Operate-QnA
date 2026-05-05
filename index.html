@@ -5,7 +5,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Q&amp;A Viewer</title>
   <style>
-    /* ─── Reset & Base ─────────────────────────────────────────────── */
+    /* ─── Reset & Base ──────────────────────────────────────────────── */
     *, *::before, *::after {
       box-sizing: border-box;
       margin: 0;
@@ -15,48 +15,38 @@
     :root {
       --bg: #f4f6f9;
       --surface: #ffffff;
-      --surface-hover: #fafbfc;
       --border: #e2e8f0;
       --text-primary: #1a202c;
       --text-secondary: #4a5568;
-      --text-muted: #a0aec0;
+      --text-muted: #64748b;
       --accent: #4f46e5;
-      --accent-hover: #4338ca;
       --accent-light: #eef2ff;
       --shadow-sm: 0 1px 3px rgba(0,0,0,.08), 0 1px 2px rgba(0,0,0,.05);
-      --shadow-md: 0 4px 12px rgba(0,0,0,.10), 0 2px 6px rgba(0,0,0,.06);
       --shadow-lg: 0 10px 25px rgba(0,0,0,.12), 0 4px 10px rgba(0,0,0,.08);
       --radius: 12px;
       --radius-sm: 8px;
-      --transition: 220ms ease;
     }
 
-    html {
-      scroll-behavior: smooth;
-    }
+    html { scroll-behavior: smooth; }
 
     body {
       min-height: 100vh;
       background: var(--bg);
-      background-image: radial-gradient(ellipse at 20% 10%, #e0e7ff 0%, transparent 50%),
-                        radial-gradient(ellipse at 80% 90%, #fce7f3 0%, transparent 50%);
-      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
+      background-image:
+        radial-gradient(ellipse at 20% 10%, #e0e7ff 0%, transparent 50%),
+        radial-gradient(ellipse at 80% 90%, #fce7f3 0%, transparent 50%);
+      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto,
+                   'Helvetica Neue', Arial, sans-serif;
       color: var(--text-primary);
       line-height: 1.6;
       padding: 2rem 1rem 4rem;
     }
 
     /* ─── Layout ────────────────────────────────────────────────────── */
-    .container {
-      max-width: 800px;
-      margin: 0 auto;
-    }
+    .container { max-width: 800px; margin: 0 auto; }
 
     /* ─── Header ────────────────────────────────────────────────────── */
-    .header {
-      text-align: center;
-      margin-bottom: 2.5rem;
-    }
+    .header { text-align: center; margin-bottom: 2.5rem; }
 
     .header__badge {
       display: inline-block;
@@ -74,7 +64,6 @@
     .header__title {
       font-size: clamp(1.75rem, 4vw, 2.5rem);
       font-weight: 800;
-      color: var(--text-primary);
       letter-spacing: -.02em;
       line-height: 1.2;
     }
@@ -86,10 +75,7 @@
     }
 
     /* ─── Search ────────────────────────────────────────────────────── */
-    .search-wrapper {
-      position: relative;
-      margin-bottom: 2rem;
-    }
+    .search-wrapper { position: relative; margin-bottom: 1.25rem; }
 
     .search-icon {
       position: absolute;
@@ -104,20 +90,18 @@
 
     .search-input {
       width: 100%;
-      padding: .875rem 3rem .875rem 2.75rem;
+      padding: .875rem 6rem .875rem 2.75rem;
       border: 2px solid var(--border);
       border-radius: var(--radius);
       background: var(--surface);
       font-size: 1rem;
       color: var(--text-primary);
       box-shadow: var(--shadow-sm);
-      transition: border-color var(--transition), box-shadow var(--transition);
+      transition: border-color 220ms ease, box-shadow 220ms ease;
       outline: none;
     }
 
-    .search-input::placeholder {
-      color: var(--text-muted);
-    }
+    .search-input::placeholder { color: var(--text-muted); }
 
     .search-input:focus {
       border-color: var(--accent);
@@ -142,17 +126,17 @@
       font-size: .7rem;
       font-family: inherit;
       color: var(--text-muted);
-      padding: .1rem .35rem;
+      padding: .1rem .4rem;
       line-height: 1.4;
     }
 
     /* ─── Results Meta ───────────────────────────────────────────────── */
     .results-meta {
       font-size: .85rem;
-      color: var(--text-muted);
+      font-weight: 500;
+      color: var(--text-muted);   /* FIX #5: was #a0aec0 (2.5:1), now #64748b (5.1:1) */
       margin-bottom: 1rem;
       min-height: 1.4em;
-      transition: opacity var(--transition);
     }
 
     /* ─── Cards ─────────────────────────────────────────────────────── */
@@ -162,6 +146,15 @@
       gap: 1rem;
     }
 
+    /*
+     * FIX #1 & #2 — Cards are VISIBLE by default (opacity:1).
+     * JS adds .card--entering BEFORE appending, making the card invisible,
+     * then removes it via double-rAF so CSS transition animates it in.
+     * This means:
+     *   a) No animation engine needed — pure CSS transition, universally reliable.
+     *   b) hover transform is never contested by an animation fill.
+     *   c) If JS somehow skips the rAF, card is still visible (safe fallback).
+     */
     .card {
       background: var(--surface);
       border: 1px solid var(--border);
@@ -169,19 +162,37 @@
       padding: 1.5rem;
       box-shadow: var(--shadow-sm);
       position: relative;
-      transition: transform var(--transition), box-shadow var(--transition), border-color var(--transition);
-      animation: fadeSlideIn .3s ease both;
+      /* opacity and transform handled separately so hover never conflicts */
+      opacity: 1;
+      transform: translateY(0);
+      transition:
+        opacity   0.32s ease,
+        transform 0.32s ease,
+        box-shadow 0.22s ease,
+        border-color 0.22s ease;
     }
 
-    @keyframes fadeSlideIn {
-      from { opacity: 0; transform: translateY(8px); }
-      to   { opacity: 1; transform: translateY(0); }
+    /* Entry state — applied by JS before DOM insertion */
+    .card--entering {
+      opacity: 0;
+      transform: translateY(10px);
     }
 
+    /* Hover only mutates transform; opacity transition is already at 1 */
     .card:hover {
       transform: translateY(-3px);
       box-shadow: var(--shadow-lg);
       border-color: #c7d2fe;
+    }
+
+    /* FIX #6 — Respect OS reduced-motion preference */
+    @media (prefers-reduced-motion: reduce) {
+      .card,
+      .card--entering {
+        transition: none !important;
+        opacity: 1 !important;
+        transform: none !important;
+      }
     }
 
     .card__number {
@@ -198,7 +209,7 @@
       font-weight: 700;
       color: var(--text-primary);
       margin-bottom: .75rem;
-      padding-right: 3rem;
+      padding-right: 5.5rem;
       line-height: 1.45;
     }
 
@@ -212,7 +223,6 @@
       font-size: .95rem;
       color: var(--text-secondary);
       line-height: 1.7;
-      padding-right: 1rem;
     }
 
     /* ─── Copy Button ────────────────────────────────────────────────── */
@@ -231,10 +241,13 @@
       font-size: .78rem;
       font-weight: 600;
       cursor: pointer;
-      transition: background var(--transition), color var(--transition),
-                  border-color var(--transition), transform var(--transition),
-                  box-shadow var(--transition);
       white-space: nowrap;
+      transition:
+        background 220ms ease,
+        color 220ms ease,
+        border-color 220ms ease,
+        box-shadow 220ms ease,
+        transform 120ms ease;
     }
 
     .copy-btn:hover {
@@ -244,13 +257,11 @@
       box-shadow: 0 2px 8px rgba(79,70,229,.35);
     }
 
+    .copy-btn:active { transform: scale(.95); }
+
     .copy-btn:focus-visible {
       outline: 2px solid var(--accent);
       outline-offset: 2px;
-    }
-
-    .copy-btn:active {
-      transform: scale(.96);
     }
 
     .copy-btn--copied {
@@ -265,11 +276,7 @@
       border-color: #16a34a;
     }
 
-    .copy-btn svg {
-      width: 13px;
-      height: 13px;
-      flex-shrink: 0;
-    }
+    .copy-btn svg { width: 13px; height: 13px; flex-shrink: 0; }
 
     /* ─── Highlight ──────────────────────────────────────────────────── */
     mark {
@@ -283,7 +290,6 @@
     .empty-state {
       text-align: center;
       padding: 4rem 2rem;
-      animation: fadeSlideIn .3s ease both;
     }
 
     .empty-state__icon {
@@ -298,22 +304,15 @@
       color: var(--accent);
     }
 
-    .empty-state__icon svg {
-      width: 26px;
-      height: 26px;
-    }
+    .empty-state__icon svg { width: 26px; height: 26px; }
 
     .empty-state__title {
       font-size: 1.1rem;
       font-weight: 700;
-      color: var(--text-primary);
       margin-bottom: .4rem;
     }
 
-    .empty-state__sub {
-      font-size: .9rem;
-      color: var(--text-muted);
-    }
+    .empty-state__sub { font-size: .9rem; color: var(--text-muted); }
 
     /* ─── Footer ─────────────────────────────────────────────────────── */
     .footer {
@@ -332,7 +331,7 @@
       font-size: .78rem;
     }
 
-    /* ─── Focus Styles ───────────────────────────────────────────────── */
+    /* ─── Focus ──────────────────────────────────────────────────────── */
     :focus-visible {
       outline: 2px solid var(--accent);
       outline-offset: 2px;
@@ -345,20 +344,11 @@
 
       .header { margin-bottom: 1.75rem; }
 
-      .card { padding: 1.25rem 1rem; }
+      .card { padding: 1.25rem 1rem; display: flex; flex-direction: column; }
 
       .card__question { padding-right: 0; }
 
-      .copy-btn {
-        position: static;
-        margin-top: 1rem;
-        align-self: flex-start;
-      }
-
-      .card {
-        display: flex;
-        flex-direction: column;
-      }
+      .copy-btn { position: static; margin-top: 1rem; align-self: flex-start; }
 
       .search-hint { display: none; }
     }
@@ -368,24 +358,23 @@
 
 <div class="container">
 
-  <!-- Header -->
   <header class="header">
     <div class="header__badge">Knowledge Base</div>
     <h1 class="header__title">Q&amp;A Viewer</h1>
     <p class="header__sub">Browse, search, and copy answers instantly.</p>
   </header>
 
-  <!-- Search -->
   <div class="search-wrapper">
     <svg class="search-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor"
          stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
-      <circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/>
+      <circle cx="11" cy="11" r="8"/>
+      <line x1="21" y1="21" x2="16.65" y2="16.65"/>
     </svg>
     <input
       id="searchInput"
       type="search"
       class="search-input"
-      placeholder="Search questions or answers…"
+      placeholder="Search questions or answers..."
       aria-label="Search questions and answers"
       autocomplete="off"
       spellcheck="false"
@@ -396,24 +385,21 @@
     </div>
   </div>
 
-  <!-- Results count -->
   <p class="results-meta" id="resultsMeta" aria-live="polite" aria-atomic="true"></p>
 
-  <!-- Card list -->
   <main>
     <section id="cardList" class="card-list" aria-label="Q&amp;A results"></section>
   </main>
 
-  <!-- Footer shortcuts hint -->
   <footer class="footer">
-    <kbd>/</kbd> focus &nbsp;·&nbsp; <kbd>Esc</kbd> clear
+    <kbd>/</kbd> focus &nbsp;&middot;&nbsp; <kbd>Esc</kbd> clear
   </footer>
 
 </div>
 
 <script>
-/* ─── Data ─────────────────────────────────────────────────────────── */
-const QA_DATA = [
+/* ─── Data ──────────────────────────────────────────────────────────── */
+var QA_DATA = [
   {
     id: 1,
     question: "What is the difference between HTTP and HTTPS?",
@@ -422,31 +408,32 @@ const QA_DATA = [
   {
     id: 2,
     question: "What is a closure in JavaScript?",
-    answer: "A closure is a function that retains access to variables from its outer (enclosing) scope even after that outer function has finished executing. This happens because JavaScript functions carry a reference to their surrounding lexical environment. Closures are widely used for data encapsulation, factory functions, and callbacks — for example, a counter function that increments a private variable without exposing it globally."
+    answer: "A closure is a function that retains access to variables from its outer (enclosing) scope even after that outer function has finished executing. JavaScript functions carry a reference to their surrounding lexical environment. Closures are used for data encapsulation, factory functions, and callbacks — for example, a counter function that increments a private variable without exposing it globally."
   },
   {
     id: 3,
     question: "What is the difference between SQL and NoSQL databases?",
-    answer: "SQL (relational) databases store data in structured tables with a fixed schema and use SQL for queries. They excel at complex joins and transactions (ACID compliance). NoSQL databases encompass document stores, key-value stores, wide-column, and graph databases. They offer flexible schemas, horizontal scalability, and are optimised for specific access patterns. Choose SQL for structured, relational data; NoSQL for large-scale, high-velocity, or schema-flexible workloads."
+    answer: "SQL (relational) databases store data in structured tables with a fixed schema and use SQL for queries. They excel at complex joins and ACID-compliant transactions. NoSQL databases — document stores, key-value stores, wide-column, and graph — offer flexible schemas and horizontal scalability. Choose SQL for structured, relational data; NoSQL for large-scale, high-velocity, or schema-flexible workloads."
   },
   {
     id: 4,
     question: "What is a REST API and how does it work?",
-    answer: "REST (Representational State Transfer) is an architectural style for designing networked APIs. A REST API exposes resources (e.g. /users, /products) over HTTP using standard methods: GET to read, POST to create, PUT/PATCH to update, and DELETE to remove. Each request is stateless — the server stores no client session. Responses are typically JSON. REST APIs are widely adopted because they use existing HTTP infrastructure and are easy to consume from any language or platform."
+    answer: "REST (Representational State Transfer) is an architectural style for networked APIs. A REST API exposes resources (e.g. /users, /products) over HTTP using standard methods: GET to read, POST to create, PUT/PATCH to update, and DELETE to remove. Each request is stateless — the server holds no client session. Responses are typically JSON. REST APIs are widely adopted because they leverage existing HTTP infrastructure."
   },
   {
     id: 5,
     question: "What is Docker and why is it useful?",
-    answer: "Docker is a containerisation platform that packages an application along with its dependencies, runtime, and configuration into a portable unit called a container. Containers share the host OS kernel but are isolated from one another, making them far lighter than virtual machines. Docker solves the 'works on my machine' problem: a container runs identically in development, CI, and production. It also enables microservices architectures, rapid deployment, and efficient resource utilisation."
+    answer: "Docker is a containerisation platform that packages an application with its dependencies, runtime, and configuration into a portable container. Containers share the host OS kernel but are isolated from each other, making them far lighter than virtual machines. Docker solves the 'works on my machine' problem: a container runs identically in development, CI, and production, and enables microservices, rapid deployment, and efficient resource use."
   }
 ];
 
-/* ─── Utilities ────────────────────────────────────────────────────── */
+/* ─── Utilities ─────────────────────────────────────────────────────── */
 function debounce(fn, delay) {
-  let timer;
-  return (...args) => {
+  var timer;
+  return function() {
+    var args = arguments;
     clearTimeout(timer);
-    timer = setTimeout(() => fn(...args), delay);
+    timer = setTimeout(function() { fn.apply(null, args); }, delay);
   };
 }
 
@@ -455,145 +442,179 @@ function escapeHtml(str) {
     .replace(/&/g, "&amp;")
     .replace(/</g, "&lt;")
     .replace(/>/g, "&gt;")
-    .replace(/"/g, "&quot;");
+    .replace(/"/g, "&quot;")
+    .replace(/'/g, "&#39;");
 }
 
+/*
+ * FIX #3 — Previous version built regex from an already HTML-escaped string,
+ * which corrupted patterns containing &, <, >, " (entities don't match raw chars).
+ * Fix: split the RAW text by the query regex first, then HTML-escape each part.
+ * Odd-indexed parts from split(captureGroup) are the matched segments.
+ */
 function highlightText(text, query) {
   if (!query) return escapeHtml(text);
-  const escaped = query.replace(/[.*+?^${}()|[\]\\]/g, "\\$&");
-  const regex = new RegExp(`(${escaped})`, "gi");
-  return escapeHtml(text).replace(
-    new RegExp(`(${escapeHtml(escaped)})`, "gi"),
-    "<mark>$1</mark>"
-  );
+  var safePattern = query.replace(/[.*+?^${}()|[\]\\]/g, "\\$&");
+  var regex = new RegExp("(" + safePattern + ")", "gi");
+  return text.split(regex).map(function(part, i) {
+    return i % 2 === 1
+      ? "<mark>" + escapeHtml(part) + "</mark>"
+      : escapeHtml(part);
+  }).join("");
 }
 
-async function copyToClipboard(item) {
-  const text = `Question: ${item.question}\n\nAnswer: ${item.answer}`;
-  try {
-    await navigator.clipboard.writeText(text);
-    return true;
-  } catch {
-    /* Fallback for older browsers */
-    const ta = document.createElement("textarea");
-    ta.value = text;
-    ta.style.cssText = "position:fixed;opacity:0;pointer-events:none";
-    document.body.appendChild(ta);
-    ta.select();
-    const ok = document.execCommand("copy");
-    document.body.removeChild(ta);
-    return ok;
+/* FIX #4 — catch(err) instead of catch{} for broad browser compatibility */
+function copyToClipboard(item, callback) {
+  var text = "Question: " + item.question + "\n\nAnswer: " + item.answer;
+  if (navigator.clipboard && navigator.clipboard.writeText) {
+    navigator.clipboard.writeText(text).then(function() {
+      callback(true);
+    }).catch(function(err) {
+      fallbackCopy(text, callback);
+    });
+  } else {
+    fallbackCopy(text, callback);
   }
 }
 
-/* ─── Render ───────────────────────────────────────────────────────── */
-const cardList  = document.getElementById("cardList");
-const resultsMeta = document.getElementById("resultsMeta");
+function fallbackCopy(text, callback) {
+  var ta = document.createElement("textarea");
+  ta.value = text;
+  ta.style.cssText = "position:fixed;top:0;left:0;opacity:0;pointer-events:none";
+  document.body.appendChild(ta);
+  ta.focus();
+  ta.select();
+  var ok = false;
+  try { ok = document.execCommand("copy"); } catch(err) { ok = false; }
+  document.body.removeChild(ta);
+  callback(ok);
+}
 
-function renderCards(items, query = "") {
+/* ─── DOM Refs ──────────────────────────────────────────────────────── */
+var cardList    = document.getElementById("cardList");
+var resultsMeta = document.getElementById("resultsMeta");
+var searchInput = document.getElementById("searchInput");
+
+/* ─── Render ────────────────────────────────────────────────────────── */
+function renderCards(items, query) {
+  query = query || "";
   cardList.innerHTML = "";
 
   if (items.length === 0) {
-    cardList.innerHTML = `
-      <div class="empty-state" role="status">
-        <div class="empty-state__icon" aria-hidden="true">
-          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor"
-               stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-            <circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/>
-            <line x1="8" y1="11" x2="14" y2="11"/>
-          </svg>
-        </div>
-        <p class="empty-state__title">No results found</p>
-        <p class="empty-state__sub">Try different keywords or clear the search.</p>
-      </div>`;
     resultsMeta.textContent = "";
+    cardList.innerHTML =
+      '<div class="empty-state" role="status">' +
+        '<div class="empty-state__icon" aria-hidden="true">' +
+          '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">' +
+            '<circle cx="11" cy="11" r="8"/>' +
+            '<line x1="21" y1="21" x2="16.65" y2="16.65"/>' +
+            '<line x1="8" y1="11" x2="14" y2="11"/>' +
+          '</svg>' +
+        '</div>' +
+        '<p class="empty-state__title">No results found</p>' +
+        '<p class="empty-state__sub">Try different keywords or clear the search.</p>' +
+      '</div>';
     return;
   }
 
   resultsMeta.textContent = query
-    ? `${items.length} result${items.length !== 1 ? "s" : ""} for "${query}"`
-    : `${items.length} question${items.length !== 1 ? "s" : ""}`;
+    ? items.length + " result" + (items.length !== 1 ? "s" : "") + " for “" + query + "”"
+    : items.length + " question" + (items.length !== 1 ? "s" : "");
 
-  items.forEach((item, index) => {
-    const card = document.createElement("article");
-    card.className = "card";
-    card.style.animationDelay = `${index * 55}ms`;
-    card.setAttribute("aria-label", `Question ${item.id}: ${item.question}`);
+  items.forEach(function(item, index) {
+    var card = document.createElement("article");
 
-    card.innerHTML = `
-      <div class="card__number">Q${item.id}</div>
-      <h2 class="card__question">${highlightText(item.question, query)}</h2>
-      <button
-        class="copy-btn"
-        aria-label="Copy question and answer ${item.id} to clipboard"
-        data-id="${item.id}"
-      >
-        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor"
-             stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
-          <rect x="9" y="9" width="13" height="13" rx="2" ry="2"/>
-          <path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/>
-        </svg>
-        <span>Copy</span>
-      </button>
-      <div class="card__divider"></div>
-      <p class="card__answer">${highlightText(item.answer, query)}</p>
-    `;
+    /*
+     * FIX #1 — Add .card--entering BEFORE appending so the browser paints
+     * the invisible state first. Double-rAF then removes the class, which
+     * triggers the CSS transition to opacity:1 / translateY(0).
+     * transitionDelay creates the stagger; it is cleared after entry
+     * so subsequent hover transitions fire without any delay.
+     */
+    card.className = "card card--entering";
+    card.style.transitionDelay = (index * 65) + "ms";
+    card.setAttribute("aria-label", "Question " + item.id + ": " + item.question);
 
-    /* Copy handler */
-    const btn = card.querySelector(".copy-btn");
-    btn.addEventListener("click", async () => {
-      const ok = await copyToClipboard(item);
-      if (ok) {
-        const label = btn.querySelector("span");
-        const icon  = btn.querySelector("svg");
-        btn.classList.add("copy-btn--copied");
-        label.textContent = "Copied!";
-        icon.innerHTML = `
-          <polyline points="20 6 9 17 4 12"
-            stroke="currentColor" stroke-width="2.5"
-            stroke-linecap="round" stroke-linejoin="round"/>`;
-        btn.setAttribute("aria-label", `Copied question and answer ${item.id}`);
+    card.innerHTML =
+      '<div class="card__number">Q' + item.id + '</div>' +
+      '<h2 class="card__question">' + highlightText(item.question, query) + '</h2>' +
+      '<button class="copy-btn" aria-label="Copy Q' + item.id + ' to clipboard" data-id="' + item.id + '">' +
+        '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">' +
+          '<rect x="9" y="9" width="13" height="13" rx="2" ry="2"/>' +
+          '<path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/>' +
+        '</svg>' +
+        '<span>Copy</span>' +
+      '</button>' +
+      '<div class="card__divider"></div>' +
+      '<p class="card__answer">' + highlightText(item.answer, query) + '</p>';
 
-        setTimeout(() => {
-          btn.classList.remove("copy-btn--copied");
-          label.textContent = "Copy";
-          icon.innerHTML = `
-            <rect x="9" y="9" width="13" height="13" rx="2" ry="2"/>
-            <path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/>`;
-          btn.setAttribute("aria-label", `Copy question and answer ${item.id} to clipboard`);
-        }, 1500);
-      }
-    });
+    /* Copy click handler */
+    var btn = card.querySelector(".copy-btn");
+    (function(b, it) {
+      b.addEventListener("click", function() {
+        copyToClipboard(it, function(ok) {
+          if (!ok) return;
+          var label = b.querySelector("span");
+          var icon  = b.querySelector("svg");
+          b.classList.add("copy-btn--copied");
+          b.setAttribute("aria-label", "Copied Q" + it.id);
+          label.textContent = "Copied!";
+          icon.innerHTML =
+            '<polyline points="20 6 9 17 4 12"' +
+            ' stroke="currentColor" stroke-width="2.5"' +
+            ' stroke-linecap="round" stroke-linejoin="round"/>';
+
+          setTimeout(function() {
+            b.classList.remove("copy-btn--copied");
+            b.setAttribute("aria-label", "Copy Q" + it.id + " to clipboard");
+            label.textContent = "Copy";
+            icon.innerHTML =
+              '<rect x="9" y="9" width="13" height="13" rx="2" ry="2"/>' +
+              '<path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/>';
+          }, 1500);
+        });
+      });
+    })(btn, item);
 
     cardList.appendChild(card);
+
+    /* Trigger entry animation — double rAF ensures a full paint cycle */
+    requestAnimationFrame(function() {
+      requestAnimationFrame(function() {
+        card.classList.remove("card--entering");
+        card.addEventListener("transitionend", function clearDelay() {
+          card.style.transitionDelay = "";
+          card.removeEventListener("transitionend", clearDelay);
+        });
+      });
+    });
   });
 }
 
-/* ─── Search / Filter ───────────────────────────────────────────────── */
-const searchInput = document.getElementById("searchInput");
-
+/* ─── Filter ────────────────────────────────────────────────────────── */
 function filterData(query) {
   if (!query) return QA_DATA;
-  const q = query.toLowerCase();
-  return QA_DATA.filter(
-    item =>
-      item.question.toLowerCase().includes(q) ||
-      item.answer.toLowerCase().includes(q)
-  );
+  var q = query.toLowerCase();
+  return QA_DATA.filter(function(item) {
+    return item.question.toLowerCase().indexOf(q) !== -1 ||
+           item.answer.toLowerCase().indexOf(q) !== -1;
+  });
 }
 
 function handleSearch(query) {
-  const trimmed = query.trim();
+  var trimmed = query.trim();
   renderCards(filterData(trimmed), trimmed);
 }
 
-const debouncedSearch = debounce(e => handleSearch(e.target.value), 300);
-searchInput.addEventListener("input", debouncedSearch);
+searchInput.addEventListener("input", debounce(function(e) {
+  handleSearch(e.target.value);
+}, 300));
 
-/* ─── Keyboard Shortcuts ────────────────────────────────────────────── */
-document.addEventListener("keydown", e => {
-  const tag = document.activeElement.tagName.toLowerCase();
-  const inInput = tag === "input" || tag === "textarea" || document.activeElement.isContentEditable;
+/* ─── Keyboard Shortcuts ─────────────────────────────────────────────── */
+document.addEventListener("keydown", function(e) {
+  var tag = document.activeElement ? document.activeElement.tagName.toLowerCase() : "";
+  var inInput = tag === "input" || tag === "textarea" ||
+                (document.activeElement && document.activeElement.isContentEditable);
 
   if (e.key === "/" && !inInput) {
     e.preventDefault();
@@ -608,8 +629,8 @@ document.addEventListener("keydown", e => {
   }
 });
 
-/* ─── Initial Render ────────────────────────────────────────────────── */
-renderCards(QA_DATA);
+/* ─── Boot ──────────────────────────────────────────────────────────── */
+renderCards(QA_DATA, "");
 </script>
 
 </body>
