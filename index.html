@@ -1,0 +1,616 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Q&amp;A Viewer</title>
+  <style>
+    /* ─── Reset & Base ─────────────────────────────────────────────── */
+    *, *::before, *::after {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    :root {
+      --bg: #f4f6f9;
+      --surface: #ffffff;
+      --surface-hover: #fafbfc;
+      --border: #e2e8f0;
+      --text-primary: #1a202c;
+      --text-secondary: #4a5568;
+      --text-muted: #a0aec0;
+      --accent: #4f46e5;
+      --accent-hover: #4338ca;
+      --accent-light: #eef2ff;
+      --shadow-sm: 0 1px 3px rgba(0,0,0,.08), 0 1px 2px rgba(0,0,0,.05);
+      --shadow-md: 0 4px 12px rgba(0,0,0,.10), 0 2px 6px rgba(0,0,0,.06);
+      --shadow-lg: 0 10px 25px rgba(0,0,0,.12), 0 4px 10px rgba(0,0,0,.08);
+      --radius: 12px;
+      --radius-sm: 8px;
+      --transition: 220ms ease;
+    }
+
+    html {
+      scroll-behavior: smooth;
+    }
+
+    body {
+      min-height: 100vh;
+      background: var(--bg);
+      background-image: radial-gradient(ellipse at 20% 10%, #e0e7ff 0%, transparent 50%),
+                        radial-gradient(ellipse at 80% 90%, #fce7f3 0%, transparent 50%);
+      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
+      color: var(--text-primary);
+      line-height: 1.6;
+      padding: 2rem 1rem 4rem;
+    }
+
+    /* ─── Layout ────────────────────────────────────────────────────── */
+    .container {
+      max-width: 800px;
+      margin: 0 auto;
+    }
+
+    /* ─── Header ────────────────────────────────────────────────────── */
+    .header {
+      text-align: center;
+      margin-bottom: 2.5rem;
+    }
+
+    .header__badge {
+      display: inline-block;
+      background: var(--accent-light);
+      color: var(--accent);
+      font-size: .75rem;
+      font-weight: 600;
+      letter-spacing: .08em;
+      text-transform: uppercase;
+      padding: .25rem .75rem;
+      border-radius: 999px;
+      margin-bottom: .75rem;
+    }
+
+    .header__title {
+      font-size: clamp(1.75rem, 4vw, 2.5rem);
+      font-weight: 800;
+      color: var(--text-primary);
+      letter-spacing: -.02em;
+      line-height: 1.2;
+    }
+
+    .header__sub {
+      margin-top: .5rem;
+      color: var(--text-secondary);
+      font-size: 1rem;
+    }
+
+    /* ─── Search ────────────────────────────────────────────────────── */
+    .search-wrapper {
+      position: relative;
+      margin-bottom: 2rem;
+    }
+
+    .search-icon {
+      position: absolute;
+      left: 1rem;
+      top: 50%;
+      transform: translateY(-50%);
+      color: var(--text-muted);
+      pointer-events: none;
+      width: 18px;
+      height: 18px;
+    }
+
+    .search-input {
+      width: 100%;
+      padding: .875rem 3rem .875rem 2.75rem;
+      border: 2px solid var(--border);
+      border-radius: var(--radius);
+      background: var(--surface);
+      font-size: 1rem;
+      color: var(--text-primary);
+      box-shadow: var(--shadow-sm);
+      transition: border-color var(--transition), box-shadow var(--transition);
+      outline: none;
+    }
+
+    .search-input::placeholder {
+      color: var(--text-muted);
+    }
+
+    .search-input:focus {
+      border-color: var(--accent);
+      box-shadow: 0 0 0 4px rgba(79,70,229,.12), var(--shadow-sm);
+    }
+
+    .search-hint {
+      position: absolute;
+      right: 1rem;
+      top: 50%;
+      transform: translateY(-50%);
+      display: flex;
+      align-items: center;
+      gap: .35rem;
+      pointer-events: none;
+    }
+
+    .kbd {
+      background: var(--bg);
+      border: 1px solid var(--border);
+      border-radius: 4px;
+      font-size: .7rem;
+      font-family: inherit;
+      color: var(--text-muted);
+      padding: .1rem .35rem;
+      line-height: 1.4;
+    }
+
+    /* ─── Results Meta ───────────────────────────────────────────────── */
+    .results-meta {
+      font-size: .85rem;
+      color: var(--text-muted);
+      margin-bottom: 1rem;
+      min-height: 1.4em;
+      transition: opacity var(--transition);
+    }
+
+    /* ─── Cards ─────────────────────────────────────────────────────── */
+    .card-list {
+      display: flex;
+      flex-direction: column;
+      gap: 1rem;
+    }
+
+    .card {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      padding: 1.5rem;
+      box-shadow: var(--shadow-sm);
+      position: relative;
+      transition: transform var(--transition), box-shadow var(--transition), border-color var(--transition);
+      animation: fadeSlideIn .3s ease both;
+    }
+
+    @keyframes fadeSlideIn {
+      from { opacity: 0; transform: translateY(8px); }
+      to   { opacity: 1; transform: translateY(0); }
+    }
+
+    .card:hover {
+      transform: translateY(-3px);
+      box-shadow: var(--shadow-lg);
+      border-color: #c7d2fe;
+    }
+
+    .card__number {
+      font-size: .72rem;
+      font-weight: 700;
+      letter-spacing: .08em;
+      text-transform: uppercase;
+      color: var(--accent);
+      margin-bottom: .4rem;
+    }
+
+    .card__question {
+      font-size: 1.05rem;
+      font-weight: 700;
+      color: var(--text-primary);
+      margin-bottom: .75rem;
+      padding-right: 3rem;
+      line-height: 1.45;
+    }
+
+    .card__divider {
+      height: 1px;
+      background: var(--border);
+      margin-bottom: .75rem;
+    }
+
+    .card__answer {
+      font-size: .95rem;
+      color: var(--text-secondary);
+      line-height: 1.7;
+      padding-right: 1rem;
+    }
+
+    /* ─── Copy Button ────────────────────────────────────────────────── */
+    .copy-btn {
+      position: absolute;
+      top: 1.25rem;
+      right: 1.25rem;
+      display: flex;
+      align-items: center;
+      gap: .35rem;
+      background: var(--accent-light);
+      color: var(--accent);
+      border: 1px solid #c7d2fe;
+      border-radius: var(--radius-sm);
+      padding: .35rem .65rem;
+      font-size: .78rem;
+      font-weight: 600;
+      cursor: pointer;
+      transition: background var(--transition), color var(--transition),
+                  border-color var(--transition), transform var(--transition),
+                  box-shadow var(--transition);
+      white-space: nowrap;
+    }
+
+    .copy-btn:hover {
+      background: var(--accent);
+      color: #fff;
+      border-color: var(--accent);
+      box-shadow: 0 2px 8px rgba(79,70,229,.35);
+    }
+
+    .copy-btn:focus-visible {
+      outline: 2px solid var(--accent);
+      outline-offset: 2px;
+    }
+
+    .copy-btn:active {
+      transform: scale(.96);
+    }
+
+    .copy-btn--copied {
+      background: #dcfce7;
+      color: #16a34a;
+      border-color: #86efac;
+    }
+
+    .copy-btn--copied:hover {
+      background: #16a34a;
+      color: #fff;
+      border-color: #16a34a;
+    }
+
+    .copy-btn svg {
+      width: 13px;
+      height: 13px;
+      flex-shrink: 0;
+    }
+
+    /* ─── Highlight ──────────────────────────────────────────────────── */
+    mark {
+      background: #fef08a;
+      color: inherit;
+      border-radius: 2px;
+      padding: 0 .1em;
+    }
+
+    /* ─── Empty State ────────────────────────────────────────────────── */
+    .empty-state {
+      text-align: center;
+      padding: 4rem 2rem;
+      animation: fadeSlideIn .3s ease both;
+    }
+
+    .empty-state__icon {
+      width: 56px;
+      height: 56px;
+      background: var(--accent-light);
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      margin: 0 auto 1rem;
+      color: var(--accent);
+    }
+
+    .empty-state__icon svg {
+      width: 26px;
+      height: 26px;
+    }
+
+    .empty-state__title {
+      font-size: 1.1rem;
+      font-weight: 700;
+      color: var(--text-primary);
+      margin-bottom: .4rem;
+    }
+
+    .empty-state__sub {
+      font-size: .9rem;
+      color: var(--text-muted);
+    }
+
+    /* ─── Footer ─────────────────────────────────────────────────────── */
+    .footer {
+      text-align: center;
+      margin-top: 3rem;
+      font-size: .8rem;
+      color: var(--text-muted);
+    }
+
+    .footer kbd {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: 4px;
+      font-family: inherit;
+      padding: .1rem .4rem;
+      font-size: .78rem;
+    }
+
+    /* ─── Focus Styles ───────────────────────────────────────────────── */
+    :focus-visible {
+      outline: 2px solid var(--accent);
+      outline-offset: 2px;
+      border-radius: 4px;
+    }
+
+    /* ─── Responsive ─────────────────────────────────────────────────── */
+    @media (max-width: 600px) {
+      body { padding: 1.25rem .75rem 3rem; }
+
+      .header { margin-bottom: 1.75rem; }
+
+      .card { padding: 1.25rem 1rem; }
+
+      .card__question { padding-right: 0; }
+
+      .copy-btn {
+        position: static;
+        margin-top: 1rem;
+        align-self: flex-start;
+      }
+
+      .card {
+        display: flex;
+        flex-direction: column;
+      }
+
+      .search-hint { display: none; }
+    }
+  </style>
+</head>
+<body>
+
+<div class="container">
+
+  <!-- Header -->
+  <header class="header">
+    <div class="header__badge">Knowledge Base</div>
+    <h1 class="header__title">Q&amp;A Viewer</h1>
+    <p class="header__sub">Browse, search, and copy answers instantly.</p>
+  </header>
+
+  <!-- Search -->
+  <div class="search-wrapper">
+    <svg class="search-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+         stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+      <circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/>
+    </svg>
+    <input
+      id="searchInput"
+      type="search"
+      class="search-input"
+      placeholder="Search questions or answers…"
+      aria-label="Search questions and answers"
+      autocomplete="off"
+      spellcheck="false"
+    />
+    <div class="search-hint" aria-hidden="true">
+      <span class="kbd">/</span>
+      <span style="font-size:.75rem;color:var(--text-muted)">to focus</span>
+    </div>
+  </div>
+
+  <!-- Results count -->
+  <p class="results-meta" id="resultsMeta" aria-live="polite" aria-atomic="true"></p>
+
+  <!-- Card list -->
+  <main>
+    <section id="cardList" class="card-list" aria-label="Q&amp;A results"></section>
+  </main>
+
+  <!-- Footer shortcuts hint -->
+  <footer class="footer">
+    <kbd>/</kbd> focus &nbsp;·&nbsp; <kbd>Esc</kbd> clear
+  </footer>
+
+</div>
+
+<script>
+/* ─── Data ─────────────────────────────────────────────────────────── */
+const QA_DATA = [
+  {
+    id: 1,
+    question: "What is the difference between HTTP and HTTPS?",
+    answer: "HTTP (HyperText Transfer Protocol) transfers data in plain text, making it vulnerable to interception. HTTPS adds a TLS/SSL encryption layer on top, encrypting the data in transit so third parties cannot read or tamper with it. HTTPS also authenticates the server via a certificate, which protects users from man-in-the-middle attacks. Browsers flag HTTP sites as 'Not Secure', and HTTPS is required for many modern web APIs."
+  },
+  {
+    id: 2,
+    question: "What is a closure in JavaScript?",
+    answer: "A closure is a function that retains access to variables from its outer (enclosing) scope even after that outer function has finished executing. This happens because JavaScript functions carry a reference to their surrounding lexical environment. Closures are widely used for data encapsulation, factory functions, and callbacks — for example, a counter function that increments a private variable without exposing it globally."
+  },
+  {
+    id: 3,
+    question: "What is the difference between SQL and NoSQL databases?",
+    answer: "SQL (relational) databases store data in structured tables with a fixed schema and use SQL for queries. They excel at complex joins and transactions (ACID compliance). NoSQL databases encompass document stores, key-value stores, wide-column, and graph databases. They offer flexible schemas, horizontal scalability, and are optimised for specific access patterns. Choose SQL for structured, relational data; NoSQL for large-scale, high-velocity, or schema-flexible workloads."
+  },
+  {
+    id: 4,
+    question: "What is a REST API and how does it work?",
+    answer: "REST (Representational State Transfer) is an architectural style for designing networked APIs. A REST API exposes resources (e.g. /users, /products) over HTTP using standard methods: GET to read, POST to create, PUT/PATCH to update, and DELETE to remove. Each request is stateless — the server stores no client session. Responses are typically JSON. REST APIs are widely adopted because they use existing HTTP infrastructure and are easy to consume from any language or platform."
+  },
+  {
+    id: 5,
+    question: "What is Docker and why is it useful?",
+    answer: "Docker is a containerisation platform that packages an application along with its dependencies, runtime, and configuration into a portable unit called a container. Containers share the host OS kernel but are isolated from one another, making them far lighter than virtual machines. Docker solves the 'works on my machine' problem: a container runs identically in development, CI, and production. It also enables microservices architectures, rapid deployment, and efficient resource utilisation."
+  }
+];
+
+/* ─── Utilities ────────────────────────────────────────────────────── */
+function debounce(fn, delay) {
+  let timer;
+  return (...args) => {
+    clearTimeout(timer);
+    timer = setTimeout(() => fn(...args), delay);
+  };
+}
+
+function escapeHtml(str) {
+  return str
+    .replace(/&/g, "&amp;")
+    .replace(/</g, "&lt;")
+    .replace(/>/g, "&gt;")
+    .replace(/"/g, "&quot;");
+}
+
+function highlightText(text, query) {
+  if (!query) return escapeHtml(text);
+  const escaped = query.replace(/[.*+?^${}()|[\]\\]/g, "\\$&");
+  const regex = new RegExp(`(${escaped})`, "gi");
+  return escapeHtml(text).replace(
+    new RegExp(`(${escapeHtml(escaped)})`, "gi"),
+    "<mark>$1</mark>"
+  );
+}
+
+async function copyToClipboard(item) {
+  const text = `Question: ${item.question}\n\nAnswer: ${item.answer}`;
+  try {
+    await navigator.clipboard.writeText(text);
+    return true;
+  } catch {
+    /* Fallback for older browsers */
+    const ta = document.createElement("textarea");
+    ta.value = text;
+    ta.style.cssText = "position:fixed;opacity:0;pointer-events:none";
+    document.body.appendChild(ta);
+    ta.select();
+    const ok = document.execCommand("copy");
+    document.body.removeChild(ta);
+    return ok;
+  }
+}
+
+/* ─── Render ───────────────────────────────────────────────────────── */
+const cardList  = document.getElementById("cardList");
+const resultsMeta = document.getElementById("resultsMeta");
+
+function renderCards(items, query = "") {
+  cardList.innerHTML = "";
+
+  if (items.length === 0) {
+    cardList.innerHTML = `
+      <div class="empty-state" role="status">
+        <div class="empty-state__icon" aria-hidden="true">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor"
+               stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/>
+            <line x1="8" y1="11" x2="14" y2="11"/>
+          </svg>
+        </div>
+        <p class="empty-state__title">No results found</p>
+        <p class="empty-state__sub">Try different keywords or clear the search.</p>
+      </div>`;
+    resultsMeta.textContent = "";
+    return;
+  }
+
+  resultsMeta.textContent = query
+    ? `${items.length} result${items.length !== 1 ? "s" : ""} for "${query}"`
+    : `${items.length} question${items.length !== 1 ? "s" : ""}`;
+
+  items.forEach((item, index) => {
+    const card = document.createElement("article");
+    card.className = "card";
+    card.style.animationDelay = `${index * 55}ms`;
+    card.setAttribute("aria-label", `Question ${item.id}: ${item.question}`);
+
+    card.innerHTML = `
+      <div class="card__number">Q${item.id}</div>
+      <h2 class="card__question">${highlightText(item.question, query)}</h2>
+      <button
+        class="copy-btn"
+        aria-label="Copy question and answer ${item.id} to clipboard"
+        data-id="${item.id}"
+      >
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor"
+             stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+          <rect x="9" y="9" width="13" height="13" rx="2" ry="2"/>
+          <path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/>
+        </svg>
+        <span>Copy</span>
+      </button>
+      <div class="card__divider"></div>
+      <p class="card__answer">${highlightText(item.answer, query)}</p>
+    `;
+
+    /* Copy handler */
+    const btn = card.querySelector(".copy-btn");
+    btn.addEventListener("click", async () => {
+      const ok = await copyToClipboard(item);
+      if (ok) {
+        const label = btn.querySelector("span");
+        const icon  = btn.querySelector("svg");
+        btn.classList.add("copy-btn--copied");
+        label.textContent = "Copied!";
+        icon.innerHTML = `
+          <polyline points="20 6 9 17 4 12"
+            stroke="currentColor" stroke-width="2.5"
+            stroke-linecap="round" stroke-linejoin="round"/>`;
+        btn.setAttribute("aria-label", `Copied question and answer ${item.id}`);
+
+        setTimeout(() => {
+          btn.classList.remove("copy-btn--copied");
+          label.textContent = "Copy";
+          icon.innerHTML = `
+            <rect x="9" y="9" width="13" height="13" rx="2" ry="2"/>
+            <path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/>`;
+          btn.setAttribute("aria-label", `Copy question and answer ${item.id} to clipboard`);
+        }, 1500);
+      }
+    });
+
+    cardList.appendChild(card);
+  });
+}
+
+/* ─── Search / Filter ───────────────────────────────────────────────── */
+const searchInput = document.getElementById("searchInput");
+
+function filterData(query) {
+  if (!query) return QA_DATA;
+  const q = query.toLowerCase();
+  return QA_DATA.filter(
+    item =>
+      item.question.toLowerCase().includes(q) ||
+      item.answer.toLowerCase().includes(q)
+  );
+}
+
+function handleSearch(query) {
+  const trimmed = query.trim();
+  renderCards(filterData(trimmed), trimmed);
+}
+
+const debouncedSearch = debounce(e => handleSearch(e.target.value), 300);
+searchInput.addEventListener("input", debouncedSearch);
+
+/* ─── Keyboard Shortcuts ────────────────────────────────────────────── */
+document.addEventListener("keydown", e => {
+  const tag = document.activeElement.tagName.toLowerCase();
+  const inInput = tag === "input" || tag === "textarea" || document.activeElement.isContentEditable;
+
+  if (e.key === "/" && !inInput) {
+    e.preventDefault();
+    searchInput.focus();
+    searchInput.select();
+  }
+
+  if (e.key === "Escape" && inInput) {
+    searchInput.value = "";
+    handleSearch("");
+    searchInput.blur();
+  }
+});
+
+/* ─── Initial Render ────────────────────────────────────────────────── */
+renderCards(QA_DATA);
+</script>
+
+</body>
+</html>
