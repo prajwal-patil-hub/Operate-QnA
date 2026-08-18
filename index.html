@@ -367,6 +367,34 @@
     .expand-all-btn:active { transform: scale(.95); }
     .expand-all-btn:focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; }
 
+    /* ── Load Excel button ───────────────────────────────────────────── */
+    .toolbar-right { display: flex; align-items: center; gap: .5rem; }
+
+    .load-excel-btn {
+      display: inline-flex;
+      align-items: center;
+      gap: .35rem;
+      border: 1.5px solid var(--border);
+      border-radius: 999px;
+      background: transparent;
+      font-family: var(--font);
+      font-size: .78rem;
+      font-weight: 600;
+      color: var(--navy-60);
+      padding: .3rem .85rem;
+      cursor: pointer;
+      white-space: nowrap;
+      transition: background 160ms ease, border-color 160ms ease, color 160ms ease, transform 100ms ease;
+      flex-shrink: 0;
+    }
+
+    .load-excel-btn svg { width: 13px; height: 13px; flex-shrink: 0; }
+    .load-excel-btn:hover { background: var(--navy-06); border-color: var(--navy-30); color: var(--navy); }
+    .load-excel-btn:active { transform: scale(.95); }
+    .load-excel-btn:focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; }
+    .load-excel-btn.loaded { background: var(--green-light); border-color: var(--green-border); color: var(--green); }
+    .load-excel-btn.loaded:hover { background: var(--green); border-color: var(--green); color: #fff; }
+
     /* ── FAQ list & item ─────────────────────────────────────────────── */
     .faq-list { border-top: 1px solid var(--border); }
 
@@ -1073,16 +1101,30 @@
 
     <nav class="categories" id="categories" aria-label="FAQ categories"></nav>
 
-    <!-- Toolbar: results meta + expand/collapse all -->
+    <!-- Toolbar: results meta + load excel + expand/collapse all -->
     <div class="faq-toolbar">
       <p class="results-meta" id="resultsMeta" aria-live="polite" aria-atomic="true"></p>
-      <button class="expand-all-btn" id="expandAllBtn" aria-label="Expand all FAQ items">
-        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor"
-             stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
-          <polyline points="6 9 12 15 18 9"/>
-        </svg>
-        <span id="expandAllLabel">Expand all</span>
-      </button>
+      <div class="toolbar-right">
+        <input type="file" id="excelFileInput" accept=".xlsx,.xls" style="display:none" aria-hidden="true">
+        <button class="load-excel-btn" id="loadExcelBtn" aria-label="Load FAQ data from Excel file">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor"
+               stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+            <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/>
+            <polyline points="14 2 14 8 20 8"/>
+            <line x1="16" y1="13" x2="8" y2="13"/>
+            <line x1="16" y1="17" x2="8" y2="17"/>
+            <polyline points="10 9 9 9 8 9"/>
+          </svg>
+          <span id="loadExcelLabel">Load Excel</span>
+        </button>
+        <button class="expand-all-btn" id="expandAllBtn" aria-label="Expand all FAQ items">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor"
+               stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+            <polyline points="6 9 12 15 18 9"/>
+          </svg>
+          <span id="expandAllLabel">Expand all</span>
+        </button>
+      </div>
     </div>
 
     <section id="faqList" class="faq-list" aria-label="FAQ list"></section>
@@ -1203,15 +1245,23 @@
   </div>
 </div>
 
+<script src="xlsx.mini.min.js"></script>
 <script src="faq-data.js"></script>
 <script>
 /* ─── Data is loaded from faq-data.js ───────────────────────────────── */
 
 var ALL_CATEGORIES = ["All"];
 var catSet = {};
-FAQ_DATA.forEach(function(item) {
-  if (!catSet[item.category]) { catSet[item.category] = true; ALL_CATEGORIES.push(item.category); }
-});
+
+function rebuildCategories() {
+  ALL_CATEGORIES = ["All"];
+  catSet = {};
+  FAQ_DATA.forEach(function(item) {
+    if (!catSet[item.category]) { catSet[item.category] = true; ALL_CATEGORIES.push(item.category); }
+  });
+}
+rebuildCategories();
+
 function getCatCount(cat) {
   return cat === "All" ? FAQ_DATA.length : FAQ_DATA.filter(function(i){ return i.category===cat; }).length;
 }
@@ -1688,6 +1738,58 @@ modalCopyQA.addEventListener("click", function(){
     morphCopyBtn(modalCopyQA, modalCopyQA.querySelector("svg"), modalCopyQA.querySelector("span"), "Copied!", "Copy Q&A", '<polyline points="20 6 9 17 4 12"/>');
     showToast("Q⁠&⁠A copied to clipboard");
   });
+});
+
+/* ─── Load Excel ─────────────────────────────────────────────────────── */
+var excelFileInput = document.getElementById("excelFileInput");
+var loadExcelBtn   = document.getElementById("loadExcelBtn");
+var loadExcelLabel = document.getElementById("loadExcelLabel");
+
+loadExcelBtn.addEventListener("click", function() { excelFileInput.click(); });
+
+excelFileInput.addEventListener("change", function(e) {
+  var file = e.target.files[0];
+  if (!file) return;
+
+  var reader = new FileReader();
+  reader.onload = function(ev) {
+    try {
+      var workbook = XLSX.read(new Uint8Array(ev.target.result), { type: "array" });
+      var sheet    = workbook.Sheets[workbook.SheetNames[0]];
+      var rows     = XLSX.utils.sheet_to_json(sheet);
+
+      var parsed = rows.map(function(row, i) {
+        return {
+          id:       Number(row["id"]       || row["ID"]       || i + 1),
+          category: String(row["category"] || row["Category"] || "General"),
+          question: String(row["question"] || row["Question"] || ""),
+          answer:   String(row["answer"]   || row["Answer"]   || "")
+        };
+      }).filter(function(item) { return item.question && item.answer; });
+
+      if (!parsed.length) { showToast("No valid rows found. Check column names: id, category, question, answer"); return; }
+
+      FAQ_DATA = parsed;
+      rebuildCategories();
+      state.openIds = {};
+      state.activeCategory = "All";
+      state.query = "";
+      searchInput.value = "";
+      updateClearBtn();
+
+      renderCategories();
+      renderFAQs();
+
+      var shortName = file.name.length > 22 ? file.name.slice(0, 20) + "…" : file.name;
+      loadExcelLabel.textContent = shortName;
+      loadExcelBtn.classList.add("loaded");
+      showToast("Loaded " + parsed.length + " questions from " + file.name, 2800);
+    } catch(err) {
+      showToast("Could not read file — make sure it is a valid .xlsx file", 3000);
+    }
+    excelFileInput.value = "";
+  };
+  reader.readAsArrayBuffer(file);
 });
 
 /* ─── Boot ───────────────────────────────────────────────────────────── */
