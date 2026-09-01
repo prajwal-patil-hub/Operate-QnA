@@ -3,10 +3,10 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>FAQ – Help Center</title>
+  <title>Operate Help Book</title>
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap" rel="stylesheet" />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet" />
   <style>
     /* ── Reset ───────────────────────────────────────────────────────── */
     *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
@@ -31,6 +31,7 @@
       --red-light:    #fee2e2;
       --highlight:    #fef08a;
       --font:         'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+      --mono:         'JetBrains Mono', 'Courier New', monospace;
       --ease-out:     cubic-bezier(0.22, 1, 0.36, 1);
       --ease-in-out:  cubic-bezier(0.4, 0, 0.2, 1);
     }
@@ -1013,6 +1014,235 @@
     ::-webkit-scrollbar-track { background: transparent; }
     ::-webkit-scrollbar-thumb { background: var(--navy-30); border-radius: 999px; }
 
+    /* ── Top bar ─────────────────────────────────────────────────────── */
+    .top-bar {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: .55rem 1.5rem;
+      background: var(--bg);
+      border-bottom: 1px solid var(--border);
+      position: sticky;
+      top: 0;
+      z-index: 200;
+      transition: background 300ms ease, border-color 300ms ease;
+    }
+
+    .app-logo { display: flex; align-items: center; gap: .6rem; }
+
+    .app-logo__icon {
+      width: 28px; height: 28px; border-radius: 8px;
+      background: var(--navy); color: var(--bg);
+      display: flex; align-items: center; justify-content: center;
+    }
+    .app-logo__icon svg { width: 15px; height: 15px; }
+
+    .app-logo__name {
+      font-size: .88rem; font-weight: 800;
+      letter-spacing: -.02em; color: var(--navy);
+    }
+
+    .top-bar .theme-toggle { position: static; }
+
+    /* ── Section nav pill toggle ─────────────────────────────────────── */
+    .section-nav {
+      display: inline-flex;
+      align-items: center;
+      background: var(--navy-06);
+      border: 1.5px solid var(--border);
+      border-radius: 999px;
+      padding: 3px;
+      gap: 2px;
+      margin-bottom: 2rem;
+    }
+
+    .snav-btn {
+      display: inline-flex;
+      align-items: center;
+      gap: .4rem;
+      padding: .42rem 1.1rem;
+      border-radius: 999px;
+      border: none;
+      background: transparent;
+      font-family: var(--font);
+      font-size: .85rem;
+      font-weight: 600;
+      color: var(--navy-60);
+      cursor: pointer;
+      transition: background 180ms ease, color 180ms ease, box-shadow 180ms ease;
+    }
+
+    .snav-btn svg { width: 14px; height: 14px; flex-shrink: 0; }
+    .snav-btn.active { background: var(--navy); color: #fff; box-shadow: 0 2px 8px var(--navy-30); }
+    .snav-btn:focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; }
+
+    /* ── Section views ───────────────────────────────────────────────── */
+    .section-view { display: none; }
+    .section-view.active { display: block; }
+
+    /* ── DB header group ─────────────────────────────────────────────── */
+    .db-header-group {
+      border: 1.5px solid var(--border);
+      border-radius: 14px;
+      margin-bottom: .75rem;
+      overflow: hidden;
+      background: var(--surface);
+      transition: border-color 300ms ease;
+    }
+
+    :root[data-theme="dark"] .db-header-group { background: var(--surface); }
+
+    .db-header-trigger {
+      width: 100%;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 1rem;
+      padding: 1rem 1.25rem;
+      background: none;
+      border: none;
+      cursor: pointer;
+      font-family: var(--font);
+      text-align: left;
+      color: var(--navy);
+    }
+
+    .db-header-trigger:focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; }
+
+    .db-header-name { font-size: .98rem; font-weight: 700; color: var(--navy); }
+
+    .db-header-count {
+      font-size: .72rem; font-weight: 600; color: var(--navy-60);
+      background: var(--navy-06); border: 1px solid var(--border);
+      border-radius: 999px; padding: .15rem .6rem; margin-left: .5rem;
+    }
+
+    .db-header-chevron {
+      flex-shrink: 0; width: 20px; height: 20px;
+      color: var(--navy-60);
+      transition: transform 300ms var(--ease-in-out);
+    }
+
+    .db-header-group.is-open .db-header-chevron { transform: rotate(180deg); }
+
+    .db-header-body {
+      display: grid;
+      grid-template-rows: 0fr;
+      transition: grid-template-rows 350ms var(--ease-in-out);
+    }
+
+    .db-header-group.is-open .db-header-body { grid-template-rows: 1fr; }
+    .db-header-body-inner { overflow: hidden; border-top: 1px solid var(--border); }
+
+    /* ── DB sub-header label ─────────────────────────────────────────── */
+    .db-subheader {
+      padding: .65rem 1.25rem .3rem;
+      font-size: .7rem;
+      font-weight: 700;
+      letter-spacing: .08em;
+      text-transform: uppercase;
+      color: var(--navy-30);
+    }
+
+    /* ── DB query item ───────────────────────────────────────────────── */
+    .db-item { border-top: 1px solid var(--border); }
+
+    .db-trigger {
+      width: 100%;
+      display: flex;
+      align-items: flex-start;
+      justify-content: space-between;
+      gap: 1rem;
+      padding: .85rem 1.25rem;
+      background: none;
+      border: none;
+      cursor: pointer;
+      font-family: var(--font);
+      text-align: left;
+    }
+
+    .db-trigger:focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; }
+
+    .db-trigger-left { display: flex; align-items: center; gap: .6rem; flex: 1; min-width: 0; }
+
+    .db-name { font-size: .93rem; font-weight: 600; color: var(--navy); line-height: 1.4; }
+    .db-item:hover .db-name { color: var(--accent); }
+
+    .db-badge {
+      display: inline-flex; align-items: center;
+      background: var(--navy-06); border: 1.5px solid var(--border);
+      border-radius: 999px; font-size: .67rem; font-weight: 700;
+      letter-spacing: .04em; color: var(--navy-60);
+      padding: .18rem .6rem; white-space: nowrap; flex-shrink: 0;
+    }
+
+    .db-badge--postgres { background: rgba(51,103,145,.10); border-color: rgba(51,103,145,.30); color: #1e4d75; }
+    :root[data-theme="dark"] .db-badge--postgres { background: rgba(51,103,145,.20); border-color: rgba(51,103,145,.40); color: #7ab3d4; }
+    .db-badge--mysql { background: rgba(0,121,52,.10); border-color: rgba(0,121,52,.30); color: #005c27; }
+    :root[data-theme="dark"] .db-badge--mysql { background: rgba(0,121,52,.20); border-color: rgba(0,121,52,.40); color: #4ade80; }
+    .db-badge--sqlite { background: rgba(0,100,200,.10); border-color: rgba(0,100,200,.30); color: #004480; }
+    :root[data-theme="dark"] .db-badge--sqlite { background: rgba(0,100,200,.20); border-color: rgba(0,100,200,.40); color: #93c5fd; }
+
+    .db-trigger-chevron {
+      flex-shrink: 0; width: 22px; height: 22px;
+      border-radius: 50%; border: 1.5px solid var(--border);
+      display: flex; align-items: center; justify-content: center;
+      color: var(--navy-60); margin-top: .05rem;
+      transition: background 200ms ease, border-color 200ms ease, transform 300ms var(--ease-in-out), color 200ms ease;
+    }
+
+    .db-item.is-open .db-trigger-chevron {
+      background: var(--navy); border-color: var(--navy);
+      color: #fff; transform: rotate(180deg);
+    }
+
+    .db-body { display: grid; grid-template-rows: 0fr; transition: grid-template-rows 350ms var(--ease-in-out); }
+    .db-item.is-open .db-body { grid-template-rows: 1fr; }
+    .db-body-inner { overflow: hidden; }
+    .db-body-content { padding: .2rem 1.25rem 1.25rem; }
+
+    .db-description { font-size: .9rem; color: var(--navy-60); margin-bottom: .85rem; line-height: 1.65; }
+
+    /* ── SQL block ───────────────────────────────────────────────────── */
+    .sql-block {
+      border: 1.5px solid var(--border);
+      border-radius: 10px;
+      overflow: hidden;
+      background: var(--navy-06);
+    }
+
+    .sql-block__header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: .4rem .85rem;
+      border-bottom: 1px solid var(--border);
+      background: var(--navy-12);
+    }
+
+    .sql-block__lang {
+      font-size: .67rem; font-weight: 700;
+      letter-spacing: .08em; text-transform: uppercase;
+      color: var(--navy-60);
+    }
+
+    .sql-block pre {
+      margin: 0; padding: .85rem 1rem;
+      font-family: var(--mono); font-size: .82rem;
+      color: var(--navy); line-height: 1.75;
+      overflow-x: auto; white-space: pre;
+    }
+
+    /* ── DB action row ───────────────────────────────────────────────── */
+    .db-actions { display: flex; align-items: center; gap: .5rem; margin-top: .85rem; flex-wrap: wrap; }
+
+    /* ── Modal mono textarea ─────────────────────────────────────────── */
+    .modal-textarea.mono-mode {
+      font-family: var(--mono);
+      font-size: .84rem;
+      line-height: 1.7;
+    }
+
     /* ── Reduced motion ──────────────────────────────────────────────── */
     @media (prefers-reduced-motion: reduce) {
       *, *::before, *::after {
@@ -1048,21 +1278,50 @@
 </head>
 <body>
 
+<!-- ── Top bar ─────────────────────────────────────────────────────────── -->
+<div class="top-bar">
+  <div class="app-logo">
+    <div class="app-logo__icon" aria-hidden="true">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+        <path d="M2 3h6a4 4 0 0 1 4 4v14a3 3 0 0 0-3-3H2z"/>
+        <path d="M22 3h-6a4 4 0 0 0-4 4v14a3 3 0 0 1 3-3h7z"/>
+      </svg>
+    </div>
+    <span class="app-logo__name">Operate Help Book</span>
+  </div>
+  <button class="theme-toggle" id="themeToggle" aria-label="Toggle dark mode" title="Toggle dark mode">
+    <!-- Icon injected by JS -->
+  </button>
+</div>
+
 <!-- ── Hero ───────────────────────────────────────────────────────────── -->
 <header class="hero" role="banner">
   <div class="hero__inner">
 
-    <!-- Dark mode toggle (top-right of hero inner) -->
-    <button class="theme-toggle" id="themeToggle" aria-label="Toggle dark mode" title="Toggle dark mode">
-      <!-- Icon injected by JS -->
-    </button>
-
-    <div class="hero__badge" aria-label="FAQ section">
+    <div class="hero__badge" aria-label="section badge">
       <span class="hero__badge-dot" aria-hidden="true"></span>
-      FAQs
+      <span id="heroBadgeText">TICKET REPLIES</span>
     </div>
-    <h1 class="hero__title">What can we<br>help you with?</h1>
-    <p class="hero__sub">Everything you need to know. Can't find an answer? Chat with our team.</p>
+    <h1 class="hero__title" id="heroTitle">What can we<br>help you with?</h1>
+    <p class="hero__sub" id="heroSub">Everything you need to know. Can't find an answer? Chat with our team.</p>
+
+    <!-- Section nav pill toggle -->
+    <nav class="section-nav" role="tablist" aria-label="Switch section" style="margin-bottom:1.75rem">
+      <button class="snav-btn active" id="snavTickets" role="tab" aria-selected="true">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+          <path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/>
+        </svg>
+        Ticket Replies
+      </button>
+      <button class="snav-btn" id="snavDB" role="tab" aria-selected="false">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+          <ellipse cx="12" cy="5" rx="9" ry="3"/>
+          <path d="M21 12c0 1.66-4 3-9 3s-9-1.34-9-3"/>
+          <path d="M3 5v14c0 1.66 4 3 9 3s9-1.34 9-3V5"/>
+        </svg>
+        DB Queries
+      </button>
+    </nav>
 
     <div class="search-wrap" role="search">
       <svg class="search-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor"
@@ -1099,55 +1358,91 @@
 <main>
   <div class="content">
 
-    <nav class="categories" id="categories" aria-label="FAQ categories"></nav>
+    <!-- ── View: Ticket Replies ──────────────────────────────────────── -->
+    <div id="view-tickets" class="section-view active">
 
-    <!-- Toolbar: results meta + load excel + expand/collapse all -->
-    <div class="faq-toolbar">
-      <p class="results-meta" id="resultsMeta" aria-live="polite" aria-atomic="true"></p>
-      <div class="toolbar-right">
-        <input type="file" id="excelFileInput" accept=".xlsx,.xls" style="display:none" aria-hidden="true">
-        <button class="load-excel-btn" id="loadExcelBtn" aria-label="Load FAQ data from Excel file">
-          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor"
-               stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
-            <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/>
-            <polyline points="14 2 14 8 20 8"/>
-            <line x1="16" y1="13" x2="8" y2="13"/>
-            <line x1="16" y1="17" x2="8" y2="17"/>
-            <polyline points="10 9 9 9 8 9"/>
-          </svg>
-          <span id="loadExcelLabel">Load Excel</span>
-        </button>
-        <button class="expand-all-btn" id="expandAllBtn" aria-label="Expand all FAQ items">
-          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor"
-               stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
-            <polyline points="6 9 12 15 18 9"/>
-          </svg>
-          <span id="expandAllLabel">Expand all</span>
-        </button>
-      </div>
-    </div>
+      <nav class="categories" id="categories" aria-label="FAQ categories"></nav>
 
-    <section id="faqList" class="faq-list" aria-label="FAQ list"></section>
-
-    <div class="cta-section">
-      <div class="cta-section__inner">
-        <div class="cta-section__icon" aria-hidden="true">
-          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor"
-               stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-            <path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/>
-          </svg>
+      <div class="faq-toolbar">
+        <p class="results-meta" id="resultsMeta" aria-live="polite" aria-atomic="true"></p>
+        <div class="toolbar-right">
+          <input type="file" id="excelFileInput" accept=".xlsx,.xls" style="display:none" aria-hidden="true">
+          <button class="load-excel-btn" id="loadExcelBtn" aria-label="Load FAQ data from Excel file">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                 stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+              <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/>
+              <polyline points="14 2 14 8 20 8"/>
+              <line x1="16" y1="13" x2="8" y2="13"/>
+              <line x1="16" y1="17" x2="8" y2="17"/>
+              <polyline points="10 9 9 9 8 9"/>
+            </svg>
+            <span id="loadExcelLabel">Load Excel</span>
+          </button>
+          <button class="expand-all-btn" id="expandAllBtn" aria-label="Expand all FAQ items">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                 stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+              <polyline points="6 9 12 15 18 9"/>
+            </svg>
+            <span id="expandAllLabel">Expand all</span>
+          </button>
         </div>
-        <h2 class="cta-section__title">Still have questions?</h2>
-        <p class="cta-section__sub">Can't find what you're looking for? Our friendly team is here to help.</p>
-        <button class="cta-btn" onclick="showToast('Opening support chat…')">
-          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor"
-               stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
-            <path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/>
-          </svg>
-          Chat with us
-        </button>
       </div>
-    </div>
+
+      <section id="faqList" class="faq-list" aria-label="FAQ list"></section>
+
+      <div class="cta-section">
+        <div class="cta-section__inner">
+          <div class="cta-section__icon" aria-hidden="true">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                 stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/>
+            </svg>
+          </div>
+          <h2 class="cta-section__title">Still have questions?</h2>
+          <p class="cta-section__sub">Can't find what you're looking for? Our friendly team is here to help.</p>
+          <button class="cta-btn" onclick="showToast('Opening support chat…')">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                 stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+              <path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/>
+            </svg>
+            Chat with us
+          </button>
+        </div>
+      </div>
+
+    </div><!-- /view-tickets -->
+
+    <!-- ── View: DB Query Manager ────────────────────────────────────── -->
+    <div id="view-db" class="section-view">
+
+      <div class="faq-toolbar" style="padding-top:1.75rem">
+        <p class="results-meta" id="dbResultsMeta" aria-live="polite" aria-atomic="true"></p>
+        <div class="toolbar-right">
+          <input type="file" id="dbExcelFileInput" accept=".xlsx,.xls" style="display:none" aria-hidden="true">
+          <button class="load-excel-btn" id="dbLoadExcelBtn" aria-label="Load DB queries from Excel file">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                 stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+              <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/>
+              <polyline points="14 2 14 8 20 8"/>
+              <line x1="16" y1="13" x2="8" y2="13"/>
+              <line x1="16" y1="17" x2="8" y2="17"/>
+              <polyline points="10 9 9 9 8 9"/>
+            </svg>
+            <span id="dbLoadExcelLabel">Load Excel</span>
+          </button>
+          <button class="expand-all-btn" id="dbExpandAllBtn" aria-label="Expand all DB query groups">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                 stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+              <polyline points="6 9 12 15 18 9"/>
+            </svg>
+            <span id="dbExpandAllLabel">Expand all</span>
+          </button>
+        </div>
+      </div>
+
+      <div id="dbList" style="padding-top:.5rem"></div>
+
+    </div><!-- /view-db -->
 
   </div>
 </main>
@@ -1181,7 +1476,7 @@
     <div class="modal-body" id="modalBody">
       <div class="modal-field">
         <div class="modal-field-header">
-          <label class="modal-label" for="modalQuestion">Question</label>
+          <label class="modal-label" id="modalQuestionLabel" for="modalQuestion">Question</label>
           <span class="modal-edited-badge" id="questionEditedBadge">
             <svg viewBox="0 0 24 24" fill="none" stroke="currentColor"
                  stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
@@ -1197,7 +1492,7 @@
 
       <div class="modal-field">
         <div class="modal-field-header">
-          <label class="modal-label" for="modalAnswer">Answer</label>
+          <label class="modal-label" id="modalAnswerLabel" for="modalAnswer">Answer</label>
           <div style="display:flex;align-items:center;gap:.6rem;">
             <span class="modal-edited-badge" id="answerEditedBadge">
               <svg viewBox="0 0 24 24" fill="none" stroke="currentColor"
@@ -1247,8 +1542,9 @@
 
 <script src="xlsx.mini.min.js"></script>
 <script src="faq-data.js"></script>
+<script src="db-data.js"></script>
 <script>
-/* ─── Data is loaded from faq-data.js ───────────────────────────────── */
+/* ─── Data is loaded from faq-data.js / db-data.js ─────────────────── */
 
 var ALL_CATEGORIES = ["All"];
 var catSet = {};
@@ -1266,8 +1562,26 @@ function getCatCount(cat) {
   return cat === "All" ? FAQ_DATA.length : FAQ_DATA.filter(function(i){ return i.category===cat; }).length;
 }
 
+/* ─── Section config ─────────────────────────────────────────────────── */
+var SECTION_CONFIGS = {
+  tickets: {
+    badge: "TICKET REPLIES",
+    title: "What can we<br>help you with?",
+    sub: "Everything you need to know. Can't find an answer? Chat with our team.",
+    placeholder: "Search questions…"
+  },
+  db: {
+    badge: "DB QUERY MANAGER",
+    title: "Query<br>Reference",
+    sub: "Browse and copy SQL queries. Use search or expand a category to get started.",
+    placeholder: "Search queries…"
+  }
+};
+var currentSection = "tickets";
+
 /* ─── State ─────────────────────────────────────────────────────────── */
-var state = { query:"", activeCategory:"All", openIds:{}, votes:{} };
+var state   = { query:"", activeCategory:"All", openIds:{}, votes:{} };
+var dbState = { query:"", openHeaders:{}, openItems:{} };
 
 /* ─── DOM refs ──────────────────────────────────────────────────────── */
 var searchInput     = document.getElementById("searchInput");
@@ -1291,6 +1605,24 @@ var modalCopyAnswer = document.getElementById("modalCopyAnswer");
 var modalCopyQA     = document.getElementById("modalCopyQA");
 var qEditBadge      = document.getElementById("questionEditedBadge");
 var aEditBadge      = document.getElementById("answerEditedBadge");
+var modalQLbl       = document.getElementById("modalQuestionLabel");
+var modalALbl       = document.getElementById("modalAnswerLabel");
+
+/* DB DOM refs */
+var viewTickets    = document.getElementById("view-tickets");
+var viewDB         = document.getElementById("view-db");
+var snavTickets    = document.getElementById("snavTickets");
+var snavDB         = document.getElementById("snavDB");
+var heroBadgeText  = document.getElementById("heroBadgeText");
+var heroTitle      = document.getElementById("heroTitle");
+var heroSub        = document.getElementById("heroSub");
+var dbList         = document.getElementById("dbList");
+var dbResultsMeta  = document.getElementById("dbResultsMeta");
+var dbExpandAllBtn = document.getElementById("dbExpandAllBtn");
+var dbExpandLbl    = document.getElementById("dbExpandAllLabel");
+var dbExcelInput   = document.getElementById("dbExcelFileInput");
+var dbLoadBtn      = document.getElementById("dbLoadExcelBtn");
+var dbLoadLabel    = document.getElementById("dbLoadExcelLabel");
 
 /* ─── Utilities ─────────────────────────────────────────────────────── */
 function debounce(fn, delay) {
@@ -1611,17 +1943,281 @@ function renderFAQs() {
 
 /* ─── Search ─────────────────────────────────────────────────────────── */
 function updateClearBtn() {
-  searchClear.classList.toggle("visible", state.query.length>0);
-  searchClear.tabIndex = state.query.length>0 ? 0 : -1;
+  var q = currentSection === "tickets" ? state.query : dbState.query;
+  searchClear.classList.toggle("visible", q.length > 0);
+  searchClear.tabIndex = q.length > 0 ? 0 : -1;
 }
 
 searchInput.addEventListener("input", debounce(function(){
-  state.query = searchInput.value.trim(); updateClearBtn(); renderFAQs();
+  var q = searchInput.value.trim();
+  if (currentSection === "tickets") { state.query = q; updateClearBtn(); renderFAQs(); }
+  else { dbState.query = q; updateClearBtn(); renderDB(); }
 }, 200));
 
 searchClear.addEventListener("click", function(){
-  searchInput.value=""; state.query=""; updateClearBtn(); renderFAQs(); searchInput.focus();
+  searchInput.value = "";
+  if (currentSection === "tickets") { state.query = ""; updateClearBtn(); renderFAQs(); }
+  else { dbState.query = ""; updateClearBtn(); renderDB(); }
+  searchInput.focus();
 });
+
+/* ─── Section switching ───────────────────────────────────────────────── */
+function switchSection(section) {
+  currentSection = section;
+  var cfg = SECTION_CONFIGS[section];
+  heroBadgeText.textContent = cfg.badge;
+  heroTitle.innerHTML = cfg.title;
+  heroSub.textContent = cfg.sub;
+  searchInput.placeholder = cfg.placeholder;
+  searchInput.value = "";
+  state.query = "";
+  dbState.query = "";
+  updateClearBtn();
+  viewTickets.classList.toggle("active", section === "tickets");
+  viewDB.classList.toggle("active", section === "db");
+  snavTickets.classList.toggle("active", section === "tickets");
+  snavDB.classList.toggle("active", section === "db");
+  snavTickets.setAttribute("aria-selected", String(section === "tickets"));
+  snavDB.setAttribute("aria-selected", String(section === "db"));
+  if (section === "tickets") { renderCategories(); renderFAQs(); }
+  else { renderDB(); }
+}
+
+snavTickets.addEventListener("click", function(){ switchSection("tickets"); });
+snavDB.addEventListener("click",      function(){ switchSection("db"); });
+
+/* ─── DB filter ───────────────────────────────────────────────────────── */
+function getDBFiltered() {
+  var q = dbState.query.toLowerCase();
+  return DB_DATA.filter(function(item) {
+    if (!q) return true;
+    return item.name.toLowerCase().indexOf(q) !== -1 ||
+           item.description.toLowerCase().indexOf(q) !== -1 ||
+           item.sql.toLowerCase().indexOf(q) !== -1 ||
+           item.header.toLowerCase().indexOf(q) !== -1;
+  });
+}
+
+/* ─── DB render ───────────────────────────────────────────────────────── */
+function renderDB() {
+  var items = getDBFiltered();
+  dbList.innerHTML = "";
+
+  if (dbState.query) {
+    dbResultsMeta.textContent = items.length
+      ? items.length + " result" + (items.length !== 1 ? "s" : "") + " for “" + dbState.query + "”"
+      : "No results for “" + dbState.query + "”";
+  } else {
+    dbResultsMeta.textContent = items.length + " quer" + (items.length !== 1 ? "ies" : "y");
+  }
+
+  if (!items.length) {
+    dbList.innerHTML = '<div class="empty-state" role="status">' +
+      '<div class="empty-icon" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/><line x1="8" y1="11" x2="14" y2="11"/></svg></div>' +
+      '<p class="empty-state__title">No queries found</p>' +
+      '<p class="empty-state__sub">Try a different keyword.</p></div>';
+    if (dbExpandAllBtn) dbExpandAllBtn.style.display = "none";
+    return;
+  }
+
+  /* Group by header → subheader */
+  var headerOrder = [], headerMap = {};
+  items.forEach(function(item) {
+    if (!headerMap[item.header]) { headerMap[item.header] = {}; headerOrder.push(item.header); }
+    if (!headerMap[item.header][item.subheader]) headerMap[item.header][item.subheader] = [];
+    headerMap[item.header][item.subheader].push(item);
+  });
+
+  headerOrder.forEach(function(header) {
+    var subMap = headerMap[header];
+    var isOpen = !!dbState.openHeaders[header];
+    var totalItems = Object.keys(subMap).reduce(function(acc, k){ return acc + subMap[k].length; }, 0);
+    var safeId = header.replace(/[^a-zA-Z0-9]/g, "-");
+
+    var innerHtml = "";
+    Object.keys(subMap).forEach(function(subheader) {
+      innerHtml += '<div class="db-subheader">' + escapeHtml(subheader) + '</div>';
+      subMap[subheader].forEach(function(item) {
+        var isItemOpen = !!dbState.openItems[item.id];
+        var badgeCls = "db-badge";
+        var db = (item.database || "").toLowerCase();
+        if (db.indexOf("postgres") !== -1) badgeCls += " db-badge--postgres";
+        else if (db.indexOf("mysql") !== -1) badgeCls += " db-badge--mysql";
+        else if (db.indexOf("sqlite") !== -1) badgeCls += " db-badge--sqlite";
+
+        innerHtml +=
+          '<div class="db-item' + (isItemOpen ? " is-open" : "") + '" id="db-item-' + item.id + '">' +
+            '<button class="db-trigger" aria-expanded="' + isItemOpen + '" aria-controls="db-body-' + item.id + '">' +
+              '<div class="db-trigger-left">' +
+                '<span class="' + badgeCls + '">' + escapeHtml(item.database) + '</span>' +
+                '<span class="db-name">' + highlightText(item.name, dbState.query) + '</span>' +
+              '</div>' +
+              '<span class="db-trigger-chevron" aria-hidden="true">' +
+                '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" style="width:10px;height:10px"><polyline points="6 9 12 15 18 9"/></svg>' +
+              '</span>' +
+            '</button>' +
+            '<div class="db-body" id="db-body-' + item.id + '" aria-hidden="' + !isItemOpen + '">' +
+              '<div class="db-body-inner"><div class="db-body-content">' +
+                '<p class="db-description">' + highlightText(item.description, dbState.query) + '</p>' +
+                '<div class="sql-block">' +
+                  '<div class="sql-block__header"><span class="sql-block__lang">SQL</span></div>' +
+                  '<pre><code>' + escapeHtml(item.sql) + '</code></pre>' +
+                '</div>' +
+                '<div class="db-actions">' +
+                  '<button class="action-pill copy-btn db-copy-sql" data-db-id="' + item.id + '" aria-label="Copy SQL">' +
+                    '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">' + CLIPBOARD_SVG + '</svg>' +
+                    '<span>Copy SQL</span>' +
+                    '<span class="action-tooltip" aria-hidden="true">Copy SQL to clipboard</span>' +
+                  '</button>' +
+                  '<button class="action-pill edit-copy-btn db-edit-copy" data-db-id="' + item.id + '" aria-label="Edit &amp; Copy">' +
+                    '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">' +
+                      '<path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"/>' +
+                      '<path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"/>' +
+                    '</svg>' +
+                    '<span>Edit &amp; Copy</span>' +
+                    '<span class="action-tooltip" aria-hidden="true">Edit before copying</span>' +
+                  '</button>' +
+                '</div>' +
+              '</div></div>' +
+            '</div>' +
+          '</div>';
+      });
+    });
+
+    var group = document.createElement("div");
+    group.className = "db-header-group" + (isOpen ? " is-open" : "");
+    group.id = "db-hg-" + safeId;
+    group.innerHTML =
+      '<button class="db-header-trigger" aria-expanded="' + isOpen + '" aria-controls="db-hb-' + safeId + '">' +
+        '<div style="display:flex;align-items:center">' +
+          '<span class="db-header-name">' + escapeHtml(header) + '</span>' +
+          '<span class="db-header-count">' + totalItems + ' quer' + (totalItems !== 1 ? "ies" : "y") + '</span>' +
+        '</div>' +
+        '<svg class="db-header-chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polyline points="6 9 12 15 18 9"/></svg>' +
+      '</button>' +
+      '<div class="db-header-body" id="db-hb-' + safeId + '" aria-hidden="' + !isOpen + '">' +
+        '<div class="db-header-body-inner">' + innerHtml + '</div>' +
+      '</div>';
+
+    /* Header toggle */
+    (function(hdr, grp) {
+      grp.querySelector(".db-header-trigger").addEventListener("click", function() {
+        dbState.openHeaders[hdr] = !dbState.openHeaders[hdr];
+        var open = dbState.openHeaders[hdr];
+        grp.classList.toggle("is-open", open);
+        grp.querySelector(".db-header-body").setAttribute("aria-hidden", String(!open));
+        grp.querySelector(".db-header-trigger").setAttribute("aria-expanded", String(open));
+        updateDBExpandAllBtn();
+      });
+    })(header, group);
+
+    /* Item toggles + buttons */
+    group.querySelectorAll(".db-item").forEach(function(dbItemEl) {
+      var dbId = parseInt(dbItemEl.id.replace("db-item-", ""), 10);
+      var dbItem = null;
+      for (var i = 0; i < DB_DATA.length; i++) { if (DB_DATA[i].id === dbId) { dbItem = DB_DATA[i]; break; } }
+      if (!dbItem) return;
+
+      dbItemEl.querySelector(".db-trigger").addEventListener("click", function() {
+        dbState.openItems[dbId] = !dbState.openItems[dbId];
+        var open = dbState.openItems[dbId];
+        dbItemEl.classList.toggle("is-open", open);
+        dbItemEl.querySelector(".db-body").setAttribute("aria-hidden", String(!open));
+        dbItemEl.querySelector(".db-trigger").setAttribute("aria-expanded", String(open));
+        updateDBExpandAllBtn();
+      });
+
+      var copyBtn = dbItemEl.querySelector(".db-copy-sql");
+      (function(btn, it) {
+        var ico = btn.querySelector("svg");
+        var lbl = btn.querySelector("span");
+        btn.addEventListener("click", function(e) {
+          e.stopPropagation();
+          writeClipboard(it.sql, function() {
+            morphCopyBtn(btn, ico, lbl, "Copied!", "Copy SQL", CLIPBOARD_SVG);
+            showToast("SQL copied to clipboard");
+          });
+        });
+      })(copyBtn, dbItem);
+
+      var editBtn = dbItemEl.querySelector(".db-edit-copy");
+      (function(btn, it) {
+        btn.addEventListener("click", function(e) {
+          e.stopPropagation();
+          openModal(it, btn, "db");
+        });
+      })(editBtn, dbItem);
+    });
+
+    dbList.appendChild(group);
+  });
+
+  updateDBExpandAllBtn();
+}
+
+function updateDBExpandAllBtn() {
+  if (!dbExpandAllBtn) return;
+  var items = getDBFiltered();
+  if (!items.length) { dbExpandAllBtn.style.display = "none"; return; }
+  dbExpandAllBtn.style.display = "";
+  var allOpen = items.every(function(i) { return dbState.openItems[i.id]; });
+  dbExpandLbl.textContent = allOpen ? "Collapse all" : "Expand all";
+  var chevron = dbExpandAllBtn.querySelector("svg");
+  if (chevron) chevron.style.transform = allOpen ? "rotate(180deg)" : "";
+}
+
+if (dbExpandAllBtn) {
+  dbExpandAllBtn.addEventListener("click", function() {
+    var open = !getDBFiltered().every(function(i) { return dbState.openItems[i.id]; });
+    getDBFiltered().forEach(function(item) { dbState.openItems[item.id] = open; });
+    DB_DATA.forEach(function(item) { dbState.openHeaders[item.header] = open; });
+    renderDB();
+  });
+}
+
+/* ─── DB Load Excel ───────────────────────────────────────────────────── */
+if (dbLoadBtn) dbLoadBtn.addEventListener("click", function() { dbExcelInput.click(); });
+
+if (dbExcelInput) {
+  dbExcelInput.addEventListener("change", function(e) {
+    var file = e.target.files[0];
+    if (!file) return;
+    var reader = new FileReader();
+    reader.onload = function(ev) {
+      try {
+        var workbook = XLSX.read(new Uint8Array(ev.target.result), { type: "array" });
+        var sheet = workbook.Sheets[workbook.SheetNames[0]];
+        var rows = XLSX.utils.sheet_to_json(sheet);
+        var parsed = rows.map(function(row, i) {
+          return {
+            id: Number(row["id"] || i + 1),
+            header: String(row["header"] || "General"),
+            subheader: String(row["subheader"] || "Queries"),
+            category: String(row["category"] || "SELECT"),
+            database: String(row["database"] || "PostgreSQL"),
+            name: String(row["name"] || ""),
+            description: String(row["description"] || ""),
+            sql: String(row["sql"] || "")
+          };
+        }).filter(function(item) { return item.name && item.sql; });
+        if (!parsed.length) { showToast("No valid rows found. Check columns: id, header, subheader, category, database, name, description, sql"); return; }
+        DB_DATA = parsed;
+        dbState.openHeaders = {};
+        dbState.openItems = {};
+        dbState.query = "";
+        searchInput.value = "";
+        updateClearBtn();
+        renderDB();
+        var shortName = file.name.length > 22 ? file.name.slice(0, 20) + "…" : file.name;
+        dbLoadLabel.textContent = shortName;
+        dbLoadBtn.classList.add("loaded");
+        showToast("Loaded " + parsed.length + " queries from " + file.name, 2800);
+      } catch(err) { showToast("Could not read file — make sure it is a valid .xlsx file", 3000); }
+      dbExcelInput.value = "";
+    };
+    reader.readAsArrayBuffer(file);
+  });
+}
 
 /* ─── Keyboard shortcuts ─────────────────────────────────────────────── */
 document.addEventListener("keydown", function(e){
@@ -1650,6 +2246,7 @@ backTop.addEventListener("click", function(){ window.scrollTo({top:0, behavior:"
    ═══════════════════════════════════════════════════════════════════════ */
 var modalOriginal = { question:"", answer:"" };
 var modalTriggerEl = null;
+var currentModalMode = "tickets";
 
 function autoResize(ta) { ta.style.height="auto"; ta.style.height=(ta.scrollHeight+2)+"px"; }
 
@@ -1664,21 +2261,39 @@ function updateEditBadges() {
   aEditBadge.classList.toggle("visible", modalAnswer.value!==modalOriginal.answer);
 }
 
-function openModal(item, triggerEl) {
-  modalOriginal.question = item.question;
-  modalOriginal.answer   = item.answer;
+function openModal(item, triggerEl, mode) {
+  mode = mode || "tickets";
+  currentModalMode = mode;
   modalTriggerEl = triggerEl || null;
 
-  modalCatBadge.textContent = item.category;
-  modalQuestion.value = item.question;
-  modalAnswer.value   = item.answer;
+  if (mode === "db") {
+    modalOriginal.question = item.name;
+    modalOriginal.answer   = item.sql;
+    modalCatBadge.textContent = item.database;
+    if (modalQLbl) modalQLbl.textContent = "QUERY NAME";
+    if (modalALbl) modalALbl.textContent = "SQL";
+    modalQuestion.value = item.name;
+    modalAnswer.value   = item.sql;
+    modalAnswer.classList.add("mono-mode");
+    modalCopyAnswer.querySelector("span").textContent = "Copy SQL";
+    modalCopyQA.querySelector("span").textContent     = "Copy name + SQL";
+  } else {
+    modalOriginal.question = item.question;
+    modalOriginal.answer   = item.answer;
+    modalCatBadge.textContent = item.category;
+    if (modalQLbl) modalQLbl.textContent = "QUESTION";
+    if (modalALbl) modalALbl.textContent = "ANSWER";
+    modalQuestion.value = item.question;
+    modalAnswer.value   = item.answer;
+    modalAnswer.classList.remove("mono-mode");
+    modalCopyAnswer.querySelector("span").textContent = "Copy answer";
+    modalCopyQA.querySelector("span").textContent     = "Copy Q&A";
+  }
 
   qEditBadge.classList.remove("visible");
   aEditBadge.classList.remove("visible");
   modalCopyAnswer.classList.remove("is-copied");
   modalCopyQA.classList.remove("is-copied");
-  modalCopyAnswer.querySelector("span").textContent = "Copy answer";
-  modalCopyQA.querySelector("span").textContent     = "Copy Q&A";
   modalCopyAnswer.querySelector("svg").innerHTML = CLIPBOARD_SVG;
   modalCopyQA.querySelector("svg").innerHTML     = '<polyline points="20 6 9 17 4 12"/>';
 
@@ -1726,17 +2341,25 @@ modalReset.addEventListener("click", function(){
 });
 
 modalCopyAnswer.addEventListener("click", function(){
+  var origLabel = currentModalMode === "db" ? "Copy SQL" : "Copy answer";
   writeClipboard(modalAnswer.value, function(){
-    morphCopyBtn(modalCopyAnswer, modalCopyAnswer.querySelector("svg"), modalCopyAnswer.querySelector("span"), "Copied!", "Copy answer", CLIPBOARD_SVG);
-    showToast("Answer copied to clipboard");
+    morphCopyBtn(modalCopyAnswer, modalCopyAnswer.querySelector("svg"), modalCopyAnswer.querySelector("span"), "Copied!", origLabel, CLIPBOARD_SVG);
+    showToast(currentModalMode === "db" ? "SQL copied to clipboard" : "Answer copied to clipboard");
   });
 });
 
 modalCopyQA.addEventListener("click", function(){
-  var text="Q: "+modalQuestion.value.trim()+"\n\nA: "+modalAnswer.value.trim();
+  var text, origLabel;
+  if (currentModalMode === "db") {
+    text = "-- " + modalQuestion.value.trim() + "\n" + modalAnswer.value.trim();
+    origLabel = "Copy name + SQL";
+  } else {
+    text = "Q: "+modalQuestion.value.trim()+"\n\nA: "+modalAnswer.value.trim();
+    origLabel = "Copy Q&A";
+  }
   writeClipboard(text, function(){
-    morphCopyBtn(modalCopyQA, modalCopyQA.querySelector("svg"), modalCopyQA.querySelector("span"), "Copied!", "Copy Q&A", '<polyline points="20 6 9 17 4 12"/>');
-    showToast("Q⁠&⁠A copied to clipboard");
+    morphCopyBtn(modalCopyQA, modalCopyQA.querySelector("svg"), modalCopyQA.querySelector("span"), "Copied!", origLabel, '<polyline points="20 6 9 17 4 12"/>');
+    showToast(currentModalMode === "db" ? "SQL copied to clipboard" : "Q⁠&⁠A copied to clipboard");
   });
 });
 
@@ -1795,6 +2418,7 @@ excelFileInput.addEventListener("change", function(e) {
 /* ─── Boot ───────────────────────────────────────────────────────────── */
 renderCategories();
 renderFAQs();
+renderDB(); /* pre-render DB so it's ready when user switches */
 
 /* Default: open first item */
 if (FAQ_DATA.length > 0) {
