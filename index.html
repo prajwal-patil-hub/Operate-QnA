@@ -1043,6 +1043,8 @@
     }
 
     .top-bar .theme-toggle { position: static; }
+    .top-bar .load-excel-btn { font-size: .78rem; padding: .28rem .75rem; }
+    .top-bar .load-excel-btn svg { width: 12px; height: 12px; }
 
     /* ── Section nav pill toggle ─────────────────────────────────────── */
     .section-nav {
@@ -1289,9 +1291,23 @@
     </div>
     <span class="app-logo__name">Operate Help Book</span>
   </div>
-  <button class="theme-toggle" id="themeToggle" aria-label="Toggle dark mode" title="Toggle dark mode">
-    <!-- Icon injected by JS -->
-  </button>
+  <div style="display:flex;align-items:center;gap:.6rem;">
+    <input type="file" id="mainExcelInput" accept=".xlsx,.xls" style="display:none" aria-hidden="true">
+    <button class="load-excel-btn" id="mainLoadBtn" aria-label="Load data from Excel file" title="Load Excel file (both sheets)">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+           stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+        <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/>
+        <polyline points="14 2 14 8 20 8"/>
+        <line x1="16" y1="13" x2="8" y2="13"/>
+        <line x1="16" y1="17" x2="8" y2="17"/>
+        <polyline points="10 9 9 9 8 9"/>
+      </svg>
+      <span id="mainLoadLabel">Load File</span>
+    </button>
+    <button class="theme-toggle" id="themeToggle" aria-label="Toggle dark mode" title="Toggle dark mode">
+      <!-- Icon injected by JS -->
+    </button>
+  </div>
 </div>
 
 <!-- ── Hero ───────────────────────────────────────────────────────────── -->
@@ -1366,18 +1382,6 @@
       <div class="faq-toolbar">
         <p class="results-meta" id="resultsMeta" aria-live="polite" aria-atomic="true"></p>
         <div class="toolbar-right">
-          <input type="file" id="excelFileInput" accept=".xlsx,.xls" style="display:none" aria-hidden="true">
-          <button class="load-excel-btn" id="loadExcelBtn" aria-label="Load FAQ data from Excel file">
-            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor"
-                 stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
-              <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/>
-              <polyline points="14 2 14 8 20 8"/>
-              <line x1="16" y1="13" x2="8" y2="13"/>
-              <line x1="16" y1="17" x2="8" y2="17"/>
-              <polyline points="10 9 9 9 8 9"/>
-            </svg>
-            <span id="loadExcelLabel">Load Excel</span>
-          </button>
           <button class="expand-all-btn" id="expandAllBtn" aria-label="Expand all FAQ items">
             <svg viewBox="0 0 24 24" fill="none" stroke="currentColor"
                  stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
@@ -1418,18 +1422,6 @@
       <div class="faq-toolbar" style="padding-top:1.75rem">
         <p class="results-meta" id="dbResultsMeta" aria-live="polite" aria-atomic="true"></p>
         <div class="toolbar-right">
-          <input type="file" id="dbExcelFileInput" accept=".xlsx,.xls" style="display:none" aria-hidden="true">
-          <button class="load-excel-btn" id="dbLoadExcelBtn" aria-label="Load DB queries from Excel file">
-            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor"
-                 stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
-              <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/>
-              <polyline points="14 2 14 8 20 8"/>
-              <line x1="16" y1="13" x2="8" y2="13"/>
-              <line x1="16" y1="17" x2="8" y2="17"/>
-              <polyline points="10 9 9 9 8 9"/>
-            </svg>
-            <span id="dbLoadExcelLabel">Load Excel</span>
-          </button>
           <button class="expand-all-btn" id="dbExpandAllBtn" aria-label="Expand all DB query groups">
             <svg viewBox="0 0 24 24" fill="none" stroke="currentColor"
                  stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
@@ -1620,9 +1612,11 @@ var dbList         = document.getElementById("dbList");
 var dbResultsMeta  = document.getElementById("dbResultsMeta");
 var dbExpandAllBtn = document.getElementById("dbExpandAllBtn");
 var dbExpandLbl    = document.getElementById("dbExpandAllLabel");
-var dbExcelInput   = document.getElementById("dbExcelFileInput");
-var dbLoadBtn      = document.getElementById("dbLoadExcelBtn");
-var dbLoadLabel    = document.getElementById("dbLoadExcelLabel");
+
+/* Single Load File refs */
+var mainExcelInput = document.getElementById("mainExcelInput");
+var mainLoadBtn    = document.getElementById("mainLoadBtn");
+var mainLoadLabel  = document.getElementById("mainLoadLabel");
 
 /* ─── Utilities ─────────────────────────────────────────────────────── */
 function debounce(fn, delay) {
@@ -2175,49 +2169,81 @@ if (dbExpandAllBtn) {
   });
 }
 
-/* ─── DB Load Excel ───────────────────────────────────────────────────── */
-if (dbLoadBtn) dbLoadBtn.addEventListener("click", function() { dbExcelInput.click(); });
+/* ─── Load File (single button — reads both sheets) ──────────────────── */
+mainLoadBtn.addEventListener("click", function() { mainExcelInput.click(); });
 
-if (dbExcelInput) {
-  dbExcelInput.addEventListener("change", function(e) {
-    var file = e.target.files[0];
-    if (!file) return;
-    var reader = new FileReader();
-    reader.onload = function(ev) {
-      try {
-        var workbook = XLSX.read(new Uint8Array(ev.target.result), { type: "array" });
-        var sheet = workbook.Sheets[workbook.SheetNames[0]];
-        var rows = XLSX.utils.sheet_to_json(sheet);
-        var parsed = rows.map(function(row, i) {
-          return {
-            id: Number(row["id"] || i + 1),
-            header: String(row["header"] || "General"),
-            subheader: String(row["subheader"] || "Queries"),
-            category: String(row["category"] || "SELECT"),
-            database: String(row["database"] || "PostgreSQL"),
-            name: String(row["name"] || ""),
-            description: String(row["description"] || ""),
-            sql: String(row["sql"] || "")
-          };
-        }).filter(function(item) { return item.name && item.sql; });
-        if (!parsed.length) { showToast("No valid rows found. Check columns: id, header, subheader, category, database, name, description, sql"); return; }
-        DB_DATA = parsed;
-        dbState.openHeaders = {};
-        dbState.openItems = {};
-        dbState.query = "";
-        searchInput.value = "";
-        updateClearBtn();
-        renderDB();
-        var shortName = file.name.length > 22 ? file.name.slice(0, 20) + "…" : file.name;
-        dbLoadLabel.textContent = shortName;
-        dbLoadBtn.classList.add("loaded");
-        showToast("Loaded " + parsed.length + " queries from " + file.name, 2800);
-      } catch(err) { showToast("Could not read file — make sure it is a valid .xlsx file", 3000); }
-      dbExcelInput.value = "";
-    };
-    reader.readAsArrayBuffer(file);
-  });
-}
+mainExcelInput.addEventListener("change", function(e) {
+  var file = e.target.files[0];
+  if (!file) return;
+  var reader = new FileReader();
+  reader.onload = function(ev) {
+    try {
+      var workbook = XLSX.read(new Uint8Array(ev.target.result), { type: "array" });
+      var loaded = [];
+
+      workbook.SheetNames.forEach(function(name) {
+        var rows = XLSX.utils.sheet_to_json(workbook.Sheets[name]);
+        if (!rows.length) return;
+        var sample = rows[0];
+        var keys = Object.keys(sample).map(function(k){ return k.toLowerCase(); });
+
+        /* Detect Ticket Replies sheet by column presence */
+        if (keys.indexOf("question") !== -1 || keys.indexOf("answer") !== -1) {
+          var parsed = rows.map(function(row, i) {
+            return {
+              id:       Number(row["id"]       || row["ID"]       || i + 1),
+              category: String(row["category"] || row["Category"] || "General"),
+              question: String(row["question"] || row["Question"] || ""),
+              answer:   String(row["answer"]   || row["Answer"]   || "")
+            };
+          }).filter(function(r){ return r.question && r.answer; });
+          if (parsed.length) {
+            FAQ_DATA = parsed;
+            rebuildCategories();
+            state.openIds = {}; state.activeCategory = "All"; state.query = "";
+            renderCategories(); renderFAQs();
+            loaded.push(parsed.length + " ticket replies");
+          }
+
+        /* Detect DB Queries sheet */
+        } else if (keys.indexOf("sql") !== -1 || keys.indexOf("header") !== -1) {
+          var parsed = rows.map(function(row, i) {
+            return {
+              id:          Number(row["id"]          || i + 1),
+              header:      String(row["header"]      || "General"),
+              subheader:   String(row["subheader"]   || "Queries"),
+              category:    String(row["category"]    || "SELECT"),
+              database:    String(row["database"]    || "PostgreSQL"),
+              name:        String(row["name"]        || ""),
+              description: String(row["description"] || ""),
+              sql:         String(row["sql"]         || "")
+            };
+          }).filter(function(r){ return r.name && r.sql; });
+          if (parsed.length) {
+            DB_DATA = parsed;
+            dbState.openHeaders = {}; dbState.openItems = {}; dbState.query = "";
+            renderDB();
+            loaded.push(parsed.length + " DB queries");
+          }
+        }
+      });
+
+      if (!loaded.length) {
+        showToast("No valid data found. Check sheet columns.", 3000);
+        return;
+      }
+      searchInput.value = ""; updateClearBtn();
+      var shortName = file.name.length > 24 ? file.name.slice(0, 22) + "…" : file.name;
+      mainLoadLabel.textContent = shortName;
+      mainLoadBtn.classList.add("loaded");
+      showToast("Loaded " + loaded.join(" and ") + " from " + file.name, 2800);
+    } catch(err) {
+      showToast("Could not read file — make sure it is a valid .xlsx file", 3000);
+    }
+    mainExcelInput.value = "";
+  };
+  reader.readAsArrayBuffer(file);
+});
 
 /* ─── Keyboard shortcuts ─────────────────────────────────────────────── */
 document.addEventListener("keydown", function(e){
@@ -2363,57 +2389,7 @@ modalCopyQA.addEventListener("click", function(){
   });
 });
 
-/* ─── Load Excel ─────────────────────────────────────────────────────── */
-var excelFileInput = document.getElementById("excelFileInput");
-var loadExcelBtn   = document.getElementById("loadExcelBtn");
-var loadExcelLabel = document.getElementById("loadExcelLabel");
-
-loadExcelBtn.addEventListener("click", function() { excelFileInput.click(); });
-
-excelFileInput.addEventListener("change", function(e) {
-  var file = e.target.files[0];
-  if (!file) return;
-
-  var reader = new FileReader();
-  reader.onload = function(ev) {
-    try {
-      var workbook = XLSX.read(new Uint8Array(ev.target.result), { type: "array" });
-      var sheet    = workbook.Sheets[workbook.SheetNames[0]];
-      var rows     = XLSX.utils.sheet_to_json(sheet);
-
-      var parsed = rows.map(function(row, i) {
-        return {
-          id:       Number(row["id"]       || row["ID"]       || i + 1),
-          category: String(row["category"] || row["Category"] || "General"),
-          question: String(row["question"] || row["Question"] || ""),
-          answer:   String(row["answer"]   || row["Answer"]   || "")
-        };
-      }).filter(function(item) { return item.question && item.answer; });
-
-      if (!parsed.length) { showToast("No valid rows found. Check column names: id, category, question, answer"); return; }
-
-      FAQ_DATA = parsed;
-      rebuildCategories();
-      state.openIds = {};
-      state.activeCategory = "All";
-      state.query = "";
-      searchInput.value = "";
-      updateClearBtn();
-
-      renderCategories();
-      renderFAQs();
-
-      var shortName = file.name.length > 22 ? file.name.slice(0, 20) + "…" : file.name;
-      loadExcelLabel.textContent = shortName;
-      loadExcelBtn.classList.add("loaded");
-      showToast("Loaded " + parsed.length + " questions from " + file.name, 2800);
-    } catch(err) {
-      showToast("Could not read file — make sure it is a valid .xlsx file", 3000);
-    }
-    excelFileInput.value = "";
-  };
-  reader.readAsArrayBuffer(file);
-});
+/* (Load File handler is the unified one above — no separate per-section handler) */
 
 /* ─── Boot ───────────────────────────────────────────────────────────── */
 renderCategories();
