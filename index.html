@@ -1304,14 +1304,14 @@
       </svg>
       <span id="mainLoadLabel">Load File</span>
     </button>
-    <button class="load-excel-btn" id="saveHtmlBtn" aria-label="Save updated HTML with current data" title="Download HTML with data baked in — open anywhere without loading Excel">
+    <button class="load-excel-btn" id="saveDataBtn" aria-label="Save data file" title="Download operate-data.js — keep it in the same folder as the HTML, data loads automatically on open">
       <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
            stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
         <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/>
         <polyline points="7 10 12 15 17 10"/>
         <line x1="12" y1="15" x2="12" y2="3"/>
       </svg>
-      Save HTML
+      Save Data
     </button>
     <button class="theme-toggle" id="themeToggle" aria-label="Toggle dark mode" title="Toggle dark mode">
       <!-- Icon injected by JS -->
@@ -2406,71 +2406,69 @@ modalCopyQA.addEventListener("click", function(){
 
 /* (Load File handler is the unified one above — no separate per-section handler) */
 
-/* ─── Save HTML (bake current data into a new standalone file) ───────── */
-document.getElementById("saveHtmlBtn").addEventListener("click", function() {
+/* ─── Save Data (download operate-data.js companion file) ────────────── */
+document.getElementById("saveDataBtn").addEventListener("click", function() {
   try {
-    /* Get live page source */
-    var src = "<!DOCTYPE html>\n" + document.documentElement.outerHTML;
+    var content =
+      "// operate-data.js — keep this file in the same folder as the HTML.\n" +
+      "// The HTML loads it automatically on open.\n" +
+      "// Re-download this file any time you update your Excel.\n\n" +
+      "var FAQ_DATA = " + JSON.stringify(FAQ_DATA, null, 2) + ";\n\n" +
+      "var DB_DATA = "  + JSON.stringify(DB_DATA,  null, 2) + ";\n";
 
-    /* Replace FAQ_DATA definition with current in-memory data */
-    src = src.replace(
-      /var FAQ_DATA\s*=\s*\[[\s\S]*?\];/,
-      "var FAQ_DATA = " + JSON.stringify(FAQ_DATA, null, 2) + ";"
-    );
-
-    /* Replace DB_DATA definition with current in-memory data */
-    src = src.replace(
-      /var DB_DATA\s*=\s*\[[\s\S]*?\];/,
-      "var DB_DATA = " + JSON.stringify(DB_DATA, null, 2) + ";"
-    );
-
-    var blob = new Blob([src], { type: "text/html;charset=utf-8" });
+    var blob = new Blob([content], { type: "text/javascript;charset=utf-8" });
     var url  = URL.createObjectURL(blob);
     var a    = document.createElement("a");
-    a.href     = url;
-    a.download = "operate-help-book-standalone.html";
-    document.body.appendChild(a);
-    a.click();
+    a.href = url; a.download = "operate-data.js";
+    document.body.appendChild(a); a.click();
     document.body.removeChild(a);
     URL.revokeObjectURL(url);
 
-    showToast("HTML saved — open it anywhere, data is baked in", 2800);
+    showToast("operate-data.js saved — keep it in the same folder as the HTML", 3000);
   } catch(e) {
-    showToast("Could not save HTML: " + e.message, 3000);
+    showToast("Could not save: " + e.message, 3000);
   }
 });
 
 /* ─── Boot ───────────────────────────────────────────────────────────── */
-/* Restore previously loaded Excel data from localStorage */
-(function restoreSaved() {
-  try {
-    var savedFaq  = localStorage.getItem("ohb-faq");
-    var savedDb   = localStorage.getItem("ohb-db");
-    var savedFile = localStorage.getItem("ohb-file");
-    if (savedFaq)  { FAQ_DATA = JSON.parse(savedFaq); rebuildCategories(); }
-    if (savedDb)   { DB_DATA  = JSON.parse(savedDb); }
-    if (savedFile) {
-      var short = savedFile.length > 24 ? savedFile.slice(0, 22) + "…" : savedFile;
-      mainLoadLabel.textContent = short;
-      mainLoadBtn.classList.add("loaded");
+/* Try to load operate-data.js from the same folder.
+   If found → use its data. If not found → use the embedded defaults.
+   After it resolves (either way) → render everything. */
+(function boot() {
+  function render() {
+    rebuildCategories();
+    renderCategories();
+    renderFAQs();
+    renderDB();
+    /* Open first FAQ item by default */
+    if (FAQ_DATA.length > 0) {
+      var fid = FAQ_DATA[0].id;
+      state.openIds[fid] = true;
+      var fe = document.getElementById("faq-item-"    + fid);
+      var ft = document.getElementById("faq-trigger-" + fid);
+      var fb = document.getElementById("faq-body-"    + fid);
+      if (fe) fe.classList.add("is-open");
+      if (ft) ft.setAttribute("aria-expanded", "true");
+      if (fb) fb.setAttribute("aria-hidden", "false");
+      updateExpandAllBtn();
     }
-  } catch(e) {}
+  }
+
+  var s = document.createElement("script");
+  s.src = "operate-data.js";
+  s.onload  = function() {
+    /* operate-data.js loaded — it has already overwritten FAQ_DATA / DB_DATA */
+    mainLoadBtn.classList.add("loaded");
+    mainLoadLabel.textContent = "operate-data.js";
+    render();
+  };
+  s.onerror = function() {
+    /* File not found — use embedded defaults */
+    render();
+  };
+  document.head.appendChild(s);
 })();
 
-renderCategories();
-renderFAQs();
-renderDB();
-
-/* Default: open first item */
-if (FAQ_DATA.length > 0) {
-  var fid = FAQ_DATA[0].id;
-  state.openIds[fid] = true;
-  var fe=document.getElementById("faq-item-"+fid), ft=document.getElementById("faq-trigger-"+fid), fb=document.getElementById("faq-body-"+fid);
-  if(fe) fe.classList.add("is-open");
-  if(ft) ft.setAttribute("aria-expanded","true");
-  if(fb) fb.setAttribute("aria-hidden","false");
-  updateExpandAllBtn();
-}
 
 </script>
 
