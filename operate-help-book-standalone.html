@@ -2420,7 +2420,13 @@ mainExcelInput.addEventListener("change", function(e) {
       var shortName = file.name.length > 24 ? file.name.slice(0, 22) + "…" : file.name;
       mainLoadLabel.textContent = shortName;
       mainLoadBtn.classList.add("loaded");
-      showToast("Loaded " + loaded.join(" and ") + " from " + file.name, 2800);
+      /* Save to localStorage so it persists across sessions */
+      try {
+        localStorage.setItem("ohb-faq",  JSON.stringify(FAQ_DATA));
+        localStorage.setItem("ohb-db",   JSON.stringify(DB_DATA));
+        localStorage.setItem("ohb-file", file.name);
+      } catch(e) {}
+      showToast("Loaded " + loaded.join(" and ") + " from " + file.name + " — remembered for next time", 3000);
     } catch(err) {
       showToast("Could not read file — make sure it is a valid .xlsx file", 3000);
     }
@@ -2576,9 +2582,25 @@ modalCopyQA.addEventListener("click", function(){
 /* (Load File handler is the unified one above — no separate per-section handler) */
 
 /* ─── Boot ───────────────────────────────────────────────────────────── */
+/* Restore previously loaded Excel data from localStorage */
+(function restoreSaved() {
+  try {
+    var savedFaq  = localStorage.getItem("ohb-faq");
+    var savedDb   = localStorage.getItem("ohb-db");
+    var savedFile = localStorage.getItem("ohb-file");
+    if (savedFaq)  { FAQ_DATA = JSON.parse(savedFaq); rebuildCategories(); }
+    if (savedDb)   { DB_DATA  = JSON.parse(savedDb); }
+    if (savedFile) {
+      var short = savedFile.length > 24 ? savedFile.slice(0, 22) + "…" : savedFile;
+      mainLoadLabel.textContent = short;
+      mainLoadBtn.classList.add("loaded");
+    }
+  } catch(e) {}
+})();
+
 renderCategories();
 renderFAQs();
-renderDB(); /* pre-render DB so it's ready when user switches */
+renderDB();
 
 /* Default: open first item */
 if (FAQ_DATA.length > 0) {
