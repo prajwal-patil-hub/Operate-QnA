@@ -1304,6 +1304,15 @@
       </svg>
       <span id="mainLoadLabel">Load File</span>
     </button>
+    <button class="load-excel-btn" id="saveHtmlBtn" aria-label="Save updated HTML with current data" title="Download HTML with data baked in — open anywhere without loading Excel">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+           stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+        <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/>
+        <polyline points="7 10 12 15 17 10"/>
+        <line x1="12" y1="15" x2="12" y2="3"/>
+      </svg>
+      Save HTML
+    </button>
     <button class="theme-toggle" id="themeToggle" aria-label="Toggle dark mode" title="Toggle dark mode">
       <!-- Icon injected by JS -->
     </button>
@@ -2580,6 +2589,40 @@ modalCopyQA.addEventListener("click", function(){
 });
 
 /* (Load File handler is the unified one above — no separate per-section handler) */
+
+/* ─── Save HTML (bake current data into a new standalone file) ───────── */
+document.getElementById("saveHtmlBtn").addEventListener("click", function() {
+  try {
+    /* Get live page source */
+    var src = "<!DOCTYPE html>\n" + document.documentElement.outerHTML;
+
+    /* Replace FAQ_DATA definition with current in-memory data */
+    src = src.replace(
+      /var FAQ_DATA\s*=\s*\[[\s\S]*?\];/,
+      "var FAQ_DATA = " + JSON.stringify(FAQ_DATA, null, 2) + ";"
+    );
+
+    /* Replace DB_DATA definition with current in-memory data */
+    src = src.replace(
+      /var DB_DATA\s*=\s*\[[\s\S]*?\];/,
+      "var DB_DATA = " + JSON.stringify(DB_DATA, null, 2) + ";"
+    );
+
+    var blob = new Blob([src], { type: "text/html;charset=utf-8" });
+    var url  = URL.createObjectURL(blob);
+    var a    = document.createElement("a");
+    a.href     = url;
+    a.download = "operate-help-book-standalone.html";
+    document.body.appendChild(a);
+    a.click();
+    document.body.removeChild(a);
+    URL.revokeObjectURL(url);
+
+    showToast("HTML saved — open it anywhere, data is baked in", 2800);
+  } catch(e) {
+    showToast("Could not save HTML: " + e.message, 3000);
+  }
+});
 
 /* ─── Boot ───────────────────────────────────────────────────────────── */
 /* Restore previously loaded Excel data from localStorage */
