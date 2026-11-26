@@ -1276,6 +1276,251 @@
       .action-pill { font-size: .75rem; padding: .38rem .8rem; }
       .faq-toolbar { flex-wrap: wrap; gap: .5rem; }
     }
+
+    /* ── Spotlight (Cmd/Ctrl+K) ──────────────────────────────────────────── */
+    .spotlight-overlay {
+      position: fixed; inset: 0;
+      background: rgba(10,15,40,.55);
+      backdrop-filter: blur(8px); -webkit-backdrop-filter: blur(8px);
+      z-index: 600;
+      display: flex; align-items: flex-start; justify-content: center;
+      padding: 10vh 1.5rem 2rem;
+      opacity: 0; pointer-events: none; transition: opacity 180ms ease;
+    }
+    .spotlight-overlay.is-open { opacity: 1; pointer-events: auto; }
+    .spotlight-box {
+      background: var(--bg); border: 1.5px solid var(--border);
+      border-radius: 18px; width: 100%; max-width: 580px;
+      box-shadow: 0 32px 80px rgba(10,15,40,.30), 0 8px 24px rgba(10,15,40,.15);
+      overflow: hidden;
+      transform: scale(.95) translateY(-8px);
+      transition: transform 220ms var(--ease-out);
+    }
+    :root[data-theme="dark"] .spotlight-box { background: var(--surface); }
+    .spotlight-overlay.is-open .spotlight-box { transform: scale(1) translateY(0); }
+    .spotlight-input-row {
+      display: flex; align-items: center; gap: .75rem;
+      padding: 1rem 1.25rem; border-bottom: 1px solid var(--border);
+    }
+    .spotlight-input-row > svg { width: 18px; height: 18px; color: var(--navy-60); flex-shrink: 0; }
+    .spotlight-input {
+      flex: 1; border: none; outline: none; background: transparent;
+      font-family: var(--font); font-size: 1rem; color: var(--navy);
+    }
+    .spotlight-input::placeholder { color: var(--navy-30); }
+    .spotlight-esc { font-size: .7rem; color: var(--navy-30); flex-shrink: 0; }
+    .spotlight-results { max-height: 350px; overflow-y: auto; padding: .4rem 0; }
+    .spotlight-group-label {
+      padding: .4rem 1.25rem .15rem;
+      font-size: .66rem; font-weight: 700;
+      letter-spacing: .09em; text-transform: uppercase; color: var(--navy-30);
+    }
+    .spotlight-row {
+      display: flex; align-items: center; gap: .7rem;
+      padding: .55rem 1.25rem; cursor: pointer;
+      transition: background 100ms ease;
+    }
+    .spotlight-row:hover, .spotlight-row.sp-active { background: var(--navy-06); }
+    .spotlight-row-icon {
+      width: 28px; height: 28px; border-radius: 7px;
+      background: var(--navy-12); color: var(--navy-60);
+      display: flex; align-items: center; justify-content: center; flex-shrink: 0;
+    }
+    .spotlight-row-icon svg { width: 12px; height: 12px; }
+    .spotlight-row-info { flex: 1; min-width: 0; }
+    .spotlight-row-name { font-size: .86rem; font-weight: 600; color: var(--navy); overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+    .spotlight-row-sub  { font-size: .72rem; color: var(--navy-60); overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+    .spotlight-row-hint { font-size: .68rem; color: var(--navy-30); flex-shrink: 0; }
+    .spotlight-empty { text-align: center; padding: 2.5rem 1rem; font-size: .9rem; color: var(--navy-60); }
+    .spotlight-footer {
+      border-top: 1px solid var(--border); padding: .5rem 1.25rem;
+      display: flex; gap: 1.2rem; flex-wrap: wrap;
+    }
+    .sp-hint { font-size: .68rem; color: var(--navy-30); display: flex; align-items: center; gap: .3rem; }
+    .sp-hint .kbd { font-size: .62rem; }
+
+    /* ── Favourites star ─────────────────────────────────────────────────── */
+    .fav-btn {
+      display: inline-flex; align-items: center; justify-content: center;
+      width: 26px; height: 26px; border-radius: 50%;
+      border: none; background: transparent; cursor: pointer; padding: 0;
+      color: var(--navy-30); flex-shrink: 0;
+      transition: color 150ms ease, background 150ms ease;
+    }
+    .fav-btn:hover { color: #f59e0b; background: rgba(245,158,11,.12); }
+    .fav-btn.is-fav { color: #f59e0b; }
+    .fav-btn.is-fav svg { fill: #f59e0b; }
+    .fav-btn svg { width: 14px; height: 14px; }
+
+    /* ── Copy-count badge ────────────────────────────────────────────────── */
+    .copy-count { font-size: .64rem; font-weight: 700; color: var(--accent); background: var(--accent-light); border-radius: 999px; padding: .1rem .42rem; white-space: nowrap; }
+
+    /* ── Pinned strip ────────────────────────────────────────────────────── */
+    .pinned-strip { margin-bottom: .25rem; }
+    .pinned-label {
+      font-size: .68rem; font-weight: 700; letter-spacing: .09em; text-transform: uppercase;
+      color: #d97706; display: flex; align-items: center; gap: .4rem;
+      padding: 1rem 0 .4rem;
+    }
+    .pinned-label svg { width: 12px; height: 12px; }
+
+    /* ── Sort pill ───────────────────────────────────────────────────────── */
+    .sort-pill {
+      display: inline-flex; align-items: center; gap: .3rem;
+      border: 1.5px solid var(--border); border-radius: 999px;
+      background: transparent; font-family: var(--font);
+      font-size: .78rem; font-weight: 600; color: var(--navy-60);
+      padding: .3rem .85rem; cursor: pointer; white-space: nowrap;
+      transition: background 150ms, border-color 150ms, color 150ms;
+    }
+    .sort-pill:hover { background: var(--navy-06); color: var(--navy); border-color: var(--navy-30); }
+    .sort-pill.on { background: var(--accent-light); border-color: var(--accent); color: var(--accent); }
+    .sort-pill svg { width: 11px; height: 11px; }
+
+    /* ── Template variable fill ──────────────────────────────────────────── */
+    .var-fill-block {
+      background: var(--accent-light); border: 1.5px solid var(--accent);
+      border-radius: 10px; padding: .8rem 1rem; margin-bottom: .9rem;
+    }
+    .var-fill-title { font-size: .75rem; font-weight: 700; color: var(--accent); margin-bottom: .55rem; }
+    .var-fill-fields { display: flex; flex-direction: column; gap: .45rem; }
+    .var-fill-row { display: flex; align-items: center; gap: .6rem; }
+    .var-fill-lbl { font-size: .74rem; font-weight: 600; color: var(--navy-60); min-width: 110px; flex-shrink: 0; font-family: var(--mono); }
+    .var-fill-inp {
+      flex: 1; border: 1.5px solid var(--border); border-radius: 7px;
+      padding: .32rem .65rem; font-family: var(--font); font-size: .85rem;
+      color: var(--navy); background: var(--bg); outline: none;
+      transition: border-color 150ms;
+    }
+    :root[data-theme="dark"] .var-fill-inp { background: rgba(255,255,255,.04); }
+    .var-fill-inp:focus { border-color: var(--accent); }
+
+    /* ── Linked query chip ───────────────────────────────────────────────── */
+    .linked-chip {
+      display: inline-flex; align-items: center; gap: .4rem;
+      border: 1.5px solid var(--border); border-radius: 999px;
+      background: transparent; font-family: var(--font);
+      font-size: .78rem; font-weight: 600; color: var(--navy-60);
+      padding: .32rem .85rem; cursor: pointer; white-space: nowrap;
+      transition: background 150ms, border-color 150ms, color 150ms;
+    }
+    .linked-chip:hover { background: var(--navy-06); border-color: var(--accent); color: var(--accent); }
+    .linked-chip svg { width: 12px; height: 12px; }
+
+    /* ── Log Analyser ────────────────────────────────────────────────────── */
+    .log-drop-zone {
+      border: 2px dashed var(--border); border-radius: 16px;
+      padding: 2.5rem 2rem; text-align: center; cursor: pointer;
+      margin: 1.5rem 0 1rem;
+      transition: border-color 180ms, background 180ms;
+      position: relative;
+    }
+    .log-drop-zone:hover, .log-drop-zone.drag-over {
+      border-color: var(--accent); background: var(--accent-light);
+    }
+    .log-drop-icon {
+      width: 52px; height: 52px; border-radius: 50%;
+      background: var(--navy-06); border: 1.5px solid var(--border);
+      display: flex; align-items: center; justify-content: center;
+      margin: 0 auto .85rem; color: var(--navy-60);
+    }
+    .log-drop-icon svg { width: 22px; height: 22px; }
+    .log-drop-title { font-size: .98rem; font-weight: 700; color: var(--navy); margin-bottom: .25rem; }
+    .log-drop-sub { font-size: .83rem; color: var(--navy-60); margin-bottom: .85rem; }
+    .log-drop-btn {
+      display: inline-flex; align-items: center; gap: .4rem;
+      background: var(--navy); color: var(--bg);
+      border: none; border-radius: 999px; font-family: var(--font);
+      font-size: .84rem; font-weight: 700; padding: .52rem 1.3rem;
+      cursor: pointer; transition: background 150ms;
+    }
+    .log-drop-btn:hover { background: var(--accent); }
+    .log-stats-grid {
+      display: grid; grid-template-columns: repeat(auto-fill, minmax(130px, 1fr));
+      gap: .65rem; margin-bottom: 1.25rem;
+    }
+    .log-stat-card {
+      background: var(--surface); border: 1.5px solid var(--border);
+      border-radius: 11px; padding: .75rem .9rem;
+    }
+    .log-stat-label { font-size: .66rem; font-weight: 700; letter-spacing: .07em; text-transform: uppercase; color: var(--navy-60); margin-bottom: .2rem; }
+    .log-stat-val { font-size: 1.5rem; font-weight: 800; color: var(--navy); font-variant-numeric: tabular-nums; }
+    .log-stat-card.err .log-stat-val { color: #dc2626; }
+    .log-stat-card.wrn .log-stat-val { color: #f59e0b; }
+    .log-stat-card.inf .log-stat-val { color: var(--accent); }
+    .log-h { font-size: .88rem; font-weight: 700; color: var(--navy); margin: 1.1rem 0 .5rem; display: flex; align-items: center; gap: .5rem; }
+    .log-h small { font-size: .72rem; font-weight: 600; color: var(--navy-60); }
+    .log-bar-row { display: flex; align-items: center; gap: .65rem; margin-bottom: .35rem; }
+    .log-bar-label { font-size: .77rem; font-weight: 600; color: var(--navy-60); min-width: 55px; }
+    .log-bar-track { flex: 1; height: 7px; background: var(--navy-06); border-radius: 999px; overflow: hidden; }
+    .log-bar-fill { height: 100%; border-radius: 999px; transition: width .4s var(--ease-out); width: 0; }
+    .lb-err { background: #dc2626; }
+    .lb-wrn { background: #f59e0b; }
+    .lb-inf { background: var(--accent); }
+    .lb-dbg { background: var(--navy-30); }
+    .log-bar-cnt { font-size: .77rem; font-weight: 600; color: var(--navy-60); min-width: 38px; text-align: right; font-variant-numeric: tabular-nums; }
+    .log-top-errs {
+      background: var(--surface); border: 1.5px solid var(--border);
+      border-radius: 11px; overflow: hidden; margin-bottom: 1rem;
+    }
+    .log-top-err-row {
+      display: flex; align-items: flex-start; gap: .65rem;
+      padding: .65rem .9rem; border-bottom: 1px solid var(--border);
+      cursor: pointer; transition: background 100ms;
+    }
+    .log-top-err-row:last-child { border-bottom: none; }
+    .log-top-err-row:hover { background: var(--navy-06); }
+    .log-err-num { font-size: .7rem; font-weight: 700; color: var(--navy-30); min-width: 18px; padding-top: .05rem; }
+    .log-err-txt { flex: 1; min-width: 0; font-family: var(--mono); font-size: .77rem; color: var(--navy); line-height: 1.5; word-break: break-all; }
+    .log-err-ct { flex-shrink: 0; background: var(--red-light); color: var(--red); font-size: .66rem; font-weight: 700; border-radius: 999px; padding: .12rem .45rem; margin-top: .05rem; }
+    .log-filter-row { display: flex; gap: .4rem; flex-wrap: wrap; margin-bottom: .6rem; }
+    .log-flt-btn {
+      display: inline-flex; align-items: center; gap: .3rem;
+      border: 1.5px solid var(--border); border-radius: 999px;
+      background: transparent; font-family: var(--font);
+      font-size: .75rem; font-weight: 600; color: var(--navy-60);
+      padding: .28rem .75rem; cursor: pointer;
+      transition: background 150ms, border-color 150ms, color 150ms;
+    }
+    .log-flt-btn:hover:not(.active) { background: var(--navy-06); color: var(--navy); }
+    .log-flt-btn.active          { background: var(--navy);   border-color: var(--navy);   color: #fff; }
+    .log-flt-btn.e.active        { background: #dc2626;        border-color: #dc2626; }
+    .log-flt-btn.w.active        { background: #f59e0b;        border-color: #f59e0b; }
+    .log-flt-btn.i.active        { background: var(--accent);  border-color: var(--accent); }
+    .log-raw {
+      background: var(--navy-06); border: 1.5px solid var(--border);
+      border-radius: 11px; overflow: hidden; margin-bottom: 1.5rem;
+    }
+    .log-raw pre {
+      font-family: var(--mono); font-size: .76rem; color: var(--navy);
+      line-height: 1.65; padding: .8rem .95rem;
+      max-height: 300px; overflow-y: auto;
+      white-space: pre-wrap; word-break: break-all; margin: 0;
+    }
+    .ll-err { color: #dc2626; }
+    .ll-wrn { color: #d97706; }
+    .ll-inf { color: var(--accent); }
+    .ll-dbg { color: var(--navy-60); }
+    .log-new-btn {
+      display: inline-flex; align-items: center; gap: .4rem;
+      border: 1.5px solid var(--border); border-radius: 999px;
+      background: transparent; font-family: var(--font);
+      font-size: .78rem; font-weight: 600; color: var(--navy-60);
+      padding: .3rem .85rem; cursor: pointer; margin-bottom: .85rem;
+      transition: background 150ms, color 150ms;
+    }
+    .log-new-btn:hover { background: var(--navy-06); color: var(--navy); }
+    .log-timestamp-row { display: flex; align-items: center; gap: .5rem; margin-bottom: 1rem; }
+    .log-ts-badge { display: inline-flex; align-items: center; gap: .35rem; border: 1.5px solid var(--border); border-radius: 999px; background: var(--navy-06); font-size: .76rem; font-weight: 600; color: var(--navy-60); padding: .28rem .75rem; }
+    .log-ts-badge svg { width: 12px; height: 12px; }
+    .log-line { display: flex; gap: .6rem; padding: .2rem .95rem; font-family: var(--mono); font-size: .74rem; line-height: 1.6; border-bottom: 1px solid var(--navy-06); }
+    .log-line:last-child { border-bottom: none; }
+    .log-lineno { flex-shrink: 0; min-width: 36px; color: var(--navy-30); text-align: right; user-select: none; }
+    .log-linetext { flex: 1; min-width: 0; word-break: break-all; white-space: pre-wrap; }
+    .log-line.ll-err .log-linetext { color: #dc2626; }
+    .log-line.ll-wrn .log-linetext { color: #d97706; }
+    .log-line.ll-inf .log-linetext { color: var(--accent); }
+    .log-line.ll-dbg .log-linetext { color: var(--navy-60); }
   </style>
 </head>
 <body>
@@ -1345,6 +1590,15 @@
           <path d="M3 5v14c0 1.66 4 3 9 3s9-1.34 9-3V5"/>
         </svg>
         DB Queries
+      </button>
+      <button class="snav-btn" id="snavLog" role="tab" aria-selected="false">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+          <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/>
+          <polyline points="14 2 14 8 20 8"/>
+          <line x1="8" y1="13" x2="16" y2="13"/>
+          <line x1="8" y1="17" x2="13" y2="17"/>
+        </svg>
+        Log Analyser
       </button>
     </nav>
 
@@ -1445,6 +1699,34 @@
 
     </div><!-- /view-db -->
 
+    <!-- ── View: Log Analyser ──────────────────────────────────────────── -->
+    <div id="view-log" class="section-view">
+      <div style="padding-top:1rem">
+        <div id="logDropZone" class="log-drop-zone" role="button" tabindex="0" aria-label="Drop a log file or click to choose">
+          <input type="file" id="logFileInput" accept=".log,.txt,.out,.csv" style="display:none" aria-hidden="true">
+          <div class="log-drop-icon" aria-hidden="true">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/>
+              <polyline points="14 2 14 8 20 8"/>
+              <line x1="8" y1="13" x2="16" y2="13"/>
+              <line x1="8" y1="17" x2="12" y2="17"/>
+            </svg>
+          </div>
+          <div class="log-drop-title">Drop a log file here</div>
+          <div class="log-drop-sub">Supports .log, .txt, .out — extracts errors, warnings, stack traces and patterns</div>
+          <button class="log-drop-btn" id="logPickBtn" type="button">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="width:14px;height:14px" aria-hidden="true">
+              <polyline points="16 16 12 12 8 16"/>
+              <line x1="12" y1="12" x2="12" y2="21"/>
+              <path d="M20.39 18.39A5 5 0 0 0 18 9h-1.26A8 8 0 1 0 3 16.3"/>
+            </svg>
+            Choose File
+          </button>
+        </div>
+        <div id="logResults" style="display:none" aria-live="polite"></div>
+      </div>
+    </div><!-- /view-log -->
+
   </div>
 </main>
 
@@ -1541,6 +1823,25 @@
   </div>
 </div>
 
+<!-- ── Spotlight (Cmd/Ctrl+K) ──────────────────────────────────────────── -->
+<div class="spotlight-overlay" id="spotlightOverlay" aria-hidden="true">
+  <div class="spotlight-box" role="dialog" aria-modal="true" aria-label="Quick search">
+    <div class="spotlight-input-row">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+        <circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/>
+      </svg>
+      <input id="spotlightInput" class="spotlight-input" type="text" placeholder="Search everything — replies, queries…" autocomplete="off" spellcheck="false" aria-label="Quick search">
+      <span class="spotlight-esc"><span class="kbd">Esc</span></span>
+    </div>
+    <div id="spotlightResults" class="spotlight-results" role="listbox"></div>
+    <div class="spotlight-footer">
+      <span class="sp-hint"><span class="kbd">↑↓</span> navigate</span>
+      <span class="sp-hint"><span class="kbd">↵</span> copy</span>
+      <span class="sp-hint"><span class="kbd">Esc</span> close</span>
+    </div>
+  </div>
+</div>
+
 <script src="xlsx.mini.min.js"></script>
 <script src="faq-data.js"></script>
 <script src="db-data.js"></script>
@@ -1576,6 +1877,12 @@ var SECTION_CONFIGS = {
     title: "Query<br>Reference",
     sub: "Browse and copy SQL queries. Use search or expand a category to get started.",
     placeholder: "Search queries…"
+  },
+  log: {
+    badge: "LOG ANALYSER",
+    title: "Log<br>Explorer",
+    sub: "Upload a log file to instantly surface errors, warnings and recurring patterns.",
+    placeholder: "Filter log lines…"
   }
 };
 var currentSection = "tickets";
@@ -1583,6 +1890,19 @@ var currentSection = "tickets";
 /* ─── State ─────────────────────────────────────────────────────────── */
 var state   = { query:"", activeCategory:"All", openIds:{}, votes:{} };
 var dbState = { query:"", openHeaders:{}, openItems:{} };
+
+/* Favourites */
+var favIds   = {};   /* FAQ item ids  */
+var favDbIds = {};   /* DB item ids   */
+/* Copy counters */
+var copyCounts   = {};
+var dbCopyCounts = {};
+/* Sort */
+var sortByMostUsed   = false;
+var dbSortByMostUsed = false;
+/* Log */
+var logParsed = null;
+var activeLogFilter = "all";
 
 /* ─── DOM refs ──────────────────────────────────────────────────────── */
 var searchInput     = document.getElementById("searchInput");
@@ -1612,8 +1932,10 @@ var modalALbl       = document.getElementById("modalAnswerLabel");
 /* DB DOM refs */
 var viewTickets    = document.getElementById("view-tickets");
 var viewDB         = document.getElementById("view-db");
+var viewLog        = document.getElementById("view-log");
 var snavTickets    = document.getElementById("snavTickets");
 var snavDB         = document.getElementById("snavDB");
+var snavLog        = document.getElementById("snavLog");
 var heroBadgeText  = document.getElementById("heroBadgeText");
 var heroTitle      = document.getElementById("heroTitle");
 var heroSub        = document.getElementById("heroSub");
@@ -1621,6 +1943,15 @@ var dbList         = document.getElementById("dbList");
 var dbResultsMeta  = document.getElementById("dbResultsMeta");
 var dbExpandAllBtn = document.getElementById("dbExpandAllBtn");
 var dbExpandLbl    = document.getElementById("dbExpandAllLabel");
+/* Log DOM refs */
+var logDropZone   = document.getElementById("logDropZone");
+var logFileInput  = document.getElementById("logFileInput");
+var logPickBtn    = document.getElementById("logPickBtn");
+var logResults    = document.getElementById("logResults");
+/* Spotlight DOM refs */
+var spotlightOverlay = document.getElementById("spotlightOverlay");
+var spotlightInput   = document.getElementById("spotlightInput");
+var spotlightResults = document.getElementById("spotlightResults");
 
 /* Single Load File refs */
 var mainExcelInput = document.getElementById("mainExcelInput");
@@ -1789,14 +2120,103 @@ function toggleItem(id) {
   updateExpandAllBtn();
 }
 
+/* ─── Favourites helpers ──────────────────────────────────────────────── */
+function loadFavs() {
+  try { favIds = JSON.parse(localStorage.getItem("ohb-favs")||"{}"); } catch(e) { favIds = {}; }
+  try { favDbIds = JSON.parse(localStorage.getItem("ohb-db-favs")||"{}"); } catch(e) { favDbIds = {}; }
+}
+function saveFavs() {
+  try { localStorage.setItem("ohb-favs", JSON.stringify(favIds)); } catch(e) {}
+  try { localStorage.setItem("ohb-db-favs", JSON.stringify(favDbIds)); } catch(e) {}
+}
+function loadCopyCounts() {
+  try { copyCounts = JSON.parse(localStorage.getItem("ohb-cc")||"{}"); } catch(e) { copyCounts = {}; }
+  try { dbCopyCounts = JSON.parse(localStorage.getItem("ohb-db-cc")||"{}"); } catch(e) { dbCopyCounts = {}; }
+}
+function saveCopyCounts() {
+  try { localStorage.setItem("ohb-cc", JSON.stringify(copyCounts)); } catch(e) {}
+  try { localStorage.setItem("ohb-db-cc", JSON.stringify(dbCopyCounts)); } catch(e) {}
+}
+function trackCopy(section, id) {
+  if (section === "faq") { copyCounts[id] = (copyCounts[id]||0) + 1; saveCopyCounts(); }
+  else { dbCopyCounts[id] = (dbCopyCounts[id]||0) + 1; saveCopyCounts(); }
+}
+
+/* ─── Sort helpers ────────────────────────────────────────────────────── */
+function getSortedFAQ() {
+  var items = getFilteredData();
+  if (sortByMostUsed) {
+    items = items.slice().sort(function(a,b){ return (copyCounts[b.id]||0) - (copyCounts[a.id]||0); });
+  }
+  return items;
+}
+
+/* ─── Pinned strip ────────────────────────────────────────────────────── */
+var STAR_FILLED = '<polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2" fill="currentColor" stroke="currentColor"/>';
+var STAR_EMPTY  = '<polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/>';
+
+function getLinkedQueryName(id) {
+  for (var i = 0; i < DB_DATA.length; i++) { if (DB_DATA[i].id === Number(id)) return DB_DATA[i].name; }
+  return "Query #"+id;
+}
+
 /* ─── FAQ render ─────────────────────────────────────────────────────── */
 function renderFAQs() {
-  var items = getFilteredData();
+  var items = getSortedFAQ();
   faqList.innerHTML = "";
+
+  /* ── Pinned strip ── */
+  var pinnedIds = Object.keys(favIds).filter(function(k){ return favIds[k]; }).map(Number);
+  var pinnedItems = FAQ_DATA.filter(function(it){ return pinnedIds.indexOf(it.id) !== -1; });
+  if (pinnedItems.length > 0) {
+    var strip = document.createElement("div");
+    strip.className = "pinned-strip";
+    var labelHtml = '<div class="pinned-label"><svg viewBox="0 0 24 24" fill="#f59e0b" stroke="#f59e0b" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">'+STAR_FILLED+'</svg>Pinned</div>';
+    var pHtml = labelHtml;
+    pinnedItems.forEach(function(it) {
+      pHtml +=
+        '<div class="faq-item" style="border-radius:8px;border:1.5px solid rgba(245,158,11,.35);margin-bottom:.35rem;background:rgba(245,158,11,.05)">' +
+          '<button class="faq-trigger" style="padding:.85rem 0" aria-expanded="false">' +
+            '<span class="faq-question" style="font-size:.88rem">'+escapeHtml(it.question)+'</span>' +
+          '</button>' +
+        '</div>';
+    });
+    strip.innerHTML = pHtml;
+    pinnedItems.forEach(function(it, idx) {
+      strip.querySelectorAll(".faq-trigger")[idx].addEventListener("click", function(){
+        state.activeCategory = "All"; renderCategories();
+        state.openIds[it.id] = true;
+        sortByMostUsed = false; renderFAQs();
+        setTimeout(function(){
+          var el = document.getElementById("faq-item-"+it.id);
+          if (el) el.scrollIntoView({behavior:"smooth", block:"start"});
+        }, 100);
+      });
+    });
+    faqList.appendChild(strip);
+  }
+
+  /* ── Sort toolbar ── */
+  var sortBtnEl = document.getElementById("faqSortBtn");
+  if (!sortBtnEl) {
+    var sortBtn = document.createElement("button");
+    sortBtn.id = "faqSortBtn";
+    sortBtn.className = "sort-pill" + (sortByMostUsed ? " on" : "");
+    sortBtn.innerHTML = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="4" y1="6" x2="11" y2="6"/><line x1="4" y1="12" x2="11" y2="12"/><line x1="4" y1="18" x2="20" y2="18"/><polyline points="15 9 18 6 21 9"/><polyline points="15 15 18 18 21 15"/></svg>' + (sortByMostUsed ? "Most Copied" : "Sort: Default");
+    sortBtn.addEventListener("click", function(){
+      sortByMostUsed = !sortByMostUsed;
+      renderFAQs();
+    });
+    var tbRight = document.querySelector("#view-tickets .toolbar-right");
+    if (tbRight) tbRight.insertBefore(sortBtn, tbRight.firstChild);
+  } else {
+    sortBtnEl.className = "sort-pill" + (sortByMostUsed ? " on" : "");
+    sortBtnEl.querySelector("svg + *") || (sortBtnEl.lastChild.textContent = sortByMostUsed ? "Most Copied" : "Sort: Default");
+  }
 
   if (state.query) {
     resultsMeta.textContent = items.length
-      ? items.length + " result" + (items.length!==1?"s":"") + " for “" + state.query + "”"
+      ? items.length + " result" + (items.length!==1?"s":"") + " for \"" + state.query + "\""
       : "";
   } else {
     resultsMeta.textContent = items.length + " question" + (items.length!==1?"s":"");
@@ -1864,14 +2284,15 @@ function renderFAQs() {
         '<div class="faq-body-inner"><div class="faq-answer-wrap">' +
           '<p class="faq-answer">'+highlightText(item.answer, state.query)+'</p>' +
 
-          /* ── 3-button action row ── */
+          /* ── Action row ── */
           '<div class="faq-actions">' +
 
-            /* Copy Q&A */
+            /* Copy */
             '<button class="action-pill copy-btn" data-faq-id="'+item.id+'" aria-label="Copy Q&amp;A">' +
               '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">'+CLIPBOARD_SVG+'</svg>' +
               '<span>Copy</span>' +
-              '<span class="action-tooltip" aria-hidden="true">Copy Q&amp;A to clipboard</span>' +
+              (copyCounts[item.id] > 0 ? '<span class="copy-count">×'+copyCounts[item.id]+'</span>' : '') +
+              '<span class="action-tooltip" aria-hidden="true">Copy Q&amp;A</span>' +
             '</button>' +
 
             /* Edit & Copy */
@@ -1882,6 +2303,24 @@ function renderFAQs() {
               '</svg>' +
               '<span>Edit &amp; Copy</span>' +
               '<span class="action-tooltip" aria-hidden="true">Edit before copying</span>' +
+            '</button>' +
+
+            /* Linked SQL query */
+            (item.linkedQueryId ?
+              '<button class="action-pill linked-chip" data-linked-id="'+item.linkedQueryId+'" aria-label="Copy linked SQL">' +
+                '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">' +
+                  '<ellipse cx="12" cy="5" rx="9" ry="3"/>' +
+                  '<path d="M21 12c0 1.66-4 3-9 3s-9-1.34-9-3"/>' +
+                  '<path d="M3 5v14c0 1.66 4 3 9 3s9-1.34 9-3V5"/>' +
+                '</svg>' +
+                '<span>SQL: '+escapeHtml(getLinkedQueryName(item.linkedQueryId))+'</span>' +
+                '<span class="action-tooltip" aria-hidden="true">Copy linked SQL query</span>' +
+              '</button>'
+            : '') +
+
+            /* Favourite */
+            '<button class="fav-btn'+(favIds[item.id]?' is-fav':'')+'" data-fav-id="'+item.id+'" aria-label="'+(favIds[item.id]?'Remove from pinned':'Add to pinned')+'" title="Pin/unpin">' +
+              '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">'+(favIds[item.id]?STAR_FILLED:STAR_EMPTY)+'</svg>' +
             '</button>' +
 
           '</div>' +
@@ -1904,8 +2343,36 @@ function renderFAQs() {
         e.stopPropagation();
         writeClipboard("Q: "+faqItem.question+"\n\nA: "+faqItem.answer, function(){
           morphCopyBtn(btn, ico, lbl, "Copied!", "Copy", CLIPBOARD_SVG);
-          if (tip) { tip.textContent="Copied!"; setTimeout(function(){ tip.textContent="Copy Q&A to clipboard"; },1800); }
+          if (tip) { tip.textContent="Copied!"; setTimeout(function(){ tip.textContent="Copy Q&A"; },1800); }
+          trackCopy("faq", faqItem.id);
         });
+      });
+    })(item);
+
+    /* Favourite toggle */
+    (function(faqItem){
+      var favBtn = el.querySelector(".fav-btn");
+      if (!favBtn) return;
+      favBtn.addEventListener("click", function(e){
+        e.stopPropagation();
+        favIds[faqItem.id] = !favIds[faqItem.id];
+        saveFavs();
+        showToast(favIds[faqItem.id] ? "Pinned to top" : "Unpinned");
+        renderFAQs();
+      });
+    })(item);
+
+    /* Linked SQL chip */
+    (function(faqItem){
+      var chip = el.querySelector(".linked-chip");
+      if (!chip) return;
+      chip.addEventListener("click", function(e){
+        e.stopPropagation();
+        var linkedId = Number(chip.getAttribute("data-linked-id"));
+        var dbItem = null;
+        for (var i = 0; i < DB_DATA.length; i++) { if (DB_DATA[i].id === linkedId) { dbItem = DB_DATA[i]; break; } }
+        if (!dbItem) return;
+        writeClipboard(dbItem.sql, function(){ showToast("Linked SQL copied: " + dbItem.name); });
       });
     })(item);
 
@@ -1978,16 +2445,21 @@ function switchSection(section) {
   updateClearBtn();
   viewTickets.classList.toggle("active", section === "tickets");
   viewDB.classList.toggle("active", section === "db");
+  viewLog.classList.toggle("active", section === "log");
   snavTickets.classList.toggle("active", section === "tickets");
   snavDB.classList.toggle("active", section === "db");
+  snavLog.classList.toggle("active", section === "log");
   snavTickets.setAttribute("aria-selected", String(section === "tickets"));
   snavDB.setAttribute("aria-selected", String(section === "db"));
+  snavLog.setAttribute("aria-selected", String(section === "log"));
   if (section === "tickets") { renderCategories(); renderFAQs(); }
-  else { renderDB(); }
+  else if (section === "db") { renderDB(); }
+  /* log section shows existing results or upload zone — no re-render needed */
 }
 
 snavTickets.addEventListener("click", function(){ switchSection("tickets"); });
 snavDB.addEventListener("click",      function(){ switchSection("db"); });
+snavLog.addEventListener("click",     function(){ switchSection("log"); });
 
 /* ─── DB filter ───────────────────────────────────────────────────────── */
 function getDBFiltered() {
@@ -2008,8 +2480,8 @@ function renderDB() {
 
   if (dbState.query) {
     dbResultsMeta.textContent = items.length
-      ? items.length + " result" + (items.length !== 1 ? "s" : "") + " for “" + dbState.query + "”"
-      : "No results for “" + dbState.query + "”";
+      ? items.length + " result" + (items.length !== 1 ? "s" : "") + " for \"" + dbState.query + "\""
+      : "No results for \"" + dbState.query + "\"";
   } else {
     dbResultsMeta.textContent = items.length + " quer" + (items.length !== 1 ? "ies" : "y");
   }
@@ -2021,6 +2493,30 @@ function renderDB() {
       '<p class="empty-state__sub">Try a different keyword.</p></div>';
     if (dbExpandAllBtn) dbExpandAllBtn.style.display = "none";
     return;
+  }
+
+  /* Pinned strip for DB */
+  var pinnedDbItems = DB_DATA.filter(function(it) { return favDbIds[it.id]; });
+  if (pinnedDbItems.length) {
+    var strip = document.createElement("div");
+    strip.className = "pinned-strip";
+    strip.innerHTML = '<span class="pinned-label">Pinned queries</span>';
+    pinnedDbItems.forEach(function(pit) {
+      var chip = document.createElement("button");
+      chip.className = "pinned-chip";
+      chip.textContent = pit.name;
+      chip.addEventListener("click", function() {
+        dbState.openItems[pit.id] = true;
+        dbState.openHeaders[pit.header] = true;
+        renderDB();
+        setTimeout(function() {
+          var el = document.getElementById('db-item-'+pit.id);
+          if (el) el.scrollIntoView({ behavior: "smooth", block: "center" });
+        }, 60);
+      });
+      strip.appendChild(chip);
+    });
+    dbList.appendChild(strip);
   }
 
   /* Group by header → subheader */
@@ -2070,6 +2566,7 @@ function renderDB() {
                   '<button class="action-pill copy-btn db-copy-sql" data-db-id="' + item.id + '" aria-label="Copy SQL">' +
                     '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">' + CLIPBOARD_SVG + '</svg>' +
                     '<span>Copy SQL</span>' +
+                    (dbCopyCounts[item.id] > 0 ? '<span class="copy-count">\xd7'+dbCopyCounts[item.id]+'</span>' : '') +
                     '<span class="action-tooltip" aria-hidden="true">Copy SQL to clipboard</span>' +
                   '</button>' +
                   '<button class="action-pill edit-copy-btn db-edit-copy" data-db-id="' + item.id + '" aria-label="Edit &amp; Copy">' +
@@ -2079,6 +2576,9 @@ function renderDB() {
                     '</svg>' +
                     '<span>Edit &amp; Copy</span>' +
                     '<span class="action-tooltip" aria-hidden="true">Edit before copying</span>' +
+                  '</button>' +
+                  '<button class="fav-btn'+(favDbIds[item.id]?' is-fav':'')+'" data-db-fav-id="'+item.id+'" aria-label="'+(favDbIds[item.id]?'Unpin':'Pin query')+'" title="Pin/unpin">' +
+                    '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">'+(favDbIds[item.id]?STAR_FILLED:STAR_EMPTY)+'</svg>' +
                   '</button>' +
                 '</div>' +
               '</div></div>' +
@@ -2139,6 +2639,8 @@ function renderDB() {
           writeClipboard(it.sql, function() {
             morphCopyBtn(btn, ico, lbl, "Copied!", "Copy SQL", CLIPBOARD_SVG);
             showToast("SQL copied to clipboard");
+            trackCopy("db", it.id);
+            renderDB();
           });
         });
       })(copyBtn, dbItem);
@@ -2150,6 +2652,19 @@ function renderDB() {
           openModal(it, btn, "db");
         });
       })(editBtn, dbItem);
+
+      /* DB Favourite toggle */
+      (function(it) {
+        var favBtn = dbItemEl.querySelector(".fav-btn");
+        if (!favBtn) return;
+        favBtn.addEventListener("click", function(e) {
+          e.stopPropagation();
+          favDbIds[it.id] = !favDbIds[it.id];
+          saveFavs();
+          showToast(favDbIds[it.id] ? "Query pinned" : "Query unpinned");
+          renderDB();
+        });
+      })(dbItem);
     });
 
     dbList.appendChild(group);
@@ -2260,12 +2775,112 @@ mainExcelInput.addEventListener("change", function(e) {
   reader.readAsArrayBuffer(file);
 });
 
+/* ─── Spotlight ───────────────────────────────────────────────────────── */
+var spotlightActiveIdx = -1;
+
+function openSpotlight() {
+  spotlightOverlay.setAttribute("aria-hidden", "false");
+  spotlightOverlay.classList.add("is-open");
+  spotlightInput.value = "";
+  spotlightActiveIdx = -1;
+  renderSpotlight("");
+  setTimeout(function(){ spotlightInput.focus(); }, 30);
+}
+
+function closeSpotlight() {
+  spotlightOverlay.classList.remove("is-open");
+  spotlightOverlay.setAttribute("aria-hidden", "true");
+  spotlightActiveIdx = -1;
+}
+
+function renderSpotlight(q) {
+  var results = [];
+  var lq = q.toLowerCase();
+  if (q.length > 0) {
+    FAQ_DATA.forEach(function(item) {
+      if ((item.question||"").toLowerCase().indexOf(lq) > -1 || (item.answer||"").toLowerCase().indexOf(lq) > -1) {
+        results.push({ section: "Reply", label: item.question, sub: item.category, _item: item, _mode: "faq" });
+      }
+    });
+    DB_DATA.forEach(function(item) {
+      if ((item.name||"").toLowerCase().indexOf(lq) > -1 || (item.description||"").toLowerCase().indexOf(lq) > -1 || (item.sql||"").toLowerCase().indexOf(lq) > -1) {
+        results.push({ section: "SQL", label: item.name, sub: item.database, _item: item, _mode: "db" });
+      }
+    });
+  }
+  if (!q) {
+    spotlightResults.innerHTML = '<div class="spotlight-hint">Start typing to search replies and SQL queries…</div>';
+    return;
+  }
+  if (!results.length) {
+    spotlightResults.innerHTML = '<div class="spotlight-hint">No results for "' + escapeHtml(q) + '"</div>';
+    return;
+  }
+  var html = "";
+  results.slice(0, 12).forEach(function(r, i) {
+    html += '<div class="spotlight-item'+(i===spotlightActiveIdx?' spotlight-item--active':'')+'" data-idx="'+i+'">' +
+      '<span class="spotlight-badge">' + r.section + '</span>' +
+      '<span class="spotlight-label">' + highlightText(escapeHtml(r.label), q) + '</span>' +
+      '<span class="spotlight-sub">' + escapeHtml(r.sub) + '</span>' +
+      '</div>';
+  });
+  spotlightResults.innerHTML = html;
+  spotlightResults.querySelectorAll(".spotlight-item").forEach(function(el) {
+    el.addEventListener("mousedown", function(e) { e.preventDefault(); });
+    el.addEventListener("click", function() {
+      var idx = parseInt(el.getAttribute("data-idx"), 10);
+      var r = results[idx];
+      if (!r) return;
+      var text = r._mode === "faq" ? r._item.answer : r._item.sql;
+      writeClipboard(text, function(){
+        if (r._mode === "faq") trackCopy("faq", r._item.id);
+        else trackCopy("db", r._item.id);
+        showToast("Copied: " + r.label);
+      });
+      closeSpotlight();
+    });
+  });
+  spotlightActiveIdx = -1;
+}
+
+spotlightInput.addEventListener("input", function() {
+  spotlightActiveIdx = -1;
+  renderSpotlight(spotlightInput.value.trim());
+});
+
+spotlightInput.addEventListener("keydown", function(e) {
+  var items = spotlightResults.querySelectorAll(".spotlight-item");
+  if (e.key === "ArrowDown") {
+    e.preventDefault();
+    spotlightActiveIdx = Math.min(spotlightActiveIdx + 1, items.length - 1);
+    items.forEach(function(el, i){ el.classList.toggle("spotlight-item--active", i===spotlightActiveIdx); });
+    if (items[spotlightActiveIdx]) items[spotlightActiveIdx].scrollIntoView({ block: "nearest" });
+  } else if (e.key === "ArrowUp") {
+    e.preventDefault();
+    spotlightActiveIdx = Math.max(spotlightActiveIdx - 1, 0);
+    items.forEach(function(el, i){ el.classList.toggle("spotlight-item--active", i===spotlightActiveIdx); });
+    if (items[spotlightActiveIdx]) items[spotlightActiveIdx].scrollIntoView({ block: "nearest" });
+  } else if (e.key === "Enter") {
+    if (items[spotlightActiveIdx]) items[spotlightActiveIdx].click();
+  } else if (e.key === "Escape") {
+    closeSpotlight();
+  }
+});
+
+spotlightOverlay.addEventListener("click", function(e) { if (e.target === spotlightOverlay) closeSpotlight(); });
+
 /* ─── Keyboard shortcuts ─────────────────────────────────────────────── */
 document.addEventListener("keydown", function(e){
   var active = document.activeElement;
   var tag    = active ? active.tagName.toLowerCase() : "";
   var inInput= tag==="input" || tag==="textarea" || (active && active.isContentEditable);
   var modalOpen = modalOverlay.classList.contains("is-open");
+  var spotOpen  = spotlightOverlay.classList.contains("is-open");
+
+  /* Cmd/Ctrl+K — spotlight */
+  if ((e.metaKey || e.ctrlKey) && e.key === "k") { e.preventDefault(); if (spotOpen) closeSpotlight(); else openSpotlight(); return; }
+
+  if (spotOpen) return; /* let spotlight handle its own keys */
 
   if (e.key==="/" && !inInput && !modalOpen) { e.preventDefault(); searchInput.focus(); searchInput.select(); return; }
   if (e.key==="Escape" && inInput && !modalOpen) { searchInput.value=""; state.query=""; updateClearBtn(); renderFAQs(); searchInput.blur(); return; }
@@ -2337,6 +2952,40 @@ function openModal(item, triggerEl, mode) {
   modalCopyQA.classList.remove("is-copied");
   modalCopyAnswer.querySelector("svg").innerHTML = CLIPBOARD_SVG;
   modalCopyQA.querySelector("svg").innerHTML     = '<polyline points="20 6 9 17 4 12"/>';
+
+  /* ── Template variable detection ── */
+  var varBlock = modalOverlay.querySelector(".var-fill-block");
+  if (varBlock) varBlock.remove();
+  var textToScan = (mode === "db") ? item.sql : item.answer;
+  var varMatches = [], seen = {};
+  var varRe = /\{\{([^}]+)\}\}/g, m;
+  while ((m = varRe.exec(textToScan)) !== null) {
+    var vname = m[1].trim();
+    if (!seen[vname]) { seen[vname] = true; varMatches.push(vname); }
+  }
+  if (varMatches.length) {
+    var vb = document.createElement("div");
+    vb.className = "var-fill-block";
+    var vbHTML = '<div class="var-fill-title">Auto-fill variables</div><div class="var-fill-fields">';
+    varMatches.forEach(function(v) {
+      vbHTML += '<label class="var-fill-label">{{'+v+'}}<input class="var-fill-input" data-var="'+v+'" type="text" placeholder="'+v+'"></label>';
+    });
+    vbHTML += '</div><button class="var-fill-apply action-pill copy-btn" type="button">Apply</button>';
+    vb.innerHTML = vbHTML;
+    vb.querySelector(".var-fill-apply").addEventListener("click", function() {
+      var filled = modalAnswer.value;
+      vb.querySelectorAll(".var-fill-input").forEach(function(inp) {
+        var val = inp.value.trim();
+        if (val) filled = filled.split("{{"+inp.getAttribute("data-var")+"}}").join(val);
+      });
+      modalAnswer.value = filled;
+      autoResize(modalAnswer); updateWordCount();
+    });
+    /* Insert before the button row */
+    var btnRow = modalOverlay.querySelector(".modal-actions");
+    if (btnRow) btnRow.parentNode.insertBefore(vb, btnRow);
+    else modalOverlay.querySelector(".modal-body").appendChild(vb);
+  }
 
   modalOverlay.classList.add("is-open");
   modalOverlay.setAttribute("aria-hidden","false");
@@ -2431,11 +3080,124 @@ document.getElementById("saveDataBtn").addEventListener("click", function() {
 });
 
 /* ─── Boot ───────────────────────────────────────────────────────────── */
+/* ─── Log Analyser ────────────────────────────────────────────────────── */
+function parseLog(text) {
+  var lines = text.split(/\r?\n/);
+  var parsed = [];
+  var levelRe = /\b(ERROR|FATAL|CRITICAL|WARN(?:ING)?|INFO|DEBUG)\b/i;
+  var tsRe    = /\d{4}-\d{2}-\d{2}[T ]\d{2}:\d{2}:\d{2}/;
+  lines.forEach(function(line, i) {
+    var lm = line.match(levelRe);
+    var tm = line.match(tsRe);
+    var lvl = lm ? lm[1].toUpperCase() : "INFO";
+    if (lvl === "WARNING") lvl = "WARN";
+    parsed.push({ line: i + 1, text: line, level: lvl, ts: tm ? tm[0] : null });
+  });
+  return parsed;
+}
+
+function topMessages(parsed, n) {
+  var freq = {};
+  parsed.forEach(function(e) {
+    var key = e.text.replace(/\d+/g, "#").trim();
+    freq[key] = (freq[key]||0) + 1;
+  });
+  return Object.keys(freq).sort(function(a,b){ return freq[b]-freq[a]; }).slice(0, n).map(function(k){ return { msg: k, count: freq[k] }; });
+}
+
+function renderLogResults(parsed, filterLevel) {
+  filterLevel = filterLevel || "all";
+  activeLogFilter = filterLevel;
+  var counts = { ERROR:0, WARN:0, INFO:0, DEBUG:0, OTHER:0 };
+  parsed.forEach(function(e) {
+    if (counts[e.level] !== undefined) counts[e.level]++;
+    else counts.OTHER++;
+  });
+  var totalErrors = counts.ERROR + (counts.OTHER||0);
+
+  var html = '<div style="display:flex;flex-wrap:wrap;gap:.65rem;margin-bottom:1.25rem;">' +
+    '<div class="log-stat-card err"><span class="log-stat-label">Errors</span><span class="log-stat-val">' + counts.ERROR + '</span></div>' +
+    '<div class="log-stat-card wrn"><span class="log-stat-label">Warnings</span><span class="log-stat-val">' + counts.WARN + '</span></div>' +
+    '<div class="log-stat-card inf"><span class="log-stat-label">Info</span><span class="log-stat-val">' + counts.INFO + '</span></div>' +
+    '<div class="log-stat-card"><span class="log-stat-label">Debug</span><span class="log-stat-val">' + counts.DEBUG + '</span></div>' +
+    '<div class="log-stat-card"><span class="log-stat-label">Total lines</span><span class="log-stat-val">' + parsed.length + '</span></div>' +
+    '</div>';
+
+  /* Filter buttons */
+  html += '<div class="log-filter-row">';
+  ["all","ERROR","WARN","INFO","DEBUG"].forEach(function(lvl) {
+    var active = lvl === filterLevel ? ' active' : '';
+    html += '<button class="log-flt-btn'+active+'" data-log-filter="'+lvl+'">' + (lvl==="all"?"All":lvl) + '</button>';
+  });
+  html += '</div>';
+
+  /* Top recurring errors */
+  var errLines = parsed.filter(function(e){ return e.level==="ERROR" || e.level==="FATAL" || e.level==="CRITICAL"; });
+  if (errLines.length) {
+    var top = topMessages(errLines, 5);
+    html += '<div class="log-top-errs"><div class="log-h">Top recurring errors <small>'+errLines.length+' error lines</small></div>';
+    top.forEach(function(t, i) {
+      var pct = Math.round(t.count / errLines.length * 100);
+      html += '<div class="log-top-err-row">' +
+        '<span class="log-err-num">'+(i+1)+'</span>' +
+        '<span class="log-err-txt" title="'+escapeHtml(t.msg)+'">'+escapeHtml(t.msg.length>120?t.msg.slice(0,120)+'…':t.msg)+'</span>' +
+        '<span class="log-err-ct">×'+t.count+'</span>' +
+        '</div>';
+    });
+    html += '</div>';
+  }
+
+  /* Filtered lines */
+  var display = filterLevel === "all" ? parsed : parsed.filter(function(e){ return e.level===filterLevel; });
+  var lvlClass = { ERROR:"ll-err", FATAL:"ll-err", CRITICAL:"ll-err", WARN:"ll-wrn", WARNING:"ll-wrn", INFO:"ll-inf", DEBUG:"ll-dbg" };
+  html += '<div class="log-raw">';
+  display.slice(0, 1000).forEach(function(e) {
+    var cls = lvlClass[e.level] || "ll-inf";
+    html += '<div class="log-line '+cls+'"><span class="log-lineno">'+e.line+'</span><span class="log-linetext">'+escapeHtml(e.text)+'</span></div>';
+  });
+  if (display.length > 1000) html += '<div class="log-line"><em>…and '+(display.length-1000)+' more lines</em></div>';
+  html += '</div>';
+
+  logResults.innerHTML = html;
+  logResults.style.display = "block";
+  logDropZone.style.display = "none";
+
+  logResults.querySelectorAll(".log-flt-btn").forEach(function(btn) {
+    btn.addEventListener("click", function() {
+      renderLogResults(parsed, btn.getAttribute("data-log-filter"));
+    });
+  });
+}
+
+function handleLogFile(file) {
+  if (!file) return;
+  var reader = new FileReader();
+  reader.onload = function(ev) {
+    logParsed = parseLog(ev.target.result);
+    renderLogResults(logParsed, "all");
+  };
+  reader.readAsText(file);
+}
+
+logPickBtn.addEventListener("click", function() { logFileInput.click(); });
+logFileInput.addEventListener("change", function(e) { handleLogFile(e.target.files[0]); });
+
+logDropZone.addEventListener("dragover", function(e) { e.preventDefault(); logDropZone.classList.add("drag-over"); });
+logDropZone.addEventListener("dragleave", function() { logDropZone.classList.remove("drag-over"); });
+logDropZone.addEventListener("drop", function(e) {
+  e.preventDefault();
+  logDropZone.classList.remove("drag-over");
+  var file = e.dataTransfer.files[0];
+  handleLogFile(file);
+});
+
 /* Try to load operate-data.js from the same folder.
    If found → use its data. If not found → use the embedded defaults.
    After it resolves (either way) → render everything. */
 (function boot() {
   function render() {
+    loadFavs();
+    loadCopyCounts();
     rebuildCategories();
     renderCategories();
     renderFAQs();
