@@ -1,221 +1,567 @@
-2026-11-26 09:00:21,696 ERROR [PaymentService] NEFT submission failed: RBI gateway returned code 503 txnId=TXN782554
-2026-11-26 09:00:54,534 INFO  [PaymentService] Received NEFT request txnId=TXN554710 amount=INR 980
-2026-11-26 09:01:31,147 INFO  [CoreBankingAdapter] UPI collect request processed txnId=TXN761259 status=SUCCESS
-2026-11-26 09:01:40,684 INFO  [NeftGateway] UPI collect request processed txnId=TXN666950 status=SUCCESS
-2026-11-26 09:02:04,537 INFO  [AuthService] Health check OK - db pool active=12 idle=8
-2026-11-26 09:02:34,349 DEBUG [PaymentService] Cache hit for IFSC lookup HDFC0001234
-2026-11-26 09:03:11,528 INFO  [NeftGateway] Balance enquiry completed for accountId=ACC5717 in 1319ms
-2026-11-26 09:03:33,458 INFO  [CoreBankingAdapter] Balance enquiry completed for accountId=ACC2271 in 5260ms
-2026-11-26 09:04:05,166 DEBUG [PaymentService] Cache hit for IFSC lookup HDFC0001234
-2026-11-26 09:04:25,455 DEBUG [PaymentService] SQL executed in 6440ms rows=1
-2026-11-26 09:04:55,232 INFO  [NeftGateway] Scheduled job ReconciliationJob started
-2026-11-26 09:05:21,240 INFO  [AccountService] Balance enquiry completed for accountId=ACC8359 in 6700ms
-2026-11-26 09:05:57,254 INFO  [NeftGateway] Balance enquiry completed for accountId=ACC4780 in 2592ms
-2026-11-26 09:06:12,647 INFO  [AuthService] Scheduled job ReconciliationJob started
-2026-11-26 09:06:52,503 DEBUG [PaymentService] Request headers parsed traceId=6665e7e423
-2026-11-26 09:07:23,448 DEBUG [CoreBankingAdapter] Request headers parsed traceId=1c298cb3a5
-2026-11-26 09:07:27,312 INFO  [CoreBankingAdapter] Scheduled job ReconciliationJob started
-2026-11-26 09:07:52,599 INFO  [AccountService] Session validated for customerId=CUST8768
-2026-11-26 09:08:23,808 INFO  [NeftGateway] Received NEFT request txnId=TXN251118 amount=INR 5000
-2026-11-26 09:08:57,405 INFO  [PaymentService] Scheduled job ReconciliationJob started
-2026-11-26 09:09:14,437 INFO  [NeftGateway] UPI collect request processed txnId=TXN472974 status=SUCCESS
-2026-11-26 09:09:54,604 WARN  [AuthService] Retrying NEFT submission attempt 2/3 txnId=TXN945234
-2026-11-26 09:09:56,452 ERROR [AccountService] NullPointerException in ReconciliationJob.matchEntries line 3292
-2026-11-26 09:10:19,445 ERROR [NeftGateway] Timeout calling CoreBanking API after 30000ms txnId=TXN184450
-2026-11-26 09:10:50,186 DEBUG [PaymentService] SQL executed in 5756ms rows=1
-2026-11-26 09:11:15,839 WARN  [AccountService] Retrying NEFT submission attempt 2/3 txnId=TXN601253
-2026-11-26 09:11:45,704 INFO  [AccountService] Received NEFT request txnId=TXN860006 amount=INR 25000
-2026-11-26 09:11:55,918 DEBUG [PaymentService] SQL executed in 2266ms rows=1
-2026-11-26 09:12:29,399 WARN  [CoreBankingAdapter] Retrying NEFT submission attempt 2/3 txnId=TXN554882
-2026-11-26 09:12:45,462 WARN  [AccountService] DB connection pool usage at 85% (17/20)
-2026-11-26 09:13:23,119 WARN  [AccountService] OTP validation failed for customerId=CUST9713, attempt 2/3
-2026-11-26 09:13:35,433 DEBUG [CoreBankingAdapter] Request headers parsed traceId=f8e752fdf
-2026-11-26 09:14:09,890 DEBUG [PaymentService] Request headers parsed traceId=a46e40990
-2026-11-26 09:14:42,617 INFO  [CoreBankingAdapter] Received NEFT request txnId=TXN896910 amount=INR 5000
-2026-11-26 09:15:15,997 INFO  [AuthService] Session validated for customerId=CUST9319
-2026-11-26 09:15:51,552 ERROR [AuthService] Timeout calling CoreBanking API after 30000ms txnId=TXN980803
-2026-11-26 09:15:56,258 DEBUG [AuthService] Cache hit for IFSC lookup HDFC0001234
-2026-11-26 09:16:06,266 INFO  [NeftGateway] UPI collect request processed txnId=TXN590456 status=SUCCESS
-2026-11-26 09:16:17,839 WARN  [AuthService] OTP validation failed for customerId=CUST4207, attempt 2/3
-2026-11-26 09:16:19,402 INFO  [CoreBankingAdapter] Balance enquiry completed for accountId=ACC7297 in 5551ms
-2026-11-26 09:16:24,897 INFO  [NeftGateway] UPI collect request processed txnId=TXN209869 status=SUCCESS
-2026-11-26 09:16:42,627 WARN  [CoreBankingAdapter] OTP validation failed for customerId=CUST7651, attempt 2/3
-2026-11-26 09:17:14,375 WARN  [PaymentService] Slow response from CoreBanking: 7088ms (threshold 2000ms) txnId=TXN392618
-2026-11-26 09:17:20,564 WARN  [PaymentService] Slow response from CoreBanking: 4452ms (threshold 2000ms) txnId=TXN737720
-2026-11-26 09:17:42,212 ERROR [NeftGateway] NEFT submission failed: RBI gateway returned code 503 txnId=TXN380871
-2026-11-26 09:17:59,612 INFO  [NeftGateway] UPI collect request processed txnId=TXN427147 status=SUCCESS
-2026-11-26 09:18:17,664 INFO  [NeftGateway] Received NEFT request txnId=TXN362614 amount=INR 5000
-2026-11-26 09:18:50,415 INFO  [NeftGateway] Balance enquiry completed for accountId=ACC9110 in 6560ms
-2026-11-26 09:19:05,957 INFO  [NeftGateway] Health check OK - db pool active=12 idle=8
-2026-11-26 09:19:06,961 INFO  [AccountService] Health check OK - db pool active=12 idle=8
-2026-11-26 09:19:39,261 DEBUG [AuthService] Cache hit for IFSC lookup HDFC0001234
-2026-11-26 09:20:08,416 INFO  [NeftGateway] Session validated for customerId=CUST5005
-2026-11-26 09:20:31,305 INFO  [NeftGateway] Session validated for customerId=CUST8776
-2026-11-26 09:21:04,503 WARN  [PaymentService] Slow response from CoreBanking: 6665ms (threshold 2000ms) txnId=TXN377000
-2026-11-26 09:21:24,606 INFO  [NeftGateway] UPI collect request processed txnId=TXN188586 status=SUCCESS
-2026-11-26 09:21:43,870 WARN  [CoreBankingAdapter] Retrying NEFT submission attempt 2/3 txnId=TXN145915
-2026-11-26 09:22:20,752 WARN  [AuthService] Slow response from CoreBanking: 630ms (threshold 2000ms) txnId=TXN966552
-2026-11-26 09:22:27,601 INFO  [AuthService] Balance enquiry completed for accountId=ACC1308 in 8827ms
-2026-11-26 09:22:28,585 INFO  [AuthService] Received NEFT request txnId=TXN884613 amount=INR 5000
-2026-11-26 09:22:33,491 ERROR [PaymentService] Timeout calling CoreBanking API after 30000ms txnId=TXN864763
-2026-11-26 09:23:04,439 ERROR [AuthService] Timeout calling CoreBanking API after 30000ms txnId=TXN904226
-2026-11-26 09:23:24,788 DEBUG [PaymentService] Request headers parsed traceId=f844ce4ab3
-2026-11-26 09:23:38,221 DEBUG [CoreBankingAdapter] Cache hit for IFSC lookup HDFC0001234
-2026-11-26 09:23:51,618 INFO  [AccountService] Received NEFT request txnId=TXN595918 amount=INR 5000
-2026-11-26 09:24:09,468 INFO  [NeftGateway] UPI collect request processed txnId=TXN178237 status=SUCCESS
-2026-11-26 09:24:48,597 WARN  [AccountService] DB connection pool usage at 85% (17/20)
-2026-11-26 09:24:50,526 INFO  [AuthService] Balance enquiry completed for accountId=ACC7642 in 5067ms
-2026-11-26 09:25:15,300 INFO  [PaymentService] Session validated for customerId=CUST6542
-2026-11-26 09:25:34,873 INFO  [AuthService] Received NEFT request txnId=TXN511984 amount=INR 980
-2026-11-26 09:25:38,546 INFO  [CoreBankingAdapter] Received NEFT request txnId=TXN975221 amount=INR 150000
-2026-11-26 09:25:59,667 INFO  [CoreBankingAdapter] Session validated for customerId=CUST1475
-2026-11-26 09:26:13,393 WARN  [AccountService] Slow response from CoreBanking: 2390ms (threshold 2000ms) txnId=TXN867927
-2026-11-26 09:26:17,404 ERROR [AuthService] NEFT submission failed: RBI gateway returned code 503 txnId=TXN233495
-2026-11-26 09:26:34,265 INFO  [PaymentService] UPI collect request processed txnId=TXN415449 status=SUCCESS
-2026-11-26 09:26:48,560 INFO  [AccountService] Balance enquiry completed for accountId=ACC8421 in 5573ms
-2026-11-26 09:26:57,477 INFO  [AuthService] UPI collect request processed txnId=TXN195121 status=SUCCESS
-2026-11-26 09:27:34,315 INFO  [AccountService] Received NEFT request txnId=TXN886072 amount=INR 980
-2026-11-26 09:27:52,641 INFO  [NeftGateway] Received NEFT request txnId=TXN622343 amount=INR 150000
-2026-11-26 09:27:58,969 INFO  [PaymentService] UPI collect request processed txnId=TXN503241 status=SUCCESS
-2026-11-26 09:28:07,945 INFO  [CoreBankingAdapter] Health check OK - db pool active=12 idle=8
-2026-11-26 09:28:37,798 ERROR [PaymentService] Timeout calling CoreBanking API after 30000ms txnId=TXN921147
-2026-11-26 09:29:07,411 INFO  [NeftGateway] Received NEFT request txnId=TXN101432 amount=INR 25000
-2026-11-26 09:29:24,696 INFO  [NeftGateway] Balance enquiry completed for accountId=ACC2629 in 1272ms
-2026-11-26 09:29:49,385 INFO  [AuthService] Scheduled job ReconciliationJob started
-2026-11-26 09:30:05,414 INFO  [PaymentService] UPI collect request processed txnId=TXN673573 status=SUCCESS
-2026-11-26 09:30:07,534 INFO  [AuthService] Health check OK - db pool active=12 idle=8
-2026-11-26 09:30:22,916 INFO  [AuthService] Health check OK - db pool active=12 idle=8
-2026-11-26 09:30:55,371 INFO  [AuthService] Balance enquiry completed for accountId=ACC4177 in 3901ms
-2026-11-26 09:31:02,781 ERROR [PaymentService] NEFT submission failed: RBI gateway returned code 503 txnId=TXN739734
-2026-11-26 09:31:41,826 INFO  [PaymentService] Balance enquiry completed for accountId=ACC1387 in 2445ms
-2026-11-26 09:31:53,289 INFO  [CoreBankingAdapter] Health check OK - db pool active=12 idle=8
-2026-11-26 09:32:23,211 INFO  [PaymentService] Health check OK - db pool active=12 idle=8
-2026-11-26 09:32:29,941 INFO  [AuthService] Session validated for customerId=CUST4398
-2026-11-26 09:32:57,297 INFO  [AuthService] Health check OK - db pool active=12 idle=8
-2026-11-26 09:33:21,135 WARN  [AccountService] OTP validation failed for customerId=CUST5063, attempt 2/3
-2026-11-26 09:33:26,443 WARN  [CoreBankingAdapter] Slow response from CoreBanking: 5675ms (threshold 2000ms) txnId=TXN369500
-2026-11-26 09:33:29,873 INFO  [CoreBankingAdapter] Health check OK - db pool active=12 idle=8
-2026-11-26 09:33:34,540 INFO  [AccountService] UPI collect request processed txnId=TXN212471 status=SUCCESS
-2026-11-26 09:33:43,427 ERROR [AccountService] Timeout calling CoreBanking API after 30000ms txnId=TXN109128
-2026-11-26 09:34:07,166 WARN  [PaymentService] Slow response from CoreBanking: 2740ms (threshold 2000ms) txnId=TXN636750
-2026-11-26 09:34:38,186 DEBUG [NeftGateway] Cache hit for IFSC lookup HDFC0001234
-2026-11-26 09:34:45,735 INFO  [NeftGateway] Health check OK - db pool active=12 idle=8
-2026-11-26 09:35:20,374 ERROR [AuthService] Insufficient balance for accountId=ACC5815 txnId=TXN896463
-2026-11-26 09:35:37,388 WARN  [CoreBankingAdapter] Retrying NEFT submission attempt 2/3 txnId=TXN560741
-2026-11-26 09:35:50,927 INFO  [PaymentService] Balance enquiry completed for accountId=ACC9312 in 8743ms
-2026-11-26 09:36:20,141 ERROR [AuthService] Timeout calling CoreBanking API after 30000ms txnId=TXN104710
-2026-11-26 09:36:35,282 INFO  [AccountService] UPI collect request processed txnId=TXN729662 status=SUCCESS
-2026-11-26 09:37:14,448 INFO  [NeftGateway] Health check OK - db pool active=12 idle=8
-2026-11-26 09:37:17,480 INFO  [NeftGateway] Session validated for customerId=CUST1186
-2026-11-26 09:37:57,203 INFO  [AccountService] UPI collect request processed txnId=TXN132995 status=SUCCESS
-2026-11-26 09:38:33,390 INFO  [AuthService] Scheduled job ReconciliationJob started
-2026-11-26 09:39:00,885 ERROR [AuthService] Timeout calling CoreBanking API after 30000ms txnId=TXN881543
-2026-11-26 09:39:13,940 INFO  [PaymentService] Balance enquiry completed for accountId=ACC8113 in 2685ms
-2026-11-26 09:39:39,245 DEBUG [AccountService] Cache hit for IFSC lookup HDFC0001234
-2026-11-26 09:39:45,633 DEBUG [NeftGateway] Cache hit for IFSC lookup HDFC0001234
-2026-11-26 09:39:50,144 INFO  [AccountService] Balance enquiry completed for accountId=ACC5941 in 2195ms
-2026-11-26 09:40:11,729 INFO  [NeftGateway] Health check OK - db pool active=12 idle=8
-2026-11-26 09:40:42,226 INFO  [NeftGateway] UPI collect request processed txnId=TXN143738 status=SUCCESS
-2026-11-26 09:40:58,713 ERROR [AccountService] NullPointerException in ReconciliationJob.matchEntries line 5431
-2026-11-26 09:41:34,774 ERROR [AuthService] NullPointerException in ReconciliationJob.matchEntries line 4203
-2026-11-26 09:42:03,881 INFO  [CoreBankingAdapter] UPI collect request processed txnId=TXN124510 status=SUCCESS
-2026-11-26 09:42:33,474 WARN  [PaymentService] OTP validation failed for customerId=CUST2099, attempt 2/3
-2026-11-26 09:43:02,421 INFO  [CoreBankingAdapter] Health check OK - db pool active=12 idle=8
-2026-11-26 09:43:08,849 INFO  [PaymentService] Scheduled job ReconciliationJob started
-2026-11-26 09:43:21,725 INFO  [AuthService] Balance enquiry completed for accountId=ACC4622 in 1193ms
-2026-11-26 09:43:32,591 INFO  [NeftGateway] Scheduled job ReconciliationJob started
-2026-11-26 09:44:10,513 INFO  [NeftGateway] Scheduled job ReconciliationJob started
-2026-11-26 09:44:28,978 DEBUG [AuthService] Cache hit for IFSC lookup HDFC0001234
-2026-11-26 09:44:57,503 DEBUG [AuthService] SQL executed in 8896ms rows=1
-2026-11-26 09:45:14,552 INFO  [NeftGateway] Session validated for customerId=CUST6902
-2026-11-26 09:45:26,865 DEBUG [PaymentService] Request headers parsed traceId=bba86df7
-2026-11-26 09:45:41,148 INFO  [NeftGateway] Scheduled job ReconciliationJob started
-2026-11-26 09:46:13,411 INFO  [PaymentService] Health check OK - db pool active=12 idle=8
-2026-11-26 09:46:47,948 INFO  [AccountService] UPI collect request processed txnId=TXN533311 status=SUCCESS
-2026-11-26 09:46:58,248 INFO  [AuthService] UPI collect request processed txnId=TXN841838 status=SUCCESS
-2026-11-26 09:47:24,354 WARN  [NeftGateway] Slow response from CoreBanking: 8600ms (threshold 2000ms) txnId=TXN158857
-2026-11-26 09:47:25,897 INFO  [PaymentService] Scheduled job ReconciliationJob started
-2026-11-26 09:47:26,758 DEBUG [CoreBankingAdapter] SQL executed in 3388ms rows=1
-2026-11-26 09:47:53,841 WARN  [AccountService] Retrying NEFT submission attempt 2/3 txnId=TXN633280
-2026-11-26 09:48:28,207 INFO  [AuthService] Balance enquiry completed for accountId=ACC2318 in 7533ms
-2026-11-26 09:48:43,795 DEBUG [AccountService] Request headers parsed traceId=8da2c81c32
-2026-11-26 09:49:17,366 ERROR [NeftGateway] Timeout calling CoreBanking API after 30000ms txnId=TXN773189
-2026-11-26 09:49:30,488 ERROR [CoreBankingAdapter] Insufficient balance for accountId=ACC7368 txnId=TXN442749
-2026-11-26 09:50:01,339 INFO  [CoreBankingAdapter] Scheduled job ReconciliationJob started
-2026-11-26 09:50:21,214 WARN  [PaymentService] OTP validation failed for customerId=CUST3810, attempt 2/3
-2026-11-26 09:51:01,758 ERROR [PaymentService] Timeout calling CoreBanking API after 30000ms txnId=TXN248731
-2026-11-26 09:51:06,167 WARN  [AccountService] Slow response from CoreBanking: 8867ms (threshold 2000ms) txnId=TXN998103
-2026-11-26 09:51:13,746 INFO  [AuthService] UPI collect request processed txnId=TXN217408 status=SUCCESS
-2026-11-26 09:51:44,367 INFO  [PaymentService] Received NEFT request txnId=TXN930437 amount=INR 25000
-2026-11-26 09:52:07,394 INFO  [CoreBankingAdapter] Session validated for customerId=CUST6256
-2026-11-26 10:15:36,001 FATAL [CoreBankingAdapter] Connection refused: core-banking-01:8443 - circuit breaker OPEN
-2026-11-26 09:52:09,650 WARN  [CoreBankingAdapter] Slow response from CoreBanking: 7803ms (threshold 2000ms) txnId=TXN557650
-2026-11-26 09:52:23,306 WARN  [AuthService] Slow response from CoreBanking: 7264ms (threshold 2000ms) txnId=TXN702449
-2026-11-26 09:52:27,951 INFO  [CoreBankingAdapter] Balance enquiry completed for accountId=ACC4023 in 8223ms
-2026-11-26 09:52:44,751 DEBUG [PaymentService] Request headers parsed traceId=1c2a7147ea
-2026-11-26 09:53:16,504 WARN  [PaymentService] Slow response from CoreBanking: 1678ms (threshold 2000ms) txnId=TXN758434
-2026-11-26 09:53:44,658 ERROR [CoreBankingAdapter] Timeout calling CoreBanking API after 30000ms txnId=TXN490017
-2026-11-26 09:53:55,805 INFO  [CoreBankingAdapter] Health check OK - db pool active=12 idle=8
-2026-11-26 09:53:58,549 INFO  [AuthService] Session validated for customerId=CUST8377
-2026-11-26 09:54:36,872 INFO  [CoreBankingAdapter] Session validated for customerId=CUST9318
-2026-11-26 09:54:46,435 WARN  [NeftGateway] Retrying NEFT submission attempt 2/3 txnId=TXN858288
-2026-11-26 09:55:03,251 ERROR [AuthService] Insufficient balance for accountId=ACC2665 txnId=TXN206751
-2026-11-26 09:55:23,575 INFO  [PaymentService] UPI collect request processed txnId=TXN214587 status=SUCCESS
-2026-11-26 09:55:24,245 INFO  [AuthService] Balance enquiry completed for accountId=ACC9199 in 4973ms
-2026-11-26 09:56:03,783 WARN  [CoreBankingAdapter] Slow response from CoreBanking: 7020ms (threshold 2000ms) txnId=TXN876937
-2026-11-26 09:56:18,817 DEBUG [PaymentService] SQL executed in 5248ms rows=1
-2026-11-26 09:56:45,120 INFO  [CoreBankingAdapter] Balance enquiry completed for accountId=ACC5096 in 7059ms
-2026-11-26 09:57:12,208 INFO  [PaymentService] Health check OK - db pool active=12 idle=8
-2026-11-26 09:57:29,688 INFO  [AccountService] UPI collect request processed txnId=TXN851006 status=SUCCESS
-2026-11-26 09:58:04,859 INFO  [AccountService] Balance enquiry completed for accountId=ACC7060 in 8667ms
-2026-11-26 09:58:18,491 ERROR [AccountService] Timeout calling CoreBanking API after 30000ms txnId=TXN511558
-2026-11-26 09:58:22,859 INFO  [AccountService] Balance enquiry completed for accountId=ACC5344 in 1910ms
-2026-11-26 09:58:56,895 ERROR [PaymentService] NullPointerException in ReconciliationJob.matchEntries line 2815
-2026-11-26 09:59:09,950 INFO  [AccountService] Scheduled job ReconciliationJob started
-2026-11-26 09:59:39,335 ERROR [AuthService] NullPointerException in ReconciliationJob.matchEntries line 5932
-2026-11-26 10:00:04,918 DEBUG [AuthService] Cache hit for IFSC lookup HDFC0001234
-2026-11-26 10:00:27,187 INFO  [AuthService] Session validated for customerId=CUST8944
-2026-11-26 10:00:37,243 ERROR [CoreBankingAdapter] NullPointerException in ReconciliationJob.matchEntries line 5439
-2026-11-26 10:01:00,356 DEBUG [CoreBankingAdapter] Request headers parsed traceId=4ba7ecc7ee
-2026-11-26 10:01:07,512 DEBUG [CoreBankingAdapter] Request headers parsed traceId=e73562efe9
-2026-11-26 10:01:18,809 DEBUG [NeftGateway] SQL executed in 4986ms rows=1
-2026-11-26 10:01:52,946 INFO  [NeftGateway] Balance enquiry completed for accountId=ACC2940 in 4453ms
-2026-11-26 10:02:23,268 INFO  [CoreBankingAdapter] Received NEFT request txnId=TXN607899 amount=INR 980
-2026-11-26 10:03:02,960 ERROR [AccountService] Timeout calling CoreBanking API after 30000ms txnId=TXN268146
-2026-11-26 10:03:26,146 INFO  [AuthService] Health check OK - db pool active=12 idle=8
-2026-11-26 10:03:33,740 INFO  [NeftGateway] Balance enquiry completed for accountId=ACC1555 in 3615ms
-2026-11-26 10:03:55,315 INFO  [AuthService] Health check OK - db pool active=12 idle=8
-2026-11-26 10:04:23,605 INFO  [AccountService] Session validated for customerId=CUST5737
-2026-11-26 10:04:45,438 INFO  [NeftGateway] Session validated for customerId=CUST4334
-2026-11-26 10:05:06,515 WARN  [CoreBankingAdapter] Retrying NEFT submission attempt 2/3 txnId=TXN714938
-2026-11-26 10:05:43,586 INFO  [CoreBankingAdapter] Session validated for customerId=CUST1760
-2026-11-26 10:05:47,748 WARN  [AccountService] OTP validation failed for customerId=CUST2359, attempt 2/3
-2026-11-26 10:05:59,942 INFO  [NeftGateway] UPI collect request processed txnId=TXN138773 status=SUCCESS
-2026-11-26 10:06:19,541 DEBUG [CoreBankingAdapter] Cache hit for IFSC lookup HDFC0001234
-2026-11-26 10:06:57,514 ERROR [AccountService] Timeout calling CoreBanking API after 30000ms txnId=TXN621944
-2026-11-26 10:07:02,184 INFO  [AccountService] Balance enquiry completed for accountId=ACC8789 in 6877ms
-2026-11-26 10:07:16,224 ERROR [PaymentService] Insufficient balance for accountId=ACC1078 txnId=TXN116284
-2026-11-26 10:07:30,862 ERROR [NeftGateway] Timeout calling CoreBanking API after 30000ms txnId=TXN595275
-2026-11-26 10:07:34,826 INFO  [AccountService] Health check OK - db pool active=12 idle=8
-2026-11-26 10:08:04,766 DEBUG [CoreBankingAdapter] Cache hit for IFSC lookup HDFC0001234
-2026-11-26 10:08:10,688 INFO  [AccountService] Session validated for customerId=CUST8968
-2026-11-26 10:08:41,527 DEBUG [AccountService] Request headers parsed traceId=cda13475fe
-2026-11-26 10:09:06,766 WARN  [CoreBankingAdapter] OTP validation failed for customerId=CUST5790, attempt 2/3
-2026-11-26 10:09:28,352 ERROR [AccountService] Insufficient balance for accountId=ACC6056 txnId=TXN116253
-2026-11-26 10:09:53,429 DEBUG [AuthService] SQL executed in 4761ms rows=1
-2026-11-26 10:10:11,988 INFO  [CoreBankingAdapter] Scheduled job ReconciliationJob started
-2026-11-26 10:10:21,666 INFO  [AccountService] Scheduled job ReconciliationJob started
-2026-11-26 10:10:46,311 INFO  [AuthService] Health check OK - db pool active=12 idle=8
-2026-11-26 10:11:24,338 WARN  [AccountService] OTP validation failed for customerId=CUST9784, attempt 2/3
-2026-11-26 10:12:02,293 INFO  [NeftGateway] Session validated for customerId=CUST8808
-2026-11-26 10:12:15,977 INFO  [NeftGateway] Health check OK - db pool active=12 idle=8
-2026-11-26 10:12:31,259 INFO  [AuthService] Balance enquiry completed for accountId=ACC7089 in 7712ms
-2026-11-26 10:13:10,991 INFO  [CoreBankingAdapter] Session validated for customerId=CUST2541
-2026-11-26 10:13:42,885 DEBUG [CoreBankingAdapter] Request headers parsed traceId=72f24dcbf1
-2026-11-26 10:14:21,487 ERROR [PaymentService] Timeout calling CoreBanking API after 30000ms txnId=TXN984732
-2026-11-26 10:14:23,755 INFO  [AccountService] Scheduled job ReconciliationJob started
-2026-11-26 10:14:31,785 WARN  [CoreBankingAdapter] Slow response from CoreBanking: 1591ms (threshold 2000ms) txnId=TXN369687
-2026-11-26 10:14:57,362 INFO  [AuthService] UPI collect request processed txnId=TXN488928 status=SUCCESS
-2026-11-26 10:15:01,762 ERROR [AccountService] Timeout calling CoreBanking API after 30000ms txnId=TXN977886
-2026-11-26 10:15:05,551 INFO  [PaymentService] Session validated for customerId=CUST4259
-2026-11-26 10:15:36,551 INFO  [NeftGateway] Session validated for customerId=CUST7143
+=== payment-service v4.12.3 | host=pay-app-02 | env=PROD | log rotated 2026-11-26 00:00 ===
+2026-11-26 09:00:00,563 INFO  [scheduling-1] [PaymentApplication] Starting PaymentApplication v4.12.3 using Java 17.0.9 with PID 48211
+2026-11-26 09:00:03,975 INFO  [http-nio-8443-exec-10] [PaymentApplication] Started PaymentApplication in 8.4 seconds (process running for 9.1)
+2026-11-26 09:00:17,929 WARN  [neft-worker-1] [AuthService] OTP validation failed for customerId=CUST2485 otp=664861 attempt 2/3
+2026-11-26 09:00:33,951 DEBUG [http-nio-8443-exec-9] [AccountService] Balance enquiry for customerId=CUST3580 completed in 47ms
+2026-11-26 09:00:38,551 INFO  [neft-worker-2] [NeftGateway] NEFT request accepted txnId=TXN131543 amount=INR 980 utr=SBIN22653794352
+2026-11-26 09:00:49,187 INFO  [scheduling-1] [UpiService] UPI collect processed txnId=TXN794628 status=SUCCESS
+2026-11-26 09:01:10,422 INFO  [http-nio-8443-exec-4] [AuthService] Session validated for customerId=CUST5161
+2026-11-26 09:01:16,168 INFO  [http-nio-8443-exec-1] [NeftGateway] NEFT request accepted txnId=TXN213039 amount=INR 150000 utr=SBIN22661876968
+2026-11-26 09:01:26,174 INFO  [neft-worker-2] [NeftGateway] NEFT request accepted txnId=TXN493701 amount=INR 980 utr=SBIN22666343448
+2026-11-26 09:01:38,237 INFO  [http-nio-8443-exec-4] [NeftGateway] NEFT request accepted txnId=TXN115885 amount=INR 980 utr=SBIN22625836575
+2026-11-26 09:01:43,672 INFO  [neft-worker-4] [UpiService] UPI collect processed txnId=TXN815210 status=SUCCESS
+2026-11-26 09:01:53,759 INFO  [scheduling-1] [AuthService] Session validated for customerId=CUST7868
+2026-11-26 09:02:10,315 INFO  [neft-worker-4] [NeftGateway] NEFT request accepted txnId=TXN942438 amount=INR 150000 utr=SBIN22612634789
+2026-11-26 09:02:32,552 WARN  [neft-worker-1] [NotificationService] SMS delivery delayed for mobile=9838621040 email=rahul.sharma@example.com
+2026-11-26 09:02:46,192 INFO  [http-nio-8443-exec-4] [UpiService] UPI collect processed txnId=TXN177889 status=SUCCESS
+2026-11-26 09:03:01,595 INFO  [scheduling-1] [UpiService] UPI collect processed txnId=TXN715798 status=SUCCESS
+2026-11-26 09:03:10,262 INFO  [neft-worker-2] [NeftGateway] NEFT request accepted txnId=TXN339477 amount=INR 25000 utr=SBIN22635474614
+2026-11-26 09:03:26,206 DEBUG [neft-worker-1] [AccountService] Balance enquiry for customerId=CUST7905 completed in 64ms
+2026-11-26 09:03:38,943 DEBUG [scheduling-1] [AccountService] Balance enquiry for customerId=CUST5210 completed in 255ms
+2026-11-26 09:03:58,333 DEBUG [scheduling-1] [AccountService] Balance enquiry for customerId=CUST2126 completed in 104ms
+2026-11-26 09:04:08,521 INFO  [http-nio-8443-exec-8] [NeftGateway] NEFT request accepted txnId=TXN117379 amount=INR 5000 utr=SBIN22646130597
+2026-11-26 09:04:13,234 INFO  [http-nio-8443-exec-2] [UpiService] UPI collect processed txnId=TXN699963 status=SUCCESS
+2026-11-26 09:04:31,704 DEBUG [scheduling-1] [AccountService] Balance enquiry for customerId=CUST9551 completed in 111ms
+2026-11-26 09:04:46,593 DEBUG [scheduling-1] [CoreBankingAdapter] Health check OK pool active=4 idle=7
+2026-11-26 09:04:54,854 INFO  [scheduling-1] [NeftGateway] NEFT request accepted txnId=TXN672622 amount=INR 150000 utr=SBIN22615967982
+2026-11-26 09:05:09,527 WARN  [neft-worker-4] [AuthService] OTP validation failed for customerId=CUST2272 otp=998939 attempt 2/3
+2026-11-26 09:05:13,112 INFO  [http-nio-8443-exec-10] [UpiService] UPI collect processed txnId=TXN710983 status=SUCCESS
+2026-11-26 09:05:19,497 DEBUG [scheduling-1] [CoreBankingAdapter] Health check OK pool active=10 idle=11
+2026-11-26 09:05:37,715 INFO  [http-nio-8443-exec-2] [NeftGateway] NEFT request accepted txnId=TXN886652 amount=INR 5000 utr=SBIN22651639035
+2026-11-26 09:05:48,111 INFO  [http-nio-8443-exec-6] [NeftGateway] NEFT request accepted txnId=TXN917832 amount=INR 980 utr=SBIN22644336950
+2026-11-26 09:05:58,775 INFO  [http-nio-8443-exec-8] [AuthService] Session validated for customerId=CUST6611
+2026-11-26 09:06:12,319 INFO  [neft-worker-2] [NeftGateway] NEFT request accepted txnId=TXN764978 amount=INR 980 utr=SBIN22636882721
+2026-11-26 09:06:26,383 INFO  [scheduling-1] [NeftGateway] NEFT request accepted txnId=TXN467782 amount=INR 5000 utr=SBIN22618608592
+2026-11-26 09:06:45,632 INFO  [neft-worker-3] [NeftGateway] NEFT request accepted txnId=TXN534094 amount=INR 980 utr=SBIN22693984536
+2026-11-26 09:07:03,993 INFO  [neft-worker-1] [AuthService] Session validated for customerId=CUST5556
+2026-11-26 09:07:15,239 INFO  [http-nio-8443-exec-7] [NeftGateway] NEFT request accepted txnId=TXN929962 amount=INR 5000 utr=SBIN22696031623
+2026-11-26 09:07:19,744 INFO  [http-nio-8443-exec-2] [NeftGateway] NEFT request accepted txnId=TXN917107 amount=INR 25000 utr=SBIN22616300524
+2026-11-26 09:07:40,800 INFO  [scheduling-1] [AuthService] Session validated for customerId=CUST2277
+2026-11-26 09:07:52,331 INFO  [neft-worker-3] [NeftGateway] NEFT request accepted txnId=TXN595137 amount=INR 5000 utr=SBIN22634038235
+2026-11-26 09:08:12,969 DEBUG [http-nio-8443-exec-12] [CoreBankingAdapter] Health check OK pool active=6 idle=12
+2026-11-26 09:08:29,564 DEBUG [scheduling-1] [AccountService] Balance enquiry for customerId=CUST3128 completed in 270ms
+2026-11-26 09:08:50,574 INFO  [http-nio-8443-exec-6] [AuthService] Session validated for customerId=CUST6621
+2026-11-26 09:08:57,417 INFO  [scheduling-1] [AuthService] Session validated for customerId=CUST2439
+2026-11-26 09:09:01,531 INFO  [http-nio-8443-exec-5] [NeftGateway] NEFT request accepted txnId=TXN562318 amount=INR 150000 utr=SBIN22683860274
+2026-11-26 09:09:11,645 INFO  [scheduling-1] [NeftGateway] NEFT request accepted txnId=TXN938713 amount=INR 5000 utr=SBIN22633205749
+2026-11-26 09:09:19,604 DEBUG [http-nio-8443-exec-10] [CoreBankingAdapter] Health check OK pool active=12 idle=13
+2026-11-26 09:09:37,626 INFO  [scheduling-1] [NeftGateway] NEFT request accepted txnId=TXN864247 amount=INR 25000 utr=SBIN22680166709
+2026-11-26 09:09:53,411 INFO  [neft-worker-3] [AuthService] Session validated for customerId=CUST4411
+2026-11-26 09:10:12,105 INFO  [http-nio-8443-exec-10] [UpiService] UPI collect processed txnId=TXN627616 status=SUCCESS
+2026-11-26 09:10:33,657 INFO  [scheduling-1] [UpiService] UPI collect processed txnId=TXN520042 status=SUCCESS
+2026-11-26 09:10:39,919 INFO  [http-nio-8443-exec-7] [NeftGateway] NEFT request accepted txnId=TXN664884 amount=INR 980 utr=SBIN22665535817
+2026-11-26 09:10:58,424 INFO  [scheduling-1] [NeftGateway] NEFT request accepted txnId=TXN955341 amount=INR 980 utr=SBIN22680461862
+2026-11-26 09:11:02,298 INFO  [http-nio-8443-exec-3] [NeftGateway] NEFT request accepted txnId=TXN917143 amount=INR 5000 utr=SBIN22614781487
+2026-11-26 09:11:15,610 INFO  [neft-worker-4] [UpiService] UPI collect processed txnId=TXN749872 status=SUCCESS
+2026-11-26 09:11:37,834 WARN  [http-nio-8443-exec-4] [NotificationService] SMS delivery delayed for mobile=9843628740 email=rahul.sharma@example.com
+2026-11-26 09:11:53,651 INFO  [neft-worker-2] [AuthService] Session validated for customerId=CUST3616
+2026-11-26 09:12:03,858 DEBUG [http-nio-8443-exec-11] [AccountService] Balance enquiry for customerId=CUST3235 completed in 159ms
+2026-11-26 09:12:17,323 INFO  [http-nio-8443-exec-4] [AuthService] Session validated for customerId=CUST4189
+2026-11-26 09:12:28,952 INFO  [http-nio-8443-exec-7] [NeftGateway] NEFT request accepted txnId=TXN506741 amount=INR 5000 utr=SBIN22668357496
+2026-11-26 09:12:44,305 INFO  [scheduling-1] [AuthService] Session validated for customerId=CUST2573
+2026-11-26 09:12:51,802 DEBUG [scheduling-1] [AccountService] Balance enquiry for customerId=CUST6627 completed in 297ms
+2026-11-26 09:12:58,682 ERROR [http-nio-8443-exec-8] [ReconciliationJob] Reconciliation batch failed batchId=RB-20261126-09
+java.lang.NullPointerException: Cannot invoke "LedgerEntry.getAmount()" because "entry" is null
+	at com.bank.recon.ReconciliationJob.matchEntries(ReconciliationJob.java:211)
+	at com.bank.recon.ReconciliationJob.run(ReconciliationJob.java:74)
+	at org.springframework.scheduling.support.DelegatingErrorHandlingRunnable.run(DelegatingErrorHandlingRunnable.java:54)
+2026-11-26 09:13:07,789 WARN  [http-nio-8443-exec-2] [AuthService] OTP validation failed for customerId=CUST3589 otp=396846 attempt 2/3
+2026-11-26 09:13:25,536 WARN  [scheduling-1] [AuthService] OTP validation failed for customerId=CUST7404 otp=589642 attempt 2/3
+2026-11-26 09:13:35,285 INFO  [scheduling-1] [NeftGateway] NEFT request accepted txnId=TXN835083 amount=INR 5000 utr=SBIN22636879914
+2026-11-26 09:13:50,911 INFO  [http-nio-8443-exec-1] [NeftGateway] NEFT request accepted txnId=TXN273095 amount=INR 5000 utr=SBIN22678794745
+2026-11-26 09:14:06,386 INFO  [scheduling-1] [NeftGateway] NEFT request accepted txnId=TXN713013 amount=INR 150000 utr=SBIN22644663640
+2026-11-26 09:14:14,885 INFO  [scheduling-1] [AuthService] Session validated for customerId=CUST7059
+2026-11-26 09:14:24,203 INFO  [neft-worker-3] [NeftGateway] NEFT request accepted txnId=TXN458317 amount=INR 150000 utr=SBIN22672926692
+2026-11-26 09:14:29,321 DEBUG [neft-worker-4] [CoreBankingAdapter] Health check OK pool active=8 idle=11
+2026-11-26 09:14:38,757 INFO  [scheduling-1] [UpiService] UPI collect processed txnId=TXN621766 status=SUCCESS
+2026-11-26 09:15:00,362 ERROR [neft-worker-4] [CardService] Card validation failed for cardNo=4111111111111111 customerId=CUST4883 reason=EXPIRED
+2026-11-26 09:15:05,364 DEBUG [scheduling-1] [AccountService] Balance enquiry for customerId=CUST1176 completed in 90ms
+2026-11-26 09:15:26,681 INFO  [neft-worker-4] [UpiService] UPI collect processed txnId=TXN645967 status=SUCCESS
+2026-11-26 09:15:32,263 DEBUG [http-nio-8443-exec-7] [AccountService] Balance enquiry for customerId=CUST1739 completed in 237ms
+2026-11-26 09:15:51,606 INFO  [neft-worker-3] [UpiService] UPI collect processed txnId=TXN550445 status=SUCCESS
+2026-11-26 09:16:07,594 INFO  [neft-worker-3] [UpiService] UPI collect processed txnId=TXN399631 status=SUCCESS
+2026-11-26 09:16:20,891 DEBUG [neft-worker-1] [AccountService] Balance enquiry for customerId=CUST1440 completed in 47ms
+2026-11-26 09:16:29,866 DEBUG [neft-worker-1] [AccountService] Balance enquiry for customerId=CUST1864 completed in 201ms
+2026-11-26 09:16:43,836 WARN  [http-nio-8443-exec-8] [NotificationService] SMS delivery delayed for mobile=9867648626 email=rahul.sharma@example.com
+2026-11-26 09:16:48,936 DEBUG [http-nio-8443-exec-4] [CoreBankingAdapter] Health check OK pool active=11 idle=8
+2026-11-26 09:17:05,258 INFO  [scheduling-1] [NeftGateway] NEFT request accepted txnId=TXN154584 amount=INR 150000 utr=SBIN22680880343
+2026-11-26 09:17:13,754 INFO  [scheduling-1] [UpiService] UPI collect processed txnId=TXN374862 status=SUCCESS
+2026-11-26 09:17:33,592 INFO  [neft-worker-3] [NeftGateway] NEFT request accepted txnId=TXN404222 amount=INR 25000 utr=SBIN22641998986
+2026-11-26 09:17:48,871 DEBUG [http-nio-8443-exec-4] [AccountService] Balance enquiry for customerId=CUST4113 completed in 182ms
+2026-11-26 09:18:08,109 DEBUG [scheduling-1] [CoreBankingAdapter] Health check OK pool active=4 idle=6
+2026-11-26 09:18:12,873 INFO  [neft-worker-2] [NeftGateway] NEFT request accepted txnId=TXN667959 amount=INR 150000 utr=SBIN22619729823
+2026-11-26 09:18:23,462 INFO  [scheduling-1] [UpiService] UPI collect processed txnId=TXN601801 status=SUCCESS
+2026-11-26 09:18:42,921 INFO  [neft-worker-4] [AuthService] Session validated for customerId=CUST2218
+2026-11-26 09:18:52,477 DEBUG [scheduling-1] [AccountService] Balance enquiry for customerId=CUST7391 completed in 117ms
+2026-11-26 09:19:13,537 INFO  [neft-worker-3] [AuthService] Session validated for customerId=CUST4012
+2026-11-26 09:19:20,677 INFO  [neft-worker-4] [NeftGateway] NEFT request accepted txnId=TXN670040 amount=INR 5000 utr=SBIN22667980506
+2026-11-26 09:19:38,417 INFO  [neft-worker-1] [AuthService] Session validated for customerId=CUST2246
+2026-11-26 09:19:51,389 INFO  [scheduling-1] [AuthService] Session validated for customerId=CUST6373
+2026-11-26 09:20:05,709 INFO  [scheduling-1] [NeftGateway] NEFT request accepted txnId=TXN843728 amount=INR 980 utr=SBIN22686406737
+2026-11-26 09:20:25,847 INFO  [http-nio-8443-exec-9] [NeftGateway] NEFT request accepted txnId=TXN433047 amount=INR 25000 utr=SBIN22663632289
+2026-11-26 09:20:40,496 INFO  [scheduling-1] [NeftGateway] NEFT request accepted txnId=TXN809890 amount=INR 980 utr=SBIN22688491691
+2026-11-26 09:21:01,280 INFO  [scheduling-1] [UpiService] UPI collect processed txnId=TXN285900 status=SUCCESS
+2026-11-26 09:21:05,766 INFO  [neft-worker-1] [NeftGateway] NEFT request accepted txnId=TXN266392 amount=INR 150000 utr=SBIN22612998454
+2026-11-26 09:21:26,183 INFO  [scheduling-1] [UpiService] UPI collect processed txnId=TXN450770 status=SUCCESS
+2026-11-26 09:21:32,863 ERROR [http-nio-8443-exec-11] [CardService] Card validation failed for cardNo=4111111111111111 customerId=CUST2596 reason=EXPIRED
+2026-11-26 09:21:43,503 DEBUG [scheduling-1] [CoreBankingAdapter] Health check OK pool active=9 idle=13
+2026-11-26 09:21:51,174 INFO  [scheduling-1] [UpiService] UPI collect processed txnId=TXN855955 status=SUCCESS
+2026-11-26 09:22:06,575 INFO  [neft-worker-1] [AuthService] Session validated for customerId=CUST2462
+2026-11-26 09:22:21,530 INFO  [neft-worker-2] [AuthService] Session validated for customerId=CUST7907
+2026-11-26 09:22:30,428 INFO  [scheduling-1] [UpiService] UPI collect processed txnId=TXN275799 status=SUCCESS
+2026-11-26 09:22:50,415 DEBUG [scheduling-1] [CoreBankingAdapter] Health check OK pool active=4 idle=13
+2026-11-26 09:22:58,698 INFO  [scheduling-1] [NeftGateway] NEFT request accepted txnId=TXN165372 amount=INR 980 utr=SBIN22612304523
+2026-11-26 09:23:05,341 INFO  [neft-worker-4] [UpiService] UPI collect processed txnId=TXN716930 status=SUCCESS
+2026-11-26 09:23:25,875 INFO  [scheduling-1] [NeftGateway] NEFT request accepted txnId=TXN394714 amount=INR 980 utr=SBIN22633154351
+2026-11-26 09:23:44,890 DEBUG [http-nio-8443-exec-2] [CoreBankingAdapter] Health check OK pool active=9 idle=14
+2026-11-26 09:24:00,640 ERROR [http-nio-8443-exec-9] [ReconciliationJob] Reconciliation batch failed batchId=RB-20261126-07
+java.lang.NullPointerException: Cannot invoke "LedgerEntry.getAmount()" because "entry" is null
+	at com.bank.recon.ReconciliationJob.matchEntries(ReconciliationJob.java:211)
+	at com.bank.recon.ReconciliationJob.run(ReconciliationJob.java:74)
+	at org.springframework.scheduling.support.DelegatingErrorHandlingRunnable.run(DelegatingErrorHandlingRunnable.java:54)
+2026-11-26 09:24:11,560 INFO  [neft-worker-4] [AuthService] Session validated for customerId=CUST7087
+2026-11-26 09:24:20,365 INFO  [neft-worker-2] [AuthService] Session validated for customerId=CUST3371
+2026-11-26 09:24:32,309 INFO  [http-nio-8443-exec-3] [NeftGateway] NEFT request accepted txnId=TXN699654 amount=INR 25000 utr=SBIN22610183250
+2026-11-26 09:24:47,810 DEBUG [neft-worker-1] [AccountService] Balance enquiry for customerId=CUST2591 completed in 285ms
+2026-11-26 09:25:09,908 INFO  [http-nio-8443-exec-4] [UpiService] UPI collect processed txnId=TXN119955 status=SUCCESS
+2026-11-26 09:25:15,656 INFO  [http-nio-8443-exec-7] [UpiService] UPI collect processed txnId=TXN139030 status=SUCCESS
+2026-11-26 09:25:28,413 INFO  [scheduling-1] [UpiService] UPI collect processed txnId=TXN683417 status=SUCCESS
+2026-11-26 09:25:34,769 INFO  [scheduling-1] [NeftGateway] NEFT request accepted txnId=TXN513386 amount=INR 980 utr=SBIN22626360280
+2026-11-26 09:25:53,890 INFO  [neft-worker-2] [UpiService] UPI collect processed txnId=TXN580339 status=SUCCESS
+2026-11-26 09:26:01,867 INFO  [scheduling-1] [UpiService] UPI collect processed txnId=TXN665987 status=SUCCESS
+2026-11-26 09:26:22,437 INFO  [neft-worker-3] [NeftGateway] NEFT request accepted txnId=TXN309657 amount=INR 980 utr=SBIN22624708103
+2026-11-26 09:26:41,204 INFO  [http-nio-8443-exec-3] [NeftGateway] NEFT request accepted txnId=TXN967051 amount=INR 980 utr=SBIN22622384768
+2026-11-26 09:26:50,574 INFO  [http-nio-8443-exec-10] [UpiService] UPI collect processed txnId=TXN977573 status=SUCCESS
+2026-11-26 09:27:01,516 ERROR [scheduling-1] [ReconciliationJob] Reconciliation batch failed batchId=RB-20261126-07
+java.lang.NullPointerException: Cannot invoke "LedgerEntry.getAmount()" because "entry" is null
+	at com.bank.recon.ReconciliationJob.matchEntries(ReconciliationJob.java:211)
+	at com.bank.recon.ReconciliationJob.run(ReconciliationJob.java:74)
+	at org.springframework.scheduling.support.DelegatingErrorHandlingRunnable.run(DelegatingErrorHandlingRunnable.java:54)
+2026-11-26 09:27:21,439 INFO  [neft-worker-1] [NeftGateway] NEFT request accepted txnId=TXN255161 amount=INR 980 utr=SBIN22674792831
+2026-11-26 09:27:37,723 INFO  [scheduling-1] [NeftGateway] NEFT request accepted txnId=TXN927069 amount=INR 25000 utr=SBIN22698614492
+2026-11-26 09:27:51,486 INFO  [scheduling-1] [NeftGateway] NEFT request accepted txnId=TXN562666 amount=INR 5000 utr=SBIN22684786538
+2026-11-26 09:27:58,339 INFO  [neft-worker-2] [NeftGateway] NEFT request accepted txnId=TXN903746 amount=INR 150000 utr=SBIN22683585369
+2026-11-26 09:28:08,823 INFO  [neft-worker-1] [UpiService] UPI collect processed txnId=TXN850136 status=SUCCESS
+2026-11-26 09:28:18,437 INFO  [scheduling-1] [NeftGateway] NEFT request accepted txnId=TXN601098 amount=INR 980 utr=SBIN22654772086
+2026-11-26 09:28:36,238 INFO  [neft-worker-1] [UpiService] UPI collect processed txnId=TXN865231 status=SUCCESS
+2026-11-26 09:28:48,225 DEBUG [neft-worker-3] [AccountService] Balance enquiry for customerId=CUST6483 completed in 114ms
+2026-11-26 09:29:03,269 INFO  [scheduling-1] [UpiService] UPI collect processed txnId=TXN971109 status=SUCCESS
+2026-11-26 09:29:08,415 INFO  [neft-worker-4] [AuthService] Session validated for customerId=CUST3265
+2026-11-26 09:29:30,304 INFO  [http-nio-8443-exec-7] [AuthService] Session validated for customerId=CUST3597
+2026-11-26 09:29:38,632 INFO  [http-nio-8443-exec-3] [NeftGateway] NEFT request accepted txnId=TXN525442 amount=INR 25000 utr=SBIN22655129667
+2026-11-26 09:30:00,512 INFO  [scheduling-1] [NeftGateway] NEFT request accepted txnId=TXN922059 amount=INR 5000 utr=SBIN22629427646
+2026-11-26 09:30:15,597 DEBUG [scheduling-1] [AccountService] Balance enquiry for customerId=CUST7667 completed in 184ms
+2026-11-26 09:30:22,637 DEBUG [scheduling-1] [CoreBankingAdapter] Health check OK pool active=12 idle=11
+2026-11-26 09:30:26,711 INFO  [neft-worker-3] [NeftGateway] NEFT request accepted txnId=TXN860828 amount=INR 980 utr=SBIN22660531064
+2026-11-26 09:30:32,614 INFO  [scheduling-1] [AuthService] Session validated for customerId=CUST4970
+2026-11-26 09:30:39,170 INFO  [neft-worker-3] [NeftGateway] NEFT request accepted txnId=TXN421177 amount=INR 980 utr=SBIN22641658133
+2026-11-26 09:30:56,225 INFO  [neft-worker-1] [NeftGateway] NEFT request accepted txnId=TXN781056 amount=INR 980 utr=SBIN22686075057
+2026-11-26 09:31:04,100 WARN  [neft-worker-2] [NotificationService] SMS delivery delayed for mobile=9870825584 email=rahul.sharma@example.com
+2026-11-26 09:31:17,935 ERROR [http-nio-8443-exec-9] [PaymentService] Insufficient balance for accountNo=501008394904 txnId=TXN571899
+2026-11-26 09:31:32,421 INFO  [scheduling-1] [NeftGateway] NEFT request accepted txnId=TXN421098 amount=INR 5000 utr=SBIN22671052247
+2026-11-26 09:31:40,307 DEBUG [http-nio-8443-exec-5] [CoreBankingAdapter] Health check OK pool active=11 idle=9
+2026-11-26 09:31:54,116 INFO  [neft-worker-2] [UpiService] UPI collect processed txnId=TXN595441 status=SUCCESS
+2026-11-26 09:32:05,765 INFO  [neft-worker-3] [AuthService] Session validated for customerId=CUST1819
+2026-11-26 09:32:19,812 INFO  [http-nio-8443-exec-8] [NeftGateway] NEFT request accepted txnId=TXN540778 amount=INR 25000 utr=SBIN22654954127
+2026-11-26 09:32:28,285 INFO  [neft-worker-2] [NeftGateway] NEFT request accepted txnId=TXN845050 amount=INR 25000 utr=SBIN22646097813
+2026-11-26 09:32:41,636 INFO  [scheduling-1] [UpiService] UPI collect processed txnId=TXN794166 status=SUCCESS
+2026-11-26 09:32:50,178 INFO  [neft-worker-1] [NeftGateway] NEFT request accepted txnId=TXN771015 amount=INR 5000 utr=SBIN22672105465
+2026-11-26 09:32:55,356 ERROR [http-nio-8443-exec-7] [CardService] Card validation failed for cardNo=4111111111111111 customerId=CUST9802 reason=EXPIRED
+2026-11-26 09:33:08,129 INFO  [http-nio-8443-exec-3] [NeftGateway] NEFT request accepted txnId=TXN288040 amount=INR 150000 utr=SBIN22683565371
+2026-11-26 09:33:26,611 INFO  [http-nio-8443-exec-1] [UpiService] UPI collect processed txnId=TXN102787 status=SUCCESS
+2026-11-26 09:33:47,901 DEBUG [neft-worker-3] [CoreBankingAdapter] Health check OK pool active=9 idle=13
+2026-11-26 09:34:07,898 INFO  [neft-worker-1] [UpiService] UPI collect processed txnId=TXN722720 status=SUCCESS
+2026-11-26 09:34:24,362 INFO  [scheduling-1] [UpiService] UPI collect processed txnId=TXN910579 status=SUCCESS
+2026-11-26 09:34:43,367 INFO  [neft-worker-2] [AuthService] Session validated for customerId=CUST9174
+2026-11-26 09:34:48,432 INFO  [neft-worker-1] [AuthService] Session validated for customerId=CUST3949
+2026-11-26 09:35:07,369 INFO  [http-nio-8443-exec-1] [UpiService] UPI collect processed txnId=TXN858265 status=SUCCESS
+2026-11-26 09:35:16,839 INFO  [http-nio-8443-exec-4] [UpiService] UPI collect processed txnId=TXN930060 status=SUCCESS
+2026-11-26 09:35:29,883 DEBUG [http-nio-8443-exec-10] [AccountService] Balance enquiry for customerId=CUST9609 completed in 175ms
+2026-11-26 09:35:49,950 INFO  [http-nio-8443-exec-10] [NeftGateway] NEFT request accepted txnId=TXN267573 amount=INR 980 utr=SBIN22698450445
+2026-11-26 09:36:03,820 INFO  [scheduling-1] [UpiService] UPI collect processed txnId=TXN326854 status=SUCCESS
+2026-11-26 09:36:11,140 INFO  [scheduling-1] [UpiService] UPI collect processed txnId=TXN881127 status=SUCCESS
+2026-11-26 09:36:31,583 INFO  [http-nio-8443-exec-7] [UpiService] UPI collect processed txnId=TXN412546 status=SUCCESS
+2026-11-26 09:36:42,572 INFO  [scheduling-1] [NeftGateway] NEFT request accepted txnId=TXN996911 amount=INR 25000 utr=SBIN22666148668
+2026-11-26 09:36:55,264 DEBUG [neft-worker-1] [CoreBankingAdapter] Health check OK pool active=7 idle=6
+2026-11-26 09:37:09,980 DEBUG [scheduling-1] [CoreBankingAdapter] Health check OK pool active=6 idle=13
+2026-11-26 09:37:25,912 INFO  [scheduling-1] [NeftGateway] NEFT request accepted txnId=TXN464287 amount=INR 25000 utr=SBIN22634643640
+2026-11-26 09:37:35,415 INFO  [scheduling-1] [UpiService] UPI collect processed txnId=TXN896497 status=SUCCESS
+2026-11-26 09:37:44,148 INFO  [scheduling-1] [NeftGateway] NEFT request accepted txnId=TXN501563 amount=INR 980 utr=SBIN22619768794
+2026-11-26 09:37:56,368 INFO  [neft-worker-4] [UpiService] UPI collect processed txnId=TXN877641 status=SUCCESS
+2026-11-26 09:38:06,845 INFO  [http-nio-8443-exec-6] [UpiService] UPI collect processed txnId=TXN260976 status=SUCCESS
+2026-11-26 09:38:13,185 ERROR [scheduling-1] [PaymentService] Insufficient balance for accountNo=501007449340 txnId=TXN571790
+2026-11-26 09:38:33,141 INFO  [neft-worker-2] [NeftGateway] NEFT request accepted txnId=TXN737447 amount=INR 25000 utr=SBIN22675555469
+2026-11-26 09:38:41,657 ERROR [neft-worker-2] [PaymentService] Insufficient balance for accountNo=501008114438 txnId=TXN601872
+2026-11-26 09:39:02,309 DEBUG [scheduling-1] [AccountService] Balance enquiry for customerId=CUST7176 completed in 115ms
+2026-11-26 09:39:10,205 INFO  [scheduling-1] [AuthService] Session validated for customerId=CUST4703
+2026-11-26 09:39:20,679 INFO  [neft-worker-3] [AuthService] Session validated for customerId=CUST8910
+2026-11-26 09:39:26,225 INFO  [neft-worker-2] [NeftGateway] NEFT request accepted txnId=TXN822690 amount=INR 150000 utr=SBIN22699468708
+2026-11-26 09:39:38,161 WARN  [scheduling-1] [AuthService] OTP validation failed for customerId=CUST7429 otp=616860 attempt 2/3
+2026-11-26 09:39:51,586 INFO  [neft-worker-3] [NeftGateway] NEFT request accepted txnId=TXN266298 amount=INR 980 utr=SBIN22637100934
+2026-11-26 09:40:02,589 DEBUG [neft-worker-3] [AccountService] Balance enquiry for customerId=CUST7919 completed in 117ms
+2026-11-26 09:40:23,473 DEBUG [scheduling-1] [CoreBankingAdapter] Health check OK pool active=10 idle=7
+2026-11-26 09:40:28,580 INFO  [scheduling-1] [AuthService] Session validated for customerId=CUST5915
+2026-11-26 09:40:34,404 ERROR [neft-worker-2] [PaymentService] Insufficient balance for accountNo=501007262452 txnId=TXN693196
+2026-11-26 09:40:53,824 INFO  [neft-worker-1] [NeftGateway] NEFT request accepted txnId=TXN480240 amount=INR 5000 utr=SBIN22687332353
+2026-11-26 09:40:58,165 INFO  [scheduling-1] [UpiService] UPI collect processed txnId=TXN535756 status=SUCCESS
+2026-11-26 09:41:16,799 DEBUG [scheduling-1] [CoreBankingAdapter] Health check OK pool active=4 idle=8
+2026-11-26 09:41:35,376 DEBUG [neft-worker-3] [CoreBankingAdapter] Health check OK pool active=6 idle=9
+2026-11-26 09:41:46,345 INFO  [neft-worker-4] [NeftGateway] NEFT request accepted txnId=TXN670228 amount=INR 980 utr=SBIN22610469379
+2026-11-26 09:42:07,370 WARN  [http-nio-8443-exec-6] [NotificationService] SMS delivery delayed for mobile=9854764327 email=rahul.sharma@example.com
+2026-11-26 09:42:21,944 INFO  [scheduling-1] [NeftGateway] NEFT request accepted txnId=TXN515478 amount=INR 25000 utr=SBIN22635796330
+2026-11-26 09:42:30,478 ERROR [scheduling-1] [UpiService] Timeout calling CoreBanking API after 30000ms txnId=TXN407943
+2026-11-26 09:42:39,432 WARN  [neft-worker-2] [CoreBankingAdapter] Slow response from CoreBanking: 4542ms (threshold 2000ms) txnId=TXN479816
+2026-11-26 09:42:43,937 INFO  [http-nio-8443-exec-2] [UpiService] UPI collect processed txnId=TXN172012 status=PENDING
+2026-11-26 09:42:52,266 ERROR [scheduling-1] [PaymentService] Timeout calling CoreBanking API after 30000ms txnId=TXN812250
+java.net.SocketTimeoutException: Read timed out
+	at java.base/java.net.SocketInputStream.socketRead0(Native Method)
+	at org.apache.http.impl.io.SessionInputBufferImpl.fillBuffer(SessionInputBufferImpl.java:153)
+	at com.bank.corebanking.client.CoreBankingClient.post(CoreBankingClient.java:142)
+	at com.bank.payments.service.PaymentService.submit(PaymentService.java:88)
+	... 42 more
+2026-11-26 09:42:54,857 WARN  [scheduling-1] [CoreBankingAdapter] Slow response from CoreBanking: 5755ms (threshold 2000ms) txnId=TXN632099
+2026-11-26 09:43:00,441 ERROR [neft-worker-2] [PaymentService] Timeout calling CoreBanking API after 30000ms txnId=TXN816008
+java.net.SocketTimeoutException: Read timed out
+	at java.base/java.net.SocketInputStream.socketRead0(Native Method)
+	at org.apache.http.impl.io.SessionInputBufferImpl.fillBuffer(SessionInputBufferImpl.java:153)
+	at com.bank.corebanking.client.CoreBankingClient.post(CoreBankingClient.java:142)
+	at com.bank.payments.service.PaymentService.submit(PaymentService.java:88)
+	... 42 more
+2026-11-26 09:43:08,858 ERROR [http-nio-8443-exec-5] [NeftGateway] NEFT submission failed: RBI gateway returned code 503 txnId=TXN231666 utr=SBIN22693616517
+2026-11-26 09:43:13,767 ERROR [scheduling-1] [PaymentService] Timeout calling CoreBanking API after 30000ms txnId=TXN801874
+java.net.SocketTimeoutException: Read timed out
+	at java.base/java.net.SocketInputStream.socketRead0(Native Method)
+	at org.apache.http.impl.io.SessionInputBufferImpl.fillBuffer(SessionInputBufferImpl.java:153)
+	at com.bank.corebanking.client.CoreBankingClient.post(CoreBankingClient.java:142)
+	at com.bank.payments.service.PaymentService.submit(PaymentService.java:88)
+	... 42 more
+2026-11-26 09:43:17,358 WARN  [scheduling-1] [CoreBankingAdapter] Slow response from CoreBanking: 4720ms (threshold 2000ms) txnId=TXN539671
+2026-11-26 09:43:21,991 WARN  [scheduling-1] [CoreBankingAdapter] Slow response from CoreBanking: 8343ms (threshold 2000ms) txnId=TXN224141
+2026-11-26 09:43:28,514 WARN  [neft-worker-1] [CoreBankingAdapter] DB connection pool usage at 97% (17/20)
+2026-11-26 09:43:37,549 WARN  [http-nio-8443-exec-11] [CoreBankingAdapter] Slow response from CoreBanking: 3051ms (threshold 2000ms) txnId=TXN424220
+2026-11-26 09:43:45,690 WARN  [neft-worker-2] [CoreBankingAdapter] DB connection pool usage at 91% (18/20)
+2026-11-26 09:43:51,552 ERROR [neft-worker-1] [UpiService] Timeout calling CoreBanking API after 30000ms txnId=TXN254028
+2026-11-26 09:43:57,223 INFO  [http-nio-8443-exec-3] [UpiService] UPI collect processed txnId=TXN553637 status=PENDING
+2026-11-26 09:44:03,740 ERROR [scheduling-1] [NeftGateway] NEFT submission failed: RBI gateway returned code 503 txnId=TXN250615 utr=SBIN22646745290
+2026-11-26 09:44:08,664 WARN  [http-nio-8443-exec-5] [CoreBankingAdapter] Slow response from CoreBanking: 4147ms (threshold 2000ms) txnId=TXN483615
+2026-11-26 09:44:11,786 WARN  [http-nio-8443-exec-2] [CoreBankingAdapter] Slow response from CoreBanking: 8730ms (threshold 2000ms) txnId=TXN424365
+2026-11-26 09:44:18,988 ERROR [http-nio-8443-exec-7] [PaymentService] Timeout calling CoreBanking API after 30000ms txnId=TXN927391
+java.net.SocketTimeoutException: Read timed out
+	at java.base/java.net.SocketInputStream.socketRead0(Native Method)
+	at org.apache.http.impl.io.SessionInputBufferImpl.fillBuffer(SessionInputBufferImpl.java:153)
+	at com.bank.corebanking.client.CoreBankingClient.post(CoreBankingClient.java:142)
+	at com.bank.payments.service.PaymentService.submit(PaymentService.java:88)
+	... 42 more
+2026-11-26 09:44:26,159 ERROR [scheduling-1] [PaymentService] Timeout calling CoreBanking API after 30000ms txnId=TXN686979
+java.net.SocketTimeoutException: Read timed out
+	at java.base/java.net.SocketInputStream.socketRead0(Native Method)
+	at org.apache.http.impl.io.SessionInputBufferImpl.fillBuffer(SessionInputBufferImpl.java:153)
+	at com.bank.corebanking.client.CoreBankingClient.post(CoreBankingClient.java:142)
+	at com.bank.payments.service.PaymentService.submit(PaymentService.java:88)
+	... 42 more
+2026-11-26 09:44:31,924 INFO  [http-nio-8443-exec-8] [UpiService] UPI collect processed txnId=TXN361704 status=PENDING
+2026-11-26 09:44:33,221 INFO  [scheduling-1] [UpiService] UPI collect processed txnId=TXN665191 status=PENDING
+2026-11-26 09:44:40,164 WARN  [http-nio-8443-exec-9] [CoreBankingAdapter] Slow response from CoreBanking: 7052ms (threshold 2000ms) txnId=TXN425067
+2026-11-26 09:44:45,885 WARN  [http-nio-8443-exec-9] [CoreBankingAdapter] Slow response from CoreBanking: 5486ms (threshold 2000ms) txnId=TXN111564
+2026-11-26 09:44:54,781 ERROR [scheduling-1] [PaymentService] Timeout calling CoreBanking API after 30000ms txnId=TXN942089
+java.net.SocketTimeoutException: Read timed out
+	at java.base/java.net.SocketInputStream.socketRead0(Native Method)
+	at org.apache.http.impl.io.SessionInputBufferImpl.fillBuffer(SessionInputBufferImpl.java:153)
+	at com.bank.corebanking.client.CoreBankingClient.post(CoreBankingClient.java:142)
+	at com.bank.payments.service.PaymentService.submit(PaymentService.java:88)
+	... 42 more
+2026-11-26 09:45:02,109 WARN  [http-nio-8443-exec-10] [CoreBankingAdapter] Slow response from CoreBanking: 7609ms (threshold 2000ms) txnId=TXN124636
+2026-11-26 09:45:09,383 ERROR [scheduling-1] [PaymentService] Timeout calling CoreBanking API after 30000ms txnId=TXN487258
+java.net.SocketTimeoutException: Read timed out
+	at java.base/java.net.SocketInputStream.socketRead0(Native Method)
+	at org.apache.http.impl.io.SessionInputBufferImpl.fillBuffer(SessionInputBufferImpl.java:153)
+	at com.bank.corebanking.client.CoreBankingClient.post(CoreBankingClient.java:142)
+	at com.bank.payments.service.PaymentService.submit(PaymentService.java:88)
+	... 42 more
+2026-11-26 09:45:15,708 WARN  [scheduling-1] [CoreBankingAdapter] Slow response from CoreBanking: 7852ms (threshold 2000ms) txnId=TXN437248
+2026-11-26 09:45:20,861 WARN  [neft-worker-3] [CoreBankingAdapter] DB connection pool usage at 88% (17/20)
+2026-11-26 09:45:25,246 WARN  [http-nio-8443-exec-6] [CoreBankingAdapter] Slow response from CoreBanking: 3366ms (threshold 2000ms) txnId=TXN263171
+2026-11-26 09:45:33,153 WARN  [scheduling-1] [CoreBankingAdapter] Slow response from CoreBanking: 5774ms (threshold 2000ms) txnId=TXN626984
+2026-11-26 09:45:38,168 WARN  [neft-worker-1] [CoreBankingAdapter] Slow response from CoreBanking: 3930ms (threshold 2000ms) txnId=TXN436482
+2026-11-26 09:45:45,899 ERROR [scheduling-1] [PaymentService] Timeout calling CoreBanking API after 30000ms txnId=TXN330299
+java.net.SocketTimeoutException: Read timed out
+	at java.base/java.net.SocketInputStream.socketRead0(Native Method)
+	at org.apache.http.impl.io.SessionInputBufferImpl.fillBuffer(SessionInputBufferImpl.java:153)
+	at com.bank.corebanking.client.CoreBankingClient.post(CoreBankingClient.java:142)
+	at com.bank.payments.service.PaymentService.submit(PaymentService.java:88)
+	... 42 more
+2026-11-26 09:45:48,896 ERROR [http-nio-8443-exec-6] [NeftGateway] NEFT submission failed: RBI gateway returned code 503 txnId=TXN437877 utr=SBIN22634621427
+2026-11-26 09:45:56,317 INFO  [scheduling-1] [UpiService] UPI collect processed txnId=TXN157988 status=PENDING
+2026-11-26 09:46:04,224 ERROR [scheduling-1] [PaymentService] Timeout calling CoreBanking API after 30000ms txnId=TXN695313
+2026-11-26 09:46:13,484 ERROR [neft-worker-1] [PaymentService] Timeout calling CoreBanking API after 30000ms txnId=TXN503328
+java.net.SocketTimeoutException: Read timed out
+	at java.base/java.net.SocketInputStream.socketRead0(Native Method)
+	at org.apache.http.impl.io.SessionInputBufferImpl.fillBuffer(SessionInputBufferImpl.java:153)
+	at com.bank.corebanking.client.CoreBankingClient.post(CoreBankingClient.java:142)
+	at com.bank.payments.service.PaymentService.submit(PaymentService.java:88)
+	... 42 more
+2026-11-26 09:46:15,707 ERROR [scheduling-1] [PaymentService] Timeout calling CoreBanking API after 30000ms txnId=TXN573611
+java.net.SocketTimeoutException: Read timed out
+	at java.base/java.net.SocketInputStream.socketRead0(Native Method)
+	at org.apache.http.impl.io.SessionInputBufferImpl.fillBuffer(SessionInputBufferImpl.java:153)
+	at com.bank.corebanking.client.CoreBankingClient.post(CoreBankingClient.java:142)
+	at com.bank.payments.service.PaymentService.submit(PaymentService.java:88)
+	... 42 more
+2026-11-26 09:46:19,855 ERROR [http-nio-8443-exec-10] [PaymentService] Timeout calling CoreBanking API after 30000ms txnId=TXN444078
+2026-11-26 09:46:28,153 INFO  [http-nio-8443-exec-3] [UpiService] UPI collect processed txnId=TXN521628 status=PENDING
+2026-11-26 09:46:33,245 WARN  [neft-worker-1] [CoreBankingAdapter] Slow response from CoreBanking: 7818ms (threshold 2000ms) txnId=TXN928299
+2026-11-26 09:46:39,289 INFO  [scheduling-1] [UpiService] UPI collect processed txnId=TXN167972 status=PENDING
+2026-11-26 09:46:46,537 ERROR [scheduling-1] [PaymentService] Timeout calling CoreBanking API after 30000ms txnId=TXN662371
+java.net.SocketTimeoutException: Read timed out
+	at java.base/java.net.SocketInputStream.socketRead0(Native Method)
+	at org.apache.http.impl.io.SessionInputBufferImpl.fillBuffer(SessionInputBufferImpl.java:153)
+	at com.bank.corebanking.client.CoreBankingClient.post(CoreBankingClient.java:142)
+	at com.bank.payments.service.PaymentService.submit(PaymentService.java:88)
+	... 42 more
+2026-11-26 09:46:51,906 WARN  [http-nio-8443-exec-8] [CoreBankingAdapter] Slow response from CoreBanking: 7046ms (threshold 2000ms) txnId=TXN561876
+2026-11-26 09:47:00,990 INFO  [http-nio-8443-exec-9] [UpiService] UPI collect processed txnId=TXN908245 status=PENDING
+2026-11-26 09:47:07,454 WARN  [http-nio-8443-exec-4] [CoreBankingAdapter] Slow response from CoreBanking: 5234ms (threshold 2000ms) txnId=TXN138591
+2026-11-26 09:47:15,969 WARN  [scheduling-1] [CoreBankingAdapter] Slow response from CoreBanking: 5683ms (threshold 2000ms) txnId=TXN132669
+2026-11-26 09:47:18,645 WARN  [neft-worker-3] [CoreBankingAdapter] Slow response from CoreBanking: 7816ms (threshold 2000ms) txnId=TXN316780
+2026-11-26 09:47:23,115 ERROR [neft-worker-3] [NeftGateway] NEFT submission failed: RBI gateway returned code 503 txnId=TXN551692 utr=SBIN22660763467
+2026-11-26 09:47:29,285 ERROR [neft-worker-2] [NeftGateway] NEFT submission failed: RBI gateway returned code 503 txnId=TXN318712 utr=SBIN22638129811
+2026-11-26 09:47:38,364 WARN  [scheduling-1] [CoreBankingAdapter] Slow response from CoreBanking: 4779ms (threshold 2000ms) txnId=TXN221659
+2026-11-26 09:47:43,310 WARN  [scheduling-1] [CoreBankingAdapter] Slow response from CoreBanking: 3065ms (threshold 2000ms) txnId=TXN825253
+2026-11-26 09:47:51,372 WARN  [neft-worker-3] [CoreBankingAdapter] Slow response from CoreBanking: 3085ms (threshold 2000ms) txnId=TXN761890
+2026-11-26 09:47:59,226 WARN  [neft-worker-3] [CoreBankingAdapter] Slow response from CoreBanking: 3595ms (threshold 2000ms) txnId=TXN631089
+2026-11-26 09:48:07,391 WARN  [http-nio-8443-exec-2] [CoreBankingAdapter] Slow response from CoreBanking: 7245ms (threshold 2000ms) txnId=TXN223270
+2026-11-26 09:48:16,303 WARN  [neft-worker-4] [CoreBankingAdapter] Slow response from CoreBanking: 6411ms (threshold 2000ms) txnId=TXN506459
+2026-11-26 09:48:21,441 ERROR [neft-worker-4] [PaymentService] Timeout calling CoreBanking API after 30000ms txnId=TXN167309
+java.net.SocketTimeoutException: Read timed out
+	at java.base/java.net.SocketInputStream.socketRead0(Native Method)
+	at org.apache.http.impl.io.SessionInputBufferImpl.fillBuffer(SessionInputBufferImpl.java:153)
+	at com.bank.corebanking.client.CoreBankingClient.post(CoreBankingClient.java:142)
+	at com.bank.payments.service.PaymentService.submit(PaymentService.java:88)
+	... 42 more
+2026-11-26 09:48:27,788 WARN  [http-nio-8443-exec-10] [CoreBankingAdapter] Slow response from CoreBanking: 8192ms (threshold 2000ms) txnId=TXN113305
+2026-11-26 09:48:35,357 ERROR [scheduling-1] [PaymentService] Timeout calling CoreBanking API after 30000ms txnId=TXN722120
+2026-11-26 09:48:42,206 WARN  [scheduling-1] [CoreBankingAdapter] Slow response from CoreBanking: 8799ms (threshold 2000ms) txnId=TXN719402
+2026-11-26 09:48:47,483 WARN  [http-nio-8443-exec-1] [CoreBankingAdapter] Slow response from CoreBanking: 5478ms (threshold 2000ms) txnId=TXN116938
+2026-11-26 09:48:51,617 ERROR [neft-worker-4] [PaymentService] Timeout calling CoreBanking API after 30000ms txnId=TXN479315
+java.net.SocketTimeoutException: Read timed out
+	at java.base/java.net.SocketInputStream.socketRead0(Native Method)
+	at org.apache.http.impl.io.SessionInputBufferImpl.fillBuffer(SessionInputBufferImpl.java:153)
+	at com.bank.corebanking.client.CoreBankingClient.post(CoreBankingClient.java:142)
+	at com.bank.payments.service.PaymentService.submit(PaymentService.java:88)
+	... 42 more
+2026-11-26 09:48:53,908 INFO  [http-nio-8443-exec-7] [UpiService] UPI collect processed txnId=TXN122008 status=PENDING
+2026-11-26 09:48:56,573 INFO  [neft-worker-4] [UpiService] UPI collect processed txnId=TXN169784 status=PENDING
+2026-11-26 09:49:01,478 ERROR [http-nio-8443-exec-3] [PaymentService] Timeout calling CoreBanking API after 30000ms txnId=TXN712676
+java.net.SocketTimeoutException: Read timed out
+	at java.base/java.net.SocketInputStream.socketRead0(Native Method)
+	at org.apache.http.impl.io.SessionInputBufferImpl.fillBuffer(SessionInputBufferImpl.java:153)
+	at com.bank.corebanking.client.CoreBankingClient.post(CoreBankingClient.java:142)
+	at com.bank.payments.service.PaymentService.submit(PaymentService.java:88)
+	... 42 more
+2026-11-26 09:49:04,737 WARN  [neft-worker-3] [CoreBankingAdapter] Slow response from CoreBanking: 7816ms (threshold 2000ms) txnId=TXN829715
+2026-11-26 09:49:13,543 ERROR [http-nio-8443-exec-8] [UpiService] Timeout calling CoreBanking API after 30000ms txnId=TXN225502
+2026-11-26 09:49:20,124 INFO  [scheduling-1] [UpiService] UPI collect processed txnId=TXN972710 status=PENDING
+2026-11-26 09:49:23,408 ERROR [http-nio-8443-exec-9] [UpiService] Timeout calling CoreBanking API after 30000ms txnId=TXN198848
+2026-11-26 09:49:28,624 WARN  [scheduling-1] [CoreBankingAdapter] Slow response from CoreBanking: 3223ms (threshold 2000ms) txnId=TXN634466
+2026-11-26 09:49:33,155 WARN  [http-nio-8443-exec-4] [CoreBankingAdapter] Slow response from CoreBanking: 5890ms (threshold 2000ms) txnId=TXN589023
+2026-11-26 09:49:36,929 ERROR [http-nio-8443-exec-9] [PaymentService] Timeout calling CoreBanking API after 30000ms txnId=TXN992065
+2026-11-26 09:49:40,829 ERROR [http-nio-8443-exec-2] [PaymentService] Timeout calling CoreBanking API after 30000ms txnId=TXN741942
+2026-11-26 09:49:45,854 WARN  [http-nio-8443-exec-12] [CoreBankingAdapter] Slow response from CoreBanking: 3397ms (threshold 2000ms) txnId=TXN870113
+2026-11-26 09:49:51,605 ERROR [scheduling-1] [PaymentService] Timeout calling CoreBanking API after 30000ms txnId=TXN129923
+java.net.SocketTimeoutException: Read timed out
+	at java.base/java.net.SocketInputStream.socketRead0(Native Method)
+	at org.apache.http.impl.io.SessionInputBufferImpl.fillBuffer(SessionInputBufferImpl.java:153)
+	at com.bank.corebanking.client.CoreBankingClient.post(CoreBankingClient.java:142)
+	at com.bank.payments.service.PaymentService.submit(PaymentService.java:88)
+	... 42 more
+2026-11-26 09:49:59,649 WARN  [scheduling-1] [CoreBankingAdapter] Slow response from CoreBanking: 4258ms (threshold 2000ms) txnId=TXN373495
+2026-11-26 09:50:08,681 WARN  [scheduling-1] [CoreBankingAdapter] Slow response from CoreBanking: 7088ms (threshold 2000ms) txnId=TXN244581
+2026-11-26 09:50:14,325 WARN  [scheduling-1] [CoreBankingAdapter] Slow response from CoreBanking: 7413ms (threshold 2000ms) txnId=TXN370827
+2026-11-26 09:50:23,561 ERROR [scheduling-1] [PaymentService] Timeout calling CoreBanking API after 30000ms txnId=TXN780229
+java.net.SocketTimeoutException: Read timed out
+	at java.base/java.net.SocketInputStream.socketRead0(Native Method)
+	at org.apache.http.impl.io.SessionInputBufferImpl.fillBuffer(SessionInputBufferImpl.java:153)
+	at com.bank.corebanking.client.CoreBankingClient.post(CoreBankingClient.java:142)
+	at com.bank.payments.service.PaymentService.submit(PaymentService.java:88)
+	... 42 more
+2026-11-26 09:50:25,430 WARN  [neft-worker-2] [CoreBankingAdapter] Slow response from CoreBanking: 5630ms (threshold 2000ms) txnId=TXN674139
+2026-11-26 09:50:28,468 WARN  [neft-worker-2] [CoreBankingAdapter] DB connection pool usage at 85% (19/20)
+2026-11-26 09:50:37,707 WARN  [neft-worker-1] [CoreBankingAdapter] DB connection pool usage at 90% (20/20)
+2026-11-26 09:50:44,712 INFO  [scheduling-1] [UpiService] UPI collect processed txnId=TXN483397 status=PENDING
+2026-11-26 09:50:49,422 ERROR [http-nio-8443-exec-3] [NeftGateway] NEFT submission failed: RBI gateway returned code 503 txnId=TXN718066 utr=SBIN22617522669
+2026-11-26 09:50:56,358 WARN  [scheduling-1] [CoreBankingAdapter] Slow response from CoreBanking: 3260ms (threshold 2000ms) txnId=TXN323665
+2026-11-26 09:51:03,199 ERROR [http-nio-8443-exec-2] [PaymentService] Timeout calling CoreBanking API after 30000ms txnId=TXN399652
+java.net.SocketTimeoutException: Read timed out
+	at java.base/java.net.SocketInputStream.socketRead0(Native Method)
+	at org.apache.http.impl.io.SessionInputBufferImpl.fillBuffer(SessionInputBufferImpl.java:153)
+	at com.bank.corebanking.client.CoreBankingClient.post(CoreBankingClient.java:142)
+	at com.bank.payments.service.PaymentService.submit(PaymentService.java:88)
+	... 42 more
+2026-11-26 09:51:09,939 WARN  [neft-worker-3] [CoreBankingAdapter] Slow response from CoreBanking: 5099ms (threshold 2000ms) txnId=TXN256627
+2026-11-26 09:51:15,149 WARN  [neft-worker-1] [CoreBankingAdapter] Slow response from CoreBanking: 8755ms (threshold 2000ms) txnId=TXN614148
+2026-11-26 09:51:19,834 INFO  [neft-worker-2] [UpiService] UPI collect processed txnId=TXN769712 status=PENDING
+2026-11-26 09:51:21,528 ERROR [http-nio-8443-exec-6] [UpiService] Timeout calling CoreBanking API after 30000ms txnId=TXN602443
+2026-11-26 09:51:24,875 ERROR [http-nio-8443-exec-8] [PaymentService] Timeout calling CoreBanking API after 30000ms txnId=TXN888067
+java.net.SocketTimeoutException: Read timed out
+	at java.base/java.net.SocketInputStream.socketRead0(Native Method)
+	at org.apache.http.impl.io.SessionInputBufferImpl.fillBuffer(SessionInputBufferImpl.java:153)
+	at com.bank.corebanking.client.CoreBankingClient.post(CoreBankingClient.java:142)
+	at com.bank.payments.service.PaymentService.submit(PaymentService.java:88)
+	... 42 more
+2026-11-26 09:51:33,173 WARN  [neft-worker-3] [CoreBankingAdapter] Slow response from CoreBanking: 8518ms (threshold 2000ms) txnId=TXN863044
+2026-11-26 09:51:36,807 WARN  [http-nio-8443-exec-11] [CoreBankingAdapter] DB connection pool usage at 91% (19/20)
+2026-11-26 09:51:39,226 ERROR [scheduling-1] [PaymentService] Timeout calling CoreBanking API after 30000ms txnId=TXN662381
+java.net.SocketTimeoutException: Read timed out
+	at java.base/java.net.SocketInputStream.socketRead0(Native Method)
+	at org.apache.http.impl.io.SessionInputBufferImpl.fillBuffer(SessionInputBufferImpl.java:153)
+	at com.bank.corebanking.client.CoreBankingClient.post(CoreBankingClient.java:142)
+	at com.bank.payments.service.PaymentService.submit(PaymentService.java:88)
+	... 42 more
+2026-11-26 09:51:47,305 WARN  [scheduling-1] [CoreBankingAdapter] Slow response from CoreBanking: 6038ms (threshold 2000ms) txnId=TXN495865
+2026-11-26 09:51:55,207 WARN  [neft-worker-2] [CoreBankingAdapter] DB connection pool usage at 91% (20/20)
+2026-11-26 09:52:02,267 WARN  [scheduling-1] [CoreBankingAdapter] Slow response from CoreBanking: 5336ms (threshold 2000ms) txnId=TXN963237
+2026-11-26 09:52:10,466 ERROR [scheduling-1] [PaymentService] Timeout calling CoreBanking API after 30000ms txnId=TXN717408
+2026-11-26 09:52:18,339 WARN  [scheduling-1] [CoreBankingAdapter] Slow response from CoreBanking: 8213ms (threshold 2000ms) txnId=TXN613287
+2026-11-26 09:52:26,921 ERROR [http-nio-8443-exec-5] [NeftGateway] NEFT submission failed: RBI gateway returned code 503 txnId=TXN369542 utr=SBIN22618613576
+2026-11-26 09:52:28,543 FATAL [neft-worker-1] [CoreBankingAdapter] Connection refused: core-banking-01:8443 - circuit breaker OPEN after 25 consecutive failures
+2026-11-26 09:52:29,523 ERROR [scheduling-1] [PaymentService] Payment processing halted: downstream CoreBanking unavailable
+2026-11-26 09:52:34,220 INFO  [neft-worker-2] [PaymentApplication] Shutting down PaymentApplication: health check failed 3 times
+2026-11-26 10:01:14,204 INFO  [neft-worker-3] [PaymentApplication] Starting PaymentApplication v4.12.3 using Java 17.0.9 with PID 49102
+2026-11-26 10:01:22,135 INFO  [neft-worker-3] [PaymentApplication] Started PaymentApplication in 8.9 seconds (process running for 9.6)
+2026-11-26 10:01:23,664 INFO  [scheduling-1] [CoreBankingAdapter] Circuit breaker CLOSED, CoreBanking reachable again
+2026-11-26 10:01:31,200 DEBUG [http-nio-8443-exec-4] [CoreBankingAdapter] Health check OK pool active=9 idle=10
+2026-11-26 10:01:41,267 DEBUG [scheduling-1] [AccountService] Balance enquiry for customerId=CUST6638 completed in 101ms
+2026-11-26 10:01:55,213 DEBUG [http-nio-8443-exec-4] [CoreBankingAdapter] Health check OK pool active=8 idle=10
+2026-11-26 10:02:04,674 INFO  [scheduling-1] [NeftGateway] NEFT request accepted txnId=TXN407271 amount=INR 150000 utr=SBIN22643939281
+2026-11-26 10:02:10,263 INFO  [neft-worker-2] [NeftGateway] NEFT request accepted txnId=TXN391069 amount=INR 25000 utr=SBIN22662299730
+2026-11-26 10:02:16,413 DEBUG [scheduling-1] [AccountService] Balance enquiry for customerId=CUST9758 completed in 173ms
+2026-11-26 10:02:37,453 INFO  [neft-worker-2] [UpiService] UPI collect processed txnId=TXN488473 status=SUCCESS
+2026-11-26 10:02:57,663 DEBUG [scheduling-1] [AccountService] Balance enquiry for customerId=CUST4804 completed in 78ms
+2026-11-26 10:03:01,299 INFO  [scheduling-1] [UpiService] UPI collect processed txnId=TXN225537 status=SUCCESS
+2026-11-26 10:03:09,244 WARN  [neft-worker-4] [NotificationService] SMS delivery delayed for mobile=9819110509 email=rahul.sharma@example.com
+2026-11-26 10:03:17,547 DEBUG [http-nio-8443-exec-9] [AccountService] Balance enquiry for customerId=CUST9539 completed in 79ms
+2026-11-26 10:03:37,527 DEBUG [http-nio-8443-exec-3] [AccountService] Balance enquiry for customerId=CUST4236 completed in 92ms
+2026-11-26 10:03:43,407 INFO  [http-nio-8443-exec-5] [NeftGateway] NEFT request accepted txnId=TXN688725 amount=INR 5000 utr=SBIN22628105197
+2026-11-26 10:03:55,913 DEBUG [neft-worker-4] [CoreBankingAdapter] Health check OK pool active=6 idle=12
+2026-11-26 10:04:17,887 DEBUG [http-nio-8443-exec-9] [AccountService] Balance enquiry for customerId=CUST3777 completed in 84ms
+2026-11-26 10:04:24,524 INFO  [http-nio-8443-exec-1] [AuthService] Session validated for customerId=CUST1394
+2026-11-26 10:04:44,100 INFO  [http-nio-8443-exec-6] [AuthService] Session validated for customerId=CUST2360
+2026-11-26 10:05:00,324 INFO  [http-nio-8443-exec-6] [UpiService] UPI collect processed txnId=TXN451842 status=SUCCESS
+2026-11-26 10:05:11,840 INFO  [scheduling-1] [UpiService] UPI collect processed txnId=TXN651671 status=SUCCESS
+2026-11-26 10:05:22,253 INFO  [scheduling-1] [UpiService] UPI collect processed txnId=TXN310563 status=SUCCESS
+2026-11-26 10:05:41,794 DEBUG [neft-worker-3] [CoreBankingAdapter] Health check OK pool active=6 idle=9
+2026-11-26 10:06:01,288 INFO  [http-nio-8443-exec-5] [UpiService] UPI collect processed txnId=TXN123434 status=SUCCESS
+2026-11-26 10:06:14,909 DEBUG [http-nio-8443-exec-4] [AccountService] Balance enquiry for customerId=CUST4348 completed in 57ms
+2026-11-26 10:06:34,785 INFO  [http-nio-8443-exec-6] [NeftGateway] NEFT request accepted txnId=TXN534491 amount=INR 25000 utr=SBIN22659759211
+2026-11-26 10:06:50,901 INFO  [http-nio-8443-exec-4] [UpiService] UPI collect processed txnId=TXN803032 status=SUCCESS
+2026-11-26 10:07:06,169 INFO  [http-nio-8443-exec-8] [UpiService] UPI collect processed txnId=TXN877523 status=SUCCESS
+2026-11-26 10:07:25,262 WARN  [http-nio-8443-exec-3] [NotificationService] SMS delivery delayed for mobile=9867022711 email=rahul.sharma@example.com
+2026-11-26 10:07:34,241 DEBUG [neft-worker-2] [CoreBankingAdapter] Health check OK pool active=9 idle=11
+2026-11-26 10:07:48,564 INFO  [neft-worker-3] [NeftGateway] NEFT request accepted txnId=TXN242290 amount=INR 25000 utr=SBIN22699697328
+2026-11-26 10:07:55,792 INFO  [scheduling-1] [NeftGateway] NEFT request accepted txnId=TXN175135 amount=INR 25000 utr=SBIN22656644286
+2026-11-26 10:08:09,368 INFO  [neft-worker-1] [NeftGateway] NEFT request accepted txnId=TXN652499 amount=INR 980 utr=SBIN22680697545
+2026-11-26 10:08:20,290 ERROR [neft-worker-3] [ReconciliationJob] Reconciliation batch failed batchId=RB-20261126-09
+java.lang.NullPointerException: Cannot invoke "LedgerEntry.getAmount()" because "entry" is null
+	at com.bank.recon.ReconciliationJob.matchEntries(ReconciliationJob.java:211)
+	at com.bank.recon.ReconciliationJob.run(ReconciliationJob.java:74)
+	at org.springframework.scheduling.support.DelegatingErrorHandlingRunnable.run(DelegatingErrorHandlingRunnable.java:54)
+2026-11-26 10:08:42,570 INFO  [scheduling-1] [UpiService] UPI collect processed txnId=TXN726701 status=SUCCESS
+2026-11-26 10:08:47,881 DEBUG [neft-worker-4] [CoreBankingAdapter] Health check OK pool active=4 idle=13
+2026-11-26 10:08:52,124 INFO  [scheduling-1] [NeftGateway] NEFT request accepted txnId=TXN520680 amount=INR 25000 utr=SBIN22612632129
+2026-11-26 10:08:58,142 INFO  [neft-worker-3] [NeftGateway] NEFT request accepted txnId=TXN115920 amount=INR 25000 utr=SBIN22650843842
+2026-11-26 10:09:19,860 INFO  [scheduling-1] [UpiService] UPI collect processed txnId=TXN754216 status=SUCCESS
+2026-11-26 10:09:27,539 INFO  [scheduling-1] [UpiService] UPI collect processed txnId=TXN537216 status=SUCCESS
+2026-11-26 10:09:41,736 INFO  [scheduling-1] [UpiService] UPI collect processed txnId=TXN810576 status=SUCCESS
+2026-11-26 10:10:01,340 DEBUG [http-nio-8443-exec-9] [CoreBankingAdapter] Health check OK pool active=6 idle=11
+2026-11-26 10:10:15,590 INFO  [scheduling-1] [NeftGateway] NEFT request accepted txnId=TXN820691 amount=INR 5000 utr=SBIN22656587650
+2026-11-26 10:10:35,375 DEBUG [http-nio-8443-exec-8] [AccountService] Balance enquiry for customerId=CUST9134 completed in 245ms
+2026-11-26 10:10:41,127 DEBUG [http-nio-8443-exec-5] [AccountService] Balance enquiry for customerId=CUST2011 completed in 113ms
+2026-11-26 10:10:47,360 INFO  [scheduling-1] [NeftGateway] NEFT request accepted txnId=TXN711561 amount=INR 980 utr=SBIN22615598843
+2026-11-26 10:11:02,255 DEBUG [neft-worker-3] [CoreBankingAdapter] Health check OK pool active=11 idle=13
+2026-11-26 10:11:22,922 DEBUG [neft-worker-2] [CoreBankingAdapter] Health check OK pool active=7 idle=13
+2026-11-26 10:11:33,220 DEBUG [neft-worker-3] [AccountService] Balance enquiry for customerId=CUST5877 completed in 130ms
+2026-11-26 10:11:44,773 WARN  [neft-worker-4] [NotificationService] SMS delivery delayed for mobile=9878694401 email=rahul.sharma@example.com
+2026-11-26 10:12:00,212 DEBUG [scheduling-1] [AccountService] Balance enquiry for customerId=CUST2056 completed in 121ms
+2026-11-26 10:12:13,867 DEBUG [scheduling-1] [AccountService] Balance enquiry for customerId=CUST5283 completed in 104ms
+2026-11-26 10:12:30,682 INFO  [neft-worker-4] [AuthService] Session validated for customerId=CUST1041
+2026-11-26 10:12:49,264 DEBUG [http-nio-8443-exec-8] [AccountService] Balance enquiry for customerId=CUST1640 completed in 51ms
+2026-11-26 10:12:56,577 INFO  [http-nio-8443-exec-5] [UpiService] UPI collect processed txnId=TXN431317 status=SUCCESS
+2026-11-26 10:13:08,155 DEBUG [neft-worker-3] [CoreBankingAdapter] Health check OK pool active=9 idle=11
+2026-11-26 10:13:30,211 DEBUG [neft-worker-2] [CoreBankingAdapter] Health check OK pool active=4 idle=11
+2026-11-26 10:13:49,584 WARN  [scheduling-1] [AuthService] OTP validation failed for customerId=CUST9772 otp=152703 attempt 2/3
+2026-11-26 10:13:59,435 INFO  [scheduling-1] [UpiService] UPI collect processed txnId=TXN555138 status=SUCCESS
+2026-11-26 10:14:04,516 INFO  [http-nio-8443-exec-4] [NeftGateway] NEFT request accepted txnId=TXN998299 amount=INR 980 utr=SBIN22638919287
+2026-11-26 10:14:11,880 INFO  [neft-worker-3] [UpiService] UPI collect processed txnId=TXN536143 status=SUCCESS
+2026-11-26 10:14:32,884 INFO  [http-nio-8443-exec-1] [NeftGateway] NEFT request accepted txnId=TXN191527 amount=INR 25000 utr=SBIN22634410779
+2026-11-26 10:14:53,374 INFO  [neft-worker-1] [AuthService] Session validated for customerId=CUST6231
+2026-11-26 10:14:58,586 INFO  [http-nio-8443-exec-4] [UpiService] UPI collect processed txnId=TXN211754 status=SUCCESS
+2026-11-26 10:15:19,535 WARN  [scheduling-1] [AuthService] OTP validation failed for customerId=CUST8169 otp=234057 attempt 2/3
+2026-11-26 10:15:30,827 DEBUG [http-nio-8443-exec-10] [AccountService] Balance enquiry for customerId=CUST1760 completed in 84ms
+2026-11-26 10:15:35,174 INFO  [neft-worker-4] [UpiService] UPI collect processed txnId=TXN501773 status=SUCCESS
+2026-11-26 10:15:53,994 INFO  [scheduling-1] [NeftGateway] NEFT request accepted txnId=TXN357104 amount=INR 980 utr=SBIN22688890884
+2026-11-26 10:16:06,690 ERROR [http-nio-8443-exec-7] [ReconciliationJob] Reconciliation batch failed batchId=RB-20261126-09
+java.lang.NullPointerException: Cannot invoke "LedgerEntry.getAmount()" because "entry" is null
+	at com.bank.recon.ReconciliationJob.matchEntries(ReconciliationJob.java:211)
+	at com.bank.recon.ReconciliationJob.run(ReconciliationJob.java:74)
+	at org.springframework.scheduling.support.DelegatingErrorHandlingRunnable.run(DelegatingErrorHandlingRunnable.java:54)
+2026-11-26 10:16:18,312 WARN  [http-nio-8443-exec-6] [AuthService] OTP validation failed for customerId=CUST5387 otp=570162 attempt 2/3
+2026-11-26 10:16:36,736 INFO  [neft-worker-4] [NeftGateway] NEFT request accepted txnId=TXN124456 amount=INR 980 utr=SBIN22650763521
+2026-11-26 10:16:55,485 INFO  [neft-worker-4] [UpiService] UPI collect processed txnId=TXN791309 status=SUCCESS
+2026-11-26 10:17:01,317 INFO  [http-nio-8443-exec-11] [NeftGateway] NEFT request accepted txnId=TXN859173 amount=INR 980 utr=SBIN22668399224
+2026-11-26 10:17:07,117 DEBUG [scheduling-1] [CoreBankingAdapter] Health check OK pool active=9 idle=12
+2026-11-26 10:17:19,406 INFO  [http-nio-8443-exec-4] [UpiService] UPI collect processed txnId=TXN517702 status=SUCCESS
+2026-11-26 10:17:38,168 INFO  [neft-worker-3] [AuthService] Session validated for customerId=CUST7410
+2026-11-26 10:17:53,260 INFO  [neft-worker-2] [NeftGateway] NEFT request accepted txnId=TXN839473 amount=INR 980 utr=SBIN22683055544
+2026-11-26 10:18:07,381 INFO  [neft-worker-3] [UpiService] UPI collect processed txnId=TXN122564 status=SUCCESS
+2026-11-26 10:18:26,396 DEBUG [http-nio-8443-exec-7] [CoreBankingAdapter] Health check OK pool active=11 idle=13
+2026-11-26 10:18:31,683 INFO  [scheduling-1] [UpiService] UPI collect processed txnId=TXN560998 status=SUCCESS
+2026-11-26 10:18:48,948 INFO  [neft-worker-4] [NeftGateway] NEFT request accepted txnId=TXN414981 amount=INR 25000 utr=SBIN22658780875
+2026-11-26 10:19:00,124 INFO  [scheduling-1] [UpiService] UPI collect processed txnId=TXN638602 status=SUCCESS
+2026-11-26 10:19:16,282 INFO  [http-nio-8443-exec-1] [NeftGateway] NEFT request accepted txnId=TXN974925 amount=INR 25000 utr=SBIN22637732737
+2026-11-26 10:19:20,128 INFO  [scheduling-1] [NeftGateway] NEFT request accepted txnId=TXN612865 amount=INR 5000 utr=SBIN22688170589
+2026-11-26 10:19:30,445 INFO  [neft-worker-4] [UpiService] UPI collect processed txnId=TXN437232 status=SUCCESS
+2026-11-26 10:19:44,723 ERROR [http-nio-8443-exec-9] [ReconciliationJob] Reconciliation batch failed batchId=RB-20261126-05
+java.lang.NullPointerException: Cannot invoke "LedgerEntry.getAmount()" because "entry" is null
+	at com.bank.recon.ReconciliationJob.matchEntries(ReconciliationJob.java:211)
+	at com.bank.recon.ReconciliationJob.run(ReconciliationJob.java:74)
+	at org.springframework.scheduling.support.DelegatingErrorHandlingRunnable.run(DelegatingErrorHandlingRunnable.java:54)
+2026-11-26 10:20:05,906 DEBUG [http-nio-8443-exec-8] [AccountService] Balance enquiry for customerId=CUST3461 completed in 214ms
+2026-11-26 10:20:14,463 DEBUG [http-nio-8443-exec-10] [AccountService] Balance enquiry for customerId=CUST3808 completed in 282ms
+2026-11-26 10:20:28,604 INFO  [neft-worker-1] [NeftGateway] NEFT request accepted txnId=TXN481970 amount=INR 5000 utr=SBIN22640702947
+2026-11-26 10:20:34,431 DEBUG [scheduling-1] [AccountService] Balance enquiry for customerId=CUST1400 completed in 88ms
+2026-11-26 10:20:55,813 INFO  [neft-worker-2] [NeftGateway] NEFT request accepted txnId=TXN206791 amount=INR 980 utr=SBIN22612806146
+2026-11-26 10:21:07,578 WARN  [neft-worker-2] [AuthService] OTP validation failed for customerId=CUST6282 otp=156324 attempt 2/3
+2026-11-26 10:21:11,399 INFO  [http-nio-8443-exec-5] [UpiService] UPI collect processed txnId=TXN360968 status=SUCCESS
+2026-11-26 10:21:15,375 INFO  [http-nio-8443-exec-3] [UpiService] UPI collect processed txnId=TXN280774 status=SUCCESS
+2026-11-26 10:21:22,658 INFO  [neft-worker-4] [UpiService] UPI collect processed txnId=TXN427037 status=SUCCESS
+2026-11-26 10:21:42,616 INFO  [scheduling-1] [AuthService] Session validated for customerId=CUST6935
+2026-11-26 10:22:02,122 DEBUG [scheduling-1] [CoreBankingAdapter] Health check OK pool active=7 idle=10
+2026-11-26 10:22:07,295 INFO  [neft-worker-4] [NeftGateway] NEFT request accepted txnId=TXN578386 amount=INR 150000 utr=SBIN22680038697
+2026-11-26 10:22:22,613 INFO  [neft-worker-2] [UpiService] UPI collect processed txnId=TXN516707 status=SUCCESS
+2026-11-26 10:22:32,536 WARN  [http-nio-8443-exec-9] [AuthService] OTP validation failed for customerId=CUST6502 otp=669910 attempt 2/3
+2026-11-26 10:22:45,215 DEBUG [scheduling-1] [CoreBankingAdapter] Health check OK pool active=5 idle=14
+2026-11-26 10:22:52,706 DEBUG [http-nio-8443-exec-1] [CoreBankingAdapter] Health check OK pool active=10 idle=14
+2026-11-26 10:23:10,767 INFO  [neft-worker-3] [NeftGateway] NEFT request accepted txnId=TXN623680 amount=INR 25000 utr=SBIN22669991118
+2026-11-26 10:23:14,718 ERROR [scheduling-1] [ReconciliationJob] Reconciliation batch failed batchId=RB-20261126-04
+java.lang.NullPointerException: Cannot invoke "LedgerEntry.getAmount()" because "entry" is null
+	at com.bank.recon.ReconciliationJob.matchEntries(ReconciliationJob.java:211)
+	at com.bank.recon.ReconciliationJob.run(ReconciliationJob.java:74)
+	at org.springframework.scheduling.support.DelegatingErrorHandlingRunnable.run(DelegatingErrorHandlingRunnable.java:54)
+2026-11-26 10:23:28,203 INFO  [scheduling-1] [AuthService] Session validated for customerId=CUST9571
+2026-11-26 10:23:38,452 DEBUG [http-nio-8443-exec-1] [AccountService] Balance enquiry for customerId=CUST3711 completed in 69ms
+2026-11-26 10:23:42,924 INFO  [scheduling-1] [AuthService] Session validated for customerId=CUST6264
+2026-11-26 10:23:49,492 DEBUG [scheduling-1] [CoreBankingAdapter] Health check OK pool active=4 idle=10
+2026-11-26 10:23:58,705 DEBUG [http-nio-8443-exec-5] [AccountService] Balance enquiry for customerId=CUST1576 completed in 162ms
+2026-11-26 10:24:04,396 WARN  [neft-worker-1] [AuthService] OTP validation failed for customerId=CUST4885 otp=499471 attempt 2/3
+2026-11-26 10:24:20,603 INFO  [http-nio-8443-exec-10] [NeftGateway] NEFT request accepted txnId=TXN107419 amount=INR 5000 utr=SBIN22665079496
+2026-11-26 10:24:40,437 INFO  [neft-worker-2] [NeftGateway] NEFT request accepted txnId=TXN477239 amount=INR 150000 utr=SBIN22684829447
+2026-11-26 10:24:49,294 INFO  [http-nio-8443-exec-8] [NeftGateway] NEFT request accepted txnId=TXN790138 amount=INR 25000 utr=SBIN22670188850
+2026-11-26 10:25:10,330 INFO  [neft-worker-4] [NeftGateway] NEFT request accepted txnId=TXN298697 amount=INR 980 utr=SBIN22672786152
+2026-11-26 10:25:19,945 DEBUG [scheduling-1] [AccountService] Balance enquiry for customerId=CUST1845 completed in 219ms
+2026-11-26 10:25:28,997 INFO  [http-nio-8443-exec-11] [AuthService] Session validated for customerId=CUST4957
+2026-11-26 10:25:34,215 INFO  [http-nio-8443-exec-4] [NeftGateway] NEFT request accepted txnId=TXN458811 amount=INR 5000 utr=SBIN22689535439
+2026-11-26 10:25:44,755 INFO  [http-nio-8443-exec-9] [UpiService] UPI collect processed txnId=TXN177242 status=SUCCESS
+2026-11-26 10:25:53,253 INFO  [scheduling-1] [AuthService] Session validated for customerId=CUST7713
+2026-11-26 10:25:57,925 INFO  [scheduling-1] [NeftGateway] NEFT request accepted txnId=TXN744942 amount=INR 5000 utr=SBIN22635954171
+2026-11-26 10:26:19,492 INFO  [neft-worker-3] [NeftGateway] NEFT request accepted txnId=TXN399852 amount=INR 25000 utr=SBIN22631534399
+2026-11-26 10:26:26,350 INFO  [neft-worker-2] [NeftGateway] NEFT request accepted txnId=TXN398325 amount=INR 150000 utr=SBIN22649301085

@@ -34,6 +34,10 @@
       --mono:         'JetBrains Mono', 'Courier New', monospace;
       --ease-out:     cubic-bezier(0.22, 1, 0.36, 1);
       --ease-in-out:  cubic-bezier(0.4, 0, 0.2, 1);
+      --amber:        #b45309;
+      --amber-light:  #fef3c7;
+      --fatal:        #9f1239;
+      --fatal-light:  #ffe4e6;
     }
 
     /* ── Dark tokens ─────────────────────────────────────────────────── */
@@ -55,6 +59,10 @@
       --red:          #f87171;
       --red-light:    rgba(248,113,113,.12);
       --highlight:    rgba(254,240,138,.20);
+      --amber:        #fbbf24;
+      --amber-light:  rgba(251,191,36,.14);
+      --fatal:        #fb7185;
+      --fatal-light:  rgba(251,113,133,.16);
     }
 
     html { scroll-behavior: smooth; font-size: 16px; }
@@ -1435,92 +1443,228 @@
       cursor: pointer; transition: background 150ms;
     }
     .log-drop-btn:hover { background: var(--accent); }
-    .log-stats-grid {
-      display: grid; grid-template-columns: repeat(auto-fill, minmax(130px, 1fr));
-      gap: .65rem; margin-bottom: 1.25rem;
-    }
-    .log-stat-card {
+    .la-wrap { display: flex; flex-direction: column; gap: 1rem; padding: .5rem 0 2.5rem; font-variant-ligatures: none; }
+    .la-wrap code, .la-wrap pre, .la-sig, .la-occ-text, .la-row { tab-size: 4; font-variant-ligatures: none; font-feature-settings: "liga" 0, "calt" 0; }
+    .la-card {
       background: var(--surface); border: 1.5px solid var(--border);
-      border-radius: 11px; padding: .75rem .9rem;
+      border-radius: 14px; padding: 1rem 1.1rem; min-width: 0;
     }
-    .log-stat-label { font-size: .66rem; font-weight: 700; letter-spacing: .07em; text-transform: uppercase; color: var(--navy-60); margin-bottom: .2rem; }
-    .log-stat-val { font-size: 1.5rem; font-weight: 800; color: var(--navy); font-variant-numeric: tabular-nums; }
-    .log-stat-card.err .log-stat-val { color: #dc2626; }
-    .log-stat-card.wrn .log-stat-val { color: #f59e0b; }
-    .log-stat-card.inf .log-stat-val { color: var(--accent); }
-    .log-h { font-size: .88rem; font-weight: 700; color: var(--navy); margin: 1.1rem 0 .5rem; display: flex; align-items: center; gap: .5rem; }
-    .log-h small { font-size: .72rem; font-weight: 600; color: var(--navy-60); }
-    .log-bar-row { display: flex; align-items: center; gap: .65rem; margin-bottom: .35rem; }
-    .log-bar-label { font-size: .77rem; font-weight: 600; color: var(--navy-60); min-width: 55px; }
-    .log-bar-track { flex: 1; height: 7px; background: var(--navy-06); border-radius: 999px; overflow: hidden; }
-    .log-bar-fill { height: 100%; border-radius: 999px; transition: width .4s var(--ease-out); width: 0; }
-    .lb-err { background: #dc2626; }
-    .lb-wrn { background: #f59e0b; }
-    .lb-inf { background: var(--accent); }
-    .lb-dbg { background: var(--navy-30); }
-    .log-bar-cnt { font-size: .77rem; font-weight: 600; color: var(--navy-60); min-width: 38px; text-align: right; font-variant-numeric: tabular-nums; }
-    .log-top-errs {
-      background: var(--surface); border: 1.5px solid var(--border);
-      border-radius: 11px; overflow: hidden; margin-bottom: 1rem;
+    .la-h {
+      font-size: .92rem; font-weight: 800; color: var(--navy); margin: 0 0 .75rem;
+      display: flex; align-items: baseline; gap: .5rem; flex-wrap: wrap;
     }
-    .log-top-err-row {
-      display: flex; align-items: flex-start; gap: .65rem;
-      padding: .65rem .9rem; border-bottom: 1px solid var(--border);
-      cursor: pointer; transition: background 100ms;
-    }
-    .log-top-err-row:last-child { border-bottom: none; }
-    .log-top-err-row:hover { background: var(--navy-06); }
-    .log-err-num { font-size: .7rem; font-weight: 700; color: var(--navy-30); min-width: 18px; padding-top: .05rem; }
-    .log-err-txt { flex: 1; min-width: 0; font-family: var(--mono); font-size: .77rem; color: var(--navy); line-height: 1.5; word-break: break-all; }
-    .log-err-ct { flex-shrink: 0; background: var(--red-light); color: var(--red); font-size: .66rem; font-weight: 700; border-radius: 999px; padding: .12rem .45rem; margin-top: .05rem; }
-    .log-filter-row { display: flex; gap: .4rem; flex-wrap: wrap; margin-bottom: .6rem; }
-    .log-flt-btn {
-      display: inline-flex; align-items: center; gap: .3rem;
+    .la-h small { font-size: .72rem; font-weight: 600; color: var(--navy-60); }
+    .la-h-row { display: flex; align-items: center; justify-content: space-between; gap: .5rem; flex-wrap: wrap; margin-bottom: .75rem; }
+    .la-h-row .la-h { margin: 0; }
+    .la-empty { font-size: .82rem; color: var(--navy-60); margin: 0; }
+    .la-hint { font-size: .7rem; color: var(--navy-60); }
+
+    /* Buttons */
+    .la-btn {
+      display: inline-flex; align-items: center; gap: .35rem;
       border: 1.5px solid var(--border); border-radius: 999px;
-      background: transparent; font-family: var(--font);
-      font-size: .75rem; font-weight: 600; color: var(--navy-60);
-      padding: .28rem .75rem; cursor: pointer;
+      background: var(--surface); font-family: var(--font);
+      font-size: .76rem; font-weight: 600; color: var(--navy);
+      padding: .32rem .8rem; cursor: pointer; white-space: nowrap;
       transition: background 150ms, border-color 150ms, color 150ms;
     }
-    .log-flt-btn:hover:not(.active) { background: var(--navy-06); color: var(--navy); }
-    .log-flt-btn.active          { background: var(--navy);   border-color: var(--navy);   color: #fff; }
-    .log-flt-btn.e.active        { background: #dc2626;        border-color: #dc2626; }
-    .log-flt-btn.w.active        { background: #f59e0b;        border-color: #f59e0b; }
-    .log-flt-btn.i.active        { background: var(--accent);  border-color: var(--accent); }
-    .log-raw {
-      background: var(--navy-06); border: 1.5px solid var(--border);
-      border-radius: 11px; overflow: hidden; margin-bottom: 1.5rem;
+    .la-btn:hover { background: var(--navy-06); border-color: var(--navy-30); }
+    .la-btn.on { background: var(--navy); border-color: var(--navy); color: var(--bg); }
+    .la-btn svg { width: 13px; height: 13px; flex-shrink: 0; }
+    .la-btn-sm { font-size: .7rem; padding: .2rem .6rem; }
+    .la-n { font-size: .66rem; font-weight: 700; opacity: .7; font-variant-numeric: tabular-nums; }
+    .la-btn:focus-visible, .la-count:focus-visible, .la-svc:focus-visible, .la-tl-bar:focus-visible,
+    .la-issue > summary:focus-visible, .la-mini > summary:focus-visible, .la-rawbox > summary:focus-visible {
+      outline: 2px solid var(--accent); outline-offset: 2px;
     }
-    .log-raw pre {
-      font-family: var(--mono); font-size: .76rem; color: var(--navy);
-      line-height: 1.65; padding: .8rem .95rem;
-      max-height: 300px; overflow-y: auto;
-      white-space: pre-wrap; word-break: break-all; margin: 0;
+
+    /* File heading */
+    .la-head { display: flex; gap: .9rem; align-items: flex-start; flex-wrap: wrap; }
+    .la-file-ico {
+      width: 44px; height: 44px; border-radius: 12px; flex-shrink: 0;
+      background: var(--accent-light); color: var(--accent);
+      display: flex; align-items: center; justify-content: center;
     }
-    .ll-err { color: #dc2626; }
-    .ll-wrn { color: #d97706; }
-    .ll-inf { color: var(--accent); }
-    .ll-dbg { color: var(--navy-60); }
-    .log-new-btn {
-      display: inline-flex; align-items: center; gap: .4rem;
-      border: 1.5px solid var(--border); border-radius: 999px;
-      background: transparent; font-family: var(--font);
-      font-size: .78rem; font-weight: 600; color: var(--navy-60);
-      padding: .3rem .85rem; cursor: pointer; margin-bottom: .85rem;
-      transition: background 150ms, color 150ms;
+    .la-file-ico svg { width: 22px; height: 22px; }
+    .la-head-main { flex: 1 1 260px; min-width: 0; }
+    .la-eyebrow { font-size: .64rem; font-weight: 700; letter-spacing: .09em; text-transform: uppercase; color: var(--navy-60); }
+    .la-file-name { font-size: 1.2rem; font-weight: 800; color: var(--navy); margin: .1rem 0 .4rem; word-break: break-all; line-height: 1.25; text-wrap: balance; }
+    .la-meta { display: flex; flex-wrap: wrap; gap: .3rem 1rem; font-size: .77rem; color: var(--navy-60); }
+    .la-meta b { color: var(--navy); font-weight: 700; }
+    .la-head-actions { display: flex; gap: .4rem; flex-wrap: wrap; }
+    .la-verdict {
+      display: inline-flex; align-items: center; gap: .4rem; margin-top: .6rem;
+      font-size: .74rem; font-weight: 700; border-radius: 999px; padding: .22rem .7rem;
     }
-    .log-new-btn:hover { background: var(--navy-06); color: var(--navy); }
-    .log-timestamp-row { display: flex; align-items: center; gap: .5rem; margin-bottom: 1rem; }
-    .log-ts-badge { display: inline-flex; align-items: center; gap: .35rem; border: 1.5px solid var(--border); border-radius: 999px; background: var(--navy-06); font-size: .76rem; font-weight: 600; color: var(--navy-60); padding: .28rem .75rem; }
-    .log-ts-badge svg { width: 12px; height: 12px; }
-    .log-line { display: flex; gap: .6rem; padding: .2rem .95rem; font-family: var(--mono); font-size: .74rem; line-height: 1.6; border-bottom: 1px solid var(--navy-06); }
-    .log-line:last-child { border-bottom: none; }
-    .log-lineno { flex-shrink: 0; min-width: 36px; color: var(--navy-30); text-align: right; user-select: none; }
-    .log-linetext { flex: 1; min-width: 0; word-break: break-all; white-space: pre-wrap; }
-    .log-line.ll-err .log-linetext { color: #dc2626; }
-    .log-line.ll-wrn .log-linetext { color: #d97706; }
-    .log-line.ll-inf .log-linetext { color: var(--accent); }
-    .log-line.ll-dbg .log-linetext { color: var(--navy-60); }
+    .la-verdict::before { content: ""; width: 7px; height: 7px; border-radius: 50%; background: currentColor; }
+    .la-verdict.crit { background: var(--fatal-light); color: var(--fatal); }
+    .la-verdict.err  { background: var(--red-light);   color: var(--red); }
+    .la-verdict.warn { background: var(--amber-light); color: var(--amber); }
+    .la-verdict.ok   { background: var(--green-light); color: var(--green); }
+    .la-preview { flex-basis: 100%; min-width: 0; }
+    .la-preview > summary, .la-mini > summary {
+      cursor: pointer; font-size: .74rem; font-weight: 600; color: var(--accent);
+      list-style: none; display: inline-flex; align-items: center; gap: .3rem;
+    }
+    .la-preview > summary::-webkit-details-marker, .la-mini > summary::-webkit-details-marker { display: none; }
+    .la-preview > summary::before, .la-mini > summary::before { content: "\25B8"; font-size: .7rem; transition: transform 150ms; }
+    .la-preview[open] > summary::before, .la-mini[open] > summary::before { transform: rotate(90deg); }
+    .la-pre {
+      margin: .5rem 0 0; font-family: var(--mono); font-size: .72rem; line-height: 1.6; color: var(--navy);
+      background: var(--navy-06); border: 1px solid var(--border); border-radius: 8px;
+      padding: .55rem .7rem; white-space: pre-wrap; word-break: break-all; max-height: 260px; overflow: auto;
+    }
+    .la-pre .ln { color: var(--navy-30); user-select: none; }
+    .la-pre mark { background: var(--highlight); color: inherit; border-radius: 2px; }
+
+    /* Level colours */
+    .lv-FATAL { --c: var(--fatal); --cl: var(--fatal-light); }
+    .lv-ERROR { --c: var(--red);   --cl: var(--red-light); }
+    .lv-WARN  { --c: var(--amber); --cl: var(--amber-light); }
+    .lv-INFO  { --c: var(--accent); --cl: var(--accent-light); }
+    .lv-DEBUG { --c: var(--navy-60); --cl: var(--navy-06); }
+    .lv-TRACE, .lv-OTHER { --c: var(--navy-60); --cl: var(--navy-06); }
+
+    /* Count cards */
+    .la-counts { display: grid; grid-template-columns: repeat(auto-fit, minmax(82px, 1fr)); gap: .5rem; }
+    .la-count {
+      display: flex; flex-direction: column; gap: .1rem; text-align: left; min-width: 0;
+      background: var(--surface); border: 1.5px solid var(--border); border-top: 3px solid var(--c, var(--navy-30));
+      border-radius: 12px; padding: .55rem .65rem; cursor: pointer; font-family: var(--font);
+      transition: background 150ms, box-shadow 150ms;
+    }
+    .la-count:hover { background: var(--navy-06); }
+    .la-count.active { box-shadow: 0 0 0 2px var(--c, var(--navy)); }
+    .la-count .k { font-size: .63rem; font-weight: 700; letter-spacing: .07em; text-transform: uppercase; color: var(--navy-60); }
+    .la-count .v { font-size: 1.4rem; font-weight: 800; line-height: 1.15; color: var(--c, var(--navy)); font-variant-numeric: tabular-nums; }
+    .la-count .p { font-size: .68rem; color: var(--navy-60); }
+
+    /* Findings */
+    .la-insights { list-style: none; margin: 0; padding: 0; display: flex; flex-direction: column; gap: .55rem; }
+    .la-insights li { display: flex; gap: .65rem; align-items: flex-start; font-size: .84rem; color: var(--navy); line-height: 1.55; min-width: 0; }
+    .la-insights li > span { min-width: 0; }
+    .la-dot { width: 8px; height: 8px; border-radius: 50%; margin-top: .5rem; flex-shrink: 0; background: var(--c, var(--navy-30)); }
+    .la-insights code, .la-chip code {
+      font-family: var(--mono); font-size: .76rem; background: var(--navy-06);
+      padding: .05rem .3rem; border-radius: 4px; word-break: break-word;
+    }
+
+    /* Timeline + services */
+    .la-grid2 { display: grid; grid-template-columns: minmax(0, 1.35fr) minmax(0, 1fr); gap: 1rem; }
+    @media (max-width: 760px) { .la-grid2 { grid-template-columns: minmax(0, 1fr); } }
+    .la-tl { display: flex; align-items: stretch; gap: 2px; height: 130px; border-bottom: 1.5px solid var(--border); }
+    .la-tl-bar {
+      flex: 1 1 0; min-width: 0; height: 100%; padding: 0; border: 0; border-radius: 3px 3px 0 0;
+      background: transparent; cursor: pointer; display: flex; flex-direction: column-reverse;
+    }
+    .la-tl-bar:hover, .la-tl-bar.sel { background: var(--navy-06); }
+    .la-tl-bar.sel { box-shadow: inset 0 0 0 1.5px var(--accent); }
+    .la-seg { display: block; width: 100%; flex-shrink: 0; }
+    .la-seg.e, .la-legend i.e, .la-track i.e { background: var(--red); }
+    .la-seg.w, .la-legend i.w, .la-track i.w { background: var(--amber); }
+    .la-seg.o, .la-legend i.o, .la-track i.o { background: var(--navy-12); }
+    .la-seg:last-child { border-radius: 3px 3px 0 0; }
+    .la-axis { display: flex; justify-content: space-between; gap: .5rem; margin-top: .35rem; font-family: var(--mono); font-size: .66rem; color: var(--navy-60); }
+    .la-legend { display: flex; flex-wrap: wrap; gap: .35rem 1rem; margin-top: .6rem; font-size: .7rem; color: var(--navy-60); align-items: center; }
+    .la-legend span { display: inline-flex; align-items: center; gap: .35rem; }
+    .la-legend i { width: 9px; height: 9px; border-radius: 2px; display: inline-block; }
+    .la-legend .la-hint { margin-left: auto; }
+    .la-svcs { display: flex; flex-direction: column; gap: .15rem; }
+    .la-svc {
+      display: grid; grid-template-columns: minmax(0, 8.5rem) minmax(2.5rem, 1fr) auto; gap: .5rem; align-items: center;
+      width: 100%; border: 0; border-radius: 8px; background: transparent; padding: .35rem .45rem;
+      font-family: var(--font); font-size: .76rem; color: var(--navy); text-align: left; cursor: pointer;
+    }
+    .la-svc:hover { background: var(--navy-06); }
+    .la-svc.active { background: var(--accent-light); box-shadow: inset 0 0 0 1.5px var(--accent); }
+    .la-svc-name { overflow: hidden; text-overflow: ellipsis; white-space: nowrap; font-weight: 600; }
+    .la-svc-n { font-size: .7rem; color: var(--navy-60); font-variant-numeric: tabular-nums; white-space: nowrap; }
+    .la-svc-n b { color: var(--red); }
+    .la-track { height: 8px; border-radius: 999px; background: var(--navy-06); overflow: hidden; display: flex; }
+    .la-track i { display: block; height: 100%; }
+
+    /* Issues */
+    .la-tabs { display: flex; gap: .35rem; flex-wrap: wrap; margin-bottom: .75rem; }
+    .la-issues { display: flex; flex-direction: column; gap: .5rem; }
+    .la-issue { border: 1.5px solid var(--border); border-left: 4px solid var(--c); border-radius: 11px; background: var(--surface); overflow: hidden; }
+    .la-issue > summary {
+      list-style: none; cursor: pointer; display: grid;
+      grid-template-columns: auto minmax(0, 1fr) auto; gap: .7rem; align-items: center; padding: .7rem .85rem;
+    }
+    .la-issue > summary::-webkit-details-marker { display: none; }
+    .la-issue > summary:hover { background: var(--navy-06); }
+    .la-badge {
+      font-size: .6rem; font-weight: 800; letter-spacing: .06em; border-radius: 6px; padding: .2rem .45rem;
+      color: var(--c); background: var(--cl); white-space: nowrap;
+    }
+    .la-sum-main { min-width: 0; display: flex; flex-direction: column; gap: .2rem; }
+    .la-sig { font-family: var(--mono); font-size: .78rem; color: var(--navy); word-break: break-word; line-height: 1.45; }
+    .la-sub { font-size: .7rem; color: var(--navy-60); }
+    .la-cnt { display: flex; align-items: center; gap: .55rem; font-size: .8rem; font-weight: 800; color: var(--c); font-variant-numeric: tabular-nums; }
+    .la-chev { width: 14px; height: 14px; color: var(--navy-60); transition: transform 200ms var(--ease-out); }
+    .la-issue[open] .la-chev, .la-rawbox[open] .la-chev { transform: rotate(180deg); }
+    .la-spark { display: inline-flex; align-items: flex-end; gap: 1px; height: 18px; width: 72px; }
+    .la-spark i { flex: 1; background: var(--c); opacity: .75; border-radius: 1px; min-height: 0; }
+    @media (max-width: 560px) {
+      .la-spark { display: none; }
+      .la-issue > summary { grid-template-columns: minmax(0, 1fr) auto; }
+      .la-issue > summary .la-badge { grid-column: 1 / -1; justify-self: start; }
+    }
+    .la-issue-body { border-top: 1px solid var(--border); background: var(--navy-06); padding: .85rem; display: flex; flex-direction: column; gap: .75rem; }
+    .la-issue-body:empty { display: none; }
+    .la-kv { display: flex; flex-wrap: wrap; gap: .35rem 1.1rem; font-size: .76rem; color: var(--navy-60); }
+    .la-kv b { color: var(--navy); }
+    .la-lbl { font-size: .63rem; font-weight: 700; letter-spacing: .08em; text-transform: uppercase; color: var(--navy-60); margin-bottom: .3rem; }
+    .la-chips { display: flex; flex-wrap: wrap; gap: .3rem; }
+    .la-chip {
+      display: inline-flex; align-items: center; gap: .3rem; font-size: .72rem; font-weight: 600;
+      border: 1px solid var(--border); border-radius: 999px; padding: .12rem .55rem; color: var(--navy); background: var(--surface);
+    }
+    .la-chip b { color: var(--navy-60); font-weight: 700; }
+    .la-chip-x { cursor: pointer; font-family: var(--font); }
+    .la-chip-x:hover { border-color: var(--navy-30); }
+    .la-chip-x::after { content: "\00D7"; font-size: .9rem; line-height: 1; color: var(--navy-60); }
+    .la-ids { display: flex; flex-direction: column; gap: .4rem; }
+    .la-id-row { display: grid; grid-template-columns: 9rem minmax(0, 1fr) auto; gap: .6rem; align-items: start; font-size: .74rem; }
+    @media (max-width: 560px) { .la-id-row { grid-template-columns: minmax(0, 1fr) auto; } .la-id-row code { grid-column: 1 / -1; grid-row: 2; } }
+    .la-id-k { font-weight: 700; color: var(--navy); }
+    .la-id-row code { font-family: var(--mono); font-size: .72rem; color: var(--navy); word-break: break-all; line-height: 1.55; }
+    .la-actions { display: flex; flex-wrap: wrap; gap: .4rem; }
+    .la-occs { display: flex; flex-direction: column; gap: .45rem; }
+    .la-occ { background: var(--surface); border: 1px solid var(--border); border-radius: 9px; padding: .5rem .65rem; display: flex; flex-direction: column; gap: .35rem; min-width: 0; }
+    .la-occ-head { display: flex; flex-wrap: wrap; gap: .2rem .8rem; font-size: .68rem; font-weight: 600; color: var(--navy-60); }
+    .la-occ-text { font-family: var(--mono); font-size: .73rem; line-height: 1.55; color: var(--navy); white-space: pre-wrap; word-break: break-all; }
+    .la-mini > summary { font-size: .7rem; }
+    .la-more-note { font-size: .72rem; color: var(--navy-60); }
+
+    /* All lines */
+    .la-rawbox { padding: 0; }
+    .la-rawbox > summary {
+      list-style: none; cursor: pointer; display: flex; align-items: center; justify-content: space-between; gap: .5rem;
+      padding: 1rem 1.1rem; font-size: .92rem; font-weight: 800; color: var(--navy);
+    }
+    .la-rawbox > summary::-webkit-details-marker { display: none; }
+    .la-rawbox > summary small { font-size: .72rem; font-weight: 600; color: var(--navy-60); margin-left: .4rem; }
+    .la-raw-inner { padding: 0 1.1rem 1.1rem; }
+    .la-filters { display: flex; flex-wrap: wrap; gap: .35rem; align-items: center; margin-bottom: .55rem; }
+    .la-filters .la-sep { width: 1px; height: 18px; background: var(--border); margin: 0 .2rem; }
+    .la-showing { font-size: .74rem; color: var(--navy-60); margin-bottom: .5rem; }
+    .la-showing b { color: var(--navy); }
+    .la-raw { max-height: 620px; overflow: auto; border: 1.5px solid var(--border); border-radius: 10px; background: var(--surface); }
+    .la-row {
+      display: grid; grid-template-columns: 3.4rem 3.6rem minmax(0, 1fr); gap: .55rem;
+      font-family: var(--mono); font-size: .72rem; line-height: 1.6; padding: .14rem .6rem;
+      border-bottom: 1px solid var(--navy-06);
+    }
+    .la-row:last-child { border-bottom: 0; }
+    .la-row.lv-ERROR, .la-row.lv-FATAL { background: var(--cl); }
+    .la-row .n { color: var(--navy-30); text-align: right; user-select: none; }
+    .la-row .l { color: var(--c); font-weight: 700; }
+    .la-row .t { color: var(--navy); white-space: pre-wrap; word-break: break-all; min-width: 0; }
+    .la-tr { display: block; color: var(--navy-60); padding-left: 1rem; }
+    @media (max-width: 560px) { .la-row { grid-template-columns: 2.6rem minmax(0, 1fr); } .la-row .l { display: none; } }
+    mark.la-hl { background: var(--highlight); color: inherit; border-radius: 2px; padding: 0 1px; }
+    .la-more { margin-top: .6rem; }
   </style>
 </head>
 <body>
@@ -1703,7 +1847,7 @@
     <div id="view-log" class="section-view">
       <div style="padding-top:1rem">
         <div id="logDropZone" class="log-drop-zone" role="button" tabindex="0" aria-label="Drop a log file or click to choose">
-          <input type="file" id="logFileInput" accept=".log,.txt,.out,.csv" style="display:none" aria-hidden="true">
+          <input type="file" id="logFileInput" accept=".log,.txt,.out,.err,.trc,.json,.csv" style="display:none" aria-hidden="true">
           <div class="log-drop-icon" aria-hidden="true">
             <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
               <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/>
@@ -1713,7 +1857,7 @@
             </svg>
           </div>
           <div class="log-drop-title">Drop a log file here</div>
-          <div class="log-drop-sub">Supports .log, .txt, .out — extracts errors, warnings, stack traces and patterns</div>
+          <div class="log-drop-sub">Supports .log, .txt, .out and JSON logs. Everything is analysed in this browser; the file never leaves your PC.</div>
           <button class="log-drop-btn" id="logPickBtn" type="button">
             <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="width:14px;height:14px" aria-hidden="true">
               <polyline points="16 16 12 12 8 16"/>
@@ -2091,8 +2235,6 @@ var dbCopyCounts = {};
 var sortByMostUsed   = false;
 var dbSortByMostUsed = false;
 /* Log */
-var logParsed = null;
-var activeLogFilter = "all";
 
 /* ─── DOM refs ──────────────────────────────────────────────────────── */
 var searchInput     = document.getElementById("searchInput");
@@ -2603,7 +2745,7 @@ function renderFAQs() {
 
 /* ─── Search ─────────────────────────────────────────────────────────── */
 function updateClearBtn() {
-  var q = currentSection === "tickets" ? state.query : dbState.query;
+  var q = currentSection === "tickets" ? state.query : currentSection === "log" ? logState.query : dbState.query;
   searchClear.classList.toggle("visible", q.length > 0);
   searchClear.tabIndex = q.length > 0 ? 0 : -1;
 }
@@ -2611,12 +2753,14 @@ function updateClearBtn() {
 searchInput.addEventListener("input", debounce(function(){
   var q = searchInput.value.trim();
   if (currentSection === "tickets") { state.query = q; updateClearBtn(); renderFAQs(); }
+  else if (currentSection === "log") { logState.query = q; logState.rawLimit = 500; updateClearBtn(); laRefresh(); }
   else { dbState.query = q; updateClearBtn(); renderDB(); }
 }, 200));
 
 searchClear.addEventListener("click", function(){
   searchInput.value = "";
   if (currentSection === "tickets") { state.query = ""; updateClearBtn(); renderFAQs(); }
+  else if (currentSection === "log") { logState.query = ""; updateClearBtn(); laRefresh(); }
   else { dbState.query = ""; updateClearBtn(); renderDB(); }
   searchInput.focus();
 });
@@ -2632,6 +2776,7 @@ function switchSection(section) {
   searchInput.value = "";
   state.query = "";
   dbState.query = "";
+  logState.query = "";
   updateClearBtn();
   viewTickets.classList.toggle("active", section === "tickets");
   viewDB.classList.toggle("active", section === "db");
@@ -2644,7 +2789,7 @@ function switchSection(section) {
   snavLog.setAttribute("aria-selected", String(section === "log"));
   if (section === "tickets") { renderCategories(); renderFAQs(); }
   else if (section === "db") { renderDB(); }
-  /* log section shows existing results or upload zone — no re-render needed */
+  else if (section === "log") { laRefresh(); }
 }
 
 snavTickets.addEventListener("click", function(){ switchSection("tickets"); });
@@ -3073,7 +3218,7 @@ document.addEventListener("keydown", function(e){
   if (spotOpen) return; /* let spotlight handle its own keys */
 
   if (e.key==="/" && !inInput && !modalOpen) { e.preventDefault(); searchInput.focus(); searchInput.select(); return; }
-  if (e.key==="Escape" && inInput && !modalOpen) { searchInput.value=""; state.query=""; updateClearBtn(); renderFAQs(); searchInput.blur(); return; }
+  if (e.key==="Escape" && active===searchInput && !modalOpen) { searchClear.click(); searchInput.blur(); return; }
   if ((e.key==="ArrowDown"||e.key==="ArrowUp") && !inInput && !modalOpen) {
     var trgs = Array.from(faqList.querySelectorAll(".faq-trigger"));
     if (!trgs.length) return;
@@ -3271,114 +3416,794 @@ document.getElementById("saveDataBtn").addEventListener("click", function() {
 
 /* ─── Boot ───────────────────────────────────────────────────────────── */
 /* ─── Log Analyser ────────────────────────────────────────────────────── */
-function parseLog(text) {
-  var lines = text.split(/\r?\n/);
-  var parsed = [];
-  var levelRe = /\b(ERROR|FATAL|CRITICAL|WARN(?:ING)?|INFO|DEBUG)\b/i;
-  var tsRe    = /\d{4}-\d{2}-\d{2}[T ]\d{2}:\d{2}:\d{2}/;
-  lines.forEach(function(line, i) {
-    var lm = line.match(levelRe);
-    var tm = line.match(tsRe);
-    var lvl = lm ? lm[1].toUpperCase() : "INFO";
-    if (lvl === "WARNING") lvl = "WARN";
-    parsed.push({ line: i + 1, text: line, level: lvl, ts: tm ? tm[0] : null });
-  });
-  return parsed;
-}
+var LA_LEVELS = ["FATAL", "ERROR", "WARN", "INFO", "DEBUG", "TRACE", "OTHER"];
+var LA_RANK = { FATAL: 0, ERROR: 1, WARN: 2, INFO: 3, DEBUG: 4, TRACE: 5, OTHER: 6 };
+var LA_LABEL = { FATAL: "Fatal", ERROR: "Errors", WARN: "Warnings", INFO: "Info", DEBUG: "Debug", TRACE: "Trace", OTHER: "No level" };
+var LA_LVL_MAP = {
+  FATAL: "FATAL", CRITICAL: "FATAL", CRIT: "FATAL", EMERG: "FATAL", ALERT: "FATAL", PANIC: "FATAL",
+  SEVERE: "ERROR", ERROR: "ERROR", ERR: "ERROR",
+  WARNING: "WARN", WARN: "WARN",
+  NOTICE: "INFO", INFO: "INFO", INFORMATION: "INFO",
+  DEBUG: "DEBUG", FINE: "DEBUG",
+  TRACE: "TRACE", FINER: "TRACE", FINEST: "TRACE"
+};
+var LA_LVL_RE = /(?:^|[\s\[|:(<])(FATAL|CRITICAL|CRIT|EMERG|ALERT|PANIC|SEVERE|ERROR|ERR|WARNING|WARN|NOTICE|INFO|INFORMATION|DEBUG|FINEST|FINER|FINE|TRACE)(?=[\s\]|:)>,]|$)/;
+var LA_LVL_KV_RE = /(?:\blevel|\bseverity|\blvl)"?\s*[=:]\s*"?([A-Za-z]+)/i;
+var LA_CONT_RE = /^(at |Caused by|Suppressed:|\.\.\. \d+ (more|common)|Traceback|File "|[\w$.]+(Exception|Error)(:|$))/;
+var LA_EXC_RE = /\b((?:[a-zA-Z_$][\w$]*\.)*[A-Z][\w$]*(?:Exception|Error|Fault))\b/g;
+var LA_RESTART_RE = /\b(starting|started|restarting|restarted|shutting down|shutdown|stopping|stopped)\b.{0,60}(application|service|server|context|jvm)\b|\b(application|server|jvm)\b.{0,40}\b(starting|started|restarted|shutting down|stopped)\b/i;
+var LA_ID_RE = /\b(txn[_-]?id|transaction[_-]?id|trace[_-]?id|span[_-]?id|request[_-]?id|req[_-]?id|x-request-id|correlation[_-]?id|corr[_-]?id|ref(?:erence)?[_-]?(?:no|num|id)?|utr|rrn|stan|order[_-]?id|payment[_-]?id|account[_-]?id|acc(?:ount)?[_-]?no|customer[_-]?id|cust[_-]?id|user[_-]?id|session[_-]?id|loan[_-]?id|batch[_-]?id|job[_-]?id)\s*[=:]\s*["']?([\w.\-\/]+)/gi;
+var LA_ID_LABELS = {
+  txnid: "Transaction ID", transactionid: "Transaction ID", traceid: "Trace ID", spanid: "Span ID",
+  requestid: "Request ID", reqid: "Request ID", xrequestid: "Request ID", correlationid: "Correlation ID", corrid: "Correlation ID",
+  ref: "Reference", refno: "Reference", refnum: "Reference", refid: "Reference", reference: "Reference", referenceno: "Reference", referencenum: "Reference", referenceid: "Reference",
+  utr: "UTR", rrn: "RRN", stan: "STAN", orderid: "Order ID", paymentid: "Payment ID",
+  accountid: "Account", accno: "Account", accountno: "Account", customerid: "Customer ID", custid: "Customer ID",
+  userid: "User ID", sessionid: "Session ID", loanid: "Loan ID", batchid: "Batch ID", jobid: "Job ID"
+};
+var LA_MON = { jan: 0, feb: 1, mar: 2, apr: 3, may: 4, jun: 5, jul: 6, aug: 7, sep: 8, oct: 9, nov: 10, dec: 11 };
+var LA_MON_N = ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"];
+function laMs(s) { return s ? +((s + "00").slice(0, 3)) : 0; }
+function laYmd(m) { return [+m[1], +m[2] - 1, +m[3], +m[4], +m[5], +m[6], laMs(m[7])]; }
+var LA_TS = [
+  { name: "ISO 8601", re: /(\d{4})-(\d{2})-(\d{2})[T ](\d{2}):(\d{2}):(\d{2})(?:[.,](\d{1,9}))?(?:Z|[+-]\d{2}:?\d{2})?/, f: laYmd },
+  { name: "yyyy/MM/dd", re: /(\d{4})\/(\d{2})\/(\d{2})[ T](\d{2}):(\d{2}):(\d{2})(?:[.,](\d{1,9}))?/, f: laYmd },
+  { name: "Apache / Nginx", re: /(\d{2})\/([A-Za-z]{3})\/(\d{4}):(\d{2}):(\d{2}):(\d{2})/,
+    f: function(m) { return [+m[3], LA_MON[m[2].toLowerCase()], +m[1], +m[4], +m[5], +m[6], 0]; } },
+  { name: "dd-MMM-yyyy", re: /(\d{2})-([A-Za-z]{3})-(\d{4}) (\d{2}):(\d{2}):(\d{2})(?:[.,](\d{1,9}))?/,
+    f: function(m) { return [+m[3], LA_MON[m[2].toLowerCase()], +m[1], +m[4], +m[5], +m[6], laMs(m[7])]; } },
+  { name: "Syslog", re: /^([A-Z][a-z]{2}) {1,2}(\d{1,2}) (\d{2}):(\d{2}):(\d{2})/,
+    f: function(m) { return [new Date().getFullYear(), LA_MON[m[1].toLowerCase()], +m[2], +m[3], +m[4], +m[5], 0]; } },
+  { name: "Time only", re: /^\[?(\d{2}):(\d{2}):(\d{2})(?:[.,](\d{1,6}))?/,
+    f: function(m) { var d = new Date(); return [d.getFullYear(), d.getMonth(), d.getDate(), +m[1], +m[2], +m[3], laMs(m[4])]; } }
+];
+var LA_ICON = {
+  file: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="8" y1="13" x2="16" y2="13"/><line x1="8" y1="17" x2="12" y2="17"/></svg>',
+  shield: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>',
+  copy: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg>',
+  upload: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polyline points="16 16 12 12 8 16"/><line x1="12" y1="12" x2="12" y2="21"/><path d="M20.39 18.39A5 5 0 0 0 18 9h-1.26A8 8 0 1 0 3 16.3"/></svg>',
+  chev: '<svg class="la-chev" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polyline points="6 9 12 15 18 9"/></svg>'
+};
 
-function topMessages(parsed, n) {
-  var freq = {};
-  parsed.forEach(function(e) {
-    var key = e.text.replace(/\d+/g, "#").trim();
-    freq[key] = (freq[key]||0) + 1;
-  });
-  return Object.keys(freq).sort(function(a,b){ return freq[b]-freq[a]; }).slice(0, n).map(function(k){ return { msg: k, count: freq[k] }; });
-}
+var logA = null;
+var logState = { query: "", level: "all", service: "", group: "", range: null, tab: "", rawLimit: 500, mask: false };
 
-function renderLogResults(parsed, filterLevel) {
-  filterLevel = filterLevel || "all";
-  activeLogFilter = filterLevel;
-  var counts = { ERROR:0, WARN:0, INFO:0, DEBUG:0, OTHER:0 };
-  parsed.forEach(function(e) {
-    if (counts[e.level] !== undefined) counts[e.level]++;
-    else counts.OTHER++;
-  });
-  var totalErrors = counts.ERROR + (counts.OTHER||0);
-
-  var html = '<div style="display:flex;flex-wrap:wrap;gap:.65rem;margin-bottom:1.25rem;">' +
-    '<div class="log-stat-card err"><span class="log-stat-label">Errors</span><span class="log-stat-val">' + counts.ERROR + '</span></div>' +
-    '<div class="log-stat-card wrn"><span class="log-stat-label">Warnings</span><span class="log-stat-val">' + counts.WARN + '</span></div>' +
-    '<div class="log-stat-card inf"><span class="log-stat-label">Info</span><span class="log-stat-val">' + counts.INFO + '</span></div>' +
-    '<div class="log-stat-card"><span class="log-stat-label">Debug</span><span class="log-stat-val">' + counts.DEBUG + '</span></div>' +
-    '<div class="log-stat-card"><span class="log-stat-label">Total lines</span><span class="log-stat-val">' + parsed.length + '</span></div>' +
-    '</div>';
-
-  /* Filter buttons */
-  html += '<div class="log-filter-row">';
-  ["all","ERROR","WARN","INFO","DEBUG"].forEach(function(lvl) {
-    var active = lvl === filterLevel ? ' active' : '';
-    html += '<button class="log-flt-btn'+active+'" data-log-filter="'+lvl+'">' + (lvl==="all"?"All":lvl) + '</button>';
-  });
-  html += '</div>';
-
-  /* Top recurring errors */
-  var errLines = parsed.filter(function(e){ return e.level==="ERROR" || e.level==="FATAL" || e.level==="CRITICAL"; });
-  if (errLines.length) {
-    var top = topMessages(errLines, 5);
-    html += '<div class="log-top-errs"><div class="log-h">Top recurring errors <small>'+errLines.length+' error lines</small></div>';
-    top.forEach(function(t, i) {
-      var pct = Math.round(t.count / errLines.length * 100);
-      html += '<div class="log-top-err-row">' +
-        '<span class="log-err-num">'+(i+1)+'</span>' +
-        '<span class="log-err-txt" title="'+escapeHtml(t.msg)+'">'+escapeHtml(t.msg.length>120?t.msg.slice(0,120)+'…':t.msg)+'</span>' +
-        '<span class="log-err-ct">×'+t.count+'</span>' +
-        '</div>';
-    });
-    html += '</div>';
+/* ── Parsing ── */
+function laTs(line, st) {
+  var head = line.length > 90 ? line.slice(0, 90) : line;
+  for (var k = 0; k < LA_TS.length; k++) {
+    var pi = (k + st.fmt) % LA_TS.length, p = LA_TS[pi];
+    var m = head.match(p.re);
+    if (!m) continue;
+    var a = p.f(m);
+    if (a[1] === undefined || isNaN(a[1])) continue;
+    var ms = new Date(a[0], a[1], a[2], a[3], a[4], a[5], a[6]).getTime();
+    if (isNaN(ms)) continue;
+    st.fmt = pi;
+    return { ms: ms, text: m[0], idx: m.index, name: p.name };
   }
+  return null;
+}
 
-  /* Filtered lines */
-  var display = filterLevel === "all" ? parsed : parsed.filter(function(e){ return e.level===filterLevel; });
-  var lvlClass = { ERROR:"ll-err", FATAL:"ll-err", CRITICAL:"ll-err", WARN:"ll-wrn", WARNING:"ll-wrn", INFO:"ll-inf", DEBUG:"ll-dbg" };
-  html += '<div class="log-raw">';
-  display.slice(0, 1000).forEach(function(e) {
-    var cls = lvlClass[e.level] || "ll-inf";
-    html += '<div class="log-line '+cls+'"><span class="log-lineno">'+e.line+'</span><span class="log-linetext">'+escapeHtml(e.text)+'</span></div>';
+function laLvl(line) {
+  var head = line.length > 200 ? line.slice(0, 200) : line;
+  var m = head.match(LA_LVL_RE);
+  if (m) return { level: LA_LVL_MAP[m[1]], token: m[1] };
+  m = line.match(LA_LVL_KV_RE);
+  if (m && LA_LVL_MAP[m[1].toUpperCase()]) return { level: LA_LVL_MAP[m[1].toUpperCase()], token: null };
+  return null;
+}
+
+function laThreadLike(s) {
+  return /\s/.test(s) || /^\d+$/.test(s) || /-\d+$/.test(s) ||
+    /^(main|thread|pool|http|https|nio|exec|worker|qtp|scheduling|task|async|kafka|grpc|reactor|parallel)/i.test(s) ||
+    /exec|thread|worker/i.test(s) || /^[0-9a-f]{8,}$/i.test(s);
+}
+
+function laDissect(e, ts, lv) {
+  var raw = e.raw, t = raw.trim();
+  if (t.charAt(0) === "{") {
+    try {
+      var o = JSON.parse(t);
+      e.msg = String(o.message || o.msg || o.log || o.event || t);
+      e.service = String(o.service || o.logger_name || o.logger || o.component || o.app || o.module || "");
+      if (e.service.split(".").length > 2) e.service = e.service.split(".").pop();
+      var st = o.stack_trace || o.stack || o.exception || o.stacktrace;
+      if (st) e.extra = e.extra.concat(String(st).split(/\r?\n/));
+      return;
+    } catch (err) { /* not JSON, fall through */ }
+  }
+  var rest = raw;
+  if (ts) rest = rest.slice(0, ts.idx) + " " + rest.slice(ts.idx + ts.text.length);
+  if (lv && lv.token) {
+    var j = rest.indexOf(lv.token);
+    if (j > -1 && j < 220) rest = rest.slice(0, j) + " " + rest.slice(j + lv.token.length);
+  }
+  rest = rest.replace(/\[\s*\]/g, " ").replace(/^[\s,|\-:\]]+/, "");
+  var svc = "";
+  var kv = rest.match(/\b(?:service|svc|app|logger|component|module)\s*[=:]\s*"?([\w.$\/-]+)/i);
+  if (kv) svc = kv[1];
+  var m, brackets = [];
+  while ((m = rest.match(/^\[([^\]]{1,80})\]\s*/))) { brackets.push(m[1]); rest = rest.slice(m[0].length); }
+  if (!svc) for (var k = 0; k < brackets.length; k++) { if (!laThreadLike(brackets[k])) { svc = brackets[k]; break; } }
+  var lg = rest.match(/^([A-Za-z_$][\w$]*(?:\.[\w$]+)+)\s*(?:[-:]\s+|\s{2,})/);
+  if (lg) { if (!svc) svc = lg[1]; rest = rest.slice(lg[0].length); }
+  else {
+    var sl = rest.match(/^(?:\S+\s+)?([\w.\/-]+)\[\d+\]:\s+/);
+    if (sl) { if (!svc) svc = sl[1]; rest = rest.slice(sl[0].length); }
+  }
+  rest = rest.replace(/^[\s\-:|]+/, "");
+  if (svc.split(".").length > 2) svc = svc.split(".").pop();
+  e.service = svc;
+  e.msg = rest || t;
+}
+
+function laSig(msg) {
+  /* HTTP-style status codes stay in the pattern (503 and 500 are different issues); they are
+     hidden as letters while every other number is replaced, then restored. */
+  var s = msg.replace(/\b(code|status|http)([\s=:]+)([1-5]\d\d)\b/gi, function(_, a, b, c) {
+    return a + b + "\u0001" + c.replace(/\d/g, function(d) { return String.fromCharCode(97 + +d); });
   });
-  if (display.length > 1000) html += '<div class="log-line"><em>…and '+(display.length-1000)+' more lines</em></div>';
-  html += '</div>';
+  s = s.replace(/[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}/gi, "<uuid>")
+       .replace(/[\w.+-]+@[\w-]+\.[\w.]+/g, "<email>")
+       .replace(/\b\d{1,3}(?:\.\d{1,3}){3}(?::\d+)?\b/g, "<ip>")
+       .replace(/\b(?=[0-9a-f]*\d)(?=[0-9a-f]*[a-f])[0-9a-f]{8,}\b/gi, "<hex>")
+       .replace(/\d+(?:[.,]\d+)*/g, "<n>")
+       .replace(/\u0001([a-j]{3})/g, function(_, c) { return c.replace(/[a-j]/g, function(ch) { return ch.charCodeAt(0) - 97; }); });
+  return s.replace(/\s+/g, " ").trim().slice(0, 240);
+}
 
-  logResults.innerHTML = html;
+function laParse(text) {
+  var lines = text.split(/\r\n|\n|\r/);
+  if (lines.length && lines[lines.length - 1] === "") lines.pop();
+  var entries = [], fmtCount = {}, st = { fmt: 0 }, prev = null;
+  for (var i = 0; i < lines.length; i++) {
+    var raw = lines[i];
+    if (!raw.trim()) continue;
+    var ts = laTs(raw, st), lv = laLvl(raw);
+    if (!ts && !lv && prev && (prev.ts !== null || /^\s/.test(raw) || LA_CONT_RE.test(raw.trim()))) {
+      prev.extra.push(raw);
+      continue;
+    }
+    if (ts) fmtCount[ts.name] = (fmtCount[ts.name] || 0) + 1;
+    var e = { n: i + 1, raw: raw, ts: ts ? ts.ms : null, level: lv ? lv.level : "OTHER", extra: [], service: "", msg: "" };
+    laDissect(e, ts, lv);
+    entries.push(e);
+    prev = e;
+  }
+  var fmt = "", best = 0;
+  for (var f in fmtCount) if (fmtCount[f] > best) { best = fmtCount[f]; fmt = f; }
+  if (!fmt && entries.length && entries[0].raw.trim().charAt(0) === "{") fmt = "JSON";
+  entries.forEach(function(e) { e.sig = laSig(e.msg); });
+  return { lines: lines, entries: entries, format: fmt || "Plain text (no timestamps)" };
+}
+
+/* ── Analysis ── */
+function laExceptions(e) {
+  var seen = {}, out = [], txt = e.msg + "\n" + e.extra.slice(0, 40).join("\n"), m;
+  LA_EXC_RE.lastIndex = 0;
+  while ((m = LA_EXC_RE.exec(txt))) { if (!seen[m[1]]) { seen[m[1]] = 1; out.push(m[1]); } }
+  return out;
+}
+
+function laIds(text, into) {
+  var m;
+  LA_ID_RE.lastIndex = 0;
+  while ((m = LA_ID_RE.exec(text))) {
+    var label = LA_ID_LABELS[m[1].toLowerCase().replace(/[_-]/g, "")] || m[1];
+    var v = m[2].replace(/[.\-\/]+$/, "");
+    if (v.length < 3) continue;
+    if (!into[label]) into[label] = { order: [], seen: {} };
+    if (!into[label].seen[v]) { into[label].seen[v] = 1; into[label].order.push(v); }
+  }
+}
+
+function laSvcName(e) { return e.service || "(unknown)"; }
+
+function laAnalyse(P, file) {
+  var E = P.entries, counts = {}, gmap = {}, groups = [], smap = {}, exc = {}, ids = {};
+  var tsMin = null, tsMax = null;
+  LA_LEVELS.forEach(function(l) { counts[l] = 0; });
+  E.forEach(function(e, idx) {
+    counts[e.level]++;
+    if (e.ts !== null) {
+      if (tsMin === null || e.ts < tsMin) tsMin = e.ts;
+      if (tsMax === null || e.ts > tsMax) tsMax = e.ts;
+    }
+    var key = e.level + "\u0002" + e.sig;
+    var g = gmap[key];
+    if (!g) { g = gmap[key] = { key: key, level: e.level, sig: e.sig, count: 0, items: [], services: {}, first: null, last: null, ids: {}, exc: {} }; groups.push(g); }
+    g.count++; g.items.push(idx);
+    var sv = laSvcName(e);
+    g.services[sv] = (g.services[sv] || 0) + 1;
+    if (e.ts !== null) {
+      if (g.first === null || e.ts < g.first) g.first = e.ts;
+      if (g.last === null || e.ts > g.last) g.last = e.ts;
+    }
+    if (!smap[sv]) smap[sv] = { name: sv, total: 0, FATAL: 0, ERROR: 0, WARN: 0 };
+    smap[sv].total++;
+    if (smap[sv][e.level] !== undefined) smap[sv][e.level]++;
+    if (LA_RANK[e.level] <= 2) {
+      var txt = e.raw + "\n" + e.extra.slice(0, 20).join("\n");
+      laIds(txt, g.ids);
+      if (LA_RANK[e.level] <= 1) laIds(txt, ids);
+      laExceptions(e).forEach(function(x) { exc[x] = (exc[x] || 0) + 1; g.exc[x] = (g.exc[x] || 0) + 1; });
+    }
+  });
+  groups.sort(function(a, b) { return (LA_RANK[a.level] - LA_RANK[b.level]) || (b.count - a.count); });
+  var services = Object.keys(smap).map(function(k) { return smap[k]; }).sort(function(a, b) {
+    return ((b.FATAL + b.ERROR) - (a.FATAL + a.ERROR)) || (b.WARN - a.WARN) || (b.total - a.total);
+  });
+
+  var A = {
+    file: file, lines: P.lines, entries: E, format: P.format, counts: counts, groups: groups,
+    services: services, exceptions: exc, ids: ids, tsMin: tsMin, tsMax: tsMax, tl: null
+  };
+  A.multiDay = tsMin !== null && new Date(tsMin).toDateString() !== new Date(tsMax).toDateString();
+
+  if (tsMin !== null && tsMax > tsMin) {
+    var steps = [1, 5, 10, 30, 60, 300, 600, 900, 1800, 3600, 10800, 21600, 43200, 86400, 604800];
+    var span = tsMax - tsMin, step = steps[steps.length - 1] * 1000;
+    for (var s = 0; s < steps.length; s++) { if (span / (steps[s] * 1000) <= 48) { step = steps[s] * 1000; break; } }
+    var tzo = -new Date(tsMin).getTimezoneOffset() * 60000;
+    var start = Math.floor((tsMin + tzo) / step) * step - tzo;
+    var nb = Math.floor((tsMax - start) / step) + 1, b = [];
+    for (var i = 0; i < nb; i++) b.push({ e: 0, w: 0, o: 0 });
+    E.forEach(function(e) {
+      if (e.ts === null) return;
+      var bk = b[Math.floor((e.ts - start) / step)];
+      if (LA_RANK[e.level] <= 1) bk.e++; else if (e.level === "WARN") bk.w++; else bk.o++;
+    });
+    A.tl = { start: start, step: step, b: b };
+  }
+  A.verdict = counts.FATAL ? { cls: "crit", text: "Critical: fatal events found" }
+    : counts.ERROR ? { cls: "err", text: "Errors found" }
+    : counts.WARN ? { cls: "warn", text: "Warnings only, no errors" }
+    : { cls: "ok", text: "Healthy: no errors or warnings" };
+  A.insights = laInsights(A);
+  return A;
+}
+
+function laPct(n, d) { if (!d) return "0%"; var p = n / d * 100; return (p < 1 && p > 0 ? p.toFixed(1) : Math.round(p)) + "%"; }
+function laPad(n) { return n < 10 ? "0" + n : String(n); }
+function laClock(ms) { var d = new Date(ms); return laPad(d.getHours()) + ":" + laPad(d.getMinutes()) + ":" + laPad(d.getSeconds()); }
+function laDate(ms) { var d = new Date(ms); return d.getDate() + " " + LA_MON_N[d.getMonth()] + " " + d.getFullYear(); }
+function laWhen(ms) { return logA && logA.multiDay ? laDate(ms) + " " + laClock(ms) : laClock(ms); }
+function laDur(ms) {
+  var s = Math.round(ms / 1000);
+  if (s < 60) return s + "s";
+  var m = Math.floor(s / 60); if (m < 60) return m + "m " + (s % 60) + "s";
+  var h = Math.floor(m / 60); if (h < 24) return h + "h " + (m % 60) + "m";
+  return Math.floor(h / 24) + "d " + (h % 24) + "h";
+}
+function laSize(b) { return b < 1024 ? b + " B" : b < 1048576 ? (b / 1024).toFixed(1) + " KB" : (b / 1048576).toFixed(1) + " MB"; }
+function laStep(ms) {
+  var s = ms / 1000;
+  return s < 60 ? s + "-second" : s < 3600 ? (s / 60) + "-minute" : s < 86400 ? (s / 3600) + "-hour" : (s / 86400) + "-day";
+}
+function laTrunc(s, n) { return s.length > n ? s.slice(0, n - 1) + "…" : s; }
+function laList(arr) { return arr.length < 2 ? arr.join("") : arr.slice(0, -1).join(", ") + " and " + arr[arr.length - 1]; }
+function laTopKeys(obj, n) { return Object.keys(obj).sort(function(a, b) { return obj[b] - obj[a]; }).slice(0, n); }
+
+/* Findings use **bold** and `code` markers so one string serves both the page and the copied summary. */
+function laInsights(A) {
+  var C = A.counts, E = A.entries, out = [], errTotal = C.FATAL + C.ERROR;
+  function add(lv, s) { out.push({ lv: lv, s: s }); }
+  if (C.FATAL) {
+    var f = null;
+    for (var i = 0; i < E.length; i++) if (E[i].level === "FATAL") { f = E[i]; break; }
+    add("FATAL", "**" + C.FATAL + " fatal event" + (C.FATAL > 1 ? "s" : "") + "**" + (C.FATAL > 1 ? ", the first" : "") +
+      (f.ts !== null ? " at **" + laWhen(f.ts) + "**" : "") + " (line " + f.n + "): `" + laTrunc(f.msg, 140) + "`");
+  }
+  if (errTotal) {
+    var rate = "";
+    if (A.tsMin !== null && A.tsMax - A.tsMin >= 600000) rate = ", about **" + Math.round(errTotal / ((A.tsMax - A.tsMin) / 3600000)) + " per hour**";
+    add("ERROR", "**" + errTotal + " errors** in total, " + laPct(errTotal, E.length) + " of all entries" + rate + ".");
+    var eg = A.groups.filter(function(g) { return LA_RANK[g.level] <= 1; }).sort(function(a, b) { return b.count - a.count; })[0];
+    var sv = Object.keys(eg.services);
+    add("ERROR", "Most frequent error: `" + laTrunc(eg.sig, 120) + "`, **" + eg.count + " times** (" + laPct(eg.count, errTotal) + " of errors)" +
+      (sv.length > 1 ? ", spread across " + sv.length + " services" : sv[0] !== "(unknown)" ? " in " + sv[0] : "") + ".");
+    if (A.tl && A.tl.b.length > 3 && errTotal > 2) {
+      var pk = 0;
+      A.tl.b.forEach(function(b, i) { if (b.e > A.tl.b[pk].e) pk = i; });
+      var t0 = A.tl.start + pk * A.tl.step, avg = errTotal / A.tl.b.length;
+      if (A.tl.b[pk].e >= Math.max(2, avg * 1.5))
+        add("ERROR", "Errors peaked between **" + laWhen(t0) + " and " + laWhen(t0 + A.tl.step) + "** with " + A.tl.b[pk].e +
+          " errors, against an average of " + avg.toFixed(1) + " per " + laStep(A.tl.step).replace("-", " ") + " interval.");
+    }
+    var named = A.services.filter(function(s) { return s.name !== "(unknown)" && s.FATAL + s.ERROR > 0; });
+    if (named.length > 1) {
+      var top = named[0];
+      add("ERROR", "**" + top.name + "** logged the most errors: " + (top.FATAL + top.ERROR) + " (" + laPct(top.FATAL + top.ERROR, errTotal) + ").");
+    }
+    var fe = null;
+    for (var k = 0; k < E.length; k++) if (LA_RANK[E[k].level] <= 1) { fe = E[k]; break; }
+    if (fe && fe.ts !== null && A.tsMin !== null)
+      add("ERROR", "First error at **" + laWhen(fe.ts) + "** (line " + fe.n + ")" + (fe.ts > A.tsMin ? ", " + laDur(fe.ts - A.tsMin) + " after the log starts." : ", right at the start of the log."));
+  } else {
+    add("OTHER", "No errors or fatal events in this file.");
+  }
+  var ex = laTopKeys(A.exceptions, 1)[0];
+  if (ex) add("ERROR", "Most common exception: `" + ex + "` (" + A.exceptions[ex] + "×).");
+  var traces = E.filter(function(e) { return LA_RANK[e.level] <= 1 && e.extra.length; }).length;
+  if (traces) add("ERROR", "**" + traces + "** error" + (traces > 1 ? "s include" : " includes") + " a stack trace. Open an issue below to read it.");
+  if (C.WARN) {
+    var wg = A.groups.filter(function(g) { return g.level === "WARN"; })[0];
+    add("WARN", "**" + C.WARN + " warnings**. Most frequent: `" + laTrunc(wg.sig, 110) + "` (" + wg.count + "×).");
+  }
+  var diffs = [], gap = 0, gapAt = null, prevTs = null;
+  E.forEach(function(e) {
+    if (e.ts === null) return;
+    if (prevTs !== null && e.ts >= prevTs) { var d = e.ts - prevTs; diffs.push(d); if (d > gap) { gap = d; gapAt = [prevTs, e.ts]; } }
+    prevTs = e.ts;
+  });
+  diffs.sort(function(a, b) { return a - b; });
+  var med = diffs.length ? diffs[Math.floor(diffs.length / 2)] : 0;
+  if (gapAt && gap >= 300000 && gap > med * 10)
+    add("WARN", "**No log lines for " + laDur(gap) + "** between " + laWhen(gapAt[0]) + " and " + laWhen(gapAt[1]) + ". Check whether the service was down or stopped logging.");
+  var rs = E.filter(function(e) { return LA_RESTART_RE.test(e.msg); });
+  if (rs.length)
+    add("WARN", "**Start/stop activity** on " + rs.length + " line" + (rs.length > 1 ? "s" : "") + ": " +
+      laList(rs.slice(0, 4).map(function(e) { return (e.ts !== null ? laWhen(e.ts) + " " : "") + "`" + laTrunc(e.msg, 50) + "`"; })) + ".");
+  var txn = A.ids["Transaction ID"] || A.ids["UTR"] || A.ids["Reference"];
+  if (txn) add("ERROR", "**" + txn.order.length + "** distinct transaction references appear on error lines. Use Copy summary to get the list.");
+  return out;
+}
+
+/* ── Masking (display and copy only, the file itself is never changed) ── */
+function laLuhn(d) {
+  var sum = 0, alt = false;
+  for (var i = d.length - 1; i >= 0; i--) { var n = +d.charAt(i); if (alt) { n *= 2; if (n > 9) n -= 9; } sum += n; alt = !alt; }
+  return sum % 10 === 0;
+}
+function laMask(s) {
+  if (!logState.mask) return s;
+  return s
+    .replace(/\b(cvv|cvc|pin|mpin|otp|password|passwd|pwd|secret|token|api[_-]?key)(\s*[=:]\s*)["']?[^\s"',;]+/gi, "$1$2****")
+    .replace(/\b(?:\d[ -]?){12,18}\d\b/g, function(m) {
+      var d = m.replace(/\D/g, "");
+      return d.length >= 13 && d.length <= 19 && laLuhn(d) ? "XXXX-XXXX-XXXX-" + d.slice(-4) : m;
+    })
+    .replace(/\b(acc(?:ount)?[_-]?(?:no|num|number)?|a\/c)(\s*[=:]\s*)(\d{5,})(\d{4})\b/gi, function(_, k, sep, a, b) { return k + sep + a.replace(/\d/g, "X") + b; })
+    .replace(/\b[2-9]\d{3} ?\d{4} ?\d{4}\b/g, function(m) { return "XXXX XXXX " + m.replace(/\D/g, "").slice(-4); })
+    .replace(/\b[A-Z]{5}\d{4}[A-Z]\b/g, function(m) { return m.slice(0, 2) + "XXXXXXX" + m.slice(-1); })
+    .replace(/\b([\w.+-])[\w.+-]*@([\w-]+\.[\w.]+)/g, "$1***@$2")
+    .replace(/(^|[^\d])((?:\+91[\s-]?)?)([6-9]\d{5})(\d{4})(?!\d)/g, function(_, pre, cc, a, b) { return pre + cc + "XXXXXX" + b; });
+}
+function laMaskId(label, v) {
+  if (logState.mask && label === "Account" && /^\d{6,}$/.test(v)) return v.slice(0, -4).replace(/\d/g, "X") + v.slice(-4);
+  return laMask(v);
+}
+function laEsc(s) { return escapeHtml(laMask(String(s))); }
+function laMd(s) {
+  return laEsc(s).replace(/\*\*([^*]+)\*\*/g, "<b>$1</b>").replace(/`([^`]+)`/g, "<code>$1</code>");
+}
+function laPlain(s) { return laMask(s.replace(/\*\*/g, "").replace(/`/g, "\"")); }
+function laHL(html) {
+  if (!logState.query) return html;
+  var q = escapeHtml(logState.query).replace(/[.*+?^${}()|[\]\\]/g, "\\$&");
+  return html.replace(new RegExp("(" + q + ")(?![^<]*>)", "gi"), '<mark class="la-hl">$1</mark>');
+}
+
+/* ── Rendering ── */
+function laRender() {
+  var A = logA, C = A.counts, h = "", f = A.file;
+  if (!logState.tab) logState.tab = (C.FATAL + C.ERROR) ? "errors" : C.WARN ? "warnings" : "all";
+  var meta = ['<span><b>' + laSize(f.size) + '</b></span>',
+    '<span><b>' + A.lines.length.toLocaleString() + '</b> lines' + (A.entries.length !== A.lines.length ? ', <b>' + A.entries.length.toLocaleString() + '</b> entries' : '') + '</span>'];
+  if (A.tsMin !== null) {
+    meta.push('<span><b>' + laDate(A.tsMin) + ', ' + laClock(A.tsMin) + '</b> to <b>' + (A.multiDay ? laDate(A.tsMax) + ', ' : '') + laClock(A.tsMax) + '</b></span>');
+    meta.push('<span>Covers <b>' + laDur(A.tsMax - A.tsMin) + '</b></span>');
+  }
+  var named = A.services.filter(function(s) { return s.name !== "(unknown)"; }).length;
+  meta.push('<span>Format <b>' + escapeHtml(A.format) + '</b></span>');
+  if (named) meta.push('<span><b>' + named + '</b> service' + (named > 1 ? 's' : '') + '</span>');
+  if (f.modified) meta.push('<span>File modified ' + laDate(f.modified) + ', ' + laClock(f.modified) + '</span>');
+
+  h += '<div class="la-wrap">';
+  h += '<section class="la-card la-head" aria-label="Log file">' +
+    '<div class="la-file-ico">' + LA_ICON.file + '</div>' +
+    '<div class="la-head-main"><div class="la-eyebrow">Log file</div>' +
+      '<h2 class="la-file-name">' + escapeHtml(f.name) + '</h2>' +
+      '<div class="la-meta">' + meta.join("") + '</div>' +
+      '<span class="la-verdict ' + A.verdict.cls + '">' + A.verdict.text + '</span></div>' +
+    '<div class="la-head-actions">' +
+      '<button class="la-btn' + (logState.mask ? ' on' : '') + '" data-act="mask" aria-pressed="' + logState.mask + '" title="Hide card numbers, account numbers, PAN, Aadhaar, emails, phone numbers and secrets on screen and in anything you copy">' + LA_ICON.shield + 'Mask sensitive data</button>' +
+      '<button class="la-btn" data-act="copy-summary">' + LA_ICON.copy + 'Copy summary</button>' +
+      '<button class="la-btn" data-act="new-file">' + LA_ICON.upload + 'Load another file</button>' +
+    '</div>' +
+    '<details class="la-preview"><summary>First lines of the file</summary><pre class="la-pre">' +
+      A.lines.slice(0, 8).map(function(l, i) { return '<span class="ln">' + (i + 1) + '  </span>' + laEsc(laTrunc(l, 400)); }).join("\n") +
+    '</pre></details>' +
+  '</section>';
+
+  h += '<div class="la-counts" id="laCounts" role="group" aria-label="Filter log lines by level"></div>';
+  h += '<section class="la-card"><h3 class="la-h">Key findings</h3><ul class="la-insights">' +
+    A.insights.map(function(x) { return '<li class="lv-' + x.lv + '"><i class="la-dot" aria-hidden="true"></i><span>' + laMd(x.s) + '</span></li>'; }).join("") +
+  '</ul></section>';
+
+  h += '<div class="la-grid2">' +
+    '<section class="la-card"><h3 class="la-h">Activity over time' + (A.tl ? ' <small>' + laStep(A.tl.step) + ' bars</small>' : '') + '</h3><div id="laTl"></div></section>' +
+    '<section class="la-card"><h3 class="la-h">By service <small>errors / all entries</small></h3><div id="laSvc"></div></section>' +
+  '</div>';
+
+  h += '<section class="la-card"><div class="la-h-row"><h3 class="la-h">Issues grouped by pattern <small>similar lines are merged, numbers and IDs ignored</small></h3>' +
+    '<div class="la-actions"><button class="la-btn la-btn-sm" data-act="expand">Expand all</button><button class="la-btn la-btn-sm" data-act="collapse">Collapse all</button></div></div>' +
+    '<div class="la-tabs" id="laTabs" role="group" aria-label="Issue type"></div><div class="la-issues" id="laIssues"></div></section>';
+
+  h += '<details class="la-card la-rawbox" id="laRawBox"><summary><span>All log lines<small id="laRawCount"></small></span>' + LA_ICON.chev + '</summary>' +
+    '<div class="la-raw-inner" id="laRaw"></div></details>';
+  h += '</div>';
+
+  logResults.innerHTML = h;
   logResults.style.display = "block";
   logDropZone.style.display = "none";
+  laRefresh();
+}
 
-  logResults.querySelectorAll(".log-flt-btn").forEach(function(btn) {
-    btn.addEventListener("click", function() {
-      renderLogResults(parsed, btn.getAttribute("data-log-filter"));
+function laCountsHtml() {
+  var A = logA, C = A.counts, h = "";
+  LA_LEVELS.forEach(function(l) {
+    if (!C[l] && l !== "FATAL" && l !== "ERROR" && l !== "WARN") return;
+    h += '<button class="la-count lv-' + l + (logState.level === l ? ' active' : '') + '" data-act="count" data-lv="' + l + '" aria-pressed="' + (logState.level === l) + '">' +
+      '<span class="k">' + LA_LABEL[l] + '</span><span class="v">' + C[l].toLocaleString() + '</span><span class="p">' + laPct(C[l], A.entries.length) + ' of entries</span></button>';
+  });
+  h += '<button class="la-count' + (logState.level === "all" ? ' active' : '') + '" data-act="count" data-lv="all" aria-pressed="' + (logState.level === "all") + '">' +
+    '<span class="k">All entries</span><span class="v">' + A.entries.length.toLocaleString() + '</span><span class="p">' + A.lines.length.toLocaleString() + ' lines</span></button>';
+  return h;
+}
+
+function laTimelineHtml() {
+  var T = logA.tl;
+  if (!T) return '<p class="la-empty">No timestamps were found in this file, so there is no timeline.</p>';
+  var max = 1, h = '<div class="la-tl">';
+  T.b.forEach(function(b) { max = Math.max(max, b.e + b.w + b.o); });
+  T.b.forEach(function(b, i) {
+    var t0 = T.start + i * T.step, sel = logState.range && logState.range[0] === t0;
+    var tip = laWhen(t0) + " to " + laWhen(t0 + T.step) + ": " + b.e + " errors, " + b.w + " warnings, " + b.o + " other";
+    h += '<button class="la-tl-bar' + (sel ? ' sel' : '') + '" data-act="bucket" data-i="' + i + '" title="' + tip + '" aria-label="' + tip + '">' +
+      (b.e ? '<i class="la-seg e" style="height:' + (b.e / max * 100) + '%"></i>' : '') +
+      (b.w ? '<i class="la-seg w" style="height:' + (b.w / max * 100) + '%"></i>' : '') +
+      (b.o ? '<i class="la-seg o" style="height:' + (b.o / max * 100) + '%"></i>' : '') + '</button>';
+  });
+  var end = T.start + T.b.length * T.step;
+  h += '</div><div class="la-axis"><span>' + laWhen(T.start) + '</span><span>' + laWhen(T.start + (end - T.start) / 2) + '</span><span>' + laWhen(end) + '</span></div>' +
+    '<div class="la-legend"><span><i class="e"></i>Fatal + error</span><span><i class="w"></i>Warning</span><span><i class="o"></i>Other</span><span class="la-hint">Click a bar to see its lines</span></div>';
+  return h;
+}
+
+function laServicesHtml() {
+  var list = logA.services;
+  if (!list.length || (list.length === 1 && list[0].name === "(unknown)")) return '<p class="la-empty">No service or component names were found in the log lines.</p>';
+  var max = 1, h = '<div class="la-svcs">';
+  list.forEach(function(s) { max = Math.max(max, s.total); });
+  list.slice(0, 10).forEach(function(s) {
+    var err = s.FATAL + s.ERROR, on = logState.service === s.name;
+    h += '<button class="la-svc' + (on ? ' active' : '') + '" data-act="svc" data-svc="' + escapeHtml(s.name) + '" aria-pressed="' + on + '" title="' + escapeHtml(s.name) + ': ' + err + ' errors, ' + s.WARN + ' warnings, ' + s.total + ' entries. Click to filter.">' +
+      '<span class="la-svc-name">' + escapeHtml(s.name) + '</span>' +
+      '<span class="la-track"><i class="e" style="width:' + (err / max * 100) + '%"></i><i class="w" style="width:' + (s.WARN / max * 100) + '%"></i><i class="o" style="width:' + ((s.total - err - s.WARN) / max * 100) + '%"></i></span>' +
+      '<span class="la-svc-n"><b>' + err + '</b> / ' + s.total + '</span></button>';
+  });
+  if (list.length > 10) h += '<p class="la-hint" style="margin:.4rem .45rem 0">+' + (list.length - 10) + ' more services</p>';
+  return h + '</div>';
+}
+
+function laGroupVisible(g, tab) {
+  if (tab === "errors" && LA_RANK[g.level] > 1) return false;
+  if (tab === "warnings" && g.level !== "WARN") return false;
+  if (logState.service && !g.services[logState.service]) return false;
+  if (logState.query && g.sig.toLowerCase().indexOf(logState.query.toLowerCase()) === -1) return false;
+  return true;
+}
+
+function laSpark(g) {
+  var T = logA.tl;
+  if (!T) return "";
+  if (!g.spark) {
+    var cells = Math.min(24, T.b.length), arr = [], E = logA.entries, span = T.b.length * T.step;
+    for (var i = 0; i < cells; i++) arr.push(0);
+    g.items.forEach(function(ix) { var e = E[ix]; if (e.ts !== null) arr[Math.min(cells - 1, Math.floor((e.ts - T.start) / span * cells))]++; });
+    g.spark = arr;
+  }
+  var mx = Math.max.apply(null, g.spark) || 1;
+  return '<span class="la-spark" aria-hidden="true" title="When it happened">' +
+    g.spark.map(function(c) { return '<i style="height:' + (c ? Math.max(12, c / mx * 100) : 0) + '%"></i>'; }).join("") + '</span>';
+}
+
+function laIssuesHtml() {
+  var gs = logA.groups, h = "", tab = logState.tab;
+  var list = [];
+  gs.forEach(function(g, i) { if (laGroupVisible(g, tab)) list.push(i); });
+  if (!list.length) {
+    var why = (logState.service || logState.query) ? "No patterns match the current service or search filter." :
+      tab === "errors" ? "No errors or fatal events in this file." : tab === "warnings" ? "No warnings in this file." : "No entries.";
+    return '<p class="la-empty">' + why + '</p>';
+  }
+  var shown = list.slice(0, 200);
+  shown.forEach(function(gi) {
+    var g = gs[gi], sv = Object.keys(g.services), sub = [];
+    if (!(sv.length === 1 && sv[0] === "(unknown)")) sub.push(sv.length > 3 ? escapeHtml(sv.slice(0, 3).join(", ")) + " +" + (sv.length - 3) : escapeHtml(sv.join(", ")));
+    if (g.first !== null) sub.push(g.count > 1 ? "first " + laWhen(g.first) + ", last " + laWhen(g.last) : "at " + laWhen(g.first));
+    var ex = laTopKeys(g.exc, 1)[0];
+    if (ex) sub.push(laEsc(ex.split(".").pop()));
+    h += '<details class="la-issue lv-' + g.level + '" data-g="' + gi + '">' +
+      '<summary><span class="la-badge">' + g.level + '</span>' +
+      '<span class="la-sum-main"><span class="la-sig">' + laHL(laEsc(g.sig)) + '</span><span class="la-sub">' + sub.join(" · ") + '</span></span>' +
+      '<span class="la-cnt">' + laSpark(g) + '<span>×' + g.count + '</span>' + LA_ICON.chev + '</span></summary>' +
+      '<div class="la-issue-body"></div></details>';
+  });
+  if (list.length > shown.length) h += '<p class="la-more-note">Showing the top ' + shown.length + ' of ' + list.length + ' patterns. Use the search box to narrow down.</p>';
+  return h;
+}
+
+function laContext(e) {
+  var L = logA.lines, from = Math.max(0, e.n - 4), to = Math.min(L.length, e.n + e.extra.length + 3), out = [];
+  for (var i = from; i < to; i++) {
+    var cur = i >= e.n - 1 && i < e.n + e.extra.length;
+    var line = '<span class="ln">' + (i + 1) + '  </span>' + laEsc(laTrunc(L[i], 500));
+    out.push(cur ? '<mark>' + line + '</mark>' : line);
+  }
+  return out.join("\n");
+}
+
+function laIssueBody(gi) {
+  var g = logA.groups[gi], E = logA.entries, h = "", LIMIT = 15;
+  h += '<div class="la-kv"><span>Occurrences <b>' + g.count + '</b></span>' +
+    (g.first !== null ? '<span>First seen <b>' + laWhen(g.first) + '</b></span><span>Last seen <b>' + laWhen(g.last) + '</b></span>' +
+      (g.last > g.first ? '<span>Spread over <b>' + laDur(g.last - g.first) + '</b></span>' : '') : '') + '</div>';
+  var sv = laTopKeys(g.services, 20);
+  if (!(sv.length === 1 && sv[0] === "(unknown)"))
+    h += '<div><div class="la-lbl">Services</div><div class="la-chips">' + sv.map(function(s) { return '<span class="la-chip">' + escapeHtml(s) + ' <b>' + g.services[s] + '</b></span>'; }).join("") + '</div></div>';
+  var ex = laTopKeys(g.exc, 8);
+  if (ex.length) h += '<div><div class="la-lbl">Exceptions</div><div class="la-chips">' + ex.map(function(x) { return '<span class="la-chip"><code>' + laEsc(x) + '</code> <b>' + g.exc[x] + '</b></span>'; }).join("") + '</div></div>';
+  var keys = Object.keys(g.ids);
+  if (keys.length) {
+    h += '<div><div class="la-lbl">IDs found in these lines</div><div class="la-ids">';
+    keys.forEach(function(k) {
+      var vals = g.ids[k].order;
+      h += '<div class="la-id-row"><span class="la-id-k">' + escapeHtml(k) + ' (' + vals.length + ')</span><code>' +
+        vals.slice(0, 12).map(function(v) { return laEsc(laMaskId(k, v)); }).join(", ") + (vals.length > 12 ? ' +' + (vals.length - 12) + ' more' : '') + '</code>' +
+        '<button class="la-btn la-btn-sm" data-act="copy-ids" data-g="' + gi + '" data-k="' + escapeHtml(k) + '">' + LA_ICON.copy + 'Copy</button></div>';
     });
+    h += '</div></div>';
+  }
+  h += '<div class="la-actions"><button class="la-btn" data-act="copy-issue" data-g="' + gi + '">' + LA_ICON.copy + 'Copy for ticket</button>' +
+    '<button class="la-btn" data-act="show-group" data-g="' + gi + '">Show all ' + g.count + ' in the log</button></div>';
+  h += '<div><div class="la-lbl">Occurrences' + (g.count > LIMIT ? ' (first ' + LIMIT + ' of ' + g.count + ')' : '') + '</div><div class="la-occs">';
+  g.items.slice(0, LIMIT).forEach(function(ix) {
+    var e = E[ix];
+    h += '<div class="la-occ"><div class="la-occ-head"><span>Line ' + e.n + '</span>' + (e.ts !== null ? '<span>' + laWhen(e.ts) + '</span>' : '') + (e.service ? '<span>' + escapeHtml(e.service) + '</span>' : '') + '</div>' +
+      '<div class="la-occ-text">' + laHL(laEsc(e.raw)) + '</div>' +
+      (e.extra.length ? '<details class="la-mini"><summary>Stack trace, ' + e.extra.length + ' line' + (e.extra.length > 1 ? 's' : '') + '</summary><pre class="la-pre">' +
+        laEsc(e.extra.slice(0, 80).join("\n")) + (e.extra.length > 80 ? "\n… " + (e.extra.length - 80) + " more lines" : "") + '</pre></details>' : '') +
+      '<details class="la-mini"><summary>Lines around it</summary><pre class="la-pre">' + laContext(e) + '</pre></details></div>';
+  });
+  return h + '</div></div>';
+}
+
+function laRawFiltered() {
+  var q = logState.query.toLowerCase(), r = logState.range, gk = logState.group;
+  return logA.entries.filter(function(e) {
+    if (logState.level !== "all" && e.level !== logState.level) return false;
+    if (logState.service && laSvcName(e) !== logState.service) return false;
+    if (gk && e.level + "\u0002" + e.sig !== gk) return false;
+    if (r && (e.ts === null || e.ts < r[0] || e.ts >= r[1])) return false;
+    if (q && e.raw.toLowerCase().indexOf(q) === -1 && (!e.extra.length || e.extra.join("\n").toLowerCase().indexOf(q) === -1)) return false;
+    return true;
   });
 }
+
+function laRawHtml(list) {
+  var A = logA, h = '<div class="la-filters" role="group" aria-label="Filters">';
+  ["all"].concat(LA_LEVELS).forEach(function(l) {
+    if (l !== "all" && !A.counts[l]) return;
+    h += '<button class="la-btn la-btn-sm' + (logState.level === l ? ' on' : '') + '" data-act="count" data-lv="' + l + '" data-stay="1" aria-pressed="' + (logState.level === l) + '">' +
+      (l === "all" ? "All" : LA_LABEL[l]) + (l !== "all" ? ' <span class="la-n">' + A.counts[l] + '</span>' : '') + '</button>';
+  });
+  var chips = [];
+  if (logState.service) chips.push(['service', 'Service: ' + escapeHtml(logState.service)]);
+  if (logState.range) chips.push(['range', 'Time: ' + laWhen(logState.range[0]) + ' to ' + laWhen(logState.range[1])]);
+  if (logState.group) chips.push(['group', 'Issue: ' + laEsc(laTrunc(logState.group.split("\u0002")[1], 60))]);
+  if (logState.query) chips.push(['query', 'Search: “' + escapeHtml(logState.query) + '”']);
+  if (chips.length) {
+    h += '<span class="la-sep" aria-hidden="true"></span>';
+    chips.forEach(function(c) { h += '<button class="la-chip la-chip-x" data-act="clear" data-k="' + c[0] + '" aria-label="Remove filter ' + c[1].replace(/<[^>]+>/g, "") + '">' + c[1] + '</button>'; });
+  }
+  h += '</div><div class="la-showing">Showing <b>' + Math.min(list.length, logState.rawLimit).toLocaleString() + '</b> of <b>' + list.length.toLocaleString() + '</b> matching entries' +
+    (list.length !== A.entries.length ? ' (' + A.entries.length.toLocaleString() + ' in the file)' : '') + '. Use the search box at the top to search the text.</div>';
+  if (!list.length) return h + '<p class="la-empty">No lines match these filters.</p>';
+  h += '<div class="la-raw">';
+  list.slice(0, logState.rawLimit).forEach(function(e) {
+    h += '<div class="la-row lv-' + e.level + '"><span class="n">' + e.n + '</span><span class="l">' + (e.level === "OTHER" ? "—" : e.level) + '</span><span class="t">' + laHL(laEsc(e.raw)) +
+      (e.extra.length ? '<span class="la-tr">' + laHL(laEsc(e.extra.slice(0, 40).join("\n"))) + (e.extra.length > 40 ? "\n… " + (e.extra.length - 40) + " more lines" : "") + '</span>' : '') + '</span></div>';
+  });
+  h += '</div>';
+  if (list.length > logState.rawLimit) h += '<button class="la-btn la-more" data-act="more">Show ' + Math.min(500, list.length - logState.rawLimit) + ' more</button>';
+  return h;
+}
+
+function laTabsHtml() {
+  var gs = logA.groups, n = { errors: 0, warnings: 0, all: 0 };
+  gs.forEach(function(g) {
+    if (laGroupVisible(g, "all")) n.all++;
+    if (laGroupVisible(g, "errors")) n.errors++;
+    if (laGroupVisible(g, "warnings")) n.warnings++;
+  });
+  return [["errors", "Errors and fatal"], ["warnings", "Warnings"], ["all", "All patterns"]].map(function(t) {
+    var on = logState.tab === t[0];
+    return '<button class="la-btn' + (on ? ' on' : '') + '" data-act="tab" data-tab="' + t[0] + '" aria-pressed="' + on + '">' + t[1] + ' <span class="la-n">' + n[t[0]] + '</span></button>';
+  }).join("");
+}
+
+function laRefresh() {
+  if (!logA) return;
+  var open = [];
+  logResults.querySelectorAll(".la-issue[open]").forEach(function(d) { open.push(d.getAttribute("data-g")); });
+  document.getElementById("laCounts").innerHTML = laCountsHtml();
+  document.getElementById("laTl").innerHTML = laTimelineHtml();
+  document.getElementById("laSvc").innerHTML = laServicesHtml();
+  document.getElementById("laTabs").innerHTML = laTabsHtml();
+  var issues = document.getElementById("laIssues");
+  issues.innerHTML = laIssuesHtml();
+  open.forEach(function(gi) { var d = issues.querySelector('.la-issue[data-g="' + gi + '"]'); if (d) d.open = true; });
+  laRefreshRaw();
+}
+
+function laRefreshRaw() {
+  var list = laRawFiltered();
+  document.getElementById("laRaw").innerHTML = laRawHtml(list);
+  document.getElementById("laRawCount").textContent = list.length === logA.entries.length
+    ? logA.entries.length.toLocaleString() + " entries" : list.length.toLocaleString() + " of " + logA.entries.length.toLocaleString() + " entries match";
+}
+
+function laOpenRaw() {
+  var box = document.getElementById("laRawBox");
+  box.open = true;
+  box.scrollIntoView({ behavior: "smooth", block: "start" });
+}
+
+/* ── Copy text ── */
+function laIssueText(g) {
+  var L = ["[" + g.level + "] " + g.sig];
+  L.push("Occurrences: " + g.count + (g.first !== null ? " | First: " + laDate(g.first) + " " + laClock(g.first) + " | Last: " + laDate(g.last) + " " + laClock(g.last) : ""));
+  var sv = laTopKeys(g.services, 10).filter(function(s) { return s !== "(unknown)"; });
+  if (sv.length) L.push("Services: " + sv.map(function(s) { return s + " (" + g.services[s] + ")"; }).join(", "));
+  var ex = laTopKeys(g.exc, 3);
+  if (ex.length) L.push("Exceptions: " + ex.join(", "));
+  Object.keys(g.ids).forEach(function(k) {
+    var v = g.ids[k].order;
+    L.push(k + " (" + v.length + "): " + v.slice(0, 30).map(function(x) { return laMaskId(k, x); }).join(", ") + (v.length > 30 ? " ..." : ""));
+  });
+  var e = logA.entries[g.items[0]];
+  L.push("Example (line " + e.n + "): " + e.raw.trim());
+  if (e.extra.length) L.push(e.extra.slice(0, 8).join("\n"));
+  return laMask(L.join("\n"));
+}
+
+function laSummaryText() {
+  var A = logA, C = A.counts, L = [];
+  L.push("LOG ANALYSIS: " + A.file.name);
+  if (A.tsMin !== null) L.push("Period: " + laDate(A.tsMin) + " " + laClock(A.tsMin) + " to " + laDate(A.tsMax) + " " + laClock(A.tsMax) + " (" + laDur(A.tsMax - A.tsMin) + ")");
+  L.push("Lines: " + A.lines.length + " | Fatal: " + C.FATAL + " | Errors: " + C.ERROR + " | Warnings: " + C.WARN);
+  L.push("Status: " + A.verdict.text);
+  L.push("", "Key findings:");
+  A.insights.forEach(function(x) { L.push("- " + laPlain(x.s)); });
+  var top = A.groups.filter(function(g) { return LA_RANK[g.level] <= 1; }).slice(0, 5);
+  if (top.length) {
+    L.push("", "Top errors:");
+    top.forEach(function(g, i) {
+      var sv = Object.keys(g.services).filter(function(s) { return s !== "(unknown)"; });
+      L.push((i + 1) + ". [" + g.level + "] " + g.sig + " | " + g.count + "x" + (sv.length ? " | " + sv.join(", ") : "") +
+        (g.first !== null ? " | " + laClock(g.first) + " to " + laClock(g.last) : ""));
+    });
+  }
+  Object.keys(A.ids).forEach(function(k) {
+    var v = A.ids[k].order;
+    if (/Transaction|UTR|RRN|Reference|Payment|Order/.test(k))
+      L.push("", k + " on error lines (" + v.length + "): " + v.slice(0, 50).map(function(x) { return laMaskId(k, x); }).join(", ") + (v.length > 50 ? " ..." : ""));
+  });
+  return laMask(L.join("\n"));
+}
+
+/* ── Events ── */
+logResults.addEventListener("click", function(ev) {
+  var b = ev.target.closest("[data-act]");
+  if (!b || !logA) return;
+  var act = b.getAttribute("data-act");
+  if (act === "count") {
+    var lv = b.getAttribute("data-lv");
+    logState.level = (logState.level === lv && lv !== "all") ? "all" : lv;
+    logState.rawLimit = 500;
+    laRefresh();
+    if (!b.hasAttribute("data-stay")) laOpenRaw();
+  } else if (act === "svc") {
+    var s = b.getAttribute("data-svc");
+    logState.service = logState.service === s ? "" : s;
+    logState.rawLimit = 500;
+    laRefresh();
+  } else if (act === "bucket") {
+    var T = logA.tl, t0 = T.start + (+b.getAttribute("data-i")) * T.step;
+    logState.range = logState.range && logState.range[0] === t0 ? null : [t0, t0 + T.step];
+    logState.rawLimit = 500;
+    laRefresh();
+    if (logState.range) laOpenRaw();
+  } else if (act === "tab") {
+    logState.tab = b.getAttribute("data-tab");
+    laRefresh();
+  } else if (act === "clear") {
+    var k = b.getAttribute("data-k");
+    if (k === "service") logState.service = "";
+    else if (k === "range") logState.range = null;
+    else if (k === "group") logState.group = "";
+    else if (k === "query") { logState.query = ""; searchInput.value = ""; updateClearBtn(); }
+    laRefresh();
+  } else if (act === "more") {
+    logState.rawLimit += 500;
+    laRefreshRaw();
+  } else if (act === "mask") {
+    logState.mask = !logState.mask;
+    laRender();
+    showToast(logState.mask ? "Sensitive data masked on screen and in copies" : "Masking turned off");
+  } else if (act === "copy-summary") {
+    writeClipboard(laSummaryText(), function() { showToast("Summary copied"); });
+  } else if (act === "copy-issue") {
+    writeClipboard(laIssueText(logA.groups[+b.getAttribute("data-g")]), function() { showToast("Issue copied"); });
+  } else if (act === "copy-ids") {
+    var key = b.getAttribute("data-k"), vals = logA.groups[+b.getAttribute("data-g")].ids[key].order;
+    writeClipboard(vals.map(function(v) { return laMaskId(key, v); }).join("\n"), function() { showToast(vals.length + " " + key + " values copied"); });
+  } else if (act === "show-group") {
+    logState.group = logA.groups[+b.getAttribute("data-g")].key;
+    logState.level = "all";
+    logState.rawLimit = 500;
+    laRefreshRaw();
+    document.getElementById("laCounts").innerHTML = laCountsHtml();
+    laOpenRaw();
+  } else if (act === "expand" || act === "collapse") {
+    logResults.querySelectorAll(".la-issue").forEach(function(d) { d.open = act === "expand"; });
+  } else if (act === "new-file") {
+    logA = null;
+    logResults.innerHTML = "";
+    logResults.style.display = "none";
+    logDropZone.style.display = "";
+    logFileInput.value = "";
+    logFileInput.click();
+  }
+});
+
+logResults.addEventListener("toggle", function(ev) {
+  var d = ev.target;
+  if (!d.classList || !d.classList.contains("la-issue") || !d.open) return;
+  var body = d.querySelector(".la-issue-body");
+  if (!body.hasChildNodes()) body.innerHTML = laIssueBody(+d.getAttribute("data-g"));
+}, true);
 
 function handleLogFile(file) {
   if (!file) return;
   var reader = new FileReader();
   reader.onload = function(ev) {
-    logParsed = parseLog(ev.target.result);
-    renderLogResults(logParsed, "all");
+    var text = String(ev.target.result || "");
+    if (!text.trim()) { showToast("That file is empty"); return; }
+    if (text.slice(0, 4000).indexOf("\u0000") > -1) { showToast("This looks like a binary file, not a text log"); return; }
+    var mask = logState.mask;
+    logState = { query: searchInput.value.trim(), level: "all", service: "", group: "", range: null, tab: "", rawLimit: 500, mask: mask };
+    logA = laAnalyse(laParse(text), { name: file.name, size: file.size, modified: file.lastModified });
+    laRender();
   };
+  reader.onerror = function() { showToast("Could not read that file"); };
   reader.readAsText(file);
 }
 
-logPickBtn.addEventListener("click", function() { logFileInput.click(); });
+logPickBtn.addEventListener("click", function(e) { e.stopPropagation(); logFileInput.click(); });
+logDropZone.addEventListener("click", function() { logFileInput.click(); });
+logDropZone.addEventListener("keydown", function(e) { if (e.key === "Enter" || e.key === " ") { e.preventDefault(); logFileInput.click(); } });
 logFileInput.addEventListener("change", function(e) { handleLogFile(e.target.files[0]); });
-
 logDropZone.addEventListener("dragover", function(e) { e.preventDefault(); logDropZone.classList.add("drag-over"); });
 logDropZone.addEventListener("dragleave", function() { logDropZone.classList.remove("drag-over"); });
 logDropZone.addEventListener("drop", function(e) {
   e.preventDefault();
   logDropZone.classList.remove("drag-over");
-  var file = e.dataTransfer.files[0];
-  handleLogFile(file);
+  if (e.dataTransfer.files.length > 1) showToast("Only the first file was analysed");
+  handleLogFile(e.dataTransfer.files[0]);
 });
 
 /* Try to load operate-data.js from the same folder.
