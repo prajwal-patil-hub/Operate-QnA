@@ -1,0 +1,221 @@
+2026-11-26 09:00:21,696 ERROR [PaymentService] NEFT submission failed: RBI gateway returned code 503 txnId=TXN782554
+2026-11-26 09:00:54,534 INFO  [PaymentService] Received NEFT request txnId=TXN554710 amount=INR 980
+2026-11-26 09:01:31,147 INFO  [CoreBankingAdapter] UPI collect request processed txnId=TXN761259 status=SUCCESS
+2026-11-26 09:01:40,684 INFO  [NeftGateway] UPI collect request processed txnId=TXN666950 status=SUCCESS
+2026-11-26 09:02:04,537 INFO  [AuthService] Health check OK - db pool active=12 idle=8
+2026-11-26 09:02:34,349 DEBUG [PaymentService] Cache hit for IFSC lookup HDFC0001234
+2026-11-26 09:03:11,528 INFO  [NeftGateway] Balance enquiry completed for accountId=ACC5717 in 1319ms
+2026-11-26 09:03:33,458 INFO  [CoreBankingAdapter] Balance enquiry completed for accountId=ACC2271 in 5260ms
+2026-11-26 09:04:05,166 DEBUG [PaymentService] Cache hit for IFSC lookup HDFC0001234
+2026-11-26 09:04:25,455 DEBUG [PaymentService] SQL executed in 6440ms rows=1
+2026-11-26 09:04:55,232 INFO  [NeftGateway] Scheduled job ReconciliationJob started
+2026-11-26 09:05:21,240 INFO  [AccountService] Balance enquiry completed for accountId=ACC8359 in 6700ms
+2026-11-26 09:05:57,254 INFO  [NeftGateway] Balance enquiry completed for accountId=ACC4780 in 2592ms
+2026-11-26 09:06:12,647 INFO  [AuthService] Scheduled job ReconciliationJob started
+2026-11-26 09:06:52,503 DEBUG [PaymentService] Request headers parsed traceId=6665e7e423
+2026-11-26 09:07:23,448 DEBUG [CoreBankingAdapter] Request headers parsed traceId=1c298cb3a5
+2026-11-26 09:07:27,312 INFO  [CoreBankingAdapter] Scheduled job ReconciliationJob started
+2026-11-26 09:07:52,599 INFO  [AccountService] Session validated for customerId=CUST8768
+2026-11-26 09:08:23,808 INFO  [NeftGateway] Received NEFT request txnId=TXN251118 amount=INR 5000
+2026-11-26 09:08:57,405 INFO  [PaymentService] Scheduled job ReconciliationJob started
+2026-11-26 09:09:14,437 INFO  [NeftGateway] UPI collect request processed txnId=TXN472974 status=SUCCESS
+2026-11-26 09:09:54,604 WARN  [AuthService] Retrying NEFT submission attempt 2/3 txnId=TXN945234
+2026-11-26 09:09:56,452 ERROR [AccountService] NullPointerException in ReconciliationJob.matchEntries line 3292
+2026-11-26 09:10:19,445 ERROR [NeftGateway] Timeout calling CoreBanking API after 30000ms txnId=TXN184450
+2026-11-26 09:10:50,186 DEBUG [PaymentService] SQL executed in 5756ms rows=1
+2026-11-26 09:11:15,839 WARN  [AccountService] Retrying NEFT submission attempt 2/3 txnId=TXN601253
+2026-11-26 09:11:45,704 INFO  [AccountService] Received NEFT request txnId=TXN860006 amount=INR 25000
+2026-11-26 09:11:55,918 DEBUG [PaymentService] SQL executed in 2266ms rows=1
+2026-11-26 09:12:29,399 WARN  [CoreBankingAdapter] Retrying NEFT submission attempt 2/3 txnId=TXN554882
+2026-11-26 09:12:45,462 WARN  [AccountService] DB connection pool usage at 85% (17/20)
+2026-11-26 09:13:23,119 WARN  [AccountService] OTP validation failed for customerId=CUST9713, attempt 2/3
+2026-11-26 09:13:35,433 DEBUG [CoreBankingAdapter] Request headers parsed traceId=f8e752fdf
+2026-11-26 09:14:09,890 DEBUG [PaymentService] Request headers parsed traceId=a46e40990
+2026-11-26 09:14:42,617 INFO  [CoreBankingAdapter] Received NEFT request txnId=TXN896910 amount=INR 5000
+2026-11-26 09:15:15,997 INFO  [AuthService] Session validated for customerId=CUST9319
+2026-11-26 09:15:51,552 ERROR [AuthService] Timeout calling CoreBanking API after 30000ms txnId=TXN980803
+2026-11-26 09:15:56,258 DEBUG [AuthService] Cache hit for IFSC lookup HDFC0001234
+2026-11-26 09:16:06,266 INFO  [NeftGateway] UPI collect request processed txnId=TXN590456 status=SUCCESS
+2026-11-26 09:16:17,839 WARN  [AuthService] OTP validation failed for customerId=CUST4207, attempt 2/3
+2026-11-26 09:16:19,402 INFO  [CoreBankingAdapter] Balance enquiry completed for accountId=ACC7297 in 5551ms
+2026-11-26 09:16:24,897 INFO  [NeftGateway] UPI collect request processed txnId=TXN209869 status=SUCCESS
+2026-11-26 09:16:42,627 WARN  [CoreBankingAdapter] OTP validation failed for customerId=CUST7651, attempt 2/3
+2026-11-26 09:17:14,375 WARN  [PaymentService] Slow response from CoreBanking: 7088ms (threshold 2000ms) txnId=TXN392618
+2026-11-26 09:17:20,564 WARN  [PaymentService] Slow response from CoreBanking: 4452ms (threshold 2000ms) txnId=TXN737720
+2026-11-26 09:17:42,212 ERROR [NeftGateway] NEFT submission failed: RBI gateway returned code 503 txnId=TXN380871
+2026-11-26 09:17:59,612 INFO  [NeftGateway] UPI collect request processed txnId=TXN427147 status=SUCCESS
+2026-11-26 09:18:17,664 INFO  [NeftGateway] Received NEFT request txnId=TXN362614 amount=INR 5000
+2026-11-26 09:18:50,415 INFO  [NeftGateway] Balance enquiry completed for accountId=ACC9110 in 6560ms
+2026-11-26 09:19:05,957 INFO  [NeftGateway] Health check OK - db pool active=12 idle=8
+2026-11-26 09:19:06,961 INFO  [AccountService] Health check OK - db pool active=12 idle=8
+2026-11-26 09:19:39,261 DEBUG [AuthService] Cache hit for IFSC lookup HDFC0001234
+2026-11-26 09:20:08,416 INFO  [NeftGateway] Session validated for customerId=CUST5005
+2026-11-26 09:20:31,305 INFO  [NeftGateway] Session validated for customerId=CUST8776
+2026-11-26 09:21:04,503 WARN  [PaymentService] Slow response from CoreBanking: 6665ms (threshold 2000ms) txnId=TXN377000
+2026-11-26 09:21:24,606 INFO  [NeftGateway] UPI collect request processed txnId=TXN188586 status=SUCCESS
+2026-11-26 09:21:43,870 WARN  [CoreBankingAdapter] Retrying NEFT submission attempt 2/3 txnId=TXN145915
+2026-11-26 09:22:20,752 WARN  [AuthService] Slow response from CoreBanking: 630ms (threshold 2000ms) txnId=TXN966552
+2026-11-26 09:22:27,601 INFO  [AuthService] Balance enquiry completed for accountId=ACC1308 in 8827ms
+2026-11-26 09:22:28,585 INFO  [AuthService] Received NEFT request txnId=TXN884613 amount=INR 5000
+2026-11-26 09:22:33,491 ERROR [PaymentService] Timeout calling CoreBanking API after 30000ms txnId=TXN864763
+2026-11-26 09:23:04,439 ERROR [AuthService] Timeout calling CoreBanking API after 30000ms txnId=TXN904226
+2026-11-26 09:23:24,788 DEBUG [PaymentService] Request headers parsed traceId=f844ce4ab3
+2026-11-26 09:23:38,221 DEBUG [CoreBankingAdapter] Cache hit for IFSC lookup HDFC0001234
+2026-11-26 09:23:51,618 INFO  [AccountService] Received NEFT request txnId=TXN595918 amount=INR 5000
+2026-11-26 09:24:09,468 INFO  [NeftGateway] UPI collect request processed txnId=TXN178237 status=SUCCESS
+2026-11-26 09:24:48,597 WARN  [AccountService] DB connection pool usage at 85% (17/20)
+2026-11-26 09:24:50,526 INFO  [AuthService] Balance enquiry completed for accountId=ACC7642 in 5067ms
+2026-11-26 09:25:15,300 INFO  [PaymentService] Session validated for customerId=CUST6542
+2026-11-26 09:25:34,873 INFO  [AuthService] Received NEFT request txnId=TXN511984 amount=INR 980
+2026-11-26 09:25:38,546 INFO  [CoreBankingAdapter] Received NEFT request txnId=TXN975221 amount=INR 150000
+2026-11-26 09:25:59,667 INFO  [CoreBankingAdapter] Session validated for customerId=CUST1475
+2026-11-26 09:26:13,393 WARN  [AccountService] Slow response from CoreBanking: 2390ms (threshold 2000ms) txnId=TXN867927
+2026-11-26 09:26:17,404 ERROR [AuthService] NEFT submission failed: RBI gateway returned code 503 txnId=TXN233495
+2026-11-26 09:26:34,265 INFO  [PaymentService] UPI collect request processed txnId=TXN415449 status=SUCCESS
+2026-11-26 09:26:48,560 INFO  [AccountService] Balance enquiry completed for accountId=ACC8421 in 5573ms
+2026-11-26 09:26:57,477 INFO  [AuthService] UPI collect request processed txnId=TXN195121 status=SUCCESS
+2026-11-26 09:27:34,315 INFO  [AccountService] Received NEFT request txnId=TXN886072 amount=INR 980
+2026-11-26 09:27:52,641 INFO  [NeftGateway] Received NEFT request txnId=TXN622343 amount=INR 150000
+2026-11-26 09:27:58,969 INFO  [PaymentService] UPI collect request processed txnId=TXN503241 status=SUCCESS
+2026-11-26 09:28:07,945 INFO  [CoreBankingAdapter] Health check OK - db pool active=12 idle=8
+2026-11-26 09:28:37,798 ERROR [PaymentService] Timeout calling CoreBanking API after 30000ms txnId=TXN921147
+2026-11-26 09:29:07,411 INFO  [NeftGateway] Received NEFT request txnId=TXN101432 amount=INR 25000
+2026-11-26 09:29:24,696 INFO  [NeftGateway] Balance enquiry completed for accountId=ACC2629 in 1272ms
+2026-11-26 09:29:49,385 INFO  [AuthService] Scheduled job ReconciliationJob started
+2026-11-26 09:30:05,414 INFO  [PaymentService] UPI collect request processed txnId=TXN673573 status=SUCCESS
+2026-11-26 09:30:07,534 INFO  [AuthService] Health check OK - db pool active=12 idle=8
+2026-11-26 09:30:22,916 INFO  [AuthService] Health check OK - db pool active=12 idle=8
+2026-11-26 09:30:55,371 INFO  [AuthService] Balance enquiry completed for accountId=ACC4177 in 3901ms
+2026-11-26 09:31:02,781 ERROR [PaymentService] NEFT submission failed: RBI gateway returned code 503 txnId=TXN739734
+2026-11-26 09:31:41,826 INFO  [PaymentService] Balance enquiry completed for accountId=ACC1387 in 2445ms
+2026-11-26 09:31:53,289 INFO  [CoreBankingAdapter] Health check OK - db pool active=12 idle=8
+2026-11-26 09:32:23,211 INFO  [PaymentService] Health check OK - db pool active=12 idle=8
+2026-11-26 09:32:29,941 INFO  [AuthService] Session validated for customerId=CUST4398
+2026-11-26 09:32:57,297 INFO  [AuthService] Health check OK - db pool active=12 idle=8
+2026-11-26 09:33:21,135 WARN  [AccountService] OTP validation failed for customerId=CUST5063, attempt 2/3
+2026-11-26 09:33:26,443 WARN  [CoreBankingAdapter] Slow response from CoreBanking: 5675ms (threshold 2000ms) txnId=TXN369500
+2026-11-26 09:33:29,873 INFO  [CoreBankingAdapter] Health check OK - db pool active=12 idle=8
+2026-11-26 09:33:34,540 INFO  [AccountService] UPI collect request processed txnId=TXN212471 status=SUCCESS
+2026-11-26 09:33:43,427 ERROR [AccountService] Timeout calling CoreBanking API after 30000ms txnId=TXN109128
+2026-11-26 09:34:07,166 WARN  [PaymentService] Slow response from CoreBanking: 2740ms (threshold 2000ms) txnId=TXN636750
+2026-11-26 09:34:38,186 DEBUG [NeftGateway] Cache hit for IFSC lookup HDFC0001234
+2026-11-26 09:34:45,735 INFO  [NeftGateway] Health check OK - db pool active=12 idle=8
+2026-11-26 09:35:20,374 ERROR [AuthService] Insufficient balance for accountId=ACC5815 txnId=TXN896463
+2026-11-26 09:35:37,388 WARN  [CoreBankingAdapter] Retrying NEFT submission attempt 2/3 txnId=TXN560741
+2026-11-26 09:35:50,927 INFO  [PaymentService] Balance enquiry completed for accountId=ACC9312 in 8743ms
+2026-11-26 09:36:20,141 ERROR [AuthService] Timeout calling CoreBanking API after 30000ms txnId=TXN104710
+2026-11-26 09:36:35,282 INFO  [AccountService] UPI collect request processed txnId=TXN729662 status=SUCCESS
+2026-11-26 09:37:14,448 INFO  [NeftGateway] Health check OK - db pool active=12 idle=8
+2026-11-26 09:37:17,480 INFO  [NeftGateway] Session validated for customerId=CUST1186
+2026-11-26 09:37:57,203 INFO  [AccountService] UPI collect request processed txnId=TXN132995 status=SUCCESS
+2026-11-26 09:38:33,390 INFO  [AuthService] Scheduled job ReconciliationJob started
+2026-11-26 09:39:00,885 ERROR [AuthService] Timeout calling CoreBanking API after 30000ms txnId=TXN881543
+2026-11-26 09:39:13,940 INFO  [PaymentService] Balance enquiry completed for accountId=ACC8113 in 2685ms
+2026-11-26 09:39:39,245 DEBUG [AccountService] Cache hit for IFSC lookup HDFC0001234
+2026-11-26 09:39:45,633 DEBUG [NeftGateway] Cache hit for IFSC lookup HDFC0001234
+2026-11-26 09:39:50,144 INFO  [AccountService] Balance enquiry completed for accountId=ACC5941 in 2195ms
+2026-11-26 09:40:11,729 INFO  [NeftGateway] Health check OK - db pool active=12 idle=8
+2026-11-26 09:40:42,226 INFO  [NeftGateway] UPI collect request processed txnId=TXN143738 status=SUCCESS
+2026-11-26 09:40:58,713 ERROR [AccountService] NullPointerException in ReconciliationJob.matchEntries line 5431
+2026-11-26 09:41:34,774 ERROR [AuthService] NullPointerException in ReconciliationJob.matchEntries line 4203
+2026-11-26 09:42:03,881 INFO  [CoreBankingAdapter] UPI collect request processed txnId=TXN124510 status=SUCCESS
+2026-11-26 09:42:33,474 WARN  [PaymentService] OTP validation failed for customerId=CUST2099, attempt 2/3
+2026-11-26 09:43:02,421 INFO  [CoreBankingAdapter] Health check OK - db pool active=12 idle=8
+2026-11-26 09:43:08,849 INFO  [PaymentService] Scheduled job ReconciliationJob started
+2026-11-26 09:43:21,725 INFO  [AuthService] Balance enquiry completed for accountId=ACC4622 in 1193ms
+2026-11-26 09:43:32,591 INFO  [NeftGateway] Scheduled job ReconciliationJob started
+2026-11-26 09:44:10,513 INFO  [NeftGateway] Scheduled job ReconciliationJob started
+2026-11-26 09:44:28,978 DEBUG [AuthService] Cache hit for IFSC lookup HDFC0001234
+2026-11-26 09:44:57,503 DEBUG [AuthService] SQL executed in 8896ms rows=1
+2026-11-26 09:45:14,552 INFO  [NeftGateway] Session validated for customerId=CUST6902
+2026-11-26 09:45:26,865 DEBUG [PaymentService] Request headers parsed traceId=bba86df7
+2026-11-26 09:45:41,148 INFO  [NeftGateway] Scheduled job ReconciliationJob started
+2026-11-26 09:46:13,411 INFO  [PaymentService] Health check OK - db pool active=12 idle=8
+2026-11-26 09:46:47,948 INFO  [AccountService] UPI collect request processed txnId=TXN533311 status=SUCCESS
+2026-11-26 09:46:58,248 INFO  [AuthService] UPI collect request processed txnId=TXN841838 status=SUCCESS
+2026-11-26 09:47:24,354 WARN  [NeftGateway] Slow response from CoreBanking: 8600ms (threshold 2000ms) txnId=TXN158857
+2026-11-26 09:47:25,897 INFO  [PaymentService] Scheduled job ReconciliationJob started
+2026-11-26 09:47:26,758 DEBUG [CoreBankingAdapter] SQL executed in 3388ms rows=1
+2026-11-26 09:47:53,841 WARN  [AccountService] Retrying NEFT submission attempt 2/3 txnId=TXN633280
+2026-11-26 09:48:28,207 INFO  [AuthService] Balance enquiry completed for accountId=ACC2318 in 7533ms
+2026-11-26 09:48:43,795 DEBUG [AccountService] Request headers parsed traceId=8da2c81c32
+2026-11-26 09:49:17,366 ERROR [NeftGateway] Timeout calling CoreBanking API after 30000ms txnId=TXN773189
+2026-11-26 09:49:30,488 ERROR [CoreBankingAdapter] Insufficient balance for accountId=ACC7368 txnId=TXN442749
+2026-11-26 09:50:01,339 INFO  [CoreBankingAdapter] Scheduled job ReconciliationJob started
+2026-11-26 09:50:21,214 WARN  [PaymentService] OTP validation failed for customerId=CUST3810, attempt 2/3
+2026-11-26 09:51:01,758 ERROR [PaymentService] Timeout calling CoreBanking API after 30000ms txnId=TXN248731
+2026-11-26 09:51:06,167 WARN  [AccountService] Slow response from CoreBanking: 8867ms (threshold 2000ms) txnId=TXN998103
+2026-11-26 09:51:13,746 INFO  [AuthService] UPI collect request processed txnId=TXN217408 status=SUCCESS
+2026-11-26 09:51:44,367 INFO  [PaymentService] Received NEFT request txnId=TXN930437 amount=INR 25000
+2026-11-26 09:52:07,394 INFO  [CoreBankingAdapter] Session validated for customerId=CUST6256
+2026-11-26 10:15:36,001 FATAL [CoreBankingAdapter] Connection refused: core-banking-01:8443 - circuit breaker OPEN
+2026-11-26 09:52:09,650 WARN  [CoreBankingAdapter] Slow response from CoreBanking: 7803ms (threshold 2000ms) txnId=TXN557650
+2026-11-26 09:52:23,306 WARN  [AuthService] Slow response from CoreBanking: 7264ms (threshold 2000ms) txnId=TXN702449
+2026-11-26 09:52:27,951 INFO  [CoreBankingAdapter] Balance enquiry completed for accountId=ACC4023 in 8223ms
+2026-11-26 09:52:44,751 DEBUG [PaymentService] Request headers parsed traceId=1c2a7147ea
+2026-11-26 09:53:16,504 WARN  [PaymentService] Slow response from CoreBanking: 1678ms (threshold 2000ms) txnId=TXN758434
+2026-11-26 09:53:44,658 ERROR [CoreBankingAdapter] Timeout calling CoreBanking API after 30000ms txnId=TXN490017
+2026-11-26 09:53:55,805 INFO  [CoreBankingAdapter] Health check OK - db pool active=12 idle=8
+2026-11-26 09:53:58,549 INFO  [AuthService] Session validated for customerId=CUST8377
+2026-11-26 09:54:36,872 INFO  [CoreBankingAdapter] Session validated for customerId=CUST9318
+2026-11-26 09:54:46,435 WARN  [NeftGateway] Retrying NEFT submission attempt 2/3 txnId=TXN858288
+2026-11-26 09:55:03,251 ERROR [AuthService] Insufficient balance for accountId=ACC2665 txnId=TXN206751
+2026-11-26 09:55:23,575 INFO  [PaymentService] UPI collect request processed txnId=TXN214587 status=SUCCESS
+2026-11-26 09:55:24,245 INFO  [AuthService] Balance enquiry completed for accountId=ACC9199 in 4973ms
+2026-11-26 09:56:03,783 WARN  [CoreBankingAdapter] Slow response from CoreBanking: 7020ms (threshold 2000ms) txnId=TXN876937
+2026-11-26 09:56:18,817 DEBUG [PaymentService] SQL executed in 5248ms rows=1
+2026-11-26 09:56:45,120 INFO  [CoreBankingAdapter] Balance enquiry completed for accountId=ACC5096 in 7059ms
+2026-11-26 09:57:12,208 INFO  [PaymentService] Health check OK - db pool active=12 idle=8
+2026-11-26 09:57:29,688 INFO  [AccountService] UPI collect request processed txnId=TXN851006 status=SUCCESS
+2026-11-26 09:58:04,859 INFO  [AccountService] Balance enquiry completed for accountId=ACC7060 in 8667ms
+2026-11-26 09:58:18,491 ERROR [AccountService] Timeout calling CoreBanking API after 30000ms txnId=TXN511558
+2026-11-26 09:58:22,859 INFO  [AccountService] Balance enquiry completed for accountId=ACC5344 in 1910ms
+2026-11-26 09:58:56,895 ERROR [PaymentService] NullPointerException in ReconciliationJob.matchEntries line 2815
+2026-11-26 09:59:09,950 INFO  [AccountService] Scheduled job ReconciliationJob started
+2026-11-26 09:59:39,335 ERROR [AuthService] NullPointerException in ReconciliationJob.matchEntries line 5932
+2026-11-26 10:00:04,918 DEBUG [AuthService] Cache hit for IFSC lookup HDFC0001234
+2026-11-26 10:00:27,187 INFO  [AuthService] Session validated for customerId=CUST8944
+2026-11-26 10:00:37,243 ERROR [CoreBankingAdapter] NullPointerException in ReconciliationJob.matchEntries line 5439
+2026-11-26 10:01:00,356 DEBUG [CoreBankingAdapter] Request headers parsed traceId=4ba7ecc7ee
+2026-11-26 10:01:07,512 DEBUG [CoreBankingAdapter] Request headers parsed traceId=e73562efe9
+2026-11-26 10:01:18,809 DEBUG [NeftGateway] SQL executed in 4986ms rows=1
+2026-11-26 10:01:52,946 INFO  [NeftGateway] Balance enquiry completed for accountId=ACC2940 in 4453ms
+2026-11-26 10:02:23,268 INFO  [CoreBankingAdapter] Received NEFT request txnId=TXN607899 amount=INR 980
+2026-11-26 10:03:02,960 ERROR [AccountService] Timeout calling CoreBanking API after 30000ms txnId=TXN268146
+2026-11-26 10:03:26,146 INFO  [AuthService] Health check OK - db pool active=12 idle=8
+2026-11-26 10:03:33,740 INFO  [NeftGateway] Balance enquiry completed for accountId=ACC1555 in 3615ms
+2026-11-26 10:03:55,315 INFO  [AuthService] Health check OK - db pool active=12 idle=8
+2026-11-26 10:04:23,605 INFO  [AccountService] Session validated for customerId=CUST5737
+2026-11-26 10:04:45,438 INFO  [NeftGateway] Session validated for customerId=CUST4334
+2026-11-26 10:05:06,515 WARN  [CoreBankingAdapter] Retrying NEFT submission attempt 2/3 txnId=TXN714938
+2026-11-26 10:05:43,586 INFO  [CoreBankingAdapter] Session validated for customerId=CUST1760
+2026-11-26 10:05:47,748 WARN  [AccountService] OTP validation failed for customerId=CUST2359, attempt 2/3
+2026-11-26 10:05:59,942 INFO  [NeftGateway] UPI collect request processed txnId=TXN138773 status=SUCCESS
+2026-11-26 10:06:19,541 DEBUG [CoreBankingAdapter] Cache hit for IFSC lookup HDFC0001234
+2026-11-26 10:06:57,514 ERROR [AccountService] Timeout calling CoreBanking API after 30000ms txnId=TXN621944
+2026-11-26 10:07:02,184 INFO  [AccountService] Balance enquiry completed for accountId=ACC8789 in 6877ms
+2026-11-26 10:07:16,224 ERROR [PaymentService] Insufficient balance for accountId=ACC1078 txnId=TXN116284
+2026-11-26 10:07:30,862 ERROR [NeftGateway] Timeout calling CoreBanking API after 30000ms txnId=TXN595275
+2026-11-26 10:07:34,826 INFO  [AccountService] Health check OK - db pool active=12 idle=8
+2026-11-26 10:08:04,766 DEBUG [CoreBankingAdapter] Cache hit for IFSC lookup HDFC0001234
+2026-11-26 10:08:10,688 INFO  [AccountService] Session validated for customerId=CUST8968
+2026-11-26 10:08:41,527 DEBUG [AccountService] Request headers parsed traceId=cda13475fe
+2026-11-26 10:09:06,766 WARN  [CoreBankingAdapter] OTP validation failed for customerId=CUST5790, attempt 2/3
+2026-11-26 10:09:28,352 ERROR [AccountService] Insufficient balance for accountId=ACC6056 txnId=TXN116253
+2026-11-26 10:09:53,429 DEBUG [AuthService] SQL executed in 4761ms rows=1
+2026-11-26 10:10:11,988 INFO  [CoreBankingAdapter] Scheduled job ReconciliationJob started
+2026-11-26 10:10:21,666 INFO  [AccountService] Scheduled job ReconciliationJob started
+2026-11-26 10:10:46,311 INFO  [AuthService] Health check OK - db pool active=12 idle=8
+2026-11-26 10:11:24,338 WARN  [AccountService] OTP validation failed for customerId=CUST9784, attempt 2/3
+2026-11-26 10:12:02,293 INFO  [NeftGateway] Session validated for customerId=CUST8808
+2026-11-26 10:12:15,977 INFO  [NeftGateway] Health check OK - db pool active=12 idle=8
+2026-11-26 10:12:31,259 INFO  [AuthService] Balance enquiry completed for accountId=ACC7089 in 7712ms
+2026-11-26 10:13:10,991 INFO  [CoreBankingAdapter] Session validated for customerId=CUST2541
+2026-11-26 10:13:42,885 DEBUG [CoreBankingAdapter] Request headers parsed traceId=72f24dcbf1
+2026-11-26 10:14:21,487 ERROR [PaymentService] Timeout calling CoreBanking API after 30000ms txnId=TXN984732
+2026-11-26 10:14:23,755 INFO  [AccountService] Scheduled job ReconciliationJob started
+2026-11-26 10:14:31,785 WARN  [CoreBankingAdapter] Slow response from CoreBanking: 1591ms (threshold 2000ms) txnId=TXN369687
+2026-11-26 10:14:57,362 INFO  [AuthService] UPI collect request processed txnId=TXN488928 status=SUCCESS
+2026-11-26 10:15:01,762 ERROR [AccountService] Timeout calling CoreBanking API after 30000ms txnId=TXN977886
+2026-11-26 10:15:05,551 INFO  [PaymentService] Session validated for customerId=CUST4259
+2026-11-26 10:15:36,551 INFO  [NeftGateway] Session validated for customerId=CUST7143
