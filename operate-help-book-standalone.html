@@ -1690,6 +1690,75 @@
     .la-tr { display: block; color: var(--navy-60); padding-left: 1rem; }
     @media (max-width: 560px) { .la-row { grid-template-columns: 2.6rem minmax(0, 1fr); } .la-row .l { display: none; } }
     mark.la-hl { background: var(--highlight); color: inherit; border-radius: 2px; padding: 0 1px; }
+    .log-drop-sub code { font-family: var(--mono); font-size: .9em; background: var(--navy-06); padding: 0 .25rem; border-radius: 4px; }
+    .log-drop-zone.ds-loading { opacity: .7; pointer-events: none; }
+    .la-fsep { color: var(--navy-60); }
+    .la-stack { display: flex; flex-direction: column; gap: .85rem; }
+    .la-stack > .la-h { margin: 0; }
+    .la-stack .la-stages { margin: 0; }
+    .la-flag { color: var(--amber); font-weight: 600; }
+    .la-flag b { color: var(--amber); }
+    .la-export .tt-menu-list { left: auto; right: 0; }
+    .la-export > summary.la-btn::after { margin-left: .1rem; }
+    /* Settings */
+    .la-set-row { display: flex; flex-wrap: wrap; gap: .8rem 1.2rem; align-items: flex-end; margin-bottom: .8rem; }
+    .la-set label { display: flex; flex-direction: column; gap: .3rem; font-size: .7rem; font-weight: 700; color: var(--navy-60); min-width: 0; }
+    .la-set select, .la-set input {
+      font-family: var(--font); font-size: .8rem; color: var(--navy); background: var(--surface);
+      border: 1.5px solid var(--border); border-radius: 8px; padding: .35rem .55rem; min-width: 0; max-width: 100%;
+    }
+    .la-set input[type=number] { width: 6rem; }
+    .la-set select:focus-visible, .la-set input:focus-visible { outline: 2px solid var(--accent); outline-offset: 1px; }
+    .la-set-note { flex: 1 1 220px; margin: 0 0 .4rem; }
+    /* Tables (APIs, cases, pods, events) */
+    .la-tblwrap { overflow-x: auto; border: 1.5px solid var(--border); border-radius: 10px; max-height: 460px; overflow-y: auto; }
+    .la-tbl { width: 100%; border-collapse: collapse; font-size: .75rem; color: var(--navy); }
+    .la-tbl th {
+      position: sticky; top: 0; z-index: 1; background: var(--surface); text-align: left; white-space: nowrap;
+      font-size: .62rem; font-weight: 700; letter-spacing: .07em; text-transform: uppercase; color: var(--navy-60);
+      padding: .5rem .6rem; border-bottom: 1.5px solid var(--border);
+    }
+    .la-tbl td { padding: .42rem .6rem; border-bottom: 1px solid var(--navy-06); vertical-align: top; }
+    .la-tbl tr:last-child td { border-bottom: 0; }
+    .la-tbl .r { text-align: right; font-variant-numeric: tabular-nums; white-space: nowrap; }
+    .la-tbl tr.bad td:first-child { box-shadow: inset 3px 0 0 var(--red); }
+    .la-tbl tr.on td { background: var(--accent-light); }
+    .la-tbl tr:hover td { background: var(--navy-06); }
+    .la-tbl small { color: var(--navy-60); font-weight: 600; }
+    .la-tk { font-family: var(--mono); font-size: .72rem; word-break: break-all; min-width: 12rem; }
+    .la-tk .la-linkbtn { text-align: left; font-family: var(--mono); }
+    .la-tmsg { font-family: var(--mono); font-size: .7rem; color: var(--navy-60); word-break: break-word; }
+    .la-bad { color: var(--red); }
+    .la-ok { color: color-mix(in srgb, var(--green) 70%, var(--navy)); }
+    .la-tbl .la-badge { display: inline-block; }
+    /* Jenkins stages */
+    .la-stages { display: flex; flex-wrap: wrap; gap: .35rem; margin: .7rem 0 .2rem; }
+    .la-stage {
+      display: inline-flex; align-items: center; gap: .4rem; font-family: var(--font); font-size: .74rem; font-weight: 600; color: var(--navy);
+      background: var(--surface); border: 1.5px solid var(--border); border-radius: 8px; padding: .3rem .6rem; cursor: pointer;
+    }
+    .la-stage:hover { background: var(--navy-06); }
+    .la-stage:focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; }
+    .la-stage i { width: 8px; height: 8px; border-radius: 50%; background: var(--green); flex-shrink: 0; }
+    .la-stage small { font-size: .64rem; font-weight: 700; text-transform: uppercase; letter-spacing: .05em; }
+    .la-stage.st-failed { border-color: var(--red); background: var(--red-light); }
+    .la-stage.st-failed i { background: var(--red); }
+    .la-stage.st-failed small { color: var(--red); }
+    .la-stage.st-skipped { color: var(--navy-60); border-style: dashed; }
+    .la-stage.st-skipped i { background: var(--navy-30); }
+    /* Known problems */
+    .la-kb-t { font-size: .84rem; font-weight: 700; color: var(--navy); line-height: 1.4; }
+    .la-kb-explain { display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: .4rem 1.2rem; }
+    .la-kb-explain p { margin: 0; font-size: .8rem; line-height: 1.55; color: var(--navy); max-width: 70ch; }
+    .la-kb-in { background: var(--surface); border: 1px solid var(--border); border-left: 3px solid var(--c); border-radius: 9px; padding: .55rem .7rem; }
+    .la-kbtag { color: var(--c); font-weight: 700; }
+    .la-root { font-size: .72rem; display: flex; gap: .4rem; align-items: baseline; flex-wrap: wrap; }
+    .la-root .la-lbl { margin: 0; }
+    .la-root code { font-family: var(--mono); font-size: .72rem; color: var(--navy); word-break: break-word; }
+    .la-chip-btn { cursor: pointer; font-family: var(--mono); }
+    .la-chip-btn:hover { border-color: var(--accent); }
+    .la-raw-multi .la-row { grid-template-columns: 7.5rem 3.6rem minmax(0, 1fr); }
+    @media (max-width: 560px) { .la-raw-multi .la-row { grid-template-columns: 6rem minmax(0, 1fr); } }
     .la-more { margin-top: .6rem; }
 
     /* ── Full log file reader ────────────────────────────────────────────── */
@@ -2250,8 +2319,8 @@
     <!-- ── View: Log Analyser ──────────────────────────────────────────── -->
     <div id="view-log" class="section-view">
       <div style="padding-top:1rem">
-        <div id="logDropZone" class="log-drop-zone" role="button" tabindex="0" aria-label="Drop a log file or click to choose">
-          <input type="file" id="logFileInput" accept=".log,.txt,.out,.err,.trc,.json,.csv" style="display:none" aria-hidden="true">
+        <div id="logDropZone" class="log-drop-zone" role="button" tabindex="0" aria-label="Drop log files or click to choose">
+          <input type="file" id="logFileInput" multiple style="display:none" aria-hidden="true">
           <div class="log-drop-icon" aria-hidden="true">
             <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
               <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/>
@@ -2260,15 +2329,15 @@
               <line x1="8" y1="17" x2="12" y2="17"/>
             </svg>
           </div>
-          <div class="log-drop-title">Drop a log file here</div>
-          <div class="log-drop-sub">Supports .log, .txt, .out and JSON logs. Everything is analysed in this browser; the file never leaves your PC.</div>
+          <div class="log-drop-title">Drop log files here</div>
+          <div class="log-drop-sub">One file or several together: application and server logs (JBoss, Tomcat, WebLogic, WebSphere, Spring Boot), Jenkins console output, OpenShift / Kubernetes pod logs and <code>oc get events</code> / <code>get pods</code> output, Nginx / Apache access logs, JSON and XML logs. Everything is analysed in this browser; nothing leaves your PC.</div>
           <button class="log-drop-btn" id="logPickBtn" type="button">
             <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="width:14px;height:14px" aria-hidden="true">
               <polyline points="16 16 12 12 8 16"/>
               <line x1="12" y1="12" x2="12" y2="21"/>
               <path d="M20.39 18.39A5 5 0 0 0 18 9h-1.26A8 8 0 1 0 3 16.3"/>
             </svg>
-            Choose File
+            Choose files
           </button>
         </div>
         <div id="logResults" style="display:none" aria-live="polite"></div>
@@ -4097,68 +4166,358 @@ document.getElementById("saveDataBtn").addEventListener("click", function() {
 });
 
 /* ─── Boot ───────────────────────────────────────────────────────────── */
+/* ── Known problems library: what a log line means and what to check ──
+   Each rule: category, id, severity it implies, pattern, title, meaning, what to check.
+   Rules with a code map (ISO 8583, UPI, ORA, MQ, HTTP) give a specific meaning per code. */
+var LA_KB_CATS = { bank: "Banking", api: "API & network", db: "Database & messaging", jvm: "Runtime & memory", k8s: "Kubernetes / OpenShift", ci: "Jenkins / build", srv: "App server", sec: "Security & access", app: "Application" };
+var LA_ISO = {
+  "05": ["Do not honour", "WARN", "The issuing bank declined without a specific reason.", "Ask the issuer or check the CBS / card management response for the real reason."],
+  "12": ["Invalid transaction", "WARN", "The transaction type is not allowed for this card or account.", "Check the processing code and the products enabled for the card."],
+  "13": ["Invalid amount", "WARN", "The amount is zero, malformed or outside allowed limits.", "Check the amount field (DE4) and currency formatting."],
+  "14": ["Invalid card number", "WARN", "The card number is not recognised by the issuer.", "Check the PAN reached the switch correctly and the BIN routing."],
+  "30": ["Format error", "ERROR", "The message format did not match what the other system expects.", "Compare the ISO 8583 message fields with the interface spec; often a field length or bitmap issue after a change."],
+  "41": ["Lost card", "WARN", "The card is reported lost.", "Customer service case, not a system fault."],
+  "43": ["Stolen card", "WARN", "The card is reported stolen.", "Customer service / fraud case, not a system fault."],
+  "51": ["Insufficient funds", "WARN", "The account does not have enough balance.", "Business decline. Check balance and holds / liens if the customer disputes it."],
+  "54": ["Expired card", "WARN", "The card has expired.", "Customer needs the renewed card."],
+  "55": ["Incorrect PIN", "WARN", "The PIN entered was wrong.", "Customer issue unless many customers fail at once; then check PIN keys (ZPK) and the HSM."],
+  "57": ["Not permitted to cardholder", "WARN", "This card is not allowed to do this transaction type.", "Check card product limits and channel permissions (ecom, international, contactless)."],
+  "58": ["Not permitted to terminal", "WARN", "The terminal or merchant is not allowed this transaction.", "Check terminal / merchant configuration."],
+  "61": ["Exceeds amount limit", "WARN", "The withdrawal or spend amount limit was crossed.", "Check daily / per-transaction limits on the card or account."],
+  "65": ["Exceeds frequency limit", "WARN", "Too many transactions in the period.", "Check count limits on the card or account."],
+  "68": ["Response received too late", "ERROR", "The response came after the switch timed out.", "Check issuer / CBS response times and the switch timeout. The customer may be debited: run a status check before retrying."],
+  "75": ["PIN tries exceeded", "WARN", "The PIN was entered wrongly too many times; PIN is blocked.", "Customer needs a PIN reset."],
+  "91": ["Issuer or switch inoperative", "ERROR", "The issuer bank or the switch could not be reached.", "Check connectivity to the issuer / NPCI / switch and whether the host is up. Many 91s together usually mean an outage."],
+  "92": ["Unable to route", "ERROR", "The switch could not find where to send the transaction.", "Check BIN / IIN routing tables."],
+  "94": ["Duplicate transmission", "WARN", "The same transaction was sent twice.", "Check retry logic and STAN / RRN generation."],
+  "96": ["System malfunction", "ERROR", "A system error at the issuer or switch.", "Check the issuer / CBS / switch logs at the same time for the underlying error."]
+};
+var LA_UPI = {
+  U30: ["Debit failed at the remitter bank", "ERROR", "The payer's bank could not debit the account.", "Check the remitter bank / CBS response for the reason; if many fail, check CBS health."],
+  U16: ["Risk threshold exceeded", "WARN", "Declined by the risk / fraud checks.", "Usually customer-side; check risk rules if it affects many users."],
+  U69: ["Collect request expired", "WARN", "The payer did not approve the collect request in time.", "Customer action; no system fault."],
+  ZM: ["Invalid MPIN", "WARN", "The UPI PIN entered was wrong.", "Customer issue unless widespread."],
+  Z9: ["Insufficient funds", "WARN", "The payer's account did not have enough balance.", "Business decline."],
+  Z8: ["Per-transaction limit exceeded", "WARN", "The amount is above the allowed limit.", "Check the UPI limits for the account / app."]
+};
+var LA_ORA = {
+  "00001": ["Unique constraint violated", "Duplicate key: the row already exists.", "Check for duplicate submits or retries, and the sequence / key generation."],
+  "00054": ["Resource busy (NOWAIT)", "A row or table was locked by another session.", "Find the blocking session; check long transactions."],
+  "00060": ["Deadlock detected", "Two sessions were waiting on each other; Oracle rolled one back.", "Check the deadlock trace file and the order in which tables are updated."],
+  "00942": ["Table or view does not exist", "The query used a missing table, view or a schema without grants.", "Check the object name, schema and grants after the last deployment."],
+  "01013": ["Query cancelled (timeout)", "The statement was cancelled, usually by a query timeout.", "Check slow SQL, missing indexes and the configured timeout."],
+  "01017": ["Invalid username / password", "Database login failed.", "Check the datasource credentials and whether the password was changed or expired."],
+  "01400": ["Cannot insert NULL", "A required column was empty.", "Check the input data for the missing field."],
+  "01438": ["Value larger than column precision", "A number did not fit the column.", "Check the value and column definition."],
+  "01555": ["Snapshot too old", "A long query could not read consistent data.", "Tune the long-running query or undo retention."],
+  "01652": ["Unable to extend temp segment", "TEMP tablespace is full.", "Ask the DBA to add TEMP space; look for heavy sorts."],
+  "01653": ["Unable to extend table", "The tablespace is full.", "Ask the DBA to add space to the tablespace."],
+  "01654": ["Unable to extend index", "The index tablespace is full.", "Ask the DBA to add space."],
+  "01722": ["Invalid number", "Text was compared or converted to a number and was not numeric.", "Check the data in the column / bind variable."],
+  "01843": ["Not a valid month", "A date string did not match the date format.", "Check date formats passed to the database."],
+  "01861": ["Literal does not match format string", "A date / number string did not match the format.", "Check the TO_DATE / TO_NUMBER format."],
+  "02291": ["Parent key not found", "A foreign key value has no matching parent row.", "Check that the master record exists first."],
+  "02292": ["Child record found", "Cannot delete: dependent rows exist.", "Delete or re-point the child rows first."],
+  "03113": ["End-of-file on communication channel", "The database connection dropped.", "Check DB availability, network and firewall idle timeouts."],
+  "03114": ["Not connected to Oracle", "The session was already disconnected.", "Check pool validation settings and DB restarts."],
+  "04031": ["Unable to allocate shared memory", "The database shared pool is exhausted.", "DBA to check SGA / shared pool and hard-parse load."],
+  "06502": ["PL/SQL numeric or value error", "A PL/SQL variable got a value that does not fit.", "Check the procedure input values and variable sizes."],
+  "12154": ["TNS could not resolve the connect identifier", "The DB alias / service name is unknown.", "Check the JDBC URL / tnsnames entry."],
+  "12170": ["TNS connect timeout", "Could not reach the database in time.", "Check network / firewall to the DB host and listener."],
+  "12514": ["Listener does not know the service", "The service name is not registered with the listener.", "Check the service name and whether the DB is up."],
+  "12519": ["No appropriate service handler", "The listener refused new connections, often too many sessions.", "Check DB processes / sessions limits and pool sizes."],
+  "12541": ["No listener", "Nothing is listening on the DB host / port.", "Check the listener is running and the port is right."],
+  "28000": ["Account is locked", "The database user is locked.", "DBA to unlock; check for repeated wrong passwords."],
+  "28001": ["Password expired", "The database user's password expired.", "DBA to reset; update the datasource."]
+};
+var LA_MQ = {
+  "2009": ["Connection broken", "ERROR", "The connection to the queue manager was lost.", "Check MQ server, network and channel status."],
+  "2033": ["No message available", "INFO", "The queue was empty when read; normal for polling.", "Usually not a problem."],
+  "2035": ["Not authorised", "ERROR", "The app is not allowed to use the queue or queue manager.", "Check channel auth and the user's MQ permissions."],
+  "2053": ["Queue full", "ERROR", "The queue reached its maximum depth.", "Check the consumer is running and keeping up."],
+  "2059": ["Queue manager not available", "ERROR", "The queue manager is down or unreachable.", "Check the queue manager and listener."],
+  "2085": ["Unknown object name", "ERROR", "The queue name does not exist.", "Check the queue name in configuration."],
+  "2538": ["Host not available", "ERROR", "The MQ host could not be reached.", "Check host / port and firewall."]
+};
+var LA_HTTP = {
+  "500": ["HTTP 500 Internal Server Error", "ERROR", "The called service hit an error while handling the request.", "Check the called service's own log at the same time for the exception."],
+  "502": ["HTTP 502 Bad Gateway", "ERROR", "A gateway / proxy got no valid answer from the service behind it.", "Check whether the backend is up and its pods / instances are healthy."],
+  "503": ["HTTP 503 Service Unavailable", "ERROR", "The service is down, overloaded or in maintenance.", "Check the service health, its pods / instances and load."],
+  "504": ["HTTP 504 Gateway Timeout", "ERROR", "The service behind the gateway did not answer in time.", "Check the backend's response time and the gateway / route timeout."],
+  "401": ["HTTP 401 Unauthorized", "WARN", "The caller was not authenticated.", "Check the token / API key, its expiry and the client credentials."],
+  "403": ["HTTP 403 Forbidden", "WARN", "The caller is authenticated but not allowed.", "Check roles, scopes and IP allow-lists."],
+  "404": ["HTTP 404 Not Found", "WARN", "The URL or resource does not exist.", "Check the endpoint path, version and base URL configuration."],
+  "429": ["HTTP 429 Too Many Requests", "WARN", "The caller was rate-limited.", "Reduce call rate or ask the provider to raise the limit."]
+};
+var LA_KB = [
+  /* Banking */
+  { c: "bank", id: "iso8583", re: /\b(?:resp(?:onse)?[_ ]?code|rsp[_ ]?code|rc|field[_ ]?39|de[_ ]?39|f39|action[_ ]?code|iso[_ ]?resp(?:onse)?[_ ]?code)["']?\s*[:=]\s*["']?(\d{2})\b(?!["']?\d)/i, map: LA_ISO, skip: /^00$/, kind: "ISO 8583 response code" },
+  { c: "bank", id: "upi", re: /\b(?:err(?:or)?[_ ]?code|errCode|resp(?:onse)?[_ ]?code|reason[_ ]?code)["']?\s*[:=]\s*["']?(U30|U16|U69|ZM|Z9|Z8)\b/i, map: LA_UPI, kind: "UPI error code" },
+  { c: "bank", id: "dscf", s: "FATAL", re: /debit(?:ed)?\s+(?:was\s+)?success(?:ful)?[^\n]{0,60}credit\s+(?:has\s+|was\s+)?fail|debited\s+but\s+not\s+credited|amount\s+debited[^\n]{0,40}not\s+(?:been\s+)?credited/i, t: "Debited but not credited", m: "Money left the customer's account but did not reach the beneficiary.", k: "Check the reversal / refund status and the beneficiary bank or NPCI status. These need follow-up within the regulatory TAT." },
+  { c: "bank", id: "reversal", s: "ERROR", re: /reversal\s+(?:has\s+|was\s+)?(?:failed|failure|not\s+(?:initiated|processed|done)|timed?\s?out)|auto[- ]?reversal\s+fail/i, t: "Reversal failed", m: "An automatic reversal of a failed transaction did not complete.", k: "Find the original transaction (UTR / RRN), check its status and raise a manual reversal if needed." },
+  { c: "bank", id: "deemed", s: "WARN", re: /\bdeemed\s+(?:success|approved|accepted)\b|transaction\s+status\s+(?:is\s+)?(?:unknown|pending|deemed)/i, t: "Transaction status unknown (deemed / pending)", m: "The final outcome was not received in time.", k: "Run a status enquiry (TSQ) before retrying, to avoid a double debit." },
+  { c: "bank", id: "duptxn", s: "WARN", re: /duplicate\s+(?:transaction|txn|utr|rrn|request|reference|payment|order)|(?:utr|rrn|reference|transaction)\s+(?:already\s+(?:exists|processed|used))/i, t: "Duplicate transaction / reference", m: "The same transaction or reference number was seen again.", k: "Check client retries and reference (UTR / RRN / STAN) generation." },
+  { c: "bank", id: "cbs", s: "ERROR", re: /\b(?:cbs|core\s?banking|finacle|flexcube|bancs|t24)\b[^\n]{0,80}(?:time[d ]?\s?out|timed\s+out|not\s+respond|unavailable|is\s+down|connection\s+refused|no\s+response)/i, t: "Core banking (CBS) not responding", m: "Calls to the core banking system timed out or failed.", k: "Check CBS health and response times, the connection pool to CBS and the network path." },
+  { c: "bank", id: "switch", s: "ERROR", re: /\b(?:switch|npci|nfs|imps|neft|rtgs|sfms|upi\s+switch)\b[^\n]{0,80}(?:time[d ]?\s?out|timed\s+out|unavailable|is\s+down|nack|connection\s+refused|not\s+reachable)/i, t: "Payment switch / NPCI not responding", m: "The payment switch or network did not respond or rejected the message.", k: "Check switch connectivity, sign-on (echo) status and NPCI advisories." },
+  { c: "bank", id: "hsm", s: "ERROR", re: /\bhsm\b[^\n]{0,60}(?:error|fail|timeout|timed\s+out|unavailable|not\s+respond)/i, t: "HSM error", m: "The hardware security module (PIN / key operations) failed.", k: "Check HSM connectivity, load and that the required keys (ZPK / TPK / ZMK) are present." },
+  { c: "bank", id: "recon", s: "ERROR", re: /\b(?:settlement|reconciliation|recon)\b[^\n]{0,60}(?:mismatch|failed|failure|error|difference|unmatched|break)/i, t: "Settlement / reconciliation mismatch", m: "Totals or records did not match between systems.", k: "Compare the settlement file with CBS entries for the period; check for missing or duplicate records." },
+  { c: "bank", id: "kycaml", s: "WARN", re: /\b(?:kyc|aml|fraud|sanction|pep|negative\s+list|blacklist|watch\s?list)\b[^\n]{0,50}(?:fail|reject|block|hit|match(?:ed)?|declin|suspend)/i, t: "KYC / AML / fraud check failed", m: "A compliance or fraud check stopped the request.", k: "Check the case in the compliance tool; not a system fault unless the check service itself errored." },
+  { c: "bank", id: "acctstatus", s: "WARN", nojson: true, re: /\baccount\b[^\n]{0,30}\b(?:is\s+)?(?:frozen|dormant|inoperative|blocked|debit[- ]freeze)\b|\b(?:frozen|dormant|inoperative|blocked)\s+account\b/i, t: "Account frozen / dormant / blocked", m: "The account status does not allow this transaction.", k: "Check the account status and freeze / lien reason in CBS." },
+  { c: "bank", id: "limit", s: "WARN", re: /\b(?:limit|threshold)\s+(?:exceeded|breached|reached)\b|\bexceeds?\s+(?:the\s+)?(?:daily\s+|per[- ]transaction\s+|transaction\s+|withdrawal\s+)?limit\b/i, t: "Limit exceeded", m: "A daily, per-transaction or count limit was crossed.", k: "Check the configured limits for the customer, product or channel." },
+  { c: "bank", id: "insufficient", s: "WARN", re: /insufficient\s+(?:funds|balance)/i, t: "Insufficient funds", m: "The account did not have enough balance.", k: "Business decline; check holds and liens if disputed." },
+  { c: "bank", id: "bureau", s: "ERROR", re: /\b(?:cibil|transunion|equifax|crif|highmark|experian)\b[^\n]{0,100}(?:failed|failure|error|exception|time[d ]?\s?out|unable|not\s+available|invalid)/i, t: "Credit bureau call failed", m: "A call to a credit bureau (CIBIL / Equifax / CRIF / Experian) failed or returned an error.", k: "Check the bureau response, the request inputs (PAN, DOB, name) and bureau availability." },
+  { c: "bank", id: "brms", s: "ERROR", re: /\bbrms\b[^\n]{0,80}(?:failed|failure|error|exception|time[d ]?\s?out)/i, t: "Rules engine (BRMS) call failed", m: "The business rules service returned an error.", k: "Check the ruleset name / version and the BRMS service log." },
+  /* API & network */
+  { c: "api", id: "http", re: /(?:\bHTTP\/\d(?:\.\d)?["']?\s+|\b(?:status(?:Code|_code)?|response[_ ]?code|responseCode|http[_ ]?status)["']?\s*[:=]\s*["']?)(500|502|503|504|401|403|404|429)\b/i, map: LA_HTTP, kind: "HTTP status" },
+  { c: "api", id: "timeout", gen: true, s: "ERROR", re: /(?:Read|Connect|Socket|Connection|Request|Response)\s?timed?\s?out|SocketTimeoutException|ConnectTimeoutException|HttpTimeoutException|ReadTimeoutException|\bdeadline\s+exceeded\b|ETIMEDOUT/i, t: "Timed out waiting for another system", m: "A call to another service did not get an answer in time.", k: "Find which host / URL was called (look at the lines around it), check that service's health and response time, and the timeout setting." },
+  { c: "api", id: "refused", gen: true, s: "ERROR", re: /Connection\s+refused|ECONNREFUSED|java\.net\.ConnectException/i, t: "Connection refused", m: "Nothing was listening on the target host / port: the service is down or the address is wrong.", k: "Check the target service is running and the host / port in configuration." },
+  { c: "api", id: "reset", gen: true, s: "ERROR", re: /Connection\s+reset|ECONNRESET|Broken\s+pipe|EPIPE|Remote\s+host\s+closed\s+connection|Software\s+caused\s+connection\s+abort/i, t: "Connection dropped", m: "The other side or a firewall closed the connection mid-call.", k: "Check firewall / load-balancer idle timeouts and whether the target restarted." },
+  { c: "api", id: "dns", s: "ERROR", re: /UnknownHostException|ENOTFOUND|Name\s+or\s+service\s+not\s+known|could\s+not\s+resolve\s+host|Temporary\s+failure\s+in\s+name\s+resolution|NXDOMAIN/i, t: "Host name could not be resolved (DNS)", m: "The server name in the URL could not be turned into an address.", k: "Check the host name in configuration and DNS from this server / pod." },
+  { c: "api", id: "noroute", s: "ERROR", re: /NoRouteToHostException|No\s+route\s+to\s+host|EHOSTUNREACH|Network\s+is\s+unreachable/i, t: "Network route blocked", m: "The target network could not be reached.", k: "Check firewall rules, routing and VPN / proxy settings between the two systems." },
+  { c: "api", id: "ssl", s: "ERROR", re: /SSLHandshakeException|PKIX\s+path\s+building\s+failed|unable\s+to\s+find\s+valid\s+certification\s+path|certificate\s+(?:has\s+)?expired|CertificateExpiredException|x509:\s+certificate|certificate\s+verify\s+failed|handshake_failure|SSLPeerUnverifiedException|No\s+subject\s+alternative\s+names?/i, t: "SSL / certificate problem", m: "The secure connection failed: an expired, untrusted or wrong-host certificate, or a TLS version mismatch.", k: "Check certificate expiry dates, the truststore / CA chain, the host name on the certificate and allowed TLS versions." },
+  { c: "api", id: "jsonparse", s: "ERROR", re: /Unexpected\s+token|JSONException|JsonParseException|JsonMappingException|Unexpected\s+end\s+of\s+(?:JSON|input)|END\s+OF\s+FILE\s+at\s+position\s+0|MalformedJson|Unrecognized\s+token|not\s+valid\s+JSON/i, t: "Response was not valid JSON", m: "Code expected JSON but got an empty body, HTML (often an error page) or broken text.", k: "Look at the raw response logged just before; an empty or HTML response usually means the API failed upstream." },
+  { c: "api", id: "apierr", s: "ERROR", re: /"(?:ErrorCode|errorCode|error_code|errCode)"\s*:\s*"?(?!0+"?[,}\s]|null|"")[A-Za-z0-9_-]{1,20}"?/, t: "API returned an error code", m: "An API answered, but with an error code in its body (not an HTTP failure).", k: "Read the error code and message in the response, and the request that caused it." },
+  /* Database & messaging */
+  { c: "db", id: "ora", re: /\bORA-(\d{5})\b/, map: LA_ORA, kind: "Oracle error", ora: true },
+  { c: "db", id: "pool", s: "ERROR", re: /Unable\s+to\s+acquire\s+JDBC\s+Connection|Connection\s+is\s+not\s+available,\s+request\s+timed\s+out|Cannot\s+get\s+a\s+connection,\s+pool\s+error|pool\s+exhausted|Timeout\s+waiting\s+for\s+idle\s+object|No\s+managed\s+connections\s+available|IJ000453|maximum\s+pool\s+size|Could\s+not\s+get\s+JDBC\s+Connection/i, t: "Database connection pool exhausted", m: "All database connections were in use, so requests waited and failed.", k: "Check for slow queries or connections not being closed, the pool size and DB sessions." },
+  { c: "db", id: "sqltimeout", s: "ERROR", re: /SQLTimeoutException|(?:query|statement)\s+(?:timeout|timed\s+out)|cancelled\s+due\s+to\s+(?:a\s+)?timeout|QueryTimeoutException/i, t: "Database query timed out", m: "A SQL statement ran longer than allowed.", k: "Find the SQL (lines around it), check its plan and indexes and table locks." },
+  { c: "db", id: "sqlerr", gen: true, s: "ERROR", re: /\b(?:SQLException|SQLSyntaxErrorException|BadSqlGrammarException|SQLIntegrityConstraintViolationException|DataIntegrityViolationException|PSQLException|SQLServerException)\b/, t: "Database error", m: "A database call failed.", k: "Read the message / vendor code in the stack trace and the SQL that was run." },
+  { c: "db", id: "mq", re: /(?:MQRC_[A-Z_]+\s*\(|reason\s*(?:code)?\s*[:'=]?\s*'?|MQJE\d{3}:[^\n]{0,60}reason\s+)(2009|2033|2035|2053|2059|2085|2538)\b/i, map: LA_MQ, kind: "IBM MQ reason" },
+  { c: "db", id: "kafka", s: "ERROR", re: /LEADER_NOT_AVAILABLE|NotLeaderForPartition|Failed\s+to\s+update\s+metadata|Topic\s+\S+\s+not\s+present\s+in\s+metadata|org\.apache\.kafka\S*(?:TimeoutException|DisconnectException)|Broker\s+may\s+not\s+be\s+available/i, t: "Kafka broker / topic problem", m: "The app could not reach a Kafka broker or the topic leader.", k: "Check Kafka broker health, topic existence and network from the app." },
+  { c: "db", id: "redis", s: "ERROR", re: /RedisConnectionFailureException|Unable\s+to\s+connect\s+to\s+Redis|JedisConnectionException|RedisCommandTimeoutException/i, t: "Redis cache not reachable", m: "The cache server could not be reached or timed out.", k: "Check Redis health, memory and network." },
+  /* Runtime & memory */
+  { c: "jvm", id: "oom", s: "FATAL", re: /OutOfMemoryError|JavaScript\s+heap\s+out\s+of\s+memory|MemoryError\b/, t: "Out of memory", m: "The application ran out of memory (heap, metaspace or native threads).", k: "Check heap size (-Xmx) against the container / server memory, take a heap dump, and look for a memory leak or a very large response being loaded." },
+  { c: "jvm", id: "stack", s: "ERROR", re: /StackOverflowError|Maximum\s+call\s+stack\s+size\s+exceeded|RecursionError/, t: "Stack overflow", m: "Endless or very deep recursion in code.", k: "Look at the repeating frames in the stack trace." },
+  { c: "jvm", id: "threads", s: "ERROR", re: /RejectedExecutionException|(?:thread\s?pool|executor)[^\n]{0,40}(?:exhausted|is\s+full|rejected)|unable\s+to\s+create\s+(?:new\s+)?native\s+thread|max(?:imum)?\s+threads?\s+reached/i, t: "Thread pool exhausted", m: "No free worker threads were left, so new work was rejected.", k: "Look for slow downstream calls holding threads, and check the pool size." },
+  { c: "jvm", id: "stuck", s: "ERROR", re: /STUCK\]\s+ExecuteThread|BEA-000337|has\s+been\s+busy\s+for\s+"?\d+"?\s+seconds|WSVR0605W|may\s+be\s+hung/i, t: "Stuck / hung thread", m: "A request has been running far longer than normal.", k: "Take a thread dump and see what the stuck thread is waiting on (DB, API, lock)." },
+  { c: "jvm", id: "files", s: "ERROR", re: /too\s+many\s+open\s+files|EMFILE/i, t: "Too many open files", m: "The process hit the operating system's limit on open files / sockets.", k: "Check for leaked connections or files, and the ulimit -n setting." },
+  { c: "jvm", id: "deadlock", gen: true, s: "ERROR", re: /Found\s+one\s+Java-level\s+deadlock|deadlock\s+(?:detected|found)/i, t: "Deadlock", m: "Threads are waiting on each other forever.", k: "Use the thread dump in the log to see the lock order." },
+  { c: "jvm", id: "disk", s: "FATAL", re: /No\s+space\s+left\s+on\s+device|disk\s+(?:is\s+)?full|ENOSPC|DiskPressure/i, t: "Disk full", m: "The server or volume has no free space.", k: "Free space (old logs, dumps, temp files) and check log rotation." },
+  { c: "jvm", id: "npe", s: "ERROR", re: /NullPointerException|Cannot\s+invoke\s+"[^"]+"\s+because|TypeError:\s+Cannot\s+read\s+propert/, t: "Null value not handled", m: "Code used a value that was missing (null).", k: "The first 'at' line of the stack trace shows where; usually a missing field from input or an API response." },
+  { c: "jvm", id: "numfmt", s: "ERROR", re: /NumberFormatException/, t: "Text could not be converted to a number", m: "A value that should be a number was blank, 'NA' or badly formatted.", k: "Check the field or API value that was being converted (look at the lines just before)." },
+  { c: "jvm", id: "parse", s: "ERROR", re: /java\.text\.ParseException|DateTimeParseException|Unparseable\s+date/, t: "Date could not be parsed", m: "A date string did not match the expected format.", k: "Compare the incoming date with the format the code expects." },
+  { c: "jvm", id: "reflect", s: "WARN", re: /NoSuchMethodException|NoSuchMethodError/, t: "Method not found (call by name)", m: "Code tried to call a method by its name and that method does not exist in the deployed code.", k: "Check the method / event-handler name in configuration against the deployed jar. If it repeats harmlessly for every screen event it may be an expected lookup." },
+  { c: "jvm", id: "invoke", s: "ERROR", re: /InvocationTargetException/, t: "Method called by name failed", m: "The method ran but threw an error; the real cause is in its 'Caused by' or the next lines.", k: "Open 'Lines around it' and read the error logged just before or after, or the 'Caused by' line if there is a stack trace." },
+  { c: "jvm", id: "classnf", s: "ERROR", re: /ClassNotFoundException|NoClassDefFoundError|Cannot\s+find\s+module/, t: "Class or module missing", m: "Code or a library expected at runtime is missing: usually a deployment or version mismatch.", k: "Check the deployed artifact and library versions." },
+  { c: "jvm", id: "cast", gen: true, s: "ERROR", re: /ClassCastException|IndexOutOfBoundsException|ArrayIndexOutOfBoundsException|ConcurrentModificationException|IllegalStateException|IllegalArgumentException/, t: "Code bug / bad input", m: "The code met data it did not expect.", k: "The stack trace shows where; check the input that triggered it." },
+  /* App server */
+  { c: "srv", id: "startfail", s: "FATAL", re: /APPLICATION\s+FAILED\s+TO\s+START|BeanCreationException|UnsatisfiedDependencyException|Web\s+server\s+failed\s+to\s+start|WFLYCTL0013|WFLYSRV0026[^\n]*with\s+errors|Services\s+with\s+missing\/unavailable\s+dependencies|Context\s+\[[^\]]*\]\s+startup\s+failed|One\s+or\s+more\s+listeners\s+failed\s+to\s+start|Deployment\s+\S+\s+failed/i, t: "Application failed to start", m: "The application or one of its deployments could not start.", k: "Read the first error after the startup lines: usually configuration, a missing datasource or a port in use." },
+  { c: "srv", id: "port", s: "ERROR", re: /Address\s+already\s+in\s+use|java\.net\.BindException|EADDRINUSE|port\s+\d+\s+(?:is\s+)?already\s+in\s+use/i, t: "Port already in use", m: "Another process is already using the port.", k: "Stop the old instance or change the port." },
+  { c: "srv", id: "traceback", s: "ERROR", re: /Traceback\s+\(most\s+recent\s+call\s+last\)|UnhandledPromiseRejection|Unhandled\s+'error'\s+event|panic:\s/, t: "Unhandled error (Python / Node / Go)", m: "An error was not caught by the code.", k: "The last lines of the traceback / stack show the cause." },
+  /* Kubernetes / OpenShift */
+  { c: "k8s", id: "crashloop", s: "FATAL", re: /CrashLoopBackOff|Back-off\s+restarting\s+failed\s+container/i, t: "Container keeps crashing (CrashLoopBackOff)", m: "The container starts, crashes, and Kubernetes keeps restarting it with growing delays.", k: "Run oc logs / kubectl logs --previous to see why it died, check the exit code, config maps, secrets and probes." },
+  { c: "k8s", id: "oomkilled", s: "FATAL", re: /OOMKilled|Memory\s+cgroup\s+out\s+of\s+memory|oom[_-]kill|Exit\s?Code:?\s*137\b|exit\s+code\s+137\b/i, t: "Container killed: out of memory (OOMKilled / 137)", m: "The container used more memory than its limit and was killed.", k: "Compare the memory limit with real usage; for Java set heap as a % of the container (MaxRAMPercentage) and look for leaks." },
+  { c: "k8s", id: "sigterm", s: "WARN", re: /Exit\s?Code:?\s*143\b|exit\s+code\s+143\b/i, t: "Container stopped (exit 143 / SIGTERM)", m: "The container was asked to stop: normal during rollouts or scale-down.", k: "Only a problem if nobody restarted or scaled it; check events at that time." },
+  { c: "k8s", id: "imagepull", s: "ERROR", re: /ImagePullBackOff|ErrImagePull|Failed\s+to\s+pull\s+image|manifest\s+unknown|pull\s+access\s+denied|repository\s+does\s+not\s+exist|InvalidImageName/i, t: "Image could not be pulled", m: "The node could not download the container image.", k: "Check the image name and tag, the registry pull secret and registry reachability." },
+  { c: "k8s", id: "probe", s: "WARN", re: /(?:Liveness|Readiness|Startup)\s+probe\s+failed/i, t: "Health check (probe) failed", m: "The pod did not answer its health check in time.", k: "Check the probe path / port, timeouts and initialDelaySeconds, and whether the app is slow to start." },
+  { c: "k8s", id: "sched", s: "ERROR", re: /FailedScheduling|\d+\/\d+\s+nodes\s+are\s+available|Insufficient\s+(?:cpu|memory)|didn't\s+match\s+(?:node\s+selector|Pod's\s+node\s+affinity)|untolerated\s+taint|had\s+taint/i, t: "Pod could not be scheduled", m: "No node had enough resources or matched the pod's rules.", k: "Check requests / limits, node capacity, node selectors, affinity and taints." },
+  { c: "k8s", id: "evicted", s: "WARN", re: /\bEvicted\b|The\s+node\s+was\s+low\s+on\s+resource|MemoryPressure/i, t: "Pod evicted", m: "The node ran short of memory or disk and removed the pod.", k: "Check node resource pressure and the pod's requests." },
+  { c: "k8s", id: "mount", s: "ERROR", re: /FailedMount|FailedAttachVolume|Unable\s+to\s+(?:attach\s+or\s+)?mount\s+volumes|MountVolume\.SetUp\s+failed|persistentvolumeclaim\s+"?\S+"?\s+not\s+found/i, t: "Volume could not be mounted", m: "A storage volume, secret or config map could not be attached to the pod.", k: "Check the PVC status, storage class, and that the secret / config map exists." },
+  { c: "k8s", id: "config", s: "ERROR", re: /CreateContainerConfigError|secret\s+"[^"]+"\s+not\s+found|configmap\s+"[^"]+"\s+not\s+found|couldn't\s+find\s+key\s+\S+\s+in\s+(?:Secret|ConfigMap)/i, t: "Missing secret or config map", m: "The pod references configuration that does not exist.", k: "Create the missing secret / config map or fix its name / key in the deployment." },
+  { c: "k8s", id: "quota", s: "ERROR", re: /exceeded\s+quota|forbidden:\s+exceeded|must\s+specify\s+limits/i, t: "Resource quota exceeded", m: "The namespace / project is at its quota.", k: "Free resources or request a quota increase." },
+  { c: "k8s", id: "rbac", s: "ERROR", re: /Error\s+from\s+server\s+\(Forbidden\)|forbidden:\s+User\s+"|is\s+forbidden:|cannot\s+(?:get|list|create|patch|update|delete)\s+resource/i, t: "Not allowed (RBAC)", m: "The user or service account lacks permission.", k: "Check role bindings for the user / service account in that namespace." },
+  { c: "k8s", id: "scc", s: "ERROR", re: /unable\s+to\s+validate\s+against\s+any\s+security\s+context\s+constraint|security\s+context\s+constraint/i, t: "OpenShift security constraint (SCC) blocked the pod", m: "The pod asks for privileges its service account is not allowed.", k: "Run as a non-root user / arbitrary UID, or grant the right SCC to the service account." },
+  { c: "k8s", id: "route", s: "ERROR", re: /Application\s+is\s+not\s+available|no\s+endpoints\s+available\s+for\s+service|upstream\s+connect\s+error|no\s+healthy\s+upstream/i, t: "Route / service has no healthy pods", m: "Traffic arrived but no ready pod was behind the service.", k: "Check pods are Ready, the service selector matches the pod labels and the target port." },
+  { c: "k8s", id: "rollout", s: "ERROR", re: /ProgressDeadlineExceeded|exceeded\s+its\s+progress\s+deadline|Deployment\s+does\s+not\s+have\s+minimum\s+availability|deployment\s+\S+\s+failed|replication\s+controller\s+\S+\s+(?:failed|timed\s+out)/i, t: "Deployment did not roll out", m: "New pods did not become ready in time.", k: "Look at the new pods' events and logs (crash, image, probe or scheduling problems)." },
+  { c: "k8s", id: "node", s: "ERROR", re: /NodeNotReady|node\s+\S+\s+(?:is\s+)?not\s+ready|Kubelet\s+stopped\s+posting\s+node\s+status/i, t: "Node not ready", m: "A cluster node stopped reporting healthy.", k: "Check the node (kubelet, disk, network) with the platform team." },
+  { c: "k8s", id: "backofflimit", s: "ERROR", re: /BackoffLimitExceeded|Job\s+has\s+reached\s+the\s+specified\s+backoff\s+limit/i, t: "Job failed too many times", m: "A Kubernetes job kept failing and gave up.", k: "Check the job pod logs for the failure reason." },
+  /* Jenkins / build */
+  { c: "ci", id: "exitcode", s: "ERROR", re: /script\s+returned\s+exit\s+code\s+(\d+)/i, t: "Build step failed (non-zero exit code)", m: "A shell or batch step ended with an error code.", k: "Read the lines just above for the command that failed." },
+  { c: "ci", id: "maven", s: "ERROR", re: /\bBUILD\s+FAILURE\b|\[ERROR\]\s+Failed\s+to\s+execute\s+goal|COMPILATION\s+ERROR|Could\s+not\s+resolve\s+dependencies|There\s+are\s+test\s+failures/i, t: "Maven build failed", m: "Compilation, dependency resolution or tests failed in Maven.", k: "The first [ERROR] line names the module and goal; check dependency repositories if downloads failed." },
+  { c: "ci", id: "gradle", s: "ERROR", re: /\bBUILD\s+FAILED\b|FAILURE:\s+Build\s+failed\s+with\s+an\s+exception|Execution\s+failed\s+for\s+task/i, t: "Gradle build failed", m: "A Gradle task failed.", k: "Read the 'What went wrong' section." },
+  { c: "ci", id: "npm", s: "ERROR", re: /npm\s+ERR!|ERR_PNPM_|error\s+Command\s+failed\s+with\s+exit\s+code/i, t: "npm / yarn failed", m: "A Node.js package or script step failed.", k: "Read the first npm ERR! line; check registry access and the Node version." },
+  { c: "ci", id: "tests", s: "ERROR", re: /Tests\s+run:\s*\d+,\s*Failures:\s*[1-9]|Tests\s+run:\s*\d+,\s*Failures:\s*\d+,\s*Errors:\s*[1-9]|\d+\s+(?:tests?\s+)?failed\b|FAILED\s+tests?/i, t: "Tests failed", m: "Automated tests did not pass.", k: "Open the test report for the failing test names." },
+  { c: "ci", id: "git", s: "ERROR", re: /fatal:\s+(?:could\s+not\s+read|Authentication\s+failed|repository\s+'?\S+'?\s+not\s+found|unable\s+to\s+access)|Couldn't\s+find\s+any\s+revision\s+to\s+build|Error\s+fetching\s+remote\s+repo/i, t: "Source checkout failed", m: "Jenkins could not fetch the code.", k: "Check the repository URL, branch name and the Jenkins credentials." },
+  { c: "ci", id: "registry", s: "ERROR", re: /denied:\s+requested\s+access|unauthorized:\s+authentication\s+required|no\s+basic\s+auth\s+credentials|toomanyrequests:/i, t: "Image registry refused", m: "Pushing or pulling a container image was denied.", k: "Check registry credentials and rate limits." },
+  { c: "ci", id: "cancel", s: "WARN", re: /Timeout\s+has\s+been\s+exceeded|Cancelling\s+nested\s+steps\s+due\s+to\s+timeout|Aborted\s+by\s+\S+|Build\s+was\s+aborted|Sending\s+interrupt\s+signal\s+to\s+process/i, t: "Build timed out or was aborted", m: "The build was stopped by a timeout or a person.", k: "Check which stage was running and whether it hangs (tests, network calls, waiting for input)." },
+  { c: "ci", id: "agent", s: "WARN", re: /There\s+are\s+no\s+nodes\s+with\s+the\s+label|(?:agent|node)\s+\S+\s+(?:is\s+offline|went\s+offline|was\s+marked\s+offline)|Waiting\s+for\s+next\s+available\s+executor|Cannot\s+contact\s+\S+:\s+java\.lang\.InterruptedException/i, t: "Build agent unavailable", m: "No suitable Jenkins agent was free or the agent disconnected.", k: "Check agent status, labels and executor counts." },
+  { c: "ci", id: "quality", s: "WARN", re: /Quality\s+Gate\s+(?:failed|status:\s+ERROR)|QUALITY\s+GATE\s+STATUS:\s+FAILED/i, t: "Quality gate failed", m: "SonarQube rules were not met.", k: "Open the SonarQube project for the failing conditions." },
+  /* Security & access */
+  { c: "sec", id: "login", s: "WARN", re: /(?:authentication|login|logon)\s+(?:failed|failure)|invalid\s+(?:credentials|password|username)|bad\s+credentials|LDAP:\s+error\s+code\s+49/i, t: "Login / authentication failed", m: "A user or system could not sign in.", k: "Check credentials, account lock status and the identity provider / LDAP." },
+  { c: "sec", id: "token", s: "WARN", re: /(?:token|jwt|session)\s+(?:has\s+)?(?:expired|is\s+invalid|invalid)|ExpiredJwtException|invalid_token|invalid_grant/i, t: "Token or session expired / invalid", m: "An access token or session was no longer valid.", k: "Check token expiry, clock skew between servers and refresh logic." },
+  { c: "sec", id: "denied", s: "WARN", re: /access\s+(?:is\s+)?denied|permission\s+denied|AccessDeniedException|EACCES/i, t: "Access denied", m: "A file, resource or action was not permitted.", k: "Check file permissions or the user's role." },
+  /* Application */
+  { c: "app", id: "uierror", s: "WARN", re: /"type"\s*:\s*"error"\s*,\s*"message"\s*:\s*"/, t: "Error message shown to the user", m: "The screen showed an error message to the user.", k: "Read the message, then check the step logged just before it (often an API or a missing master value)." }
+];
+var LA_KB_ANY;
+(function() {
+  LA_KB.forEach(function(r) { r.cat = LA_KB_CATS[r.c]; });
+  /* one combined, case-insensitive pre-check so most lines are rejected in a single pass */
+  LA_KB_ANY = new RegExp(LA_KB.map(function(r) { return "(?:" + r.re.source + ")"; }).join("|"), "i");
+})();
+function laKbMatch(text) {
+  if (!LA_KB_ANY.test(text)) return [];
+  var out = [], nj = null;
+  for (var i = 0; i < LA_KB.length; i++) {
+    var r = LA_KB[i], t = text;
+    if (r.nojson) { if (nj === null) nj = text.replace(/"(?:[^"\\]|\\.)*"/g, '""'); t = nj; }
+    var m = r.re.exec(t);
+    if (!m) continue;
+    if (r.map) {
+      var code = m[1];
+      if (r.skip && r.skip.test(code)) continue;
+      var info = r.map[code];
+      if (r.ora && !info) info = ["Oracle error ORA-" + code, "The database returned an error.", "Look up ORA-" + code + " and read the message next to it."];
+      if (!info) continue;
+      if (r.ora) out.push({ r: r, key: r.id + ":" + code, t: "ORA-" + code + " " + info[0], s: "ERROR", m: info[1], k: info[2], code: code });
+      else out.push({ r: r, key: r.id + ":" + code, t: (r.id === "http" ? "" : r.kind + " " + code + ": ") + info[0], s: info[1], m: info[2], k: info[3], code: code });
+    } else out.push({ r: r, key: r.id, t: r.t, s: r.s, m: r.m, k: r.k });
+  }
+  /* a specific match (e.g. "CBS not responding") makes the generic one ("Connection refused") redundant */
+  if (out.length > 1 && out.some(function(x) { return !x.r.gen; })) out = out.filter(function(x) { return !x.r.gen; });
+  return out;
+}
+
 /* ─── Log Analyser ────────────────────────────────────────────────────── */
 var LA_LEVELS = ["FATAL", "ERROR", "WARN", "INFO", "DEBUG", "TRACE", "OTHER"];
 var LA_RANK = { FATAL: 0, ERROR: 1, WARN: 2, INFO: 3, DEBUG: 4, TRACE: 5, OTHER: 6 };
 var LA_LABEL = { FATAL: "Fatal", ERROR: "Errors", WARN: "Warnings", INFO: "Info", DEBUG: "Debug", TRACE: "Trace", OTHER: "No level" };
 var LA_LVL_MAP = {
-  FATAL: "FATAL", CRITICAL: "FATAL", CRIT: "FATAL", EMERG: "FATAL", ALERT: "FATAL", PANIC: "FATAL",
+  FATAL: "FATAL", CRITICAL: "FATAL", CRIT: "FATAL", EMERG: "FATAL", EMERGENCY: "FATAL", ALERT: "FATAL", PANIC: "FATAL",
   SEVERE: "ERROR", ERROR: "ERROR", ERR: "ERROR",
   WARNING: "WARN", WARN: "WARN",
-  NOTICE: "INFO", INFO: "INFO", INFORMATION: "INFO",
+  NOTICE: "INFO", INFO: "INFO", INFORMATION: "INFO", INFORMATIONAL: "INFO",
   DEBUG: "DEBUG", FINE: "DEBUG",
   TRACE: "TRACE", FINER: "TRACE", FINEST: "TRACE"
 };
 var LA_LVL_RE = /(?:^|[\s\[|:(<])(FATAL|CRITICAL|CRIT|EMERG|ALERT|PANIC|SEVERE|ERROR|ERR|WARNING|WARN|NOTICE|INFO|INFORMATION|DEBUG|FINEST|FINER|FINE|TRACE)(?=[\s\]|:)>,]|$)/;
-var LA_LVL_KV_RE = /(?:\blevel|\bseverity|\blvl)"?\s*[=:]\s*"?([A-Za-z]+)/i;
+/* Mixed-case levels only count when bracketed, e.g. WebLogic <Error>, IIS [Warning] */
+var LA_LVL_MC_RE = /[\[<(](Emergency|Alert|Critical|Error|Warning|Warn|Notice|Info|Informational|Debug|Fatal|Severe)[\]>)]/;
+var LA_LVL_KV_RE = /(?:\blevel|\bseverity|\blvl|\bloglevel)"?\s*[=:]\s*"?([A-Za-z]+)/i;
 var LA_CONT_RE = /^(at |Caused by|Suppressed:|\.\.\. \d+ (more|common)|Traceback|File "|[\w$.]+(Exception|Error)(:|$))/;
+var LA_STACK_RE = /^(?:at\s|Caused by:|Suppressed:|\.\.\. \d+ (?:more|common))/;
 var LA_EXC_RE = /\b((?:[a-zA-Z_$][\w$]*\.)*[A-Z][\w$]*(?:Exception|Error|Fault))\b/g;
 var LA_RESTART_RE = /\b(starting|started|restarting|restarted|shutting down|shutdown|stopping|stopped)\b.{0,60}(application|service|server|context|jvm)\b|\b(application|server|jvm)\b.{0,40}\b(starting|started|restarted|shutting down|stopped)\b/i;
-var LA_ID_RE = /\b(txn[_-]?id|transaction[_-]?id|trace[_-]?id|span[_-]?id|request[_-]?id|req[_-]?id|x-request-id|correlation[_-]?id|corr[_-]?id|ref(?:erence)?[_-]?(?:no|num|id)?|utr|rrn|stan|order[_-]?id|payment[_-]?id|account[_-]?id|acc(?:ount)?[_-]?no|customer[_-]?id|cust[_-]?id|user[_-]?id|session[_-]?id|loan[_-]?id|batch[_-]?id|job[_-]?id)\s*[=:]\s*["']?([\w.\-\/]+)/gi;
+var LA_ID_RE = /\b(txn[_-]?id|transaction[_-]?id|trace[_-]?id|span[_-]?id|request[_-]?id|req[_-]?id|x-request-id|correlation[_-]?id|corr[_-]?id|ref(?:erence)?[_-]?(?:no|num|id)?|utr|rrn|stan|order[_-]?id|payment[_-]?id|account[_-]?id|acc(?:ount)?[_-]?no|customer[_-]?id|cust[_-]?id|user[_-]?id|session[_-]?id|loan[_-]?id|batch[_-]?id|job[_-]?id|app(?:lication)?[_-]?(?:no|id)|wi[_-]?name|workitem[_-]?(?:id|name)?)"?\s*(?:[=:]|==>|->)\s*["']?([\w.\-\/]+)/gi;
 var LA_ID_LABELS = {
   txnid: "Transaction ID", transactionid: "Transaction ID", traceid: "Trace ID", spanid: "Span ID",
   requestid: "Request ID", reqid: "Request ID", xrequestid: "Request ID", correlationid: "Correlation ID", corrid: "Correlation ID",
   ref: "Reference", refno: "Reference", refnum: "Reference", refid: "Reference", reference: "Reference", referenceno: "Reference", referencenum: "Reference", referenceid: "Reference",
   utr: "UTR", rrn: "RRN", stan: "STAN", orderid: "Order ID", paymentid: "Payment ID",
   accountid: "Account", accno: "Account", accountno: "Account", customerid: "Customer ID", custid: "Customer ID",
-  userid: "User ID", sessionid: "Session ID", loanid: "Loan ID", batchid: "Batch ID", jobid: "Job ID"
+  userid: "User ID", sessionid: "Session ID", loanid: "Loan ID", batchid: "Batch ID", jobid: "Job ID",
+  appno: "Application", appid: "Application", applicationno: "Application", applicationid: "Application",
+  winame: "Case", workitem: "Case", workitemid: "Case", workitemname: "Case"
 };
+/* Case / work-item IDs that start a message, e.g. HLOS-00000000012345 */
+var LA_CASE_RE = /^(?!(?:ORA|BEA|TNS|IJ|UT|AMQ|MQJE|SRVE|WSVR|ERR|HTTP|SQL|JBAS|CWW[A-Z]*|WFLY[A-Z]*)-?\d)([A-Z][A-Z0-9]{1,9}-\d{5,}(?:-[A-Z0-9]+)?)\b[\s:,\-|]*/;
 var LA_MON = { jan: 0, feb: 1, mar: 2, apr: 3, may: 4, jun: 5, jul: 6, aug: 7, sep: 8, oct: 9, nov: 10, dec: 11 };
 var LA_MON_N = ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"];
 function laMs(s) { return s ? +((s + "00").slice(0, 3)) : 0; }
 function laYmd(m) { return [+m[1], +m[2] - 1, +m[3], +m[4], +m[5], +m[6], laMs(m[7])]; }
+function laH12(h, ap) { h = +h; if (!ap) return h; ap = ap.toUpperCase(); return ap === "PM" ? (h % 12) + 12 : h % 12; }
+function laBaseDate(st) { return new Date(st.base || Date.now()); }
 var LA_TS = [
   { name: "ISO 8601", re: /(\d{4})-(\d{2})-(\d{2})[T ](\d{2}):(\d{2}):(\d{2})(?:[.,](\d{1,9}))?(?:Z|[+-]\d{2}:?\d{2})?/, f: laYmd },
   { name: "yyyy/MM/dd", re: /(\d{4})\/(\d{2})\/(\d{2})[ T](\d{2}):(\d{2}):(\d{2})(?:[.,](\d{1,9}))?/, f: laYmd },
   { name: "Apache / Nginx", re: /(\d{2})\/([A-Za-z]{3})\/(\d{4}):(\d{2}):(\d{2}):(\d{2})/,
     f: function(m) { return [+m[3], LA_MON[m[2].toLowerCase()], +m[1], +m[4], +m[5], +m[6], 0]; } },
-  { name: "dd-MMM-yyyy", re: /(\d{2})-([A-Za-z]{3})-(\d{4}) (\d{2}):(\d{2}):(\d{2})(?:[.,](\d{1,9}))?/,
+  { name: "dd-MMM-yyyy", re: /(\d{1,2})-([A-Za-z]{3})-(\d{4})[ :](\d{2}):(\d{2}):(\d{2})(?:[.,](\d{1,9}))?/,
     f: function(m) { return [+m[3], LA_MON[m[2].toLowerCase()], +m[1], +m[4], +m[5], +m[6], laMs(m[7])]; } },
-  { name: "Syslog", re: /^([A-Z][a-z]{2}) {1,2}(\d{1,2}) (\d{2}):(\d{2}):(\d{2})/,
-    f: function(m) { return [new Date().getFullYear(), LA_MON[m[1].toLowerCase()], +m[2], +m[3], +m[4], +m[5], 0]; } },
+  { name: "dd MMM yyyy", re: /(\d{1,2}) ([A-Za-z]{3}) (\d{4})[ ,]+(\d{1,2}):(\d{2}):(\d{2})(?:[.,](\d{1,9}))?/,
+    f: function(m) { return [+m[3], LA_MON[m[2].toLowerCase()], +m[1], +m[4], +m[5], +m[6], laMs(m[7])]; } },
+  { name: "MMM d, yyyy (WebLogic)", re: /([A-Z][a-z]{2}) (\d{1,2}), (\d{4}),? (\d{1,2}):(\d{2}):(\d{2})(?:[.,](\d{1,3}))?(?: ?(AM|PM|am|pm))?/,
+    f: function(m) { return [+m[3], LA_MON[m[1].toLowerCase()], +m[2], laH12(m[4], m[8]), +m[5], +m[6], laMs(m[7])]; } },
+  { name: "dd/MM/yyyy", re: /(\d{1,2})[\/.-](\d{1,2})[\/.-](\d{4})[ T,]+(\d{1,2}):(\d{2}):(\d{2})(?:[.,:](\d{1,9}))?(?: ?(AM|PM|am|pm))?/,
+    f: function(m, st) {
+      var a = +m[1], b = +m[2], df = st.dayFirst !== false;
+      if (a > 12) df = true; else if (b > 12) df = false;
+      return [+m[3], (df ? b : a) - 1, df ? a : b, laH12(m[4], m[8]), +m[5], +m[6], laMs(m[7])];
+    } },
+  { name: "EEE MMM dd HH:mm:ss yyyy", re: /(?:Mon|Tue|Wed|Thu|Fri|Sat|Sun),? ([A-Z][a-z]{2}) {1,2}(\d{1,2}),? (\d{2}):(\d{2}):(\d{2})(?:[.,](\d{1,6}))?(?: [A-Z]{2,5}| [+-]\d{4})? (\d{4})/,
+    f: function(m) { return [+m[7], LA_MON[m[1].toLowerCase()], +m[2], +m[3], +m[4], +m[5], laMs(m[6])]; } },
+  { name: "Kubernetes klog", re: /^([IWEF])(\d{2})(\d{2}) (\d{2}):(\d{2}):(\d{2})(?:\.(\d{1,6}))?/,
+    f: function(m, st) { return [laBaseDate(st).getFullYear(), +m[2] - 1, +m[3], +m[4], +m[5], +m[6], laMs(m[7])]; } },
+  { name: "Syslog", re: /^(?:<\d+>)?([A-Z][a-z]{2}) {1,2}(\d{1,2}) (\d{2}):(\d{2}):(\d{2})(?:\.(\d{1,6}))?/,
+    f: function(m, st) {
+      var b = laBaseDate(st), mo = LA_MON[m[1].toLowerCase()], y = b.getFullYear();
+      if (mo > b.getMonth() + 1) y--;
+      return [y, mo, +m[2], +m[3], +m[4], +m[5], laMs(m[6])];
+    } },
   { name: "Time only", re: /^\[?(\d{2}):(\d{2}):(\d{2})(?:[.,](\d{1,6}))?/,
-    f: function(m) { var d = new Date(); return [d.getFullYear(), d.getMonth(), d.getDate(), +m[1], +m[2], +m[3], laMs(m[4])]; } }
+    f: function(m, st) { var d = laBaseDate(st); return [d.getFullYear(), d.getMonth(), d.getDate(), +m[1], +m[2], +m[3], laMs(m[4])]; } }
 ];
 var LA_ICON = {
   file: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="8" y1="13" x2="16" y2="13"/><line x1="8" y1="17" x2="12" y2="17"/></svg>',
   shield: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>',
   copy: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg>',
   upload: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polyline points="16 16 12 12 8 16"/><line x1="12" y1="12" x2="12" y2="21"/><path d="M20.39 18.39A5 5 0 0 0 18 9h-1.26A8 8 0 1 0 3 16.3"/></svg>',
+  down: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>',
+  gear: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><line x1="4" y1="21" x2="4" y2="14"/><line x1="4" y1="10" x2="4" y2="3"/><line x1="12" y1="21" x2="12" y2="12"/><line x1="12" y1="8" x2="12" y2="3"/><line x1="20" y1="21" x2="20" y2="16"/><line x1="20" y1="12" x2="20" y2="3"/><line x1="1" y1="14" x2="7" y2="14"/><line x1="9" y1="8" x2="15" y2="8"/><line x1="17" y1="16" x2="23" y2="16"/></svg>',
   chev: '<svg class="la-chev" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polyline points="6 9 12 15 18 9"/></svg>'
 };
 
-var logA = null;
-var logState = { query: "", level: "all", service: "", group: "", range: null, tab: "", rawLimit: 500, mask: false };
+var logA = null, logSrc = null;
+var logState = { query: "", level: "all", service: "", group: "", range: null, tab: "", rawLimit: 500, mask: false, caseId: "", kb: "", api: "" };
+var logSet = { dayFirst: "auto", step: "auto", ctx: 3, since: "", until: "" };
+
+/* ── Reading: encoding, colour codes, XML logs ── */
+function laDecode(buf) {
+  var b = new Uint8Array(buf), enc = "utf-8";
+  if (b[0] === 0xFF && b[1] === 0xFE) enc = "utf-16le";
+  else if (b[0] === 0xFE && b[1] === 0xFF) enc = "utf-16be";
+  else if (b.length > 3 && b[1] === 0 && b[3] === 0 && b[0] !== 0) enc = "utf-16le";
+  else if (b.length > 3 && b[0] === 0 && b[2] === 0 && b[1] !== 0) enc = "utf-16be";
+  var t = new TextDecoder(enc).decode(b);
+  return t.charCodeAt(0) === 0xFEFF ? t.slice(1) : t;
+}
+function laXmlAttr(s, k) { var m = s.match(new RegExp("\\b" + k + "\\s*=\\s*[\"']([^\"']*)")); return m ? m[1] : ""; }
+function laXmlText(s) {
+  return s.replace(/<!\[CDATA\[([\s\S]*?)\]\]>/g, "$1").replace(/<[^>]+>/g, " ")
+    .replace(/&lt;/g, "<").replace(/&gt;/g, ">").replace(/&quot;/g, "\"").replace(/&apos;/g, "'").replace(/&amp;/g, "&").replace(/[ \t]+/g, " ").trim();
+}
+function laIsoLocal(ms) {
+  var d = new Date(ms);
+  return d.getFullYear() + "-" + laPad(d.getMonth() + 1) + "-" + laPad(d.getDate()) + " " + laClock(ms) + "." + ("00" + d.getMilliseconds()).slice(-3);
+}
+/* log4j XML layout and Windows Event Viewer XML become one plain line per event */
+function laFromXml(text) {
+  var head = text.slice(0, 4000), out = [], m;
+  if (/<log4j:event\b/.test(head)) {
+    var re = /<log4j:event\b([^>]*)>([\s\S]*?)<\/log4j:event>/g;
+    while ((m = re.exec(text))) {
+      var at = m[1], body = m[2], ts = +laXmlAttr(at, "timestamp");
+      var msg = (body.match(/<log4j:message>([\s\S]*?)<\/log4j:message>/) || [])[1] || "";
+      var thr = (body.match(/<log4j:throwable>([\s\S]*?)<\/log4j:throwable>/) || [])[1] || "";
+      out.push((ts ? laIsoLocal(ts) + " " : "") + (laXmlAttr(at, "level") || "INFO") + " [" + laXmlAttr(at, "thread") + "] " + laXmlAttr(at, "logger") + " - " + laXmlText(msg).replace(/\s*\n\s*/g, " "));
+      if (thr) laXmlText(thr).split(/\r?\n/).forEach(function(l) { if (l.trim()) out.push("\t" + l.trim()); });
+    }
+    return out.length ? out.join("\n") : null;
+  }
+  if (/<Event\s+xmlns=["']http:\/\/schemas\.microsoft\.com\/win\/2004\/08\/events\/event/.test(head)) {
+    var LV = { "1": "CRITICAL", "2": "ERROR", "3": "WARN", "4": "INFO", "5": "DEBUG", "0": "INFO" };
+    var re2 = /<Event\b[\s\S]*?<\/Event>/g;
+    while ((m = re2.exec(text))) {
+      var ev = m[0];
+      var tm = laXmlAttr((ev.match(/<TimeCreated\b[^>]*>/) || [""])[0], "SystemTime");
+      var lvl = LV[((ev.match(/<Level>(\d)<\/Level>/) || [])[1]) || "4"] || "INFO";
+      var prov = laXmlAttr((ev.match(/<Provider\b[^>]*>/) || [""])[0], "Name");
+      var id = ((ev.match(/<EventID\b[^>]*>(\d+)<\/EventID>/) || [])[1]) || "";
+      var txt = (ev.match(/<Message>([\s\S]*?)<\/Message>/) || [])[1];
+      if (!txt) { var d = [], dm, dre = /<Data\b[^>]*>([\s\S]*?)<\/Data>/g; while ((dm = dre.exec(ev))) if (dm[1].trim()) d.push(laXmlText(dm[1])); txt = d.join(" | "); }
+      var t0 = tm ? Date.parse(tm) : NaN;
+      out.push((isNaN(t0) ? "" : laIsoLocal(t0) + " ") + lvl + " [" + prov + "] Event " + id + ": " + laXmlText(txt || "").replace(/\s*\n\s*/g, " "));
+    }
+    return out.length ? out.join("\n") : null;
+  }
+  return null;
+}
+function laPrep(text) {
+  /* Jenkins console notes, then ANSI colour / cursor codes */
+  if (text.indexOf("\u001b") > -1) text = text.replace(/\u001b\[8mha:\/\/\/\/[^\u001b]*\u001b\[0m/g, "").replace(/\u001b\[[0-9;?]*[ -\/]*[@-~]/g, "").replace(/\u001b\][^\u0007\u001b]*(?:\u0007|\u001b\\)/g, "");
+  if (/^\s*<|<log4j:event|<Event\s/.test(text.slice(0, 600))) { var x = laFromXml(text); if (x) return x; }
+  return text;
+}
 
 /* ── Parsing ── */
 function laTs(line, st) {
-  var head = line.length > 90 ? line.slice(0, 90) : line;
+  var head = line.length > 110 ? line.slice(0, 110) : line;
   for (var k = 0; k < LA_TS.length; k++) {
     var pi = (k + st.fmt) % LA_TS.length, p = LA_TS[pi];
     var m = head.match(p.re);
-    if (!m) continue;
-    var a = p.f(m);
-    if (a[1] === undefined || isNaN(a[1])) continue;
+    if (!m || m.index > 64) continue;
+    var a = p.f(m, st);
+    if (a[1] === undefined || isNaN(a[1]) || a[1] < 0 || a[1] > 11 || a[2] < 1 || a[2] > 31 || a[3] > 23) continue;
     var ms = new Date(a[0], a[1], a[2], a[3], a[4], a[5], a[6]).getTime();
     if (isNaN(ms)) continue;
     st.fmt = pi;
@@ -4171,7 +4530,11 @@ function laLvl(line) {
   var head = line.length > 200 ? line.slice(0, 200) : line;
   var m = head.match(LA_LVL_RE);
   if (m) return { level: LA_LVL_MAP[m[1]], token: m[1] };
-  m = line.match(LA_LVL_KV_RE);
+  m = head.match(LA_LVL_MC_RE);
+  if (m) return { level: LA_LVL_MAP[m[1].toUpperCase()], token: m[0] };
+  m = /^([IWEF])\d{4} \d{2}:\d{2}:\d{2}/.exec(head);
+  if (m) return { level: { I: "INFO", W: "WARN", E: "ERROR", F: "FATAL" }[m[1]], token: null };
+  m = head.match(LA_LVL_KV_RE);
   if (m && LA_LVL_MAP[m[1].toUpperCase()]) return { level: LA_LVL_MAP[m[1].toUpperCase()], token: null };
   return null;
 }
@@ -4184,16 +4547,21 @@ function laThreadLike(s) {
 
 function laDissect(e, ts, lv) {
   var raw = e.raw, t = raw.trim();
-  if (t.charAt(0) === "{") {
+  if (t.charAt(0) === "{" && t.length < 200000) {
     try {
       var o = JSON.parse(t);
-      e.msg = String(o.message || o.msg || o.log || o.event || t);
-      e.service = String(o.service || o.logger_name || o.logger || o.component || o.app || o.module || "");
+      e.msg = String(o.message || o.msg || o.log || o.event || o.MESSAGE || t);
+      e.service = String(o.service || o.logger_name || o.logger || o.component || o.app || o.module || (o.kubernetes && o.kubernetes.container_name) || "");
       if (e.service.split(".").length > 2) e.service = e.service.split(".").pop();
-      var st = o.stack_trace || o.stack || o.exception || o.stacktrace;
+      var st = o.stack_trace || o.stack || o.exception || o.stacktrace || o.error && o.error.stack_trace;
       if (st) e.extra = e.extra.concat(String(st).split(/\r?\n/));
       return;
     } catch (err) { /* not JSON, fall through */ }
+  }
+  /* WebLogic: ####<time> <severity> <subsystem> <machine> <server> <thread> <user> <tx> <ctx> <ms> <msg id> <message> */
+  if (raw.slice(0, 5) === "####<") {
+    var wl = raw.slice(5).replace(/>\s*$/, "").split("> <");
+    if (wl.length >= 12) { e.service = wl[2]; e.msg = wl[10] + " " + wl.slice(11).join("> <"); return; }
   }
   var rest = raw;
   if (ts) rest = rest.slice(0, ts.idx) + " " + rest.slice(ts.idx + ts.text.length);
@@ -4201,15 +4569,18 @@ function laDissect(e, ts, lv) {
     var j = rest.indexOf(lv.token);
     if (j > -1 && j < 220) rest = rest.slice(0, j) + " " + rest.slice(j + lv.token.length);
   }
-  rest = rest.replace(/\[\s*\]/g, " ").replace(/^[\s,|\-:\]]+/, "");
-  var svc = "";
+  rest = rest.replace(/^####/, "").replace(/\[\s*\]/g, " ").replace(/<\s*>/g, " ").replace(/^[\s,|\-:\]>]+/, "");
+  var svc = "", m;
+  var kl = rest.match(/^\s*\d+\s+([\w.\/-]+):\d+\]\s*/);
+  if (kl) { svc = kl[1].replace(/\.go$/, ""); rest = rest.slice(kl[0].length); }
   var kv = rest.match(/\b(?:service|svc|app|logger|component|module)\s*[=:]\s*"?([\w.$\/-]+)/i);
-  if (kv) svc = kv[1];
-  var m, brackets = [];
-  while ((m = rest.match(/^\[([^\]]{1,80})\]\s*/))) { brackets.push(m[1]); rest = rest.slice(m[0].length); }
-  if (!svc) for (var k = 0; k < brackets.length; k++) { if (!laThreadLike(brackets[k])) { svc = brackets[k]; break; } }
+  if (kv && !svc) svc = kv[1];
+  var brackets = [];
+  while ((m = rest.match(/^[\[<]([^\]>]{1,80})[\]>]\s*/))) { brackets.push(m[1]); rest = rest.slice(m[0].length); }
+  if (!svc) for (var k = 0; k < brackets.length; k++) { if (!laThreadLike(brackets[k]) && !/^\d|^BEA-/.test(brackets[k])) { svc = brackets[k]; break; } }
+  rest = rest.replace(/^\((?:[^()]{1,60})\)\s+/, "");
   var lg = rest.match(/^([A-Za-z_$][\w$]*(?:\.[\w$]+)+)\s*(?:[-:]\s+|\s{2,})/);
-  if (lg) { if (!svc) svc = lg[1]; rest = rest.slice(lg[0].length); }
+  if (lg && !/(?:Exception|Error|Throwable)$/.test(lg[1])) { if (!svc) svc = lg[1]; rest = rest.slice(lg[0].length); }
   else {
     var sl = rest.match(/^(?:\S+\s+)?([\w.\/-]+)\[\d+\]:\s+/);
     if (sl) { if (!svc) svc = sl[1]; rest = rest.slice(sl[0].length); }
@@ -4220,55 +4591,267 @@ function laDissect(e, ts, lv) {
   e.msg = rest || t;
 }
 
+/* Similar lines share a pattern: numbers, IDs, quoted values and long JSON bodies are blanked out. */
 function laSig(msg) {
+  var s = msg.length > 2000 ? msg.slice(0, 2000) : msg;
+  if (s.length > 160) { var j = s.search(/[{\[]/); if (j >= 6 && j < 220) s = s.slice(0, j) + "{…}"; }
   /* HTTP-style status codes stay in the pattern (503 and 500 are different issues); they are
      hidden as letters while every other number is replaced, then restored. */
-  var s = msg.replace(/\b(code|status|http)([\s=:]+)([1-5]\d\d)\b/gi, function(_, a, b, c) {
-    return a + b + "\u0001" + c.replace(/\d/g, function(d) { return String.fromCharCode(97 + +d); });
-  });
-  s = s.replace(/[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}/gi, "<uuid>")
+  function enc(d) { return "\u0001" + d.replace(/\d/g, function(x) { return String.fromCharCode(97 + +x); }) + "\u0001"; }
+  s = s.replace(/\b(code|status|http)([\s=:"]+)([1-5]\d\d)\b/gi, function(_, a, b, c) { return a + b + enc(c); })
+       .replace(/\b(ORA|BEA|TNS|IJ|UT|WFLY[A-Z]*|JBAS|SRVE|WSVR|CWW[A-Z]+|MQJE|AMQ|MQRC|SQLCODE)(-?)(\d{3,6})/g, function(_, a, b, c) { return a + b + enc(c); });
+  s = s.replace(/\bhttps?:\/\/[^\s"'<>]+/g, function(u) { return laApiKey(u); })
+       .replace(/'[^'\n]{0,80}'/g, "'…'")
+       .replace(/[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}/gi, "<uuid>")
        .replace(/[\w.+-]+@[\w-]+\.[\w.]+/g, "<email>")
        .replace(/\b\d{1,3}(?:\.\d{1,3}){3}(?::\d+)?\b/g, "<ip>")
        .replace(/\b(?=[0-9a-f]*\d)(?=[0-9a-f]*[a-f])[0-9a-f]{8,}\b/gi, "<hex>")
-       .replace(/\d+(?:[.,]\d+)*/g, "<n>")
-       .replace(/\u0001([a-j]{3})/g, function(_, c) { return c.replace(/[a-j]/g, function(ch) { return ch.charCodeAt(0) - 97; }); });
+       .replace(/\b[A-Z]{2,10}-\d{5,}\b/g, "<case>")
+       .replace(/\d{5,}/g, "<n>")
+       .replace(/(?<![{\w])\d+(?:[.,]\d+)*/g, "<n>")
+       .replace(/\u0001([a-j]+)\u0001/g, function(_, c) { return c.replace(/[a-j]/g, function(ch) { return ch.charCodeAt(0) - 97; }); });
   return s.replace(/\s+/g, " ").trim().slice(0, 240);
 }
 
-function laParse(text) {
+/* Text that the knowledge base and error inference look at, capped so very long lines stay fast */
+var LA_HOT_RE = /rrorCode|rror_code|"type"\s*:\s*"error"|Exception|ORA-\d|HTTP\/\d|[Ss]tatus(?:Code)?"?\s*[:=]\s*"?[45]\d\d|rrorMessage/g;
+function laCap(e) {
+  var r = e.raw, t = r;
+  if (r.length > 3000) {
+    t = r.slice(0, 1500);
+    LA_HOT_RE.lastIndex = 1500;
+    var m, n = 0;
+    while (n < 4 && (m = LA_HOT_RE.exec(r)) && m.index < r.length - 1200) { t += " … " + r.slice(Math.max(1500, m.index - 150), m.index + 350); LA_HOT_RE.lastIndex = m.index + 350; n++; }
+    t += " … " + r.slice(-1200);
+  }
+  if (e.extra.length) {
+    var x = [];
+    for (var i = 0; i < e.extra.length && i < 14; i++) x.push(e.extra[i].length > 400 ? e.extra[i].slice(0, 400) : e.extra[i]);
+    for (var j = 14; j < e.extra.length && j < 300; j++) if (e.extra[j].indexOf("Caused by") > -1) x.push(e.extra[j].slice(0, 400));
+    t += "\n" + x.join("\n");
+  }
+  return t;
+}
+
+/* Error inference for lines that have no level. Harmless phrases are blanked first:
+   "No Error Codes found", "non-error", "ErrorCode":"0", "errorMessage":"", SQL text. */
+var LA_NEG_RE = /\b(?:no|non|not|without|zero|nil|none|0)[\s_-]*(?:errors?|exceptions?|failures?|issues?)\b|\b(?:errors?|exceptions?|failures?|err|fail)[\s_-]*(?:count|code|codes|cnt|flag|msg|message|desc|description|list|status)?["']?\s*(?:[:=]|==>|->|=>|\bis\b)\s*["']?(?:0|false|null|none|nil|n|no|""|''|\[\s*\]|\{\s*\}|\[\s*\{\s*\}\s*\])(?![\w.])|\bon[\s_-]?(?:error|fail(?:ure)?)\b|\berror[\s_-]?(?:handl\w*|page|codes?\s+found|check)\b|\bcheck[\s_-]?error\s*(?:===?>|[:=])\s*\w+|"(?:ErrorCode|errorCode|error_code|errCode)"\s*:\s*"?(?:0+|200|null|SUCCESS|success)"?|"(?:ErrorMessage|errorMessage|error_message|errMsg|ErrorDesc|errorDesc|error|errors|exception|Exception|Exceptions|failure)"\s*:\s*(?:null|""|\[\s*\]|\{\s*\}|\[\s*\{\s*\}\s*\]|"null"|false)/gi;
+var LA_INF_ERR = /exception\b|\berrors?\b|\bfail(?:s|ed|ure|ures|ing)?\b|\bunable to\b|\bcould ?n[o']t\b|\bcannot\b|\bnot able to\b|\bfatal\b|\baborted\b|\btraceback\b/i;
+var LA_INF_WARN = /\bwarn(?:ing)?s?\b|\binvalid\b|\brejected\b|\bdeclined\b|\bdenied\b|\bmismatch\b|\bnot found\b|\bretrying\b|\bdeprecated\b|\btimed out\b/i;
+function laInfer(t) {
+  var s = t.replace(/\b(?:SELECT\s[\s\S]*?\sFROM\s|INSERT\s+INTO\s|UPDATE\s+\w+\s+SET\s|DELETE\s+FROM\s)[\s\S]*/i, " ").replace(LA_NEG_RE, " ");
+  return LA_INF_ERR.test(s) ? "ERROR" : LA_INF_WARN.test(s) ? "WARN" : null;
+}
+
+/* API / endpoint names */
+function laApiKey(u) {
+  u = u.replace(/[?#].*$/, "").replace(/[\/.,:;]+$/, "");
+  var m = u.match(/^(https?:\/\/)([^\/]+)(.*)$/i);
+  if (!m) return u;
+  var path = m[3].split("/").map(function(seg) {
+    return /^\d+$/.test(seg) || /^[0-9a-f-]{16,}$/i.test(seg) || (/\d/.test(seg) && /^[\w-]{10,}$/.test(seg) && /\d{4,}/.test(seg)) ? "{id}" : seg;
+  }).join("/");
+  return (m[1] + m[2].toLowerCase() + path).slice(0, 140);
+}
+var LA_URL_RE = /\bhttps?:\/\/[^\s"'<>\\`,;)\]}|]+/gi;
+var LA_SVCNAME_RE = /\b(?:service[_ ]?name|api[_ ]?name|interface[_ ]?name)\s*(?::{1,4}|==>|=>|->|=|:)\s*["']?([A-Za-z][\w.\/-]{2,60})/gi;
+var LA_HTTPCODE_RE = /(?:"?\b(?:status(?:Code|_code)?|response[_ ]?code|responseCode|http[_ ]?status|httpStatus)"?\s*[:=]\s*"?|\bHTTP\/\d(?:\.\d)?"?\s+)([1-5]\d\d)\b/i;
+function laApis(t) {
+  var out = [], seen = {}, m;
+  LA_URL_RE.lastIndex = 0;
+  while ((m = LA_URL_RE.exec(t)) && out.length < 4) { var k = laApiKey(m[0]); if (!seen[k] && k.length > 10) { seen[k] = 1; out.push(k); } }
+  LA_SVCNAME_RE.lastIndex = 0;
+  while ((m = LA_SVCNAME_RE.exec(t)) && out.length < 6) { var k2 = m[1].replace(/[.\/-]+$/, ""); if (!seen[k2]) { seen[k2] = 1; out.push(k2); } }
+  return out;
+}
+
+/* Kubernetes / OpenShift tables pasted from oc / kubectl */
+var LA_K8S_HDR = /^\s*(?:NAMESPACE\s+)?(?:LAST SEEN\s+TYPE\s+REASON|NAME\s+READY\s+STATUS\s+RESTARTS)|^\s*Type\s+Reason\s+Age\s+From\s+Message|^Events:\s*$/;
+var LA_K8S_EV_GET = /^\s*(?:([a-z0-9][\w.-]*)\s+)?(<unknown>|\d+[smhd]\w*|\d+[smhd]\d*[smh]?)\s+(Normal|Warning)\s+([A-Z]\w+)\s+((?:[\w.-]+\/)?[\w.-]+)\s+(.+)$/;
+var LA_K8S_EV_DESC = /^\s*(Normal|Warning)\s+([A-Z]\w+)\s+(?:<invalid>|\S+(?: \(x\d+ over \S+\))?)\s+([\w.-]+(?:, [\w.-]+)?)\s+(.+)$/;
+var LA_K8S_POD = /^\s*(?:([a-z0-9][\w.-]*)\s+)?([a-z0-9][\w.-]+)\s+(\d+\/\d+)\s+([A-Za-z]+(?::[\w-]+)?)\s+(\d+)(?:\s+\([^)]*\))?\s+(\S+)/;
+var LA_POD_BAD = /^(CrashLoopBackOff|Error|ImagePullBackOff|ErrImagePull|OOMKilled|CreateContainerConfigError|CreateContainerError|InvalidImageName|Evicted|Unknown|Init:Error|Init:CrashLoopBackOff|RunContainerError|ContainerStatusUnknown)$/;
+var LA_POD_WARN = /^(Pending|Terminating|ContainerCreating|PodInitializing|NotReady|Init:\S+)$/;
+var LA_ACCESS_RE = /^(\S+) \S+ \S+ \[[^\]]+\] "(GET|POST|PUT|DELETE|PATCH|HEAD|OPTIONS|CONNECT|TRACE) (\S+)[^"]*" (\d{3}) (\S+)(?: "[^"]*" "[^"]*")?(?:\s+(\d+(?:\.\d+)?))?/;
+
+function laParse(text, opt) {
   var lines = text.split(/\r\n|\n|\r/);
   if (lines.length && lines[lines.length - 1] === "") lines.pop();
-  var entries = [], fmtCount = {}, st = { fmt: 0 }, prev = null;
+  var entries = [], fmtCount = {}, st = { fmt: 0, base: opt.base, dayFirst: opt.dayFirst, k8s: false }, prev = null;
+  if (st.dayFirst === null) {
+    var vf = 0, vm = 0, dm;
+    for (var p = 0; p < lines.length && p < 4000; p++) {
+      if ((dm = /\b(\d{1,2})[\/.-](\d{1,2})[\/.-](\d{4})\b/.exec(lines[p].slice(0, 80)))) { if (+dm[1] > 12) vf++; else if (+dm[2] > 12) vm++; }
+    }
+    st.dayFirst = vm > vf ? false : true;
+  }
+  /* The format most lines use; a different date later in a line is part of the message, not the line's time */
+  var cnt = {}, dom = null, domI = 0;
+  for (var q = 0, seen = 0; q < lines.length && seen < 3000; q++) {
+    if (!lines[q].trim()) continue;
+    seen++;
+    var tq = laTs(lines[q], st);
+    if (tq) cnt[tq.name] = (cnt[tq.name] || 0) + 1;
+  }
+  for (var nm in cnt) if (cnt[nm] >= 5 && (!dom || cnt[nm] > cnt[dom])) dom = nm;
+  LA_TS.forEach(function(p, pi) { if (p.name === dom) domI = pi; });
+  st.fmt = domI;
+  function tsOf(line) {
+    var t = laTs(line, st);
+    if (t && dom && t.name !== dom && t.idx > 1) { st.fmt = domI; return null; }
+    return t;
+  }
   for (var i = 0; i < lines.length; i++) {
     var raw = lines[i];
     if (!raw.trim()) continue;
-    var ts = laTs(raw, st), lv = laLvl(raw);
-    if (!ts && !lv && prev && (prev.ts !== null || /^\s/.test(raw) || LA_CONT_RE.test(raw.trim()))) {
+    if (LA_K8S_HDR.test(raw)) { st.k8s = true; entries.push(prev = { n: i + 1, raw: raw, ts: null, level: "OTHER", extra: [], service: "", msg: raw.trim(), hdr: true }); continue; }
+    var e = null, k;
+    if (st.k8s && (k = LA_K8S_EV_GET.exec(raw) || LA_K8S_EV_DESC.exec(raw))) {
+      var desc = k.length === 5, typ = desc ? k[1] : k[3], reason = desc ? k[2] : k[4], obj = desc ? k[3] : k[5], msgx = desc ? k[4] : k[6];
+      e = { n: i + 1, raw: raw, ts: null, level: typ === "Warning" ? "WARN" : "INFO", extra: [], service: desc ? "" : obj, msg: reason + ": " + msgx, k8s: { type: typ, reason: reason, obj: desc ? "" : obj } };
+    } else if (st.k8s && (k = LA_K8S_POD.exec(raw)) && /^\d+\/\d+$/.test(k[3])) {
+      var status = k[4];
+      e = { n: i + 1, raw: raw, ts: null, level: LA_POD_BAD.test(status) ? "ERROR" : LA_POD_WARN.test(status) ? "WARN" : "INFO", extra: [], service: k[2].replace(/-[a-z0-9]{8,10}-[a-z0-9]{5}$|-[a-z0-9]{5}$/, ""), msg: "Pod status " + status + (+k[5] ? ", restarted" : ""), pod: { ns: k[1] || "", name: k[2], ready: k[3], status: status, restarts: +k[5], age: k[6] } };
+    }
+    if (e) { entries.push(e); prev = e; continue; }
+    var ts = tsOf(raw);
+    if (ts) {
+      /* "[18 Nov 2026 10:06:46,971] - " on one line and the message on the next */
+      var restH = raw.slice(0, ts.idx) + raw.slice(ts.idx + ts.text.length);
+      if (/^[\s\[\]\-:|>#<]*$/.test(restH) && i + 1 < lines.length && lines[i + 1].trim() && !tsOf(lines[i + 1])) {
+        raw = raw.replace(/\s+$/, "") + " " + lines[i + 1].replace(/^\s+/, "");
+        i++;
+      }
+    }
+    var lv = laLvl(raw);
+    if (!ts && !lv && prev && !prev.hdr && (prev.ts !== null || /^\s/.test(raw) || LA_CONT_RE.test(raw.trim()))) {
       prev.extra.push(raw);
       continue;
     }
+    var acc = !ts || ts.name === "Apache / Nginx" ? LA_ACCESS_RE.exec(raw) : null;
     if (ts) fmtCount[ts.name] = (fmtCount[ts.name] || 0) + 1;
-    var e = { n: i + 1, raw: raw, ts: ts ? ts.ms : null, level: lv ? lv.level : "OTHER", extra: [], service: "", msg: "" };
-    laDissect(e, ts, lv);
+    /* a promoted header keeps the header's line number */
+    e = { n: raw === lines[i] ? i + 1 : i, raw: raw, ts: ts ? ts.ms : null, level: lv ? lv.level : "OTHER", extra: [], service: "", msg: "" };
+    if (acc) {
+      var code = +acc[4];
+      e.level = code >= 500 ? "ERROR" : code >= 400 ? "WARN" : "INFO";
+      e.service = "access log";
+      e.msg = "HTTP " + acc[4] + " " + acc[2] + " " + laApiKey("http://x" + acc[3]).slice(8);
+      e.http = { code: code, method: acc[2], path: acc[3], ms: acc[6] ? +acc[6] : null };
+      e.access = true;
+    } else laDissect(e, ts, lv);
+    /* JBoss / WildFly print each stack line through [stderr] with its own timestamp */
+    if (prev && ts && prev.ts !== null && Math.abs(ts.ms - prev.ts) <= 3000 && (LA_STACK_RE.test(e.msg.replace(/^\s+/, "")) ||
+        (e.service === "stderr" && /^(?:[\w$]+\.)+[\w$]*(?:Exception|Error)\b/.test(e.msg.replace(/^\s+/, ""))))) {
+      prev.extra.push(raw);
+      continue;
+    }
     entries.push(e);
     prev = e;
   }
+  return { lines: lines, entries: entries, fmtCount: fmtCount, dayFirst: st.dayFirst };
+}
+
+/* Second pass over each entry: case ID, known problems, inferred level, pattern, root cause, APIs */
+function laEnrich(e) {
+  var cm = LA_CASE_RE.exec(e.msg);
+  if (cm) { e.caseId = cm[1]; e.msg = e.msg.slice(cm[0].length) || e.msg; }
+  var t = laCap(e);
+  e.kb = laKbMatch(t);
+  var best = null;
+  e.kb.forEach(function(x) { if (best === null || LA_RANK[x.s] < LA_RANK[best]) best = x.s; });
+  /* Kubernetes only has Normal / Warning: a known problem sets the real severity */
+  if (e.k8s && best && LA_RANK[best] < LA_RANK[e.level]) { e.level = best; e.inf = true; }
+  if (e.level === "OTHER" && !e.hdr) {
+    var inf = best || laInfer(t);
+    if (inf && LA_RANK[inf] <= 2) { e.level = inf; e.inf = true; }
+  }
+  var sig = null;
+  for (var i = 0; i < e.kb.length; i++) {
+    var x = e.kb[i];
+    if (x.key === "uierror") {
+      var um = t.match(/"type"\s*:\s*"error"\s*,\s*"message"\s*:\s*"((?:[^"\\]|\\.){0,200})/);
+      if (um) { sig = "Error shown to user: " + laSig(um[1]); break; }
+    } else if (x.key === "apierr") {
+      var ec = t.match(/"(?:ErrorCode|errorCode|error_code|errCode)"\s*:\s*"?([A-Za-z0-9_-]{1,20})/);
+      var em = t.match(/"(?:ErrorMessage|errorMessage|error_message|errMsg|errorDesc|ErrorDesc|errorDescription)"\s*:\s*"((?:[^"\\]|\\.){1,160})/);
+      if (ec) { sig = "API error code " + ec[1] + (em ? ": " + laSig(em[1]) : ""); e.apiErr = { code: ec[1], msg: em ? em[1] : "" }; break; }
+    }
+  }
+  e.sig = sig || laSig(e.msg);
+  if (e.extra.length) {
+    for (var j = Math.min(e.extra.length, 400) - 1; j >= 0; j--) {
+      var cb = /^\s*Caused by:\s*(.+)/.exec(e.extra[j]);
+      if (cb) { e.root = laTrunc(cb[1].trim(), 220); break; }
+    }
+    if (!e.root) { var fx = /^\s*((?:[\w$]+\.)+[A-Z][\w$]*(?:Exception|Error)(?::.*)?)$/.exec(e.extra[0]); if (fx) e.root = laTrunc(fx[1], 220); }
+    if (e.root && LA_RANK[e.level] <= 1) {
+      var rc = (e.root.match(/^((?:[\w$]+\.)*([A-Z][\w$]*(?:Exception|Error)))/) || [])[2];
+      if (rc && e.sig.indexOf(rc) === -1) e.sig = laTrunc(e.sig, 200) + " ← " + rc;
+    }
+  }
+  e.apis = e.access ? ["(access log) " + e.msg.replace(/^HTTP \d+ /, "")] : laApis(t);
+  if (!e.http) { var hc = LA_HTTPCODE_RE.exec(t); if (hc) e.http = { code: +hc[1] }; }
+}
+
+var LA_KINDS = [
+  ["jenkins", "Jenkins build", /^\[Pipeline\]|\bStarted by (?:user|timer|upstream|an SCM|GitHub|remote)|^Finished: (?:SUCCESS|FAILURE|UNSTABLE|ABORTED)|^Running on .+ in \/|^Building (?:in workspace|remotely)|\[Pipeline\] /m],
+  ["k8s", "Kubernetes events / pods", /^\s*(?:NAMESPACE\s+)?(?:LAST SEEN\s+TYPE\s+REASON|NAME\s+READY\s+STATUS\s+RESTARTS)|^\s*Type\s+Reason\s+Age\s+From\s+Message/m],
+  ["openshift", "OpenShift", /openshift\.io\/|image-registry\.openshift|DeploymentConfig|deploymentconfig\.apps|route\.openshift|-->\s+(?:Scaling|Success|Waiting for)|\boc (?:logs|get|describe|rollout|apply|new-app|start-build)\b|security context constraint/i],
+  ["klog", "Kubernetes component (klog)", /^[IWEF]\d{4} \d{2}:\d{2}:\d{2}\.\d+\s+\d+ [\w.\/-]+:\d+\]/m],
+  ["jboss", "JBoss / WildFly", /\bWFLY[A-Z]*\d{4,5}|\bJBAS\d{6}|\(default task-\d+\)|\[org\.jboss\.|\(MSC service thread/],
+  ["tomcat", "Tomcat", /org\.apache\.catalina|Catalina\.start|Server startup in|org\.apache\.coyote/],
+  ["weblogic", "WebLogic", /^####<|<BEA-\d{6}>/m],
+  ["websphere", "WebSphere", /\b(?:SRVE|WSVR|CWWK[A-Z]|CNTR|TRAS|DCSV)\d{4}[IWE]\b| SystemErr +R | SystemOut +O /],
+  ["access", "Web access log (Nginx / Apache)", /^\S+ \S+ \S+ \[\d{2}\/[A-Za-z]{3}\/\d{4}:[^\]]+\] "(?:GET|POST|PUT|DELETE|PATCH|HEAD|OPTIONS) /m],
+  ["weberr", "Web server error log", /\[(?:error|crit|warn|alert|emerg)\] \d+#\d+:|\[(?:core|mpm_\w+|proxy\w*|ssl|authz?_\w+):(?:error|warn|crit)\]/],
+  ["spring", "Spring Boot", /:: Spring Boot ::|\bo\.s\.b\.|\.s\.b\.w\.|Started \w+ in [\d.]+ seconds|org\.springframework/],
+  ["node", "Node.js", /node:internal|at Object\.<anonymous>|npm ERR!|UnhandledPromiseRejection|at process\.processTicksAndRejections/],
+  ["python", "Python", /Traceback \(most recent call last\)|^\s+File ".+", line \d+/m],
+  ["dotnet", ".NET / IIS", /^#Fields: date time s-ip|\bSystem\.\w+Exception\b|^\s+at System\.|Microsoft\.AspNetCore/m],
+  ["newgen", "Newgen iBPS / LOS (case-based workflow)", /\bibps|\bnewgen|\bomnidocs|LOSActivity|ActivityManager|\bWFSession|\bWI_?NAME\b/i]
+];
+function laKind(lines) {
+  var hits = {}, step = lines.length > 6000 ? Math.ceil((lines.length - 3000) / 3000) : 1;
+  for (var i = 0; i < lines.length; i += (i < 3000 ? 1 : step)) {
+    var l = lines[i].length > 400 ? lines[i].slice(0, 400) : lines[i];
+    for (var k = 0; k < LA_KINDS.length; k++) if (LA_KINDS[k][2].test(l)) hits[LA_KINDS[k][0]] = (hits[LA_KINDS[k][0]] || 0) + 1;
+  }
+  return LA_KINDS.filter(function(k) { return hits[k[0]] >= (k[0] === "newgen" || k[0] === "openshift" ? 2 : 1); }).map(function(k) { return { id: k[0], name: k[1], hits: hits[k[0]] }; });
+}
+
+/* Several files become one view: lines are joined with a separator line, entries remember their file */
+function laParseFiles(files) {
+  var lines = [], entries = [], fmtCount = {}, meta = [], dayFirst = true;
+  files.forEach(function(f, fi) {
+    var df = logSet.dayFirst === "auto" ? null : logSet.dayFirst === "day";
+    var P = laParse(f.text, { base: f.modified || Date.now(), dayFirst: df });
+    dayFirst = P.dayFirst;
+    if (files.length > 1) lines.push("──────── " + f.name + " ────────");
+    var off = lines.length;
+    for (var i = 0; i < P.lines.length; i++) lines.push(P.lines[i]);
+    P.entries.forEach(function(e) { e.n += off; e.f = fi; entries.push(e); });
+    for (var k in P.fmtCount) fmtCount[k] = (fmtCount[k] || 0) + P.fmtCount[k];
+    meta.push({ name: f.name, size: f.size, modified: f.modified, off: off, count: P.lines.length, short: laTrunc(f.name.replace(/\.(log|txt|out)$/i, ""), 18) });
+  });
+  P = null;
+  entries.forEach(laEnrich);
   var fmt = "", best = 0;
   for (var f in fmtCount) if (fmtCount[f] > best) { best = fmtCount[f]; fmt = f; }
-  if (!fmt && entries.length && entries[0].raw.trim().charAt(0) === "{") fmt = "JSON";
-  entries.forEach(function(e) { e.sig = laSig(e.msg); });
-  /* lineEntry[i] = index of the entry that file line i belongs to (stack traces belong to the entry above them) */
+  if (!fmt && entries.length && entries[0].raw.trim().charAt(0) === "{") fmt = "JSON lines";
+  if (!fmt && entries.some(function(e) { return e.access; })) fmt = "Access log";
   var lineEntry = new Int32Array(lines.length).fill(-1);
   entries.forEach(function(e, ei) {
-    var end = ei + 1 < entries.length ? entries[ei + 1].n - 1 : lines.length;
+    var nx = ei + 1 < entries.length ? entries[ei + 1].n - 1 : lines.length;
+    var end = files.length > 1 ? Math.min(nx, meta[e.f].off + meta[e.f].count) : nx;
     for (var j = e.n - 1; j < end; j++) lineEntry[j] = ei;
   });
-  return { lines: lines, entries: entries, format: fmt || "Plain text (no timestamps)", lineEntry: lineEntry };
+  return { lines: lines, entries: entries, format: fmt || "Plain text (no timestamps)", lineEntry: lineEntry, files: meta, kind: laKind(lines), dayFirst: dayFirst };
 }
 
 /* ── Analysis ── */
 function laExceptions(e) {
-  var seen = {}, out = [], txt = e.msg + "\n" + e.extra.slice(0, 40).join("\n"), m;
+  var seen = {}, out = [], txt = (e.msg.length > 2000 ? e.msg.slice(0, 2000) : e.msg) + "\n" + e.extra.slice(0, 40).join("\n"), m;
   LA_EXC_RE.lastIndex = 0;
   while ((m = LA_EXC_RE.exec(txt))) { if (!seen[m[1]]) { seen[m[1]] = 1; out.push(m[1]); } }
   return out;
@@ -4280,59 +4863,122 @@ function laIds(text, into) {
   while ((m = LA_ID_RE.exec(text))) {
     var label = LA_ID_LABELS[m[1].toLowerCase().replace(/[_-]/g, "")] || m[1];
     var v = m[2].replace(/[.\-\/]+$/, "");
-    if (v.length < 3) continue;
+    if (v.length < 3 || /^(null|none|true|false|undefined)$/i.test(v)) continue;
     if (!into[label]) into[label] = { order: [], seen: {} };
     if (!into[label].seen[v]) { into[label].seen[v] = 1; into[label].order.push(v); }
   }
 }
 
 function laSvcName(e) { return e.service || "(unknown)"; }
+function laMinMax(o, ts) { if (ts === null) return; if (o.first === null || ts < o.first) o.first = ts; if (o.last === null || ts > o.last) o.last = ts; }
+function laRankMin(a, b) { return a === null ? b : LA_RANK[b] < LA_RANK[a] ? b : a; }
 
-function laAnalyse(P, file) {
-  var E = P.entries, counts = {}, gmap = {}, groups = [], smap = {}, exc = {}, ids = {};
-  var tsMin = null, tsMax = null;
+/* Time range from the settings panel, as ms (local time) */
+function laRangeMs() {
+  var s = logSet.since ? new Date(logSet.since).getTime() : null, u = logSet.until ? new Date(logSet.until).getTime() : null;
+  return { since: isNaN(s) ? null : s, until: isNaN(u) ? null : u };
+}
+
+function laAnalyse(P) {
+  var R = laRangeMs(), ALL = P.entries;
+  var E = (R.since !== null || R.until !== null) ? ALL.filter(function(e) {
+    return e.ts !== null && (R.since === null || e.ts >= R.since) && (R.until === null || e.ts <= R.until);
+  }) : ALL;
+  var counts = {}, gmap = {}, groups = [], smap = {}, exc = {}, ids = {}, kmap = {}, kb = [], amap = {}, apis = [], cmap = {}, cases = [];
+  var tsMin = null, tsMax = null, lastApi = {};
   LA_LEVELS.forEach(function(l) { counts[l] = 0; });
   E.forEach(function(e, idx) {
+    e.i = idx;
     counts[e.level]++;
     if (e.ts !== null) {
       if (tsMin === null || e.ts < tsMin) tsMin = e.ts;
       if (tsMax === null || e.ts > tsMax) tsMax = e.ts;
     }
+    var bad = LA_RANK[e.level] <= 1;
     var key = e.level + "\u0002" + e.sig;
     var g = gmap[key];
-    if (!g) { g = gmap[key] = { key: key, level: e.level, sig: e.sig, count: 0, items: [], services: {}, first: null, last: null, ids: {}, exc: {} }; groups.push(g); }
+    if (!g) { g = gmap[key] = { key: key, level: e.level, sig: e.sig, count: 0, items: [], services: {}, first: null, last: null, ids: {}, exc: {}, cs: {}, inf: 0, kb: {}, root: {} }; groups.push(g); }
     g.count++; g.items.push(idx);
+    if (e.inf) g.inf++;
     var sv = laSvcName(e);
     g.services[sv] = (g.services[sv] || 0) + 1;
-    if (e.ts !== null) {
-      if (g.first === null || e.ts < g.first) g.first = e.ts;
-      if (g.last === null || e.ts > g.last) g.last = e.ts;
-    }
+    laMinMax(g, e.ts);
+    if (e.caseId) g.cs[e.caseId] = (g.cs[e.caseId] || 0) + 1;
+    if (e.root) g.root[e.root] = (g.root[e.root] || 0) + 1;
     if (!smap[sv]) smap[sv] = { name: sv, total: 0, FATAL: 0, ERROR: 0, WARN: 0 };
     smap[sv].total++;
     if (smap[sv][e.level] !== undefined) smap[sv][e.level]++;
     if (LA_RANK[e.level] <= 2) {
-      var txt = e.raw + "\n" + e.extra.slice(0, 20).join("\n");
+      var txt = (e.raw.length > 3000 ? e.raw.slice(0, 3000) : e.raw) + "\n" + e.extra.slice(0, 20).join("\n");
       laIds(txt, g.ids);
-      if (LA_RANK[e.level] <= 1) laIds(txt, ids);
+      if (bad) laIds(txt, ids);
       laExceptions(e).forEach(function(x) { exc[x] = (exc[x] || 0) + 1; g.exc[x] = (g.exc[x] || 0) + 1; });
+    }
+    /* known problems */
+    e.kb.forEach(function(x) {
+      var k = kmap[x.key];
+      if (!k) { k = kmap[x.key] = { key: x.key, t: x.t, s: x.s, m: x.m, k: x.k, cat: x.r.cat, c: x.r.c, count: 0, items: [], first: null, last: null, cs: {} }; kb.push(k); }
+      k.count++; if (k.items.length < 5000) k.items.push(idx);
+      laMinMax(k, e.ts);
+      if (e.caseId) k.cs[e.caseId] = 1;
+      g.kb[x.key] = 1;
+    });
+    /* APIs: an entry that names an endpoint is a call; a failure with no endpoint is linked to
+       the last endpoint named in the same case (within two minutes) */
+    var ctx = e.caseId ? (e.f || 0) + ":" + e.caseId : "", failed = bad || !!e.apiErr || (e.http && e.http.code >= 400) ||
+      e.kb.some(function(x) { return x.r.c === "api" && LA_RANK[x.s] <= 1; });
+    var akeys = e.apis;
+    var apiish = !!e.apiErr || (e.http && e.http.code >= 400) || e.kb.some(function(x) { return x.r.c === "api" || x.r.c === "bank"; });
+    if (!akeys.length && apiish && ctx) {
+      var la = lastApi[ctx];
+      if (la && (e.ts === null || la.ts === null || e.ts - la.ts <= 120000) && idx - la.idx < 400) { akeys = [la.key]; e.apiLinked = la.key; }
+    }
+    akeys.forEach(function(ak, n) {
+      var a = amap[ak];
+      if (!a) { a = amap[ak] = { key: ak, seen: 0, fail: 0, codes: {}, items: [], first: null, last: null, lastFail: null, lastFailIdx: -1, url: /^https?:|^\(access/.test(ak) }; apis.push(a); }
+      if (!e.apiLinked) a.seen++;
+      if (a.items.length < 5000) a.items.push(idx);
+      laMinMax(a, e.ts);
+      if (e.http) a.codes[e.http.code] = (a.codes[e.http.code] || 0) + 1;
+      if (e.apiErr) a.codes["API " + e.apiErr.code] = (a.codes["API " + e.apiErr.code] || 0) + 1;
+      if (failed) { a.fail++; a.lastFail = e.ts; a.lastFailIdx = idx; }
+      if (!e.apiLinked && n === 0 && ctx) lastApi[ctx] = { key: ak, ts: e.ts, idx: idx };
+    });
+    /* cases */
+    if (e.caseId) {
+      var c = cmap[e.caseId];
+      if (!c) { c = cmap[e.caseId] = { id: e.caseId, n: 0, err: 0, warn: 0, first: null, last: null, top: {} }; cases.push(c); }
+      c.n++;
+      if (bad) { c.err++; c.top[e.sig] = (c.top[e.sig] || 0) + 1; } else if (e.level === "WARN") c.warn++;
+      laMinMax(c, e.ts);
     }
   });
   groups.sort(function(a, b) { return (LA_RANK[a.level] - LA_RANK[b.level]) || (b.count - a.count); });
   var services = Object.keys(smap).map(function(k) { return smap[k]; }).sort(function(a, b) {
     return ((b.FATAL + b.ERROR) - (a.FATAL + a.ERROR)) || (b.WARN - a.WARN) || (b.total - a.total);
   });
+  kb.sort(function(a, b) { return (LA_RANK[a.s] - LA_RANK[b.s]) || (b.count - a.count); });
+  apis.sort(function(a, b) { return (b.fail - a.fail) || (b.seen - a.seen); });
+  cases.sort(function(a, b) { return (b.err - a.err) || (b.warn - a.warn) || (b.n - a.n); });
 
   var A = {
-    file: file, lines: P.lines, entries: E, lineEntry: P.lineEntry, format: P.format, counts: counts, groups: groups,
-    services: services, exceptions: exc, ids: ids, tsMin: tsMin, tsMax: tsMax, tl: null
+    files: P.files, file: P.files.length === 1 ? P.files[0] : { name: P.files.length + " files", size: P.files.reduce(function(s, f) { return s + f.size; }, 0), modified: null },
+    multi: P.files.length > 1, lines: P.lines, all: ALL, entries: E, lineEntry: P.lineEntry, format: P.format, kind: P.kind, dayFirst: P.dayFirst,
+    counts: counts, groups: groups, services: services, exceptions: exc, ids: ids, kb: kb, apis: apis, cases: cases,
+    tsMin: tsMin, tsMax: tsMax, tl: null, filtered: E !== ALL
   };
   A.multiDay = tsMin !== null && new Date(tsMin).toDateString() !== new Date(tsMax).toDateString();
+  A.kindIds = {}; A.kind.forEach(function(k) { A.kindIds[k.id] = 1; });
+  if (A.kindIds.jenkins) A.jenkins = laJenkins(A);
+  A.k8s = laK8s(A);
 
   if (tsMin !== null && tsMax > tsMin) {
     var steps = [1, 5, 10, 30, 60, 300, 600, 900, 1800, 3600, 10800, 21600, 43200, 86400, 604800];
-    var span = tsMax - tsMin, step = steps[steps.length - 1] * 1000;
-    for (var s = 0; s < steps.length; s++) { if (span / (steps[s] * 1000) <= 48) { step = steps[s] * 1000; break; } }
+    var span = tsMax - tsMin, step = steps[steps.length - 1] * 1000, want = logSet.step === "auto" ? 0 : +logSet.step * 1000;
+    for (var s = 0; s < steps.length; s++) {
+      if (steps[s] * 1000 < want) continue;
+      if (span / (steps[s] * 1000) <= (want ? 400 : 48)) { step = steps[s] * 1000; break; }
+    }
     var tzo = -new Date(tsMin).getTimezoneOffset() * 60000;
     var start = Math.floor((tsMin + tzo) / step) * step - tzo;
     var nb = Math.floor((tsMax - start) / step) + 1, b = [];
@@ -4344,12 +4990,66 @@ function laAnalyse(P, file) {
     });
     A.tl = { start: start, step: step, b: b };
   }
-  A.verdict = counts.FATAL ? { cls: "crit", text: "Critical: fatal events found" }
+  var kbFatal = kb.some(function(k) { return k.s === "FATAL"; });
+  A.verdict = counts.FATAL || kbFatal ? { cls: "crit", text: "Critical: fatal problems found" }
     : counts.ERROR ? { cls: "err", text: "Errors found" }
     : counts.WARN ? { cls: "warn", text: "Warnings only, no errors" }
     : { cls: "ok", text: "Healthy: no errors or warnings" };
+  if (A.jenkins && A.jenkins.result && A.jenkins.result !== "SUCCESS") A.verdict = { cls: A.jenkins.result === "FAILURE" ? "crit" : "warn", text: "Build " + A.jenkins.result.toLowerCase().replace("_", " ") };
+  logA = A; /* line labels and times in the findings read the new analysis */
   A.insights = laInsights(A);
   return A;
+}
+
+/* Jenkins console: result, stages, the failing stage and command */
+function laJenkins(A) {
+  var L = A.lines, J = { result: "", stages: [], exits: [], tests: [], cmd: "", started: "" }, stack = [], m;
+  for (var i = 0; i < L.length; i++) {
+    var l = L[i];
+    if (l.indexOf("[Pipeline]") > -1) {
+      if ((m = /\[Pipeline\] \{ \((.+)\)\s*$/.exec(l))) { var sg = { name: m[1].replace(/^Branch: /, ""), line: i + 1, end: L.length, status: "ok", errs: 0, branch: /^Branch: /.test(m[1]) }; J.stages.push(sg); stack.push(sg); }
+      else if (/\[Pipeline\] \/\/ stage\b|\[Pipeline\] \/\/ parallel\b/.test(l) && stack.length) stack.pop().end = i + 1;
+      continue;
+    }
+    if ((m = /Stage "(.+)" skipped due to/.exec(l))) { for (var s = J.stages.length - 1; s >= 0; s--) if (J.stages[s].name === m[1]) { J.stages[s].status = "skipped"; break; } }
+    if ((m = /\bFinished: (SUCCESS|FAILURE|UNSTABLE|ABORTED|NOT_BUILT)\b/.exec(l))) J.result = m[1];
+    if (!J.started && (m = /\bStarted by (.{1,80})/.exec(l))) J.started = m[1].replace(/\s+$/, "");
+    if ((m = /script returned exit code (\d+)/.exec(l))) {
+      var cmd = "";
+      for (var b = i - 1; b >= 0 && b > i - 200; b--) { var cm = /^(?:\S+\s+)?\+ (.+)$/.exec(L[b]); if (cm) { cmd = cm[1]; break; } }
+      J.exits.push({ code: +m[1], line: i + 1, cmd: cmd, stage: stack.length ? stack[stack.length - 1].name : "" });
+      if (stack.length) stack[stack.length - 1].status = "failed";
+    }
+    if ((m = /Tests run:\s*(\d+),\s*Failures:\s*(\d+),\s*Errors:\s*(\d+)(?:,\s*Skipped:\s*(\d+))?/.exec(l)) && !/ - in /.test(l)) J.tests.push({ run: +m[1], fail: +m[2], err: +m[3], skip: +(m[4] || 0), line: i + 1 });
+  }
+  A.entries.forEach(function(e) {
+    if (LA_RANK[e.level] > 1) return;
+    for (var s = J.stages.length - 1; s >= 0; s--) { var st = J.stages[s]; if (e.n >= st.line && e.n <= st.end) { st.errs++; break; } }
+  });
+  J.stages.forEach(function(st) { if (st.status === "ok" && st.errs && J.result && J.result !== "SUCCESS") st.status = "failed"; });
+  J.failed = J.stages.filter(function(s) { return s.status === "failed"; });
+  if (J.exits.length) J.cmd = J.exits[0].cmd;
+  if (A.tsMin !== null && A.tsMax > A.tsMin) J.dur = A.tsMax - A.tsMin;
+  return J;
+}
+
+/* Kubernetes / OpenShift: pods table and events, plus pod-log problems found by the knowledge base */
+function laK8s(A) {
+  var pods = [], ev = {}, evN = 0;
+  A.entries.forEach(function(e) {
+    if (e.pod) pods.push(e);
+    if (e.k8s) {
+      evN++;
+      var k = e.k8s.type + "\u0002" + e.k8s.reason, r = ev[k];
+      if (!r) r = ev[k] = { type: e.k8s.type, reason: e.k8s.reason, count: 0, objs: {}, items: [], msg: e.msg };
+      r.count++; r.items.push(e.i); if (e.k8s.obj) r.objs[e.k8s.obj] = 1;
+    }
+  });
+  var kbK = A.kb.filter(function(k) { return k.c === "k8s"; });
+  if (!pods.length && !evN && !kbK.length) return null;
+  var evs = Object.keys(ev).map(function(k) { return ev[k]; }).sort(function(a, b) { return (a.type === b.type ? 0 : a.type === "Warning" ? -1 : 1) || b.count - a.count; });
+  pods.sort(function(a, b) { return LA_RANK[a.level] - LA_RANK[b.level] || b.pod.restarts - a.pod.restarts; });
+  return { pods: pods, events: evs, kb: kbK };
 }
 
 function laPct(n, d) { if (!d) return "0%"; var p = n / d * 100; return (p < 1 && p > 0 ? p.toFixed(1) : Math.round(p)) + "%"; }
@@ -4372,24 +5072,39 @@ function laStep(ms) {
 function laTrunc(s, n) { return s.length > n ? s.slice(0, n - 1) + "…" : s; }
 function laList(arr) { return arr.length < 2 ? arr.join("") : arr.slice(0, -1).join(", ") + " and " + arr[arr.length - 1]; }
 function laTopKeys(obj, n) { return Object.keys(obj).sort(function(a, b) { return obj[b] - obj[a]; }).slice(0, n); }
+/* "Line 120", or "app.log:120" when several files are open */
+function laLn(e) { if (!logA || !logA.multi) return String(e.n); var f = logA.files[e.f]; return f.short + ":" + (e.n - f.off); }
+function laLineWord(e) { return logA && logA.multi ? laLn(e) : "line " + e.n; }
 
 /* Findings use **bold** and `code` markers so one string serves both the page and the copied summary. */
 function laInsights(A) {
   var C = A.counts, E = A.entries, out = [], errTotal = C.FATAL + C.ERROR;
   function add(lv, s) { out.push({ lv: lv, s: s }); }
+  var J = A.jenkins;
+  if (J) {
+    if (J.result) add(J.result === "SUCCESS" ? "OTHER" : J.result === "UNSTABLE" ? "WARN" : "ERROR", "Jenkins build result: **" + J.result + "**" + (J.dur ? " after " + laDur(J.dur) : "") + (J.started ? ", started by " + J.started : "") + ".");
+    if (J.failed.length) add("ERROR", "Failed stage" + (J.failed.length > 1 ? "s" : "") + ": " + laList(J.failed.map(function(s) { return "**" + s.name + "**"; })) + ".");
+    if (J.exits.length) add("ERROR", "`script returned exit code " + J.exits[0].code + "` at line " + J.exits[0].line + (J.exits[0].cmd ? ", command `" + laTrunc(J.exits[0].cmd, 120) + "`" : "") + ".");
+  }
+  if (A.kb.length) {
+    var top = A.kb.slice(0, 3);
+    add(top[0].s, "Known problem" + (A.kb.length > 1 ? "s" : "") + " recognised: " + laList(top.map(function(k) { return "**" + k.t + "** (" + k.count + "×)"; })) + (A.kb.length > 3 ? ", plus " + (A.kb.length - 3) + " more" : "") + ". See **Known problems** below for what each means and what to check.");
+  }
   if (C.FATAL) {
     var f = null;
     for (var i = 0; i < E.length; i++) if (E[i].level === "FATAL") { f = E[i]; break; }
     add("FATAL", "**" + C.FATAL + " fatal event" + (C.FATAL > 1 ? "s" : "") + "**" + (C.FATAL > 1 ? ", the first" : "") +
-      (f.ts !== null ? " at **" + laWhen(f.ts) + "**" : "") + " (line " + f.n + "): `" + laTrunc(f.msg, 140) + "`");
+      (f.ts !== null ? " at **" + laWhen(f.ts) + "**" : "") + " (" + laLineWord(f) + "): `" + laTrunc(f.msg, 140) + "`");
   }
   if (errTotal) {
     var rate = "";
-    if (A.tsMin !== null && A.tsMax - A.tsMin >= 600000) rate = ", about **" + Math.round(errTotal / ((A.tsMax - A.tsMin) / 3600000)) + " per hour**";
-    add("ERROR", "**" + errTotal + " errors** in total, " + laPct(errTotal, E.length) + " of all entries" + rate + ".");
+    if (A.tsMin !== null && A.tsMax - A.tsMin >= 600000) { var ph = errTotal / ((A.tsMax - A.tsMin) / 3600000); rate = ph < 1 ? ", fewer than **1 per hour**" : ", about **" + Math.round(ph) + " per hour**"; }
+    var inf = E.filter(function(e) { return e.inf && LA_RANK[e.level] <= 1; }).length;
+    add("ERROR", "**" + errTotal + " errors** in total, " + laPct(errTotal, E.length) + " of all entries" + rate + "." +
+      (inf ? " " + (inf === errTotal ? (inf === 1 ? "It" : "All of them") : inf + " of them") + (inf === 1 && inf !== errTotal ? " had no level in the log and was" : inf === 1 ? " had no level in the log and was" : " had no level in the log and were") + " recognised from the text (exceptions, \"failed\", error codes)." : ""));
     var eg = A.groups.filter(function(g) { return LA_RANK[g.level] <= 1; }).sort(function(a, b) { return b.count - a.count; })[0];
     var sv = Object.keys(eg.services);
-    add("ERROR", "Most frequent error: `" + laTrunc(eg.sig, 120) + "`, **" + eg.count + " times** (" + laPct(eg.count, errTotal) + " of errors)" +
+    add("ERROR", "Most frequent error: `" + laTrunc(eg.sig, 120) + "`, **" + eg.count + (eg.count === 1 ? " time" : " times") + "** (" + laPct(eg.count, errTotal) + " of errors)" +
       (sv.length > 1 ? ", spread across " + sv.length + " services" : sv[0] !== "(unknown)" ? " in " + sv[0] : "") + ".");
     if (A.tl && A.tl.b.length > 3 && errTotal > 2) {
       var pk = 0;
@@ -4401,40 +5116,51 @@ function laInsights(A) {
     }
     var named = A.services.filter(function(s) { return s.name !== "(unknown)" && s.FATAL + s.ERROR > 0; });
     if (named.length > 1) {
-      var top = named[0];
-      add("ERROR", "**" + top.name + "** logged the most errors: " + (top.FATAL + top.ERROR) + " (" + laPct(top.FATAL + top.ERROR, errTotal) + ").");
+      var tp = named[0];
+      add("ERROR", "**" + tp.name + "** logged the most errors: " + (tp.FATAL + tp.ERROR) + " (" + laPct(tp.FATAL + tp.ERROR, errTotal) + ").");
     }
     var fe = null;
     for (var k = 0; k < E.length; k++) if (LA_RANK[E[k].level] <= 1) { fe = E[k]; break; }
     if (fe && fe.ts !== null && A.tsMin !== null)
-      add("ERROR", "First error at **" + laWhen(fe.ts) + "** (line " + fe.n + ")" + (fe.ts > A.tsMin ? ", " + laDur(fe.ts - A.tsMin) + " after the log starts." : ", right at the start of the log."));
+      add("ERROR", "First error at **" + laWhen(fe.ts) + "** (" + laLineWord(fe) + ")" + (fe.ts > A.tsMin ? ", " + laDur(fe.ts - A.tsMin) + " after the log starts." : ", right at the start of the log."));
   } else {
-    add("OTHER", "No errors or fatal events in this file.");
+    add("OTHER", "No errors or fatal events in this " + (A.multi ? "set of files" : "file") + (A.filtered ? " for the chosen time range" : "") + ".");
   }
-  var ex = laTopKeys(A.exceptions, 1)[0];
-  if (ex) add("ERROR", "Most common exception: `" + ex + "` (" + A.exceptions[ex] + "×).");
+  var fa = A.apis.filter(function(a) { return a.fail; });
+  if (fa.length) add("ERROR", "**" + fa.length + " of " + A.apis.length + "** APIs / endpoints had failures. Most: `" + laTrunc(fa[0].key, 90) + "` (" + fa[0].fail + " failure" + (fa[0].fail > 1 ? "s" : "") + (fa[0].seen ? " in " + fa[0].seen + " calls" : "") + ").");
+  if (A.cases.length > 1) {
+    var ce = A.cases.filter(function(c) { return c.err; });
+    add(ce.length ? "ERROR" : "OTHER", "**" + A.cases.length + " cases** in this log" + (ce.length ? ", **" + ce.length + "** with errors. Most: `" + ce[0].id + "` (" + ce[0].err + " errors)." : ", none with errors."));
+  }
+  var rootK = {}; E.forEach(function(e) { if (e.root && LA_RANK[e.level] <= 1) rootK[e.root] = (rootK[e.root] || 0) + 1; });
+  var rk = laTopKeys(rootK, 1)[0];
+  if (rk) add("ERROR", "Most common root cause (deepest \"Caused by\"): `" + laTrunc(rk, 140) + "` (" + rootK[rk] + "×).");
+  else {
+    var ex = laTopKeys(A.exceptions, 1)[0];
+    if (ex) add("ERROR", "Most common exception: `" + ex + "` (" + A.exceptions[ex] + "×).");
+  }
   var traces = E.filter(function(e) { return LA_RANK[e.level] <= 1 && e.extra.length; }).length;
-  if (traces) add("ERROR", "**" + traces + "** error" + (traces > 1 ? "s include" : " includes") + " a stack trace. Open an issue below to read it.");
+  if (traces) add("ERROR", "**" + traces + "** error" + (traces > 1 ? "s include" : " includes") + " a stack trace or more lines. Open an issue below to read it.");
   if (C.WARN) {
     var wg = A.groups.filter(function(g) { return g.level === "WARN"; })[0];
     add("WARN", "**" + C.WARN + " warnings**. Most frequent: `" + laTrunc(wg.sig, 110) + "` (" + wg.count + "×).");
   }
-  var diffs = [], gap = 0, gapAt = null, prevTs = null;
+  var gap = 0, gapAt = null, prevTs = null, diffs = [];
   E.forEach(function(e) {
     if (e.ts === null) return;
-    if (prevTs !== null && e.ts >= prevTs) { var d = e.ts - prevTs; diffs.push(d); if (d > gap) { gap = d; gapAt = [prevTs, e.ts]; } }
+    if (prevTs !== null && e.ts >= prevTs) { var d = e.ts - prevTs; if (diffs.length < 20000) diffs.push(d); if (d > gap) { gap = d; gapAt = [prevTs, e.ts]; } }
     prevTs = e.ts;
   });
   diffs.sort(function(a, b) { return a - b; });
   var med = diffs.length ? diffs[Math.floor(diffs.length / 2)] : 0;
   if (gapAt && gap >= 300000 && gap > med * 10)
     add("WARN", "**No log lines for " + laDur(gap) + "** between " + laWhen(gapAt[0]) + " and " + laWhen(gapAt[1]) + ". Check whether the service was down or stopped logging.");
-  var rs = E.filter(function(e) { return LA_RESTART_RE.test(e.msg); });
+  var rs = E.filter(function(e) { return LA_RESTART_RE.test(e.msg.length > 400 ? e.msg.slice(0, 400) : e.msg); });
   if (rs.length)
     add("WARN", "**Start/stop activity** on " + rs.length + " line" + (rs.length > 1 ? "s" : "") + ": " +
       laList(rs.slice(0, 4).map(function(e) { return (e.ts !== null ? laWhen(e.ts) + " " : "") + "`" + laTrunc(e.msg, 50) + "`"; })) + ".");
   var txn = A.ids["Transaction ID"] || A.ids["UTR"] || A.ids["Reference"];
-  if (txn) add("ERROR", "**" + txn.order.length + "** distinct transaction references appear on error lines. Use Copy summary to get the list.");
+  if (txn) add("ERROR", "**" + txn.order.length + "** distinct transaction reference" + (txn.order.length > 1 ? "s appear" : " appears") + " on error lines. Use Copy summary to get the list.");
   return out;
 }
 
@@ -4452,7 +5178,7 @@ function laMask(s) {
       var d = m.replace(/\D/g, "");
       return d.length >= 13 && d.length <= 19 && laLuhn(d) ? "XXXX-XXXX-XXXX-" + d.slice(-4) : m;
     })
-    .replace(/\b(acc(?:ount)?[_-]?(?:no|num|number)?|a\/c)(\s*[=:]\s*)(\d{5,})(\d{4})\b/gi, function(_, k, sep, a, b) { return k + sep + a.replace(/\d/g, "X") + b; })
+    .replace(/\b(acc(?:ount)?(?:[_\s-]?(?:no|num|number))?|a\/c(?:\s?no)?)("?\s*[=:]?\s*"?)(\d{5,})(\d{4})\b/gi, function(_, k, sep, a, b) { return k + sep + a.replace(/\d/g, "X") + b; })
     .replace(/\b[2-9]\d{3} ?\d{4} ?\d{4}\b/g, function(m) { return "XXXX XXXX " + m.replace(/\D/g, "").slice(-4); })
     .replace(/\b[A-Z]{5}\d{4}[A-Z]\b/g, function(m) { return m.slice(0, 2) + "XXXXXXX" + m.slice(-1); })
     .replace(/\b([\w.+-])[\w.+-]*@([\w-]+\.[\w.]+)/g, "$1***@$2")
@@ -4472,49 +5198,74 @@ function laHL(html) {
   var q = escapeHtml(logState.query).replace(/[.*+?^${}()|[\]\\]/g, "\\$&");
   return html.replace(new RegExp("(" + q + ")(?![^<]*>)", "gi"), '<mark class="la-hl">$1</mark>');
 }
+function laAttr(s) { return escapeHtml(String(s)).replace(/"/g, "&quot;"); }
 
 /* ── Rendering ── */
 function laRender() {
   var A = logA, C = A.counts, h = "", f = A.file;
   if (!logState.tab) logState.tab = (C.FATAL + C.ERROR) ? "errors" : C.WARN ? "warnings" : "all";
   var meta = ['<span><b>' + laSize(f.size) + '</b></span>',
-    '<span><b>' + A.lines.length.toLocaleString() + '</b> lines' + (A.entries.length !== A.lines.length ? ', <b>' + A.entries.length.toLocaleString() + '</b> entries' : '') + '</span>'];
+    '<span><b>' + A.lines.length.toLocaleString() + '</b> lines' + (A.all.length !== A.lines.length ? ', <b>' + A.all.length.toLocaleString() + '</b> entries' : '') + '</span>'];
   if (A.tsMin !== null) {
     meta.push('<span><b>' + laDate(A.tsMin) + ', ' + laClock(A.tsMin) + '</b> to <b>' + (A.multiDay ? laDate(A.tsMax) + ', ' : '') + laClock(A.tsMax) + '</b></span>');
     meta.push('<span>Covers <b>' + laDur(A.tsMax - A.tsMin) + '</b></span>');
   }
+  if (A.kind.length) meta.push('<span>Type <b>' + escapeHtml(A.kind.slice(0, 3).map(function(k) { return k.name; }).join(" + ")) + '</b></span>');
+  meta.push('<span>Timestamps <b>' + escapeHtml(A.format) + '</b>' + (/dd\/MM/.test(A.format) ? ' (' + (A.dayFirst ? 'day first' : 'month first') + ')' : '') + '</span>');
   var named = A.services.filter(function(s) { return s.name !== "(unknown)"; }).length;
-  meta.push('<span>Format <b>' + escapeHtml(A.format) + '</b></span>');
   if (named) meta.push('<span><b>' + named + '</b> service' + (named > 1 ? 's' : '') + '</span>');
-  if (f.modified) meta.push('<span>File modified ' + laDate(f.modified) + ', ' + laClock(f.modified) + '</span>');
+  if (!A.multi && f.modified) meta.push('<span>File modified ' + laDate(f.modified) + ', ' + laClock(f.modified) + '</span>');
+  if (A.filtered) meta.push('<span class="la-flag">Time range applied: <b>' + A.entries.length.toLocaleString() + '</b> of ' + A.all.length.toLocaleString() + ' entries</span>');
 
   h += '<div class="la-wrap">';
   h += '<section class="la-card la-head" aria-label="Log file">' +
     '<div class="la-file-ico">' + LA_ICON.file + '</div>' +
-    '<div class="la-head-main"><div class="la-eyebrow">Log file</div>' +
-      '<h2 class="la-file-name">' + escapeHtml(f.name) + '</h2>' +
+    '<div class="la-head-main"><div class="la-eyebrow">' + (A.multi ? A.files.length + ' log files analysed together' : 'Log file') + '</div>' +
+      '<h2 class="la-file-name">' + (A.multi ? A.files.map(function(x) { return escapeHtml(x.name); }).join('<span class="la-fsep">, </span>') : escapeHtml(f.name)) + '</h2>' +
       '<div class="la-meta">' + meta.join("") + '</div>' +
-      '<span class="la-verdict ' + A.verdict.cls + '">' + A.verdict.text + '</span></div>' +
+      '<span class="la-verdict ' + A.verdict.cls + '">' + escapeHtml(A.verdict.text) + '</span></div>' +
     '<div class="la-head-actions">' +
-      '<button class="la-btn tt-btn-main" data-act="read-full" title="Open every line of the file as uploaded, with fatal, error and warning lines coloured">' + LA_ICON.file + 'Read full file</button>' +
-      '<button class="la-btn' + (logState.mask ? ' on' : '') + '" data-act="mask" aria-pressed="' + logState.mask + '" title="Hide card numbers, account numbers, PAN, Aadhaar, emails, phone numbers and secrets on screen and in anything you copy">' + LA_ICON.shield + 'Mask sensitive data</button>' +
+      '<button class="la-btn tt-btn-main" data-act="read-full" title="Open every line as uploaded, with fatal, error and warning lines coloured">' + LA_ICON.file + 'Read full file' + (A.multi ? 's' : '') + '</button>' +
+      '<button class="la-btn' + (logState.mask ? ' on' : '') + '" data-act="mask" aria-pressed="' + logState.mask + '" title="Hide card numbers, account numbers, PAN, Aadhaar, emails, phone numbers and secrets on screen, in copies and in exports">' + LA_ICON.shield + 'Mask sensitive data</button>' +
       '<button class="la-btn" data-act="copy-summary">' + LA_ICON.copy + 'Copy summary</button>' +
-      '<button class="la-btn" data-act="new-file">' + LA_ICON.upload + 'Load another file</button>' +
+      '<details class="tt-menu la-export"><summary class="la-btn">' + LA_ICON.down + 'Export</summary><div class="tt-menu-list" role="menu">' +
+        '<div class="tt-mh">Spreadsheet (CSV)</div>' +
+        '<button role="menuitem" data-act="export" data-x="issues">Issues <small>' + A.groups.length + ' patterns</small></button>' +
+        (A.kb.length ? '<button role="menuitem" data-act="export" data-x="kb">Known problems <small>' + A.kb.length + '</small></button>' : '') +
+        (A.apis.length ? '<button role="menuitem" data-act="export" data-x="apis">APIs and endpoints <small>' + A.apis.length + '</small></button>' : '') +
+        (A.cases.length ? '<button role="menuitem" data-act="export" data-x="cases">Cases <small>' + A.cases.length + '</small></button>' : '') +
+        '<button role="menuitem" data-act="export" data-x="lines">Filtered log lines <small>as shown below</small></button>' +
+        '<hr><button role="menuitem" data-act="export" data-x="json">Full report <small>JSON</small></button>' +
+      '</div></details>' +
+      '<button class="la-btn" data-act="settings" aria-expanded="false" aria-controls="laSet">' + LA_ICON.gear + 'Settings</button>' +
+      '<button class="la-btn" data-act="new-file">' + LA_ICON.upload + 'Load other files</button>' +
     '</div>' +
-    '<details class="la-preview"><summary>First lines of the file</summary><pre class="la-pre">' +
-      A.lines.slice(0, 8).map(function(l, i) { return '<span class="ln">' + (i + 1) + '  </span>' + laEsc(laTrunc(l, 400)); }).join("\n") +
+    '<details class="la-preview"><summary>First lines' + (A.multi ? ' of each file' : ' of the file') + '</summary><pre class="la-pre">' +
+      A.files.map(function(x) {
+        return (A.multi ? '<b>' + escapeHtml(x.name) + '</b>\n' : '') + A.lines.slice(x.off, x.off + Math.min(8, x.count)).map(function(l, i) { return '<span class="ln">' + (i + 1) + '  </span>' + laEsc(laTrunc(l, 400)); }).join("\n");
+      }).join("\n\n") +
     '</pre></details>' +
   '</section>';
 
+  h += '<section class="la-card la-set" id="laSet" hidden aria-label="Analysis settings">' + laSettingsHtml() + '</section>';
   h += '<div class="la-counts" id="laCounts" role="group" aria-label="Filter log lines by level"></div>';
   h += '<section class="la-card"><h3 class="la-h">Key findings</h3><ul class="la-insights">' +
     A.insights.map(function(x) { return '<li class="lv-' + x.lv + '"><i class="la-dot" aria-hidden="true"></i><span>' + laMd(x.s) + '</span></li>'; }).join("") +
   '</ul></section>';
 
+  if (A.jenkins) h += '<section class="la-card la-stack" aria-label="Jenkins build"><h3 class="la-h">Jenkins build</h3>' + laJenkinsHtml() + '</section>';
+  if (A.k8s) h += '<section class="la-card la-stack" aria-label="Kubernetes and OpenShift"><h3 class="la-h">Kubernetes / OpenShift</h3>' + laK8sHtml() + '</section>';
+  if (A.kb.length) h += '<section class="la-card"><div class="la-h-row"><h3 class="la-h">Known problems <small>recognised from the text: what it means and what to check</small></h3></div>' +
+    '<div class="la-issues" id="laKb"></div></section>';
+
   h += '<div class="la-grid2">' +
     '<section class="la-card"><h3 class="la-h">Activity over time' + (A.tl ? ' <small>' + laStep(A.tl.step) + ' bars</small>' : '') + '</h3><div id="laTl"></div></section>' +
-    '<section class="la-card"><h3 class="la-h">By service <small>errors / all entries</small></h3><div id="laSvc"></div></section>' +
+    (A.services.some(function(x) { return x.name !== "(unknown)"; }) || !A.cases.length ? '<section class="la-card"><h3 class="la-h">By service <small>errors / all entries</small></h3><div id="laSvc"></div></section>'
+      : '<section class="la-card"><h3 class="la-h">By case <small>errors / all entries</small></h3><div id="laSvc"></div></section>') +
   '</div>';
+  if (A.apis.length) h += '<section class="la-card"><h3 class="la-h">APIs and endpoints <small>URLs and service names found in the log; failures include errors logged right after a call in the same case</small></h3><div id="laApis"></div></section>';
+  if (A.cases.length) h += '<section class="la-card"><div class="la-h-row"><h3 class="la-h">Cases <small>' + A.cases.length + ' case / work-item IDs at the start of log lines</small></h3>' +
+    '<div class="la-actions"><button class="la-btn la-btn-sm" data-act="copy-cases">' + LA_ICON.copy + 'Copy cases with errors</button></div></div><div id="laCases"></div></section>';
 
   h += '<section class="la-card"><div class="la-h-row"><h3 class="la-h">Issues grouped by pattern <small>similar lines are merged, numbers and IDs ignored</small></h3>' +
     '<div class="la-actions"><button class="la-btn la-btn-sm" data-act="expand">Expand all</button><button class="la-btn la-btn-sm" data-act="collapse">Collapse all</button></div></div>' +
@@ -4528,6 +5279,24 @@ function laRender() {
   logResults.style.display = "block";
   logDropZone.style.display = "none";
   laRefresh();
+}
+
+function laSettingsHtml() {
+  function opt(v, label, cur) { return '<option value="' + v + '"' + (String(cur) === String(v) ? ' selected' : '') + '>' + label + '</option>'; }
+  var R = logA, lo = R && R.tsMin !== null ? laIsoLocal(R.tsMin).slice(0, 19).replace(" ", "T") : "", hi = R && R.tsMax !== null ? laIsoLocal(R.tsMax).slice(0, 19).replace(" ", "T") : "";
+  return '<h3 class="la-h">Analysis settings <small>applied to every file you load until you change them</small></h3>' +
+    '<div class="la-set-row">' +
+      '<label>Numeric dates like 05/11/2026<select id="laSetDay">' + opt("auto", "Detect (day first if unclear)", logSet.dayFirst) + opt("day", "Day first: dd/MM/yyyy", logSet.dayFirst) + opt("month", "Month first: MM/dd/yyyy", logSet.dayFirst) + '</select></label>' +
+      '<label>Timeline bars<select id="laSetStep">' + opt("auto", "Automatic", logSet.step) + opt(60, "1 minute", logSet.step) + opt(300, "5 minutes", logSet.step) + opt(900, "15 minutes", logSet.step) + opt(3600, "1 hour", logSet.step) + opt(86400, "1 day", logSet.step) + '</select></label>' +
+      '<label>Lines of context around an issue<input id="laSetCtx" type="number" min="0" max="50" value="' + logSet.ctx + '"></label>' +
+    '</div><div class="la-set-row">' +
+      '<label>From<input id="laSetSince" type="datetime-local" step="1" value="' + laAttr(logSet.since) + '"' + (lo ? ' min="' + lo + '"' : '') + '></label>' +
+      '<label>To<input id="laSetUntil" type="datetime-local" step="1" value="' + laAttr(logSet.until) + '"' + (hi ? ' max="' + hi + '"' : '') + '></label>' +
+      '<p class="la-hint la-set-note">' + (lo ? 'This log runs from ' + escapeHtml(lo.replace("T", " ")) + ' to ' + escapeHtml(hi.replace("T", " ")) + '. ' : '') + 'A time range leaves out entries with no timestamp.</p>' +
+    '</div><div class="la-actions">' +
+      '<button class="la-btn tt-btn-main" data-act="set-apply">Apply</button>' +
+      '<button class="la-btn" data-act="set-reset">Reset to defaults</button>' +
+    '</div>';
 }
 
 function laCountsHtml() {
@@ -4544,7 +5313,7 @@ function laCountsHtml() {
 
 function laTimelineHtml() {
   var T = logA.tl;
-  if (!T) return '<p class="la-empty">No timestamps were found in this file, so there is no timeline.</p>';
+  if (!T) return '<p class="la-empty">No timestamps were found' + (logA.filtered ? ' in the chosen time range' : ' in this log') + ', so there is no timeline.</p>';
   var max = 1, h = '<div class="la-tl">';
   T.b.forEach(function(b) { max = Math.max(max, b.e + b.w + b.o); });
   T.b.forEach(function(b, i) {
@@ -4563,12 +5332,25 @@ function laTimelineHtml() {
 
 function laServicesHtml() {
   var list = logA.services;
-  if (!list.length || (list.length === 1 && list[0].name === "(unknown)")) return '<p class="la-empty">No service or component names were found in the log lines.</p>';
+  if (!list.length || (list.length === 1 && list[0].name === "(unknown)")) {
+    if (!logA.cases.length) return '<p class="la-empty">No service or component names were found in the log lines.</p>';
+    /* no services, but case IDs: show cases instead */
+    var cm = 1, ch = '<div class="la-svcs">';
+    logA.cases.forEach(function(c) { cm = Math.max(cm, c.n); });
+    logA.cases.slice(0, 10).forEach(function(c) {
+      var on = logState.caseId === c.id;
+      ch += '<button class="la-svc' + (on ? ' active' : '') + '" data-act="case" data-k="' + laAttr(c.id) + '" aria-pressed="' + on + '" title="' + laAttr(c.id) + ': ' + c.err + ' errors, ' + c.warn + ' warnings, ' + c.n + ' entries. Click to filter.">' +
+        '<span class="la-svc-name">' + laEsc(c.id) + '</span>' +
+        '<span class="la-track"><i class="e" style="width:' + (c.err / cm * 100) + '%"></i><i class="w" style="width:' + (c.warn / cm * 100) + '%"></i><i class="o" style="width:' + ((c.n - c.err - c.warn) / cm * 100) + '%"></i></span>' +
+        '<span class="la-svc-n"><b>' + c.err + '</b> / ' + c.n + '</span></button>';
+    });
+    return ch + '</div>' + (logA.cases.length > 10 ? '<p class="la-hint" style="margin:.4rem .45rem 0">+' + (logA.cases.length - 10) + ' more cases, see the Cases table</p>' : '');
+  }
   var max = 1, h = '<div class="la-svcs">';
   list.forEach(function(s) { max = Math.max(max, s.total); });
   list.slice(0, 10).forEach(function(s) {
     var err = s.FATAL + s.ERROR, on = logState.service === s.name;
-    h += '<button class="la-svc' + (on ? ' active' : '') + '" data-act="svc" data-svc="' + escapeHtml(s.name) + '" aria-pressed="' + on + '" title="' + escapeHtml(s.name) + ': ' + err + ' errors, ' + s.WARN + ' warnings, ' + s.total + ' entries. Click to filter.">' +
+    h += '<button class="la-svc' + (on ? ' active' : '') + '" data-act="svc" data-svc="' + laAttr(s.name) + '" aria-pressed="' + on + '" title="' + laAttr(s.name) + ': ' + err + ' errors, ' + s.WARN + ' warnings, ' + s.total + ' entries. Click to filter.">' +
       '<span class="la-svc-name">' + escapeHtml(s.name) + '</span>' +
       '<span class="la-track"><i class="e" style="width:' + (err / max * 100) + '%"></i><i class="w" style="width:' + (s.WARN / max * 100) + '%"></i><i class="o" style="width:' + ((s.total - err - s.WARN) / max * 100) + '%"></i></span>' +
       '<span class="la-svc-n"><b>' + err + '</b> / ' + s.total + '</span></button>';
@@ -4577,10 +5359,134 @@ function laServicesHtml() {
   return h + '</div>';
 }
 
+function laCodesTxt(codes) {
+  return Object.keys(codes).sort(function(a, b) { return codes[b] - codes[a]; }).slice(0, 5).map(function(c) { return c + (codes[c] > 1 ? " ×" + codes[c] : ""); }).join(", ");
+}
+function laApisHtml() {
+  var list = logA.apis, h = '<div class="la-tblwrap"><table class="la-tbl"><thead><tr><th scope="col">API / endpoint</th><th scope="col" class="r">Calls</th><th scope="col" class="r">Failures</th><th scope="col">Codes</th><th scope="col">Last failure</th></tr></thead><tbody>';
+  list.slice(0, 60).forEach(function(a) {
+    var on = logState.api === a.key, le = a.lastFailIdx > -1 ? logA.entries[a.lastFailIdx] : null;
+    h += '<tr class="' + (on ? 'on' : '') + (a.fail ? ' bad' : '') + '"><td class="la-tk"><button class="la-linkbtn" data-act="api" data-k="' + laAttr(a.key) + '" aria-pressed="' + on + '" title="Show the log lines for this API">' + laEsc(a.key) + '</button></td>' +
+      '<td class="r">' + a.seen + '</td><td class="r">' + (a.fail ? '<b class="la-bad">' + a.fail + '</b>' + (a.seen ? ' <small>' + laPct(Math.min(a.fail, a.seen), a.seen) + '</small>' : '') : '0') + '</td>' +
+      '<td>' + laEsc(laCodesTxt(a.codes)) + '</td>' +
+      '<td>' + (le ? (le.ts !== null ? laWhen(le.ts) + ' · ' : '') + '<span class="la-tmsg" title="' + laAttr(laMask(laTrunc(le.sig, 300))) + '">' + laEsc(laTrunc(le.sig, 70)) + '</span>' : '') + '</td></tr>';
+  });
+  h += '</tbody></table></div>';
+  if (list.length > 60) h += '<p class="la-hint">Showing 60 of ' + list.length + '. Export the APIs to see all of them.</p>';
+  return h;
+}
+
+function laCasesHtml() {
+  var list = logA.cases, h = '<div class="la-tblwrap"><table class="la-tbl"><thead><tr><th scope="col">Case</th><th scope="col" class="r">Entries</th><th scope="col" class="r">Errors</th><th scope="col" class="r">Warnings</th><th scope="col">Time</th><th scope="col">Most frequent error</th></tr></thead><tbody>';
+  list.slice(0, 50).forEach(function(c) {
+    var on = logState.caseId === c.id, top = laTopKeys(c.top, 1)[0];
+    h += '<tr class="' + (on ? 'on' : '') + (c.err ? ' bad' : '') + '"><td class="la-tk"><button class="la-linkbtn" data-act="case" data-k="' + laAttr(c.id) + '" aria-pressed="' + on + '" title="Show only this case\'s lines">' + laEsc(c.id) + '</button></td>' +
+      '<td class="r">' + c.n.toLocaleString() + '</td><td class="r">' + (c.err ? '<b class="la-bad">' + c.err + '</b>' : '0') + '</td><td class="r">' + c.warn + '</td>' +
+      '<td>' + (c.first !== null ? laWhen(c.first) + (c.last > c.first ? ' to ' + laWhen(c.last) : '') : '') + '</td>' +
+      '<td>' + (top ? '<span class="la-tmsg" title="' + laAttr(laMask(top)) + '">' + laEsc(laTrunc(top, 80)) + '</span>' + (c.top[top] > 1 ? ' ×' + c.top[top] : '') : '') + '</td></tr>';
+  });
+  h += '</tbody></table></div>';
+  if (list.length > 50) h += '<p class="la-hint">Showing 50 of ' + list.length + ' cases. Export the cases to see all of them.</p>';
+  return h;
+}
+
+function laJenkinsHtml() {
+  var J = logA.jenkins, h = '<div class="la-kv">';
+  h += '<span>Result <b class="' + (J.result === "SUCCESS" ? "la-ok" : J.result ? "la-bad" : "") + '">' + (J.result || "not finished in this log") + '</b></span>';
+  if (J.dur) h += '<span>Duration <b>' + laDur(J.dur) + '</b></span>';
+  if (J.started) h += '<span>Started by <b>' + laEsc(J.started) + '</b></span>';
+  h += '<span>Stages <b>' + J.stages.length + '</b></span></div>';
+  if (J.stages.length) {
+    h += '<div class="la-stages" aria-label="Stages in order">';
+    J.stages.forEach(function(s) {
+      h += '<button class="la-stage st-' + s.status + '" data-act="open-line" data-n="' + s.line + '" title="' + laAttr(s.name) + ': ' + s.status + (s.errs ? ', ' + s.errs + ' errors' : '') + '. Click to open the log here.">' +
+        '<i aria-hidden="true"></i>' + laEsc(s.name) + (s.status !== "ok" ? ' <small>' + s.status + '</small>' : '') + '</button>';
+    });
+    h += '</div>';
+  }
+  if (J.exits.length) {
+    h += '<div><div class="la-lbl">Failed commands</div><div class="la-occs">';
+    J.exits.slice(0, 6).forEach(function(x) {
+      h += '<div class="la-occ"><div class="la-occ-head"><button class="la-linkbtn" data-act="open-line" data-n="' + x.line + '">Line ' + x.line + '</button><span>exit code ' + x.code + '</span>' + (x.stage ? '<span>stage ' + laEsc(x.stage) + '</span>' : '') + '</div>' +
+        (x.cmd ? '<div class="la-occ-text">+ ' + laEsc(x.cmd) + '</div>' : '') + '</div>';
+    });
+    h += '</div></div>';
+  }
+  if (J.tests.length) {
+    var t = J.tests[J.tests.length - 1];
+    h += '<div class="la-kv"><span>Tests run <b>' + t.run + '</b></span><span>Failures <b class="' + (t.fail ? 'la-bad' : '') + '">' + t.fail + '</b></span><span>Errors <b class="' + (t.err ? 'la-bad' : '') + '">' + t.err + '</b></span><span>Skipped <b>' + t.skip + '</b></span></div>';
+  }
+  return h;
+}
+
+function laK8sHtml() {
+  var K = logA.k8s, h = "";
+  if (K.pods.length) {
+    var bad = K.pods.filter(function(p) { return LA_RANK[p.level] <= 2 || p.pod.restarts; });
+    h += '<div><div class="la-lbl">Pods (' + K.pods.length + ', ' + bad.length + ' not healthy)</div><div class="la-tblwrap"><table class="la-tbl"><thead><tr><th scope="col">Pod</th><th scope="col">Ready</th><th scope="col">Status</th><th scope="col" class="r">Restarts</th><th scope="col">Age</th></tr></thead><tbody>';
+    K.pods.slice(0, 40).forEach(function(e) {
+      var p = e.pod;
+      h += '<tr class="' + (LA_RANK[e.level] <= 1 ? 'bad' : '') + '"><td class="la-tk"><button class="la-linkbtn" data-act="open-line" data-n="' + e.n + '">' + laEsc((p.ns ? p.ns + "/" : "") + p.name) + '</button></td><td>' + p.ready + '</td>' +
+        '<td><span class="la-badge lv-' + e.level + '">' + laEsc(p.status) + '</span></td><td class="r">' + (p.restarts ? '<b class="la-bad">' + p.restarts + '</b>' : 0) + '</td><td>' + laEsc(p.age) + '</td></tr>';
+    });
+    h += '</tbody></table></div></div>';
+  }
+  if (K.events.length) {
+    h += '<div><div class="la-lbl">Events by reason</div><div class="la-tblwrap"><table class="la-tbl"><thead><tr><th scope="col">Type</th><th scope="col">Reason</th><th scope="col" class="r">Count</th><th scope="col">Objects</th><th scope="col">Example</th></tr></thead><tbody>';
+    K.events.slice(0, 30).forEach(function(r) {
+      var o = Object.keys(r.objs);
+      h += '<tr class="' + (r.type === "Warning" ? 'bad' : '') + '"><td><span class="la-badge lv-' + (r.type === "Warning" ? "WARN" : "INFO") + '">' + r.type + '</span></td><td><b>' + laEsc(r.reason) + '</b></td><td class="r">' + r.count + '</td>' +
+        '<td>' + laEsc(o.slice(0, 3).join(", ")) + (o.length > 3 ? ' +' + (o.length - 3) : '') + '</td><td><span class="la-tmsg">' + laEsc(laTrunc(r.msg.replace(/^\w+: /, ""), 110)) + '</span></td></tr>';
+    });
+    h += '</tbody></table></div></div>';
+  }
+  if (K.kb.length) h += '<p class="la-hint">' + K.kb.length + ' Kubernetes / OpenShift problem type' + (K.kb.length > 1 ? 's were' : ' was') + ' recognised in the log text: see Known problems.</p>';
+  return h || '<p class="la-empty">No pod or event tables found.</p>';
+}
+
+function laKbHtml() {
+  var h = "", lim = logState.kbAll || logA.kb.length <= 10 ? logA.kb.length : 8;
+  logA.kb.forEach(function(k, i) {
+    if (i >= lim) return;
+    var on = logState.kb === k.key, nc = Object.keys(k.cs).length;
+    h += '<details class="la-issue lv-' + k.s + '" data-kb="' + i + '">' +
+      '<summary><span class="la-badge">' + (k.s === "OTHER" ? "INFO" : k.s) + '</span>' +
+      '<span class="la-sum-main"><span class="la-kb-t">' + laEsc(k.t) + '</span><span class="la-sub">' + escapeHtml(k.cat) +
+        (k.first !== null ? ' · ' + (k.count > 1 ? 'first ' + laWhen(k.first) + ', last ' + laWhen(k.last) : 'at ' + laWhen(k.first)) : '') +
+        (nc ? ' · ' + nc + ' case' + (nc > 1 ? 's' : '') : '') + (on ? ' · <b>filtering the lines below</b>' : '') + '</span></span>' +
+      '<span class="la-cnt"><span>×' + k.count + '</span>' + LA_ICON.chev + '</span></summary>' +
+      '<div class="la-issue-body"></div></details>';
+  });
+  if (lim < logA.kb.length) h += '<button class="la-btn la-more" data-act="kb-all">Show ' + (logA.kb.length - lim) + ' more known problems</button>';
+  return h;
+}
+
+function laKbBody(i) {
+  var k = logA.kb[i], E = logA.entries, h = "";
+  h += '<div class="la-kb-explain"><div><div class="la-lbl">What it means</div><p>' + laEsc(k.m) + '</p></div><div><div class="la-lbl">What to check</div><p>' + laEsc(k.k) + '</p></div></div>';
+  h += '<div class="la-actions"><button class="la-btn" data-act="kb" data-k="' + laAttr(k.key) + '">' + (logState.kb === k.key ? 'Stop filtering' : 'Show all ' + k.count + ' in the log') + '</button></div>';
+  h += '<div><div class="la-lbl">Examples' + (k.count > 5 ? ' (first 5 of ' + k.count + ')' : '') + '</div><div class="la-occs">';
+  k.items.slice(0, 5).forEach(function(ix) { h += laOccHtml(E[ix]); });
+  return h + '</div></div>';
+}
+
+function laOccHtml(e) {
+  return '<div class="la-occ"><div class="la-occ-head"><button class="la-linkbtn" data-act="open-line" data-n="' + e.n + '" title="Open the full file at this line">Line ' + laLn(e) + '</button>' +
+    (e.ts !== null ? '<span>' + laWhen(e.ts) + '</span>' : '') + (e.caseId ? '<span>' + laEsc(e.caseId) + '</span>' : '') + (e.service ? '<span>' + escapeHtml(e.service) + '</span>' : '') +
+    (e.inf ? '<span title="This line had no level; it was recognised from its text">level inferred</span>' : '') + (e.apiLinked ? '<span title="Linked to the last API called in the same case">after ' + laEsc(laTrunc(e.apiLinked, 50)) + '</span>' : '') + '</div>' +
+    '<div class="la-occ-text">' + laHL(laEsc(laTrunc(e.raw, 3000))) + '</div>' +
+    (e.root ? '<div class="la-root"><span class="la-lbl">Root cause</span> <code>' + laEsc(e.root) + '</code></div>' : '') +
+    (e.extra.length ? '<details class="la-mini"><summary>' + (e.extra.some(function(x) { return LA_STACK_RE.test(x.trim()); }) ? 'Stack trace' : 'More lines') + ', ' + e.extra.length + ' line' + (e.extra.length > 1 ? 's' : '') + '</summary><pre class="la-pre">' +
+      laEsc(e.extra.slice(0, 80).map(function(x) { return laTrunc(x, 1500); }).join("\n")) + (e.extra.length > 80 ? "\n… " + (e.extra.length - 80) + " more lines" : "") + '</pre></details>' : '') +
+    '<details class="la-mini"><summary>Lines around it</summary><pre class="la-pre">' + laContext(e) + '</pre></details></div>';
+}
+
 function laGroupVisible(g, tab) {
   if (tab === "errors" && LA_RANK[g.level] > 1) return false;
   if (tab === "warnings" && g.level !== "WARN") return false;
   if (logState.service && !g.services[logState.service]) return false;
+  if (logState.caseId && !g.cs[logState.caseId]) return false;
+  if (logState.kb && !g.kb[logState.kb]) return false;
   if (logState.query && g.sig.toLowerCase().indexOf(logState.query.toLowerCase()) === -1) return false;
   return true;
 }
@@ -4599,13 +5505,15 @@ function laSpark(g) {
     g.spark.map(function(c) { return '<i style="height:' + (c ? Math.max(12, c / mx * 100) : 0) + '%"></i>'; }).join("") + '</span>';
 }
 
+function laKbTitles(g) { return Object.keys(g.kb).map(function(k) { for (var i = 0; i < logA.kb.length; i++) if (logA.kb[i].key === k) return logA.kb[i].t; return k; }); }
+
 function laIssuesHtml() {
   var gs = logA.groups, h = "", tab = logState.tab;
   var list = [];
   gs.forEach(function(g, i) { if (laGroupVisible(g, tab)) list.push(i); });
   if (!list.length) {
-    var why = (logState.service || logState.query) ? "No patterns match the current service or search filter." :
-      tab === "errors" ? "No errors or fatal events in this file." : tab === "warnings" ? "No warnings in this file." : "No entries.";
+    var why = (logState.service || logState.query || logState.caseId || logState.kb) ? "No patterns match the current filters." :
+      tab === "errors" ? "No errors or fatal events." : tab === "warnings" ? "No warnings." : "No entries.";
     return '<p class="la-empty">' + why + '</p>';
   }
   var shown = list.slice(0, 200);
@@ -4613,8 +5521,13 @@ function laIssuesHtml() {
     var g = gs[gi], sv = Object.keys(g.services), sub = [];
     if (!(sv.length === 1 && sv[0] === "(unknown)")) sub.push(sv.length > 3 ? escapeHtml(sv.slice(0, 3).join(", ")) + " +" + (sv.length - 3) : escapeHtml(sv.join(", ")));
     if (g.first !== null) sub.push(g.count > 1 ? "first " + laWhen(g.first) + ", last " + laWhen(g.last) : "at " + laWhen(g.first));
+    var nc = Object.keys(g.cs).length;
+    if (nc) sub.push(nc + " case" + (nc > 1 ? "s" : ""));
     var ex = laTopKeys(g.exc, 1)[0];
     if (ex) sub.push(laEsc(ex.split(".").pop()));
+    var kt = laKbTitles(g);
+    if (kt.length) sub.push('<span class="la-kbtag">' + laEsc(kt[0]) + '</span>');
+    if (g.inf) sub.push('<span title="These lines had no level; it was recognised from their text">level inferred</span>');
     h += '<details class="la-issue lv-' + g.level + '" data-g="' + gi + '">' +
       '<summary><span class="la-badge">' + g.level + '</span>' +
       '<span class="la-sum-main"><span class="la-sig">' + laHL(laEsc(g.sig)) + '</span><span class="la-sub">' + sub.join(" · ") + '</span></span>' +
@@ -4626,9 +5539,10 @@ function laIssuesHtml() {
 }
 
 function laContext(e) {
-  var L = logA.lines, from = Math.max(0, e.n - 4), to = Math.min(L.length, e.n + e.extra.length + 3), out = [];
+  var L = logA.lines, c = Math.max(0, Math.min(50, +logSet.ctx || 0));
+  var from = Math.max(0, e.n - 1 - c), to = Math.min(L.length, e.n + e.extra.length + c + (e.raw !== L[e.n - 1] ? 1 : 0)), out = [];
   for (var i = from; i < to; i++) {
-    var cur = i >= e.n - 1 && i < e.n + e.extra.length;
+    var cur = i >= e.n - 1 && i < e.n + e.extra.length + (e.raw !== L[e.n - 1] ? 1 : 0);
     var line = '<span class="ln">' + (i + 1) + '  </span>' + laEsc(laTrunc(L[i], 500));
     out.push(cur ? '<mark>' + line + '</mark>' : line);
   }
@@ -4640,9 +5554,17 @@ function laIssueBody(gi) {
   h += '<div class="la-kv"><span>Occurrences <b>' + g.count + '</b></span>' +
     (g.first !== null ? '<span>First seen <b>' + laWhen(g.first) + '</b></span><span>Last seen <b>' + laWhen(g.last) + '</b></span>' +
       (g.last > g.first ? '<span>Spread over <b>' + laDur(g.last - g.first) + '</b></span>' : '') : '') + '</div>';
+  laKbTitles(g).forEach(function(t, n) {
+    var k = logA.kb.filter(function(x) { return x.t === t; })[0];
+    if (k && n < 2) h += '<div class="la-kb-explain la-kb-in"><div><div class="la-lbl">Known problem: ' + laEsc(k.t) + '</div><p>' + laEsc(k.m) + '</p></div><div><div class="la-lbl">What to check</div><p>' + laEsc(k.k) + '</p></div></div>';
+  });
+  var roots = laTopKeys(g.root, 3);
+  if (roots.length) h += '<div><div class="la-lbl">Root cause (deepest "Caused by")</div><div class="la-chips">' + roots.map(function(r) { return '<span class="la-chip"><code>' + laEsc(r) + '</code> <b>' + g.root[r] + '</b></span>'; }).join("") + '</div></div>';
   var sv = laTopKeys(g.services, 20);
   if (!(sv.length === 1 && sv[0] === "(unknown)"))
     h += '<div><div class="la-lbl">Services</div><div class="la-chips">' + sv.map(function(s) { return '<span class="la-chip">' + escapeHtml(s) + ' <b>' + g.services[s] + '</b></span>'; }).join("") + '</div></div>';
+  var cs = laTopKeys(g.cs, 12);
+  if (cs.length) h += '<div><div class="la-lbl">Cases (' + Object.keys(g.cs).length + ')</div><div class="la-chips">' + cs.map(function(c) { return '<button class="la-chip la-chip-btn" data-act="case" data-k="' + laAttr(c) + '" title="Show this case\'s lines">' + laEsc(c) + ' <b>' + g.cs[c] + '</b></button>'; }).join("") + '</div></div>';
   var ex = laTopKeys(g.exc, 8);
   if (ex.length) h += '<div><div class="la-lbl">Exceptions</div><div class="la-chips">' + ex.map(function(x) { return '<span class="la-chip"><code>' + laEsc(x) + '</code> <b>' + g.exc[x] + '</b></span>'; }).join("") + '</div></div>';
   var keys = Object.keys(g.ids);
@@ -4652,30 +5574,26 @@ function laIssueBody(gi) {
       var vals = g.ids[k].order;
       h += '<div class="la-id-row"><span class="la-id-k">' + escapeHtml(k) + ' (' + vals.length + ')</span><code>' +
         vals.slice(0, 12).map(function(v) { return laEsc(laMaskId(k, v)); }).join(", ") + (vals.length > 12 ? ' +' + (vals.length - 12) + ' more' : '') + '</code>' +
-        '<button class="la-btn la-btn-sm" data-act="copy-ids" data-g="' + gi + '" data-k="' + escapeHtml(k) + '">' + LA_ICON.copy + 'Copy</button></div>';
+        '<button class="la-btn la-btn-sm" data-act="copy-ids" data-g="' + gi + '" data-k="' + laAttr(k) + '">' + LA_ICON.copy + 'Copy</button></div>';
     });
     h += '</div></div>';
   }
   h += '<div class="la-actions"><button class="la-btn" data-act="copy-issue" data-g="' + gi + '">' + LA_ICON.copy + 'Copy for ticket</button>' +
     '<button class="la-btn" data-act="show-group" data-g="' + gi + '">Show all ' + g.count + ' in the log</button></div>';
   h += '<div><div class="la-lbl">Occurrences' + (g.count > LIMIT ? ' (first ' + LIMIT + ' of ' + g.count + ')' : '') + '</div><div class="la-occs">';
-  g.items.slice(0, LIMIT).forEach(function(ix) {
-    var e = E[ix];
-    h += '<div class="la-occ"><div class="la-occ-head"><button class="la-linkbtn" data-act="open-line" data-n="' + e.n + '" title="Open the full file at this line">Line ' + e.n + '</button>' + (e.ts !== null ? '<span>' + laWhen(e.ts) + '</span>' : '') + (e.service ? '<span>' + escapeHtml(e.service) + '</span>' : '') + '</div>' +
-      '<div class="la-occ-text">' + laHL(laEsc(e.raw)) + '</div>' +
-      (e.extra.length ? '<details class="la-mini"><summary>Stack trace, ' + e.extra.length + ' line' + (e.extra.length > 1 ? 's' : '') + '</summary><pre class="la-pre">' +
-        laEsc(e.extra.slice(0, 80).join("\n")) + (e.extra.length > 80 ? "\n… " + (e.extra.length - 80) + " more lines" : "") + '</pre></details>' : '') +
-      '<details class="la-mini"><summary>Lines around it</summary><pre class="la-pre">' + laContext(e) + '</pre></details></div>';
-  });
+  g.items.slice(0, LIMIT).forEach(function(ix) { h += laOccHtml(E[ix]); });
   return h + '</div></div>';
 }
 
 function laRawFiltered() {
-  var q = logState.query.toLowerCase(), r = logState.range, gk = logState.group;
+  var q = logState.query.toLowerCase(), r = logState.range, gk = logState.group, ck = logState.caseId, kk = logState.kb, ak = logState.api;
   return logA.entries.filter(function(e) {
     if (logState.level !== "all" && e.level !== logState.level) return false;
     if (logState.service && laSvcName(e) !== logState.service) return false;
     if (gk && e.level + "\u0002" + e.sig !== gk) return false;
+    if (ck && e.caseId !== ck) return false;
+    if (kk && !e.kb.some(function(x) { return x.key === kk; })) return false;
+    if (ak && e.apis.indexOf(ak) === -1 && e.apiLinked !== ak) return false;
     if (r && (e.ts === null || e.ts < r[0] || e.ts >= r[1])) return false;
     if (q && e.raw.toLowerCase().indexOf(q) === -1 && (!e.extra.length || e.extra.join("\n").toLowerCase().indexOf(q) === -1)) return false;
     return true;
@@ -4691,23 +5609,27 @@ function laRawHtml(list) {
   });
   var chips = [];
   if (logState.service) chips.push(['service', 'Service: ' + escapeHtml(logState.service)]);
+  if (logState.caseId) chips.push(['case', 'Case: ' + laEsc(logState.caseId)]);
+  if (logState.kb) chips.push(['kb', 'Problem: ' + laEsc((A.kb.filter(function(k) { return k.key === logState.kb; })[0] || { t: logState.kb }).t)]);
+  if (logState.api) chips.push(['api', 'API: ' + laEsc(laTrunc(logState.api, 60))]);
   if (logState.range) chips.push(['range', 'Time: ' + laWhen(logState.range[0]) + ' to ' + laWhen(logState.range[1])]);
   if (logState.group) chips.push(['group', 'Issue: ' + laEsc(laTrunc(logState.group.split("\u0002")[1], 60))]);
   if (logState.query) chips.push(['query', 'Search: “' + escapeHtml(logState.query) + '”']);
   if (chips.length) {
     h += '<span class="la-sep" aria-hidden="true"></span>';
-    chips.forEach(function(c) { h += '<button class="la-chip la-chip-x" data-act="clear" data-k="' + c[0] + '" aria-label="Remove filter ' + c[1].replace(/<[^>]+>/g, "") + '">' + c[1] + '</button>'; });
+    chips.forEach(function(c) { h += '<button class="la-chip la-chip-x" data-act="clear" data-k="' + c[0] + '" aria-label="Remove filter ' + laAttr(c[1].replace(/<[^>]+>/g, "")) + '">' + c[1] + '</button>'; });
   }
   h += '</div><div class="la-showing">Showing <b>' + Math.min(list.length, logState.rawLimit).toLocaleString() + '</b> of <b>' + list.length.toLocaleString() + '</b> matching entries' +
-    (list.length !== A.entries.length ? ' (' + A.entries.length.toLocaleString() + ' in the file)' : '') + '. Use the search box at the top to search the text.</div>';
+    (list.length !== A.entries.length ? ' (' + A.entries.length.toLocaleString() + ' in total)' : '') + '. Use the search box at the top to search the text.</div>';
   if (!list.length) return h + '<p class="la-empty">No lines match these filters.</p>';
-  h += '<div class="la-raw">';
+  h += '<div class="la-raw' + (A.multi ? ' la-raw-multi' : '') + '">';
   list.slice(0, logState.rawLimit).forEach(function(e) {
-    h += '<div class="la-row lv-' + e.level + '"><span class="n"><button class="la-linkbtn" data-act="open-line" data-n="' + e.n + '" title="Open the full file at line ' + e.n + '">' + e.n + '</button></span><span class="l">' + (e.level === "OTHER" ? "—" : e.level) + '</span><span class="t">' + laHL(laEsc(e.raw)) +
-      (e.extra.length ? '<span class="la-tr">' + laHL(laEsc(e.extra.slice(0, 40).join("\n"))) + (e.extra.length > 40 ? "\n… " + (e.extra.length - 40) + " more lines" : "") + '</span>' : '') + '</span></div>';
+    h += '<div class="la-row lv-' + e.level + '"><span class="n"><button class="la-linkbtn" data-act="open-line" data-n="' + e.n + '" title="Open the full file at line ' + laAttr(laLn(e)) + '">' + escapeHtml(laLn(e)) + '</button></span><span class="l"' + (e.inf ? ' title="Level recognised from the text"' : '') + '>' + (e.level === "OTHER" ? "—" : e.level + (e.inf ? "*" : "")) + '</span><span class="t">' + laHL(laEsc(laTrunc(e.raw, 4000))) +
+      (e.extra.length ? '<span class="la-tr">' + laHL(laEsc(e.extra.slice(0, 40).map(function(x) { return laTrunc(x, 1500); }).join("\n"))) + (e.extra.length > 40 ? "\n… " + (e.extra.length - 40) + " more lines" : "") + '</span>' : '') + '</span></div>';
   });
   h += '</div>';
   if (list.length > logState.rawLimit) h += '<button class="la-btn la-more" data-act="more">Show ' + Math.min(500, list.length - logState.rawLimit) + ' more</button>';
+  if (A.counts && A.entries.some(function(e) { return e.inf; })) h += '<p class="la-hint">* level recognised from the text because the line had none.</p>';
   return h;
 }
 
@@ -4726,12 +5648,17 @@ function laTabsHtml() {
 
 function laRefresh() {
   if (!logA) return;
-  var open = [];
-  logResults.querySelectorAll(".la-issue[open]").forEach(function(d) { open.push(d.getAttribute("data-g")); });
+  var open = [], openK = [];
+  logResults.querySelectorAll(".la-issue[open][data-g]").forEach(function(d) { open.push(d.getAttribute("data-g")); });
+  logResults.querySelectorAll(".la-issue[open][data-kb]").forEach(function(d) { openK.push(d.getAttribute("data-kb")); });
   document.getElementById("laCounts").innerHTML = laCountsHtml();
   document.getElementById("laTl").innerHTML = laTimelineHtml();
   document.getElementById("laSvc").innerHTML = laServicesHtml();
   document.getElementById("laTabs").innerHTML = laTabsHtml();
+  var kbBox = document.getElementById("laKb");
+  if (kbBox) { kbBox.innerHTML = laKbHtml(); openK.forEach(function(i) { var d = kbBox.querySelector('.la-issue[data-kb="' + i + '"]'); if (d) d.open = true; }); }
+  var ap = document.getElementById("laApis"); if (ap) ap.innerHTML = laApisHtml();
+  var cs = document.getElementById("laCases"); if (cs) cs.innerHTML = laCasesHtml();
   var issues = document.getElementById("laIssues");
   issues.innerHTML = laIssuesHtml();
   open.forEach(function(gi) { var d = issues.querySelector('.la-issue[data-g="' + gi + '"]'); if (d) d.open = true; });
@@ -4755,8 +5682,16 @@ function laOpenRaw() {
 function laIssueText(g) {
   var L = ["[" + g.level + "] " + g.sig];
   L.push("Occurrences: " + g.count + (g.first !== null ? " | First: " + laDate(g.first) + " " + laClock(g.first) + " | Last: " + laDate(g.last) + " " + laClock(g.last) : ""));
+  laKbTitles(g).forEach(function(t) {
+    var k = logA.kb.filter(function(x) { return x.t === t; })[0];
+    if (k) L.push("Known problem: " + k.t + ". " + k.m + " Check: " + k.k);
+  });
+  var rt = laTopKeys(g.root, 2);
+  if (rt.length) L.push("Root cause: " + rt.join(" | "));
   var sv = laTopKeys(g.services, 10).filter(function(s) { return s !== "(unknown)"; });
   if (sv.length) L.push("Services: " + sv.map(function(s) { return s + " (" + g.services[s] + ")"; }).join(", "));
+  var cs = Object.keys(g.cs);
+  if (cs.length) L.push("Cases (" + cs.length + "): " + cs.slice(0, 30).join(", ") + (cs.length > 30 ? " ..." : ""));
   var ex = laTopKeys(g.exc, 3);
   if (ex.length) L.push("Exceptions: " + ex.join(", "));
   Object.keys(g.ids).forEach(function(k) {
@@ -4764,19 +5699,24 @@ function laIssueText(g) {
     L.push(k + " (" + v.length + "): " + v.slice(0, 30).map(function(x) { return laMaskId(k, x); }).join(", ") + (v.length > 30 ? " ..." : ""));
   });
   var e = logA.entries[g.items[0]];
-  L.push("Example (line " + e.n + "): " + e.raw.trim());
-  if (e.extra.length) L.push(e.extra.slice(0, 8).join("\n"));
+  L.push("Example (" + laLineWord(e) + "): " + laTrunc(e.raw.trim(), 2000));
+  if (e.extra.length) L.push(e.extra.slice(0, 8).map(function(x) { return laTrunc(x, 400); }).join("\n"));
   return laMask(L.join("\n"));
 }
 
 function laSummaryText() {
   var A = logA, C = A.counts, L = [];
-  L.push("LOG ANALYSIS: " + A.file.name);
-  if (A.tsMin !== null) L.push("Period: " + laDate(A.tsMin) + " " + laClock(A.tsMin) + " to " + laDate(A.tsMax) + " " + laClock(A.tsMax) + " (" + laDur(A.tsMax - A.tsMin) + ")");
+  L.push("LOG ANALYSIS: " + (A.multi ? A.files.map(function(f) { return f.name; }).join(", ") : A.file.name));
+  if (A.kind.length) L.push("Type: " + A.kind.map(function(k) { return k.name; }).join(", "));
+  if (A.tsMin !== null) L.push("Period: " + laDate(A.tsMin) + " " + laClock(A.tsMin) + " to " + laDate(A.tsMax) + " " + laClock(A.tsMax) + " (" + laDur(A.tsMax - A.tsMin) + ")" + (A.filtered ? " [time range applied]" : ""));
   L.push("Lines: " + A.lines.length + " | Fatal: " + C.FATAL + " | Errors: " + C.ERROR + " | Warnings: " + C.WARN);
   L.push("Status: " + A.verdict.text);
   L.push("", "Key findings:");
   A.insights.forEach(function(x) { L.push("- " + laPlain(x.s)); });
+  if (A.kb.length) {
+    L.push("", "Known problems:");
+    A.kb.slice(0, 8).forEach(function(k) { L.push("- [" + k.s + "] " + k.t + " (" + k.count + "x). Check: " + k.k); });
+  }
   var top = A.groups.filter(function(g) { return LA_RANK[g.level] <= 1; }).slice(0, 5);
   if (top.length) {
     L.push("", "Top errors:");
@@ -4786,6 +5726,10 @@ function laSummaryText() {
         (g.first !== null ? " | " + laClock(g.first) + " to " + laClock(g.last) : ""));
     });
   }
+  var fa = A.apis.filter(function(a) { return a.fail; }).slice(0, 8);
+  if (fa.length) { L.push("", "APIs with failures:"); fa.forEach(function(a) { L.push("- " + a.key + ": " + a.fail + " failure(s)" + (a.seen ? " in " + a.seen + " calls" : "") + (Object.keys(a.codes).length ? " | codes " + laCodesTxt(a.codes) : "")); }); }
+  var ce = A.cases.filter(function(c) { return c.err; });
+  if (ce.length) L.push("", "Cases with errors (" + ce.length + "): " + ce.slice(0, 40).map(function(c) { return c.id + " (" + c.err + ")"; }).join(", ") + (ce.length > 40 ? " ..." : ""));
   Object.keys(A.ids).forEach(function(k) {
     var v = A.ids[k].order;
     if (/Transaction|UTR|RRN|Reference|Payment|Order/.test(k))
@@ -4794,11 +5738,79 @@ function laSummaryText() {
   return laMask(L.join("\n"));
 }
 
+/* ── Export (CSV / JSON, saved by the browser; masking applies) ── */
+function laCsvCell(v) {
+  var s = laMask(v === null || v === undefined ? "" : String(v));
+  if (/^[=+\-@\t\r]/.test(s)) s = "'" + s; /* keep spreadsheets from running cell text as a formula */
+  return /[",\n\r]/.test(s) ? '"' + s.replace(/"/g, '""') + '"' : s;
+}
+function laCsv(rows) { return "﻿" + rows.map(function(r) { return r.map(laCsvCell).join(","); }).join("\r\n"); }
+function laStamp(ms) { return ms === null || ms === undefined ? "" : laIsoLocal(ms); }
+function laExportName(kind, ext) {
+  var base = logA.multi ? "logs" : logA.file.name.replace(/\.[^.]+$/, "");
+  return base.replace(/[^\w.-]+/g, "_").slice(0, 60) + "-" + kind + "." + ext;
+}
+function laExportRows(kind) {
+  var A = logA;
+  if (kind === "issues") return [["Level", "Pattern", "Count", "First seen", "Last seen", "Services", "Cases", "Top exception", "Root cause", "Known problem", "Level inferred", "Example line", "Example"]].concat(A.groups.map(function(g) {
+    var e = A.entries[g.items[0]];
+    return [g.level, g.sig, g.count, laStamp(g.first), laStamp(g.last), laTopKeys(g.services, 5).join("; "), Object.keys(g.cs).length, laTopKeys(g.exc, 1)[0] || "", laTopKeys(g.root, 1)[0] || "", laKbTitles(g).join("; "), g.inf ? "yes" : "", laLn(e), laTrunc(e.raw, 2000)];
+  }));
+  if (kind === "kb") return [["Severity", "Category", "Problem", "Count", "First seen", "Last seen", "Cases", "What it means", "What to check", "Example lines"]].concat(A.kb.map(function(k) {
+    return [k.s, k.cat, k.t, k.count, laStamp(k.first), laStamp(k.last), Object.keys(k.cs).length, k.m, k.k, k.items.slice(0, 10).map(function(i) { return laLn(A.entries[i]); }).join("; ")];
+  }));
+  if (kind === "apis") return [["API / endpoint", "Calls", "Failures", "Codes", "First seen", "Last seen", "Last failure", "Last failure message"]].concat(A.apis.map(function(a) {
+    var le = a.lastFailIdx > -1 ? A.entries[a.lastFailIdx] : null;
+    return [a.key, a.seen, a.fail, laCodesTxt(a.codes), laStamp(a.first), laStamp(a.last), le ? laStamp(le.ts) : "", le ? le.sig : ""];
+  }));
+  if (kind === "cases") return [["Case", "Entries", "Errors", "Warnings", "First seen", "Last seen", "Most frequent error"]].concat(A.cases.map(function(c) {
+    return [c.id, c.n, c.err, c.warn, laStamp(c.first), laStamp(c.last), laTopKeys(c.top, 1)[0] || ""];
+  }));
+  if (kind === "lines") return [["Line", "Time", "Level", "Level inferred", "Service", "Case", "Message", "More lines"]].concat(laRawFiltered().map(function(e) {
+    return [laLn(e), laStamp(e.ts), e.level, e.inf ? "yes" : "", e.service, e.caseId || "", laTrunc(e.raw, 30000), e.extra.length ? laTrunc(e.extra.join("\n"), 30000) : ""];
+  }));
+}
+function laExportJson() {
+  var A = logA, R = {
+    tool: "Operate Help Book, Log Analyser", generated: laIsoLocal(Date.now()), masked: logState.mask,
+    files: A.files.map(function(f) { return { name: f.name, size: f.size, lines: f.count, modified: f.modified ? laStamp(f.modified) : null }; }),
+    type: A.kind.map(function(k) { return k.name; }), timestamps: A.format, period: A.tsMin !== null ? { from: laStamp(A.tsMin), to: laStamp(A.tsMax) } : null,
+    timeRange: A.filtered ? { from: logSet.since || null, to: logSet.until || null } : null,
+    counts: A.counts, status: A.verdict.text, findings: A.insights.map(function(x) { return laPlain(x.s); })
+  };
+  ["issues", "kb", "apis", "cases"].forEach(function(k) {
+    var rows = laExportRows(k), head = rows[0];
+    R[k === "kb" ? "knownProblems" : k] = rows.slice(1).map(function(r) { var o = {}; head.forEach(function(h, i) { o[h] = typeof r[i] === "string" ? laMask(r[i]) : r[i]; }); return o; });
+  });
+  if (A.jenkins) R.jenkins = { result: A.jenkins.result, stages: A.jenkins.stages.map(function(s) { return { name: s.name, status: s.status, line: s.line, errors: s.errs }; }), failedCommands: A.jenkins.exits.map(function(x) { return { line: x.line, code: x.code, command: laMask(x.cmd), stage: x.stage }; }), tests: A.jenkins.tests };
+  if (A.k8s) R.kubernetes = { pods: A.k8s.pods.map(function(e) { return e.pod; }), events: A.k8s.events.map(function(r) { return { type: r.type, reason: r.reason, count: r.count, objects: Object.keys(r.objs), example: laMask(r.msg) }; }) };
+  return JSON.stringify(R, null, 2);
+}
+function laExport(kind) {
+  var name, text, type;
+  if (kind === "json") { name = laExportName("report", "json"); text = laExportJson(); type = "application/json"; }
+  else { name = laExportName(kind === "kb" ? "known-problems" : kind, "csv"); text = laCsv(laExportRows(kind)); type = "text/csv"; }
+  dsDownloadBlob(new Blob([text], { type: type + ";charset=utf-8" }), name);
+  showToast("Saved " + name + (logState.mask ? " (masked)" : ""));
+}
+
 /* ── Events ── */
+function laReanalyse(reparse) {
+  if (!logSrc) return;
+  var keep = { query: logState.query, mask: logState.mask };
+  if (reparse) logSrc.P = laParseFiles(logSrc.files);
+  logState = { query: keep.query, level: "all", service: "", group: "", range: null, tab: "", rawLimit: 500, mask: keep.mask, caseId: "", kb: "", api: "" };
+  logA = laAnalyse(logSrc.P);
+  laRender();
+}
+
 logResults.addEventListener("click", function(ev) {
   var b = ev.target.closest("[data-act]");
   if (!b || !logA) return;
   var act = b.getAttribute("data-act");
+  var menu = b.closest(".la-export");
+  if (menu && act === "export") menu.open = false;
+  function toggleKey(k, v) { logState[k] = logState[k] === v ? "" : v; logState.rawLimit = 500; laRefresh(); if (logState[k]) laOpenRaw(); }
   if (act === "count") {
     var lv = b.getAttribute("data-lv");
     logState.level = (logState.level === lv && lv !== "all") ? "all" : lv;
@@ -4810,6 +5822,10 @@ logResults.addEventListener("click", function(ev) {
     logState.service = logState.service === s ? "" : s;
     logState.rawLimit = 500;
     laRefresh();
+  } else if (act === "kb-all") { logState.kbAll = true; laRefresh();
+  } else if (act === "case") { toggleKey("caseId", b.getAttribute("data-k"));
+  } else if (act === "kb") { toggleKey("kb", b.getAttribute("data-k"));
+  } else if (act === "api") { toggleKey("api", b.getAttribute("data-k"));
   } else if (act === "bucket") {
     var T = logA.tl, t0 = T.start + (+b.getAttribute("data-i")) * T.step;
     logState.range = logState.range && logState.range[0] === t0 ? null : [t0, t0 + T.step];
@@ -4824,6 +5840,9 @@ logResults.addEventListener("click", function(ev) {
     if (k === "service") logState.service = "";
     else if (k === "range") logState.range = null;
     else if (k === "group") logState.group = "";
+    else if (k === "case") logState.caseId = "";
+    else if (k === "kb") logState.kb = "";
+    else if (k === "api") logState.api = "";
     else if (k === "query") { logState.query = ""; searchInput.value = ""; updateClearBtn(); }
     laRefresh();
   } else if (act === "more") {
@@ -4836,7 +5855,7 @@ logResults.addEventListener("click", function(ev) {
   } else if (act === "mask") {
     logState.mask = !logState.mask;
     laRender();
-    showToast(logState.mask ? "Sensitive data masked on screen and in copies" : "Masking turned off");
+    showToast(logState.mask ? "Sensitive data masked on screen, in copies and exports" : "Masking turned off");
   } else if (act === "copy-summary") {
     writeClipboard(laSummaryText(), function() { showToast("Summary copied"); });
   } else if (act === "copy-issue") {
@@ -4844,6 +5863,28 @@ logResults.addEventListener("click", function(ev) {
   } else if (act === "copy-ids") {
     var key = b.getAttribute("data-k"), vals = logA.groups[+b.getAttribute("data-g")].ids[key].order;
     writeClipboard(vals.map(function(v) { return laMaskId(key, v); }).join("\n"), function() { showToast(vals.length + " " + key + " values copied"); });
+  } else if (act === "copy-cases") {
+    var ce = logA.cases.filter(function(c) { return c.err; });
+    if (!ce.length) { showToast("No cases have errors"); return; }
+    writeClipboard(laMask(ce.map(function(c) { return c.id + "\t" + c.err + " errors\t" + (laTopKeys(c.top, 1)[0] || ""); }).join("\n")), function() { showToast(ce.length + " cases copied"); });
+  } else if (act === "export") {
+    laExport(b.getAttribute("data-x"));
+  } else if (act === "settings") {
+    var box = document.getElementById("laSet"), show = box.hidden;
+    box.hidden = !show; b.setAttribute("aria-expanded", String(show));
+    if (show) box.querySelector("select").focus();
+  } else if (act === "set-apply" || act === "set-reset") {
+    var old = logSet.dayFirst;
+    if (act === "set-reset") logSet = { dayFirst: "auto", step: "auto", ctx: 3, since: "", until: "" };
+    else logSet = {
+      dayFirst: document.getElementById("laSetDay").value, step: document.getElementById("laSetStep").value,
+      ctx: Math.max(0, Math.min(50, +document.getElementById("laSetCtx").value || 0)),
+      since: document.getElementById("laSetSince").value, until: document.getElementById("laSetUntil").value
+    };
+    var R = laRangeMs();
+    if (R.since !== null && R.until !== null && R.since > R.until) { showToast("'From' is after 'To'"); return; }
+    laReanalyse(old !== logSet.dayFirst);
+    showToast(act === "set-reset" ? "Settings reset" : "Settings applied");
   } else if (act === "show-group") {
     logState.group = logA.groups[+b.getAttribute("data-g")].key;
     logState.level = "all";
@@ -4852,9 +5893,9 @@ logResults.addEventListener("click", function(ev) {
     document.getElementById("laCounts").innerHTML = laCountsHtml();
     laOpenRaw();
   } else if (act === "expand" || act === "collapse") {
-    logResults.querySelectorAll(".la-issue").forEach(function(d) { d.open = act === "expand"; });
+    document.getElementById("laIssues").querySelectorAll(".la-issue").forEach(function(d) { d.open = act === "expand"; });
   } else if (act === "new-file") {
-    logA = null;
+    logA = null; logSrc = null;
     logResults.innerHTML = "";
     logResults.style.display = "none";
     logDropZone.style.display = "";
@@ -4867,37 +5908,64 @@ logResults.addEventListener("toggle", function(ev) {
   var d = ev.target;
   if (!d.classList || !d.classList.contains("la-issue") || !d.open) return;
   var body = d.querySelector(".la-issue-body");
-  if (!body.hasChildNodes()) body.innerHTML = laIssueBody(+d.getAttribute("data-g"));
+  if (body.hasChildNodes()) return;
+  body.innerHTML = d.hasAttribute("data-kb") ? laKbBody(+d.getAttribute("data-kb")) : laIssueBody(+d.getAttribute("data-g"));
 }, true);
 
-function handleLogFile(file) {
-  if (!file) return;
-  var reader = new FileReader();
-  reader.onload = function(ev) {
-    var text = String(ev.target.result || "");
-    if (!text.trim()) { showToast("That file is empty"); return; }
-    if (text.slice(0, 4000).indexOf("\u0000") > -1) { showToast("This looks like a binary file, not a text log"); return; }
-    var mask = logState.mask;
-    logState = { query: searchInput.value.trim(), level: "all", service: "", group: "", range: null, tab: "", rawLimit: 500, mask: mask };
-    logA = laAnalyse(laParse(text), { name: file.name, size: file.size, modified: file.lastModified });
-    laRender();
-  };
-  reader.onerror = function() { showToast("Could not read that file"); };
-  reader.readAsText(file);
+document.addEventListener("click", function(ev) {
+  var m = logResults.querySelector(".la-export[open]");
+  if (m && !m.contains(ev.target)) m.open = false;
+});
+
+function laReadFile(file) {
+  return new Promise(function(res) {
+    var r = new FileReader();
+    r.onload = function() { res({ file: file, buf: r.result }); };
+    r.onerror = function() { res({ file: file, err: true }); };
+    r.readAsArrayBuffer(file);
+  });
 }
+
+function handleLogFiles(list) {
+  var files = Array.prototype.slice.call(list || []).filter(Boolean);
+  if (!files.length) return;
+  if (files.length > 20) { showToast("Up to 20 files at a time; the first 20 were used"); files = files.slice(0, 20); }
+  logDropZone.classList.add("ds-loading");
+  Promise.all(files.map(laReadFile)).then(function(rs) {
+    var ok = [], skipped = [];
+    rs.forEach(function(r) {
+      if (r.err) { skipped.push(r.file.name + " (could not be read)"); return; }
+      var text = laDecode(r.buf);
+      if (!text.trim()) { skipped.push(r.file.name + " (empty)"); return; }
+      if (text.slice(0, 4000).indexOf("\u0000") > -1) { skipped.push(r.file.name + " (not a text file)"); return; }
+      ok.push({ name: r.file.name, size: r.file.size, modified: r.file.lastModified, text: laPrep(text) });
+    });
+    logDropZone.classList.remove("ds-loading");
+    if (!ok.length) { showToast(skipped.length === 1 ? "Skipped " + skipped[0] : "None of these files could be analysed", 3500); return; }
+    if (skipped.length) showToast("Skipped " + laList(skipped), 4000);
+    setTimeout(function() {
+      var mask = logState.mask;
+      logState = { query: searchInput.value.trim(), level: "all", service: "", group: "", range: null, tab: "", rawLimit: 500, mask: mask, caseId: "", kb: "", api: "" };
+      logSrc = { files: ok, P: laParseFiles(ok) };
+      logA = laAnalyse(logSrc.P);
+      laRender();
+    }, 20);
+  });
+}
+function handleLogFile(file) { handleLogFiles([file]); }
 
 logPickBtn.addEventListener("click", function(e) { e.stopPropagation(); logFileInput.click(); });
 logDropZone.addEventListener("click", function() { logFileInput.click(); });
 logDropZone.addEventListener("keydown", function(e) { if (e.key === "Enter" || e.key === " ") { e.preventDefault(); logFileInput.click(); } });
-logFileInput.addEventListener("change", function(e) { handleLogFile(e.target.files[0]); });
+logFileInput.addEventListener("change", function(e) { handleLogFiles(e.target.files); });
 logDropZone.addEventListener("dragover", function(e) { e.preventDefault(); logDropZone.classList.add("drag-over"); });
 logDropZone.addEventListener("dragleave", function() { logDropZone.classList.remove("drag-over"); });
 logDropZone.addEventListener("drop", function(e) {
   e.preventDefault();
   logDropZone.classList.remove("drag-over");
-  if (e.dataTransfer.files.length > 1) showToast("Only the first file was analysed");
-  handleLogFile(e.dataTransfer.files[0]);
+  handleLogFiles(e.dataTransfer.files);
 });
+
 
 /* ─── Full log file reader ───────────────────────────────────────────── */
 var FV_RH = 20, FV_MAXLEN = 4000;
@@ -4916,7 +5984,7 @@ function fvOpen(lineNo) {
   if (!logA) return;
   var A = logA, heads = {};
   LA_LEVELS.forEach(function(l) { heads[l] = []; });
-  A.entries.forEach(function(e) { heads[e.level].push(e.n - 1); });
+  (A.all || A.entries).forEach(function(e) { heads[e.level].push(e.n - 1); });
   fvState.heads = heads;
   fvState.returnFocus = document.activeElement;
   document.getElementById("fvTitle").textContent = A.file.name;
@@ -4970,7 +6038,7 @@ function fvHl(html) {
 
 function fvRender(force) {
   if (!logA || !fvOverlay.classList.contains("is-open")) return;
-  var A = logA, map = A.lineEntry, E = A.entries, n = A.lines.length;
+  var A = logA, map = A.lineEntry, E = A.all || A.entries, n = A.lines.length;
   var first = Math.max(0, Math.floor(fvScroll.scrollTop / FV_RH) - 25);
   var last = Math.min(n, Math.ceil((fvScroll.scrollTop + fvScroll.clientHeight) / FV_RH) + 25);
   if (!force && first === fvState.range[0] && last === fvState.range[1]) { fvPos(); return; }
