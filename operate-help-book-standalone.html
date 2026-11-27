@@ -1694,6 +1694,19 @@
     .log-drop-zone.ds-loading { opacity: .7; pointer-events: none; }
     .la-fsep { color: var(--navy-60); }
     .la-stack { display: flex; flex-direction: column; gap: .85rem; }
+    .la-cmp-top { display: flex; flex-wrap: wrap; gap: .6rem; align-items: flex-end; }
+    .la-cmp-sel { display: flex; flex-direction: column; gap: .3rem; font-size: .7rem; font-weight: 700; color: var(--navy-60); min-width: 0; flex: 1 1 260px; }
+    .la-cmp-sel select { font-family: var(--font); font-size: .8rem; color: var(--navy); background: var(--surface); border: 1.5px solid var(--border); border-radius: 8px; padding: .35rem .55rem; max-width: 100%; }
+    .la-cmp-sum { margin: 0; font-size: .86rem; color: var(--navy); }
+    .la-cmp-list ul { list-style: none; margin: .45rem 0 0; padding: 0; display: flex; flex-direction: column; gap: .3rem; }
+    .la-cmp-list li { display: grid; grid-template-columns: auto minmax(0, 1fr) auto; gap: .55rem; align-items: baseline; font-size: .76rem; }
+    .la-cmp-sig, .la-linkbtn.la-cmp-sig { font-family: var(--mono); font-size: .74rem; color: var(--navy); word-break: break-word; text-align: left; }
+    .la-mem { display: flex; flex-direction: column; gap: .45rem; border-top: 1px solid var(--border); padding-top: .75rem; }
+    .la-mem-row { display: flex; flex-wrap: wrap; gap: .4rem 1rem; align-items: center; }
+    .la-check { display: inline-flex; gap: .4rem; align-items: center; font-size: .78rem; font-weight: 600; color: var(--navy); cursor: pointer; }
+    .la-check input { accent-color: var(--accent); width: 15px; height: 15px; }
+    .la-drop-hist { display: flex; flex-wrap: wrap; gap: .4rem; align-items: center; justify-content: center; margin-top: .8rem; }
+    .la-drop-hist .la-lbl { margin: 0; }
     .la-stack > .la-h { margin: 0; }
     .la-stack .la-stages { margin: 0; }
     .la-flag { color: var(--amber); font-weight: 600; }
@@ -2340,6 +2353,7 @@
             Choose files
           </button>
         </div>
+        <div id="logHistBox"></div>
         <div id="logResults" style="display:none" aria-live="polite"></div>
       </div>
     </div><!-- /view-log -->
@@ -5252,6 +5266,7 @@ function laRender() {
   h += '<section class="la-card"><h3 class="la-h">Key findings</h3><ul class="la-insights">' +
     A.insights.map(function(x) { return '<li class="lv-' + x.lv + '"><i class="la-dot" aria-hidden="true"></i><span>' + laMd(x.s) + '</span></li>'; }).join("") +
   '</ul></section>';
+  h += '<section class="la-card la-stack" aria-label="Compared with earlier logs"><h3 class="la-h">Compared with earlier logs <small>what is new, gone or more frequent</small></h3><div id="laCmp" class="la-stack"></div></section>';
 
   if (A.jenkins) h += '<section class="la-card la-stack" aria-label="Jenkins build"><h3 class="la-h">Jenkins build</h3>' + laJenkinsHtml() + '</section>';
   if (A.k8s) h += '<section class="la-card la-stack" aria-label="Kubernetes and OpenShift"><h3 class="la-h">Kubernetes / OpenShift</h3>' + laK8sHtml() + '</section>';
@@ -5278,6 +5293,8 @@ function laRender() {
   logResults.innerHTML = h;
   logResults.style.display = "block";
   logDropZone.style.display = "none";
+  document.getElementById("logHistBox").innerHTML = "";
+  laRefreshCompare();
   laRefresh();
 }
 
@@ -5794,6 +5811,171 @@ function laExport(kind) {
   showToast("Saved " + name + (logState.mask ? " (masked)" : ""));
 }
 
+/* ── Memory of earlier logs ──
+   Every log you load stays in this tab's memory: the last few with all their lines (so they can be reopened),
+   older ones as a summary (patterns and counts). Summaries are saved on this PC only if you switch that on;
+   saved summaries are always masked and never contain log lines. */
+var LA_MEM_KEY = "ohb-log-memory", LA_MEM_PREF = "ohb-log-memory-on", LA_FULL_KEEP = 3, LA_SUM_KEEP = 20;
+var logHist = [], logCurId = null, logBase = "";
+var logRemember = false;
+try { logRemember = localStorage.getItem(LA_MEM_PREF) === "1"; } catch (e) {}
+try { if (logRemember) logHist = (JSON.parse(localStorage.getItem(LA_MEM_KEY) || "[]") || []).map(function(s) { return { id: s.id, sum: s, src: null, saved: true }; }); } catch (e) { logHist = []; }
+
+function laMasked(fn) { var m = logState.mask; logState.mask = true; try { return fn(); } finally { logState.mask = m; } }
+function laSummaryOf(A, id) {
+  var gs = A.groups.filter(function(g) { return LA_RANK[g.level] <= 2; }).slice(0, 400);
+  return {
+    id: id, at: Date.now(), names: A.files.map(function(f) { return f.name; }), size: A.file.size,
+    lines: A.lines.length, entries: A.entries.length, tsMin: A.tsMin, tsMax: A.tsMax,
+    kind: A.kind.map(function(k) { return k.name; }), counts: A.counts, verdict: A.verdict,
+    groups: gs.map(function(g) { return { s: g.sig, l: g.level, n: g.count }; }),
+    kb: A.kb.map(function(k) { return { key: k.key, t: k.t, s: k.s, n: k.count }; }),
+    apis: A.apis.filter(function(a) { return a.fail; }).slice(0, 100).map(function(a) { return { k: a.key, seen: a.seen, fail: a.fail }; }),
+    cases: A.cases.length, caseErr: A.cases.filter(function(c) { return c.err; }).length
+  };
+}
+function laMaskSummary(s) {
+  return laMasked(function() {
+    var o = JSON.parse(JSON.stringify(s));
+    o.names = o.names.map(laMask);
+    o.groups.forEach(function(g) { g.s = laMask(g.s); });
+    o.apis.forEach(function(a) { a.k = laMask(a.k); });
+    return o;
+  });
+}
+function laMemSave() {
+  try {
+    if (!logRemember) { localStorage.removeItem(LA_MEM_KEY); return; }
+    localStorage.setItem(LA_MEM_KEY, JSON.stringify(logHist.slice(0, LA_SUM_KEEP).map(function(h) { return laMaskSummary(h.sum); })));
+  } catch (e) { showToast("Could not save the log memory on this PC (browser storage is full or blocked)", 3500); }
+}
+/* Called after every new analysis */
+function laRemember(isNew) {
+  if (isNew || logCurId === null) {
+    logCurId = "L" + Date.now().toString(36) + Math.random().toString(36).slice(2, 6);
+    logHist.unshift({ id: logCurId, sum: laSummaryOf(logA, logCurId), src: logSrc });
+    logBase = "";
+  } else {
+    var h = laHist(logCurId);
+    if (h) { h.sum = laSummaryOf(logA, logCurId); h.src = logSrc; }
+  }
+  /* keep all lines only for the few most recent logs; older ones keep their summary */
+  var full = 0;
+  logHist.forEach(function(h) { if (h.src && h.id !== logCurId && ++full > LA_FULL_KEEP) h.src = null; });
+  logHist = logHist.slice(0, LA_SUM_KEEP);
+  laMemSave();
+}
+function laHist(id) { for (var i = 0; i < logHist.length; i++) if (logHist[i].id === id) return logHist[i]; return null; }
+function laHistLabel(s) {
+  var n = s.names.length > 1 ? s.names[0] + " +" + (s.names.length - 1) : s.names[0];
+  var d = new Date(s.at);
+  return n + " · loaded " + (new Date().toDateString() === d.toDateString() ? laClock(s.at).slice(0, 5) : laDate(s.at) + " " + laClock(s.at).slice(0, 5));
+}
+
+/* Compare the current log with an earlier one: patterns match on their text, counts are compared per 1,000 entries */
+function laDiff(cur, base) {
+  function idx(list) { var m = {}; list.forEach(function(g) { var x = m[g.s]; if (!x) x = m[g.s] = { s: g.s, l: g.l, n: 0 }; x.n += g.n; if (LA_RANK[g.l] < LA_RANK[x.l]) x.l = g.l; }); return m; }
+  var C = idx(cur.groups), B = idx(base.groups), out = { added: [], gone: [], up: [], down: [], kbAdded: [], kbGone: [], apiAdded: [], apiWorse: [] };
+  var rc = 1000 / Math.max(1, cur.entries), rb = 1000 / Math.max(1, base.entries);
+  Object.keys(C).forEach(function(k) {
+    var c = C[k], b = B[k];
+    if (!b) { out.added.push(c); return; }
+    var a = c.n * rc, z = b.n * rb;
+    if (c.n >= 3 && a >= z * 2) out.up.push({ s: k, l: c.l, n: c.n, b: b.n });
+    else if (b.n >= 3 && z >= a * 2) out.down.push({ s: k, l: c.l, n: c.n, b: b.n });
+  });
+  Object.keys(B).forEach(function(k) { if (!C[k]) out.gone.push(B[k]); });
+  var bk = {}; base.kb.forEach(function(k) { bk[k.key] = k; });
+  var ck = {}; cur.kb.forEach(function(k) { ck[k.key] = k; if (!bk[k.key]) out.kbAdded.push(k); });
+  base.kb.forEach(function(k) { if (!ck[k.key]) out.kbGone.push(k); });
+  var ba = {}; base.apis.forEach(function(a) { ba[a.k] = a; });
+  cur.apis.forEach(function(a) { var b = ba[a.k]; if (!b) out.apiAdded.push(a); else if (a.fail > b.fail) out.apiWorse.push({ k: a.k, fail: a.fail, b: b.fail }); });
+  function bySev(a, b) { return (LA_RANK[a.l] - LA_RANK[b.l]) || (b.n - a.n); }
+  out.added.sort(bySev); out.gone.sort(bySev); out.up.sort(bySev); out.down.sort(bySev);
+  return out;
+}
+
+function laCompareHtml() {
+  var others = logHist.filter(function(h) { return h.id !== logCurId; });
+  if (!others.length) return '<p class="la-empty">This is the first log in memory. Load another log later and it will be compared with this one.</p>' + laMemControlsHtml();
+  if (!logBase || !laHist(logBase)) logBase = others[0].id;
+  var cur = laHist(logCurId).sum, bh = laHist(logBase), base = bh.sum, D = laDiff(cur, base), h = "";
+  h += '<div class="la-cmp-top"><label class="la-cmp-sel">Compare with<select id="laCmpBase">' + others.map(function(o) {
+      return '<option value="' + o.id + '"' + (o.id === logBase ? ' selected' : '') + '>' + laEsc(laHistLabel(o.sum)) + (o.src ? '' : ' (summary only)') + '</option>';
+    }).join("") + '</select></label>' +
+    (bh.src ? '<button class="la-btn la-btn-sm" data-act="hist-open" data-k="' + bh.id + '">Open that log</button>' : '') + '</div>';
+  var bc = base.counts, cc = cur.counts;
+  function delta(a, b) { var d = a - b; return d === 0 ? '<span class="la-n">same</span>' : '<span class="' + (d > 0 ? 'la-bad' : 'la-ok') + '">' + (d > 0 ? '+' : '') + d + '</span>'; }
+  h += '<div class="la-kv"><span>Errors <b>' + (cc.FATAL + cc.ERROR) + '</b> vs ' + (bc.FATAL + bc.ERROR) + ' ' + delta(cc.FATAL + cc.ERROR, bc.FATAL + bc.ERROR) + '</span>' +
+    '<span>Warnings <b>' + cc.WARN + '</b> vs ' + bc.WARN + ' ' + delta(cc.WARN, bc.WARN) + '</span>' +
+    '<span>Entries <b>' + cur.entries.toLocaleString() + '</b> vs ' + base.entries.toLocaleString() + '</span>' +
+    (base.tsMin !== null ? '<span>Earlier log covers <b>' + laDate(base.tsMin) + ' ' + laClock(base.tsMin).slice(0, 5) + '</b> to <b>' + laDate(base.tsMax) + ' ' + laClock(base.tsMax).slice(0, 5) + '</b></span>' : '') + '</div>';
+  var summ = [];
+  if (D.added.length) summ.push('<b class="la-bad">' + D.added.length + ' new</b> issue pattern' + (D.added.length > 1 ? 's' : ''));
+  if (D.up.length) summ.push('<b class="la-bad">' + D.up.length + '</b> happening more often');
+  if (D.gone.length) summ.push('<b class="la-ok">' + D.gone.length + '</b> no longer seen');
+  if (D.down.length) summ.push('<b class="la-ok">' + D.down.length + '</b> less often');
+  h += '<p class="la-cmp-sum">' + (summ.length ? summ.join(" · ") : 'Same error and warning patterns as the earlier log.') + '</p>';
+  function list(title, arr, fmt, cls, open) {
+    if (!arr.length) return "";
+    return '<details class="la-mini la-cmp-list"' + (open ? ' open' : '') + '><summary>' + title + ' (' + arr.length + ')</summary><ul>' + arr.slice(0, 60).map(fmt).join("") + (arr.length > 60 ? '<li class="la-hint">+' + (arr.length - 60) + ' more</li>' : '') + '</ul></details>';
+  }
+  function gl(g, extra) {
+    var here = logA.groups.some(function(x) { return x.sig === g.s; });
+    return '<li class="lv-' + g.l + '"><span class="la-badge">' + g.l + '</span>' +
+      (here ? '<button class="la-linkbtn la-cmp-sig" data-act="goto-sig" data-k="' + laAttr(g.s) + '" title="Open this issue below">' + laEsc(g.s) + '</button>' : '<span class="la-cmp-sig">' + laEsc(g.s) + '</span>') +
+      '<span class="la-n">' + extra + '</span></li>';
+  }
+  h += list("New issues, not in the earlier log", D.added, function(g) { return gl(g, "×" + g.n); }, "", true);
+  h += list("More often than before", D.up, function(g) { return gl(g, g.b + " → " + g.n); }, "", D.added.length === 0);
+  h += list("No longer seen", D.gone, function(g) { return gl(g, "was ×" + g.n); });
+  h += list("Less often than before", D.down, function(g) { return gl(g, g.b + " → " + g.n); });
+  if (D.kbAdded.length || D.kbGone.length) h += '<div class="la-kv">' +
+    (D.kbAdded.length ? '<span>New known problems: <b class="la-bad">' + D.kbAdded.map(function(k) { return laEsc(k.t); }).join(", ") + '</b></span>' : '') +
+    (D.kbGone.length ? '<span>Gone: <b class="la-ok">' + D.kbGone.map(function(k) { return laEsc(k.t); }).join(", ") + '</b></span>' : '') + '</div>';
+  if (D.apiAdded.length || D.apiWorse.length) h += '<div class="la-kv"><span>APIs failing now but not before, or failing more: <b class="la-bad">' +
+    D.apiAdded.map(function(a) { return laEsc(laTrunc(a.k, 60)) + ' (' + a.fail + ')'; }).concat(D.apiWorse.map(function(a) { return laEsc(laTrunc(a.k, 60)) + ' (' + a.b + ' → ' + a.fail + ')'; })).slice(0, 8).join(", ") + '</b></span></div>';
+  h += '<p class="la-hint">Patterns are matched on their text with numbers and IDs ignored. "More / less often" compares rates per 1,000 entries, so logs of different lengths compare fairly.</p>';
+  return h + laMemControlsHtml();
+}
+
+function laMemControlsHtml() {
+  var others = logHist.filter(function(h) { return h.id !== logCurId; });
+  var h = '<div class="la-mem">';
+  if (others.length) h += '<div class="la-lbl">Earlier logs</div><div class="la-chips">' + others.map(function(o) {
+      return o.src ? '<button class="la-chip la-chip-btn" data-act="hist-open" data-k="' + o.id + '" title="Open this log again">' + laEsc(laHistLabel(o.sum)) + '</button>'
+        : '<span class="la-chip" title="Only the summary is kept (patterns and counts), so it can be compared but not reopened">' + laEsc(laHistLabel(o.sum)) + ' <b>summary</b></span>';
+    }).join("") + '</div>';
+  h += '<div class="la-mem-row"><label class="la-check"><input type="checkbox" id="laMemOn"' + (logRemember ? ' checked' : '') + '> Remember summaries on this PC after the browser is closed</label>' +
+    '<span class="la-hint">Saved summaries hold patterns and counts only, masked, never log lines. The last ' + LA_FULL_KEEP + ' logs keep all their lines until you close this tab.</span>' +
+    (logHist.length > 1 || logRemember ? '<button class="la-btn la-btn-sm" data-act="mem-forget">Forget earlier logs</button>' : '') + '</div></div>';
+  return h;
+}
+
+function laRefreshCompare() { var c = document.getElementById("laCmp"); if (c) c.innerHTML = laCompareHtml(); }
+
+function laOpenHist(id) {
+  var h = laHist(id);
+  if (!h || !h.src) { showToast("Only the summary of that log is kept; load the file again to see its lines", 3500); return; }
+  logSrc = h.src; logCurId = id; logBase = "";
+  logHist.splice(logHist.indexOf(h), 1); logHist.unshift(h);
+  var keep = { query: logState.query, mask: logState.mask };
+  logState = { query: keep.query, level: "all", service: "", group: "", range: null, tab: "", rawLimit: 500, mask: keep.mask, caseId: "", kb: "", api: "" };
+  logA = laAnalyse(logSrc.P);
+  laRemember(false);
+  laRender();
+  window.scrollTo({ top: logResults.getBoundingClientRect().top + window.scrollY - 80, behavior: "smooth" });
+}
+
+function laDropHistHtml() {
+  var list = logHist.filter(function(h) { return h.src; });
+  if (!list.length) return "";
+  return '<div class="la-drop-hist"><span class="la-lbl">Or reopen</span>' + list.map(function(o) {
+    return '<button class="la-chip la-chip-btn" data-act="hist-open" data-k="' + o.id + '">' + laEsc(laHistLabel(o.sum)) + '</button>';
+  }).join("") + '</div>';
+}
+function laShowDropHist() { var b = document.getElementById("logHistBox"); if (b) b.innerHTML = laDropHistHtml(); }
+
 /* ── Events ── */
 function laReanalyse(reparse) {
   if (!logSrc) return;
@@ -5801,6 +5983,7 @@ function laReanalyse(reparse) {
   if (reparse) logSrc.P = laParseFiles(logSrc.files);
   logState = { query: keep.query, level: "all", service: "", group: "", range: null, tab: "", rawLimit: 500, mask: keep.mask, caseId: "", kb: "", api: "" };
   logA = laAnalyse(logSrc.P);
+  laRemember(false);
   laRender();
 }
 
@@ -5894,11 +6077,29 @@ logResults.addEventListener("click", function(ev) {
     laOpenRaw();
   } else if (act === "expand" || act === "collapse") {
     document.getElementById("laIssues").querySelectorAll(".la-issue").forEach(function(d) { d.open = act === "expand"; });
+  } else if (act === "hist-open") {
+    laOpenHist(b.getAttribute("data-k"));
+  } else if (act === "goto-sig") {
+    var sg = b.getAttribute("data-k"), gi = -1;
+    logA.groups.forEach(function(g, i) { if (gi < 0 && g.sig === sg) gi = i; });
+    if (gi < 0) return;
+    logState.service = ""; logState.caseId = ""; logState.kb = "";
+    if (!laGroupVisible(logA.groups[gi], logState.tab)) logState.tab = "all";
+    laRefresh();
+    var gd = document.querySelector('#laIssues .la-issue[data-g="' + gi + '"]');
+    if (gd) { gd.open = true; gd.scrollIntoView({ behavior: "smooth", block: "center" }); gd.querySelector("summary").focus({ preventScroll: true }); }
+  } else if (act === "mem-forget") {
+    logHist = logHist.filter(function(h) { return h.id === logCurId; });
+    logBase = "";
+    laMemSave();
+    laRefreshCompare();
+    showToast("Earlier logs forgotten" + (logRemember ? " (also removed from this PC)" : ""));
   } else if (act === "new-file") {
     logA = null; logSrc = null;
     logResults.innerHTML = "";
     logResults.style.display = "none";
     logDropZone.style.display = "";
+    laShowDropHist();
     logFileInput.value = "";
     logFileInput.click();
   }
@@ -5911,6 +6112,21 @@ logResults.addEventListener("toggle", function(ev) {
   if (body.hasChildNodes()) return;
   body.innerHTML = d.hasAttribute("data-kb") ? laKbBody(+d.getAttribute("data-kb")) : laIssueBody(+d.getAttribute("data-g"));
 }, true);
+
+logResults.addEventListener("change", function(ev) {
+  var t = ev.target;
+  if (t.id === "laCmpBase") { logBase = t.value; laRefreshCompare(); }
+  else if (t.id === "laMemOn") {
+    logRemember = t.checked;
+    try { localStorage.setItem(LA_MEM_PREF, logRemember ? "1" : "0"); } catch (e) {}
+    laMemSave();
+    showToast(logRemember ? "Summaries of these logs will be remembered on this PC (masked, no log lines)" : "Nothing is kept on this PC any more");
+  }
+});
+document.getElementById("logHistBox").addEventListener("click", function(ev) {
+  var b = ev.target.closest('[data-act="hist-open"]');
+  if (b) laOpenHist(b.getAttribute("data-k"));
+});
 
 document.addEventListener("click", function(ev) {
   var m = logResults.querySelector(".la-export[open]");
@@ -5948,6 +6164,7 @@ function handleLogFiles(list) {
       logState = { query: searchInput.value.trim(), level: "all", service: "", group: "", range: null, tab: "", rawLimit: 500, mask: mask, caseId: "", kb: "", api: "" };
       logSrc = { files: ok, P: laParseFiles(ok) };
       logA = laAnalyse(logSrc.P);
+      laRemember(true);
       laRender();
     }, 20);
   });
