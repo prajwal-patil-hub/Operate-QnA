@@ -38,6 +38,16 @@
       --amber-light:  #fef3c7;
       --fatal:        #9f1239;
       --fatal-light:  #ffe4e6;
+      --syn-key:      #7c2d92;
+      --syn-str:      #0f7b3f;
+      --syn-num:      #b45309;
+      --syn-bool:     #1d4ed8;
+      --syn-null:     #6b7280;
+      --syn-punct:    rgba(28,45,110,.55);
+      --syn-tag:      #1d4ed8;
+      --syn-attr:     #7c2d92;
+      --syn-kw:       #1d4ed8;
+      --syn-com:      #6b7280;
     }
 
     /* ── Dark tokens ─────────────────────────────────────────────────── */
@@ -63,6 +73,16 @@
       --amber-light:  rgba(251,191,36,.14);
       --fatal:        #fb7185;
       --fatal-light:  rgba(251,113,133,.16);
+      --syn-key:      #d8b4fe;
+      --syn-str:      #86efac;
+      --syn-num:      #fdba74;
+      --syn-bool:     #93c5fd;
+      --syn-null:     #9ca3af;
+      --syn-punct:    rgba(212,220,245,.55);
+      --syn-tag:      #93c5fd;
+      --syn-attr:     #d8b4fe;
+      --syn-kw:       #93c5fd;
+      --syn-com:      #9ca3af;
     }
 
     html { scroll-behavior: smooth; font-size: 16px; }
@@ -1665,6 +1685,284 @@
     @media (max-width: 560px) { .la-row { grid-template-columns: 2.6rem minmax(0, 1fr); } .la-row .l { display: none; } }
     mark.la-hl { background: var(--highlight); color: inherit; border-radius: 2px; padding: 0 1px; }
     .la-more { margin-top: .6rem; }
+
+    /* ── Full log file reader ────────────────────────────────────────────── */
+    .fv-overlay {
+      position: fixed; inset: 0; z-index: 550; display: none;
+      background: rgba(10,15,40,.55); padding: max(12px, env(safe-area-inset-top, 0px)) max(12px, env(safe-area-inset-right, 0px)) max(12px, env(safe-area-inset-bottom, 0px)) max(12px, env(safe-area-inset-left, 0px));
+    }
+    .fv-overlay.is-open { display: flex; }
+    .fv-panel {
+      flex: 1; min-width: 0; display: flex; flex-direction: column;
+      background: var(--surface); border: 1.5px solid var(--border); border-radius: 14px; overflow: hidden;
+      box-shadow: 0 30px 80px rgba(10,15,40,.35);
+    }
+    .fv-bar { display: flex; flex-direction: column; gap: .55rem; padding: .75rem .9rem; border-bottom: 1.5px solid var(--border); }
+    .fv-bar-row { display: flex; align-items: center; gap: .5rem; flex-wrap: wrap; }
+    .fv-title { flex: 1 1 240px; min-width: 0; display: flex; flex-direction: column; }
+    .fv-title b { font-size: .95rem; color: var(--navy); word-break: break-all; }
+    .fv-title span { font-size: .72rem; color: var(--navy-60); }
+    .fv-input {
+      font-family: var(--font); font-size: .78rem; color: var(--navy);
+      background: var(--bg); border: 1.5px solid var(--border); border-radius: 999px; padding: .32rem .75rem; min-width: 0;
+    }
+    .fv-input:focus { outline: 2px solid var(--accent); outline-offset: 1px; }
+    .fv-find { display: inline-flex; align-items: center; gap: .3rem; }
+    .fv-find .fv-input { width: 190px; }
+    .fv-goto { width: 90px; }
+    .fv-count { font-size: .72rem; color: var(--navy-60); min-width: 4.5rem; font-variant-numeric: tabular-nums; }
+    .fv-levels { display: flex; flex-wrap: wrap; gap: .4rem; align-items: center; }
+    .fv-lvl { display: inline-flex; align-items: stretch; border: 1.5px solid var(--border); border-radius: 999px; overflow: hidden; background: var(--surface); }
+    .fv-lvl button {
+      border: 0; background: transparent; font-family: var(--font); font-size: .72rem; font-weight: 700; color: var(--navy);
+      padding: .22rem .5rem; cursor: pointer; display: inline-flex; align-items: center; gap: .3rem;
+    }
+    .fv-lvl button:hover { background: var(--navy-06); }
+    .fv-lvl .fv-tog::before { content: ""; width: 9px; height: 9px; border-radius: 2px; border: 1.5px solid var(--c); background: transparent; }
+    .fv-lvl.on .fv-tog::before { background: var(--c); }
+    .fv-lvl .fv-tog .n { font-weight: 600; color: var(--navy-60); font-variant-numeric: tabular-nums; }
+    .fv-lvl .fv-jump { padding: .22rem .45rem; color: var(--navy-60); border-left: 1px solid var(--border); }
+    .fv-lvl .fv-jump:disabled { opacity: .35; cursor: default; }
+    .fv-hint { font-size: .7rem; color: var(--navy-60); margin-left: auto; }
+    .fv-body { flex: 1; min-height: 0; display: flex; }
+    .fv-scroll { flex: 1; min-width: 0; overflow: auto; position: relative; background: var(--surface); }
+    .fv-scroll:focus-visible { outline: 2px solid var(--accent); outline-offset: -2px; }
+    .fv-spacer { position: relative; }
+    .fv-rows { position: absolute; top: 0; left: 0; right: 0; will-change: transform; }
+    .fv-row {
+      height: 20px; line-height: 20px; display: flex; white-space: pre;
+      font-family: var(--mono); font-size: .74rem; color: var(--navy);
+      font-variant-ligatures: none; font-feature-settings: "liga" 0, "calt" 0; tab-size: 4;
+    }
+    .fv-n {
+      position: sticky; left: 0; z-index: 1; flex-shrink: 0; width: 4.6rem; padding-right: .7rem; text-align: right;
+      color: var(--navy-30); background: var(--surface); border-right: 1px solid var(--border); user-select: none;
+    }
+    .fv-t { padding-left: .7rem; padding-right: 1rem; }
+    .fv-row.fv-on { background: var(--cl); }
+    .fv-row.fv-on .fv-n { box-shadow: inset 3px 0 0 var(--c); background: var(--cl); color: var(--c); }
+    .fv-row.fv-on.fv-cont .fv-n { box-shadow: inset 3px 0 0 var(--c); color: var(--navy-30); }
+    .fv-row.fv-on.fv-cont .fv-t { color: var(--navy-60); }
+    .fv-row.fv-soft { background: transparent; }
+    .fv-row.fv-soft .fv-n { background: var(--surface); }
+    .fv-row.lv-FATAL.fv-head .fv-t { font-weight: 700; color: var(--fatal); }
+    .fv-lt { color: var(--c); font-weight: 800; }
+    .fv-row.fv-cur { outline: 2px solid var(--accent); outline-offset: -2px; }
+    .fv-row mark { background: var(--highlight); color: inherit; border-radius: 2px; }
+    .fv-map { width: 16px; flex-shrink: 0; border-left: 1.5px solid var(--border); background: var(--navy-06); cursor: pointer; position: relative; }
+    .fv-map canvas { position: absolute; inset: 0; width: 100%; height: 100%; }
+    .fv-foot { padding: .4rem .9rem; border-top: 1.5px solid var(--border); font-size: .7rem; color: var(--navy-60); display: flex; gap: 1rem; flex-wrap: wrap; }
+    .la-linkbtn {
+      border: 0; background: none; padding: 0; font: inherit; color: var(--accent); cursor: pointer; text-decoration: underline;
+      text-decoration-color: var(--accent-light); text-underline-offset: 2px;
+    }
+    .la-linkbtn:hover { text-decoration-color: var(--accent); }
+    .la-row .n .la-linkbtn { color: var(--navy-30); text-decoration: none; font-family: var(--mono); }
+    .la-row .n .la-linkbtn:hover { color: var(--accent); text-decoration: underline; }
+    @media (max-width: 600px) {
+      .fv-find .fv-input { width: 140px; }
+      .fv-hint { display: none; }
+      .fv-n { width: 3.4rem; }
+    }
+
+    /* ── Formatter & Tools ───────────────────────────────────────────────── */
+    .content.is-wide { max-width: 1320px; }
+    .tt { display: flex; flex-direction: column; gap: .75rem; padding: .5rem 0 2rem; font-variant-ligatures: none; }
+    .tt-top { display: flex; align-items: center; justify-content: space-between; gap: .5rem 1rem; flex-wrap: wrap; }
+    .tt-modes { display: inline-flex; gap: .25rem; padding: .2rem; border: 1.5px solid var(--border); border-radius: 999px; background: var(--surface); }
+    .tt-mode {
+      border: 0; background: transparent; border-radius: 999px; padding: .38rem .95rem; cursor: pointer;
+      font-family: var(--font); font-size: .8rem; font-weight: 700; color: var(--navy-60);
+    }
+    .tt-mode.active { background: var(--navy); color: var(--bg); }
+    .tt-note { margin: 0; font-size: .74rem; color: var(--navy-60); }
+    .tt-toolbar { display: flex; flex-wrap: wrap; gap: .4rem; align-items: center; }
+    .tt-field { display: inline-flex; align-items: center; gap: .35rem; font-size: .72rem; font-weight: 600; color: var(--navy-60); }
+    .tt-field select, .tt-find input[type=text], .tt-goto input {
+      font-family: var(--font); font-size: .76rem; color: var(--navy); background: var(--surface);
+      border: 1.5px solid var(--border); border-radius: 8px; padding: .28rem .45rem; min-width: 0;
+    }
+    .tt-field select:focus-visible, .tt-find input:focus-visible, .tt-goto input:focus-visible { outline: 2px solid var(--accent); outline-offset: 1px; }
+    .tt-check { display: inline-flex; align-items: center; gap: .3rem; font-size: .74rem; font-weight: 600; color: var(--navy); cursor: pointer; white-space: nowrap; }
+    .tt-check input { accent-color: var(--accent); margin: 0; }
+    .tt-tsep { width: 1px; height: 22px; background: var(--border); margin: 0 .15rem; }
+    .tt-btn-main { background: var(--navy); color: var(--bg); border-color: var(--navy); }
+    .tt-btn-main:hover { background: var(--accent); border-color: var(--accent); }
+    .tt-menu { position: relative; }
+    .tt-menu > summary { list-style: none; }
+    .tt-menu > summary::-webkit-details-marker { display: none; }
+    .tt-menu > summary::after { content: "\25BE"; font-size: .7rem; color: var(--navy-60); }
+    .tt-menu[open] > summary { background: var(--navy-06); border-color: var(--navy-30); }
+    .tt-menu-list {
+      position: absolute; top: calc(100% + 4px); left: 0; z-index: 40; min-width: 230px;
+      display: flex; flex-direction: column; padding: .3rem; background: var(--surface);
+      border: 1.5px solid var(--border); border-radius: 10px; box-shadow: 0 14px 34px rgba(10,15,40,.18);
+    }
+    .tt-menu-list button {
+      text-align: left; border: 0; background: transparent; border-radius: 6px; padding: .4rem .55rem; cursor: pointer;
+      font-family: var(--font); font-size: .78rem; color: var(--navy); display: flex; justify-content: space-between; gap: 1rem;
+    }
+    .tt-menu-list button:hover, .tt-menu-list button:focus-visible { background: var(--accent-light); outline: none; }
+    .tt-menu-list button small { color: var(--navy-60); font-size: .68rem; }
+    .tt-menu-list hr { border: 0; border-top: 1px solid var(--border); margin: .25rem .2rem; }
+    .tt-menu-list .tt-mh { font-size: .62rem; font-weight: 700; letter-spacing: .08em; text-transform: uppercase; color: var(--navy-60); padding: .35rem .55rem .15rem; }
+    .tt-find {
+      display: flex; flex-wrap: wrap; gap: .4rem; align-items: center; padding: .55rem .65rem;
+      background: var(--surface); border: 1.5px solid var(--border); border-radius: 11px;
+    }
+    .tt-find input[type=text] { width: 200px; font-family: var(--mono); }
+    .tt-fcount { font-size: .72rem; color: var(--navy-60); min-width: 5rem; font-variant-numeric: tabular-nums; }
+    .tt-fcount.bad { color: var(--red); }
+    .tt-panes { display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); gap: .75rem; }
+    @media (max-width: 900px) { .tt-panes { grid-template-columns: minmax(0, 1fr); } }
+    .tt-pane { display: flex; flex-direction: column; min-width: 0; background: var(--surface); border: 1.5px solid var(--border); border-radius: 12px; overflow: hidden; }
+    .tt-pane-head {
+      display: flex; align-items: center; gap: .5rem; flex-wrap: wrap; padding: .5rem .7rem;
+      border-bottom: 1.5px solid var(--border); min-height: 44px;
+    }
+    .tt-pane-title { font-size: .8rem; font-weight: 800; color: var(--navy); }
+    .tt-hint { font-size: .7rem; color: var(--navy-60); }
+    .tt-out-actions { margin-left: auto; display: flex; flex-wrap: wrap; gap: .3rem; }
+    .tt-badge { font-size: .68rem; font-weight: 700; border-radius: 999px; padding: .15rem .55rem; background: var(--navy-06); color: var(--navy-60); }
+    .tt-badge.ok { background: var(--green-light); color: var(--green); }
+    .tt-badge.bad { background: var(--red-light); color: var(--red); }
+    .tt-badge.info { background: var(--accent-light); color: var(--accent); }
+
+    /* Editor (textarea + line numbers + highlight layer) */
+    .tt-editor { position: relative; display: flex; height: 520px; min-height: 0; background: var(--surface); }
+    .tt-editor.is-short { height: 340px; }
+    .tt-gutter {
+      margin: 0; flex-shrink: 0; min-width: 3rem; padding: .6rem .55rem .6rem .4rem; text-align: right; overflow: hidden;
+      font-family: var(--mono); font-size: .76rem; line-height: 20px; color: var(--navy-30);
+      background: var(--navy-06); border-right: 1px solid var(--border); user-select: none; white-space: pre;
+    }
+    .tt-ed-main { position: relative; flex: 1; min-width: 0; }
+    .tt-hl, .tt-ta {
+      position: absolute; inset: 0; margin: 0; padding: .6rem .75rem; border: 0;
+      font-family: var(--mono); font-size: .76rem; line-height: 20px; tab-size: 4; letter-spacing: 0;
+      white-space: pre; overflow-wrap: normal; word-break: normal;
+      font-variant-ligatures: none; font-feature-settings: "liga" 0, "calt" 0;
+    }
+    .tt-hl { overflow: hidden; color: transparent; pointer-events: none; }
+    .tt-hl mark { color: transparent; background: var(--highlight); border-radius: 2px; }
+    .tt-hl mark.cur { background: var(--accent-light); box-shadow: 0 0 0 1.5px var(--accent); }
+    .tt-hl .err { background: var(--red-light); box-shadow: inset 3px 0 0 var(--red); }
+    .tt-ta {
+      resize: none; background: transparent; color: var(--navy); overflow: auto; outline: none; caret-color: var(--navy);
+    }
+    .tt-ta::placeholder { color: var(--navy-30); }
+    .tt-editor:focus-within { box-shadow: inset 0 0 0 2px var(--accent); }
+    .tt-wrap .tt-hl, .tt-wrap .tt-ta { white-space: pre-wrap; overflow-wrap: anywhere; }
+    .tt-wrap .tt-gutter { display: none; }
+    .tt-editor.drag-over { box-shadow: inset 0 0 0 2px var(--accent); background: var(--accent-light); }
+    .tt-status {
+      display: flex; flex-wrap: wrap; gap: .25rem 1rem; align-items: center; padding: .4rem .7rem;
+      border-top: 1.5px solid var(--border); font-size: .7rem; color: var(--navy-60); font-variant-numeric: tabular-nums;
+    }
+    .tt-status b { color: var(--navy); font-weight: 700; }
+    .tt-goto { margin-left: auto; display: inline-flex; align-items: center; gap: .3rem; }
+    .tt-goto input { width: 70px; padding: .15rem .4rem; font-size: .72rem; }
+
+    /* Output viewer */
+    .tt-path { display: flex; align-items: center; gap: .5rem; padding: .35rem .7rem; border-bottom: 1px solid var(--border); background: var(--accent-light); font-size: .72rem; color: var(--navy); }
+    .tt-path code { font-family: var(--mono); font-size: .74rem; word-break: break-all; flex: 1; min-width: 0; }
+    .tt-out { height: 520px; overflow: auto; font-family: var(--mono); font-size: .76rem; line-height: 20px; color: var(--navy); }
+    .tt-out.is-wrap .tt-c { white-space: pre-wrap; overflow-wrap: anywhere; }
+    .tt-rows { min-width: max-content; padding: .6rem 0; }
+    .tt-out.is-wrap .tt-rows { min-width: 0; }
+    .tt-vspace { position: relative; }
+    .tt-vrows { position: absolute; top: 0; left: 0; min-width: 100%; padding: 0; }
+    .tt-r { display: flex; min-height: 20px; }
+    .tt-r:hover { background: var(--navy-06); }
+    .tt-ln {
+      position: sticky; left: 0; flex-shrink: 0; width: 3rem; padding-right: .35rem; text-align: right; color: var(--navy-30);
+      background: var(--surface); user-select: none;
+    }
+    .tt-r:hover .tt-ln { background: var(--navy-06); }
+    .tt-fg { position: sticky; left: 3rem; flex-shrink: 0; width: 1.25rem; background: var(--surface); display: flex; justify-content: center; }
+    .tt-r:hover .tt-fg { background: var(--navy-06); }
+    .tt-fold {
+      width: 1.1rem; height: 20px; border: 0; background: transparent; color: var(--navy-60); cursor: pointer; padding: 0;
+      font-size: .66rem; line-height: 20px; transition: transform 120ms;
+    }
+    .tt-fold:hover { color: var(--accent); }
+    .tt-r.collapsed .tt-fold { transform: rotate(-90deg); }
+    .tt-c { white-space: pre; padding-right: 1rem; tab-size: 4; }
+    .tt-sum { display: none; }
+    .tt-r.collapsed .tt-sum { display: inline; }
+    .tt-sum em { font-style: normal; font-family: var(--font); font-size: .68rem; color: var(--navy-60); background: var(--navy-06); border-radius: 999px; padding: 0 .4rem; margin-left: .3rem; }
+    .tt-sum button { border: 1px solid var(--border); background: var(--navy-06); color: var(--navy-60); border-radius: 5px; font: inherit; padding: 0 .3rem; cursor: pointer; line-height: 16px; }
+    .tt-empty { padding: 2rem 1.25rem; font-family: var(--font); color: var(--navy-60); font-size: .84rem; line-height: 1.6; }
+    .tt-empty b { color: var(--navy); }
+    .tt-err { margin: .75rem; padding: .75rem .85rem; border-radius: 10px; background: var(--red-light); border: 1.5px solid var(--red); font-family: var(--font); color: var(--navy); }
+    .tt-err h4 { margin: 0 0 .3rem; font-size: .85rem; color: var(--red); }
+    .tt-err p { margin: .2rem 0; font-size: .8rem; line-height: 1.5; }
+    .tt-err pre { margin: .55rem 0; padding: .5rem .65rem; background: var(--surface); border-radius: 8px; font-family: var(--mono); font-size: .74rem; line-height: 1.6; overflow-x: auto; white-space: pre; }
+    .tt-err pre .hl { background: var(--red-light); display: inline-block; min-width: 100%; }
+    .tt-err pre .caret { color: var(--red); font-weight: 800; }
+    .tt-tool { padding: .85rem; font-family: var(--font); display: flex; flex-direction: column; gap: .8rem; }
+    .tt-tool h4 { margin: 0; font-size: .82rem; color: var(--navy); }
+    .tt-tool p { margin: 0; font-size: .78rem; color: var(--navy-60); line-height: 1.5; }
+    .tt-tool .tt-box { border: 1.5px solid var(--border); border-radius: 9px; overflow: hidden; }
+    .tt-tool .tt-box .tt-rows { padding: .35rem 0; }
+    .tt-table-wrap { overflow-x: auto; }
+    .tt-table { width: 100%; border-collapse: collapse; font-size: .76rem; }
+    .tt-table th, .tt-table td { text-align: left; padding: .35rem .5rem; border-bottom: 1px solid var(--border); vertical-align: top; }
+    .tt-table th { font-size: .64rem; letter-spacing: .07em; text-transform: uppercase; color: var(--navy-60); font-weight: 700; white-space: nowrap; }
+    .tt-table td { color: var(--navy); }
+    .tt-table td code { font-family: var(--mono); font-size: .74rem; word-break: break-all; }
+    .tt-pill { display: inline-block; font-size: .68rem; font-weight: 700; border-radius: 999px; padding: .08rem .5rem; }
+    .tt-pill.ok { background: var(--green-light); color: var(--green); }
+    .tt-pill.bad { background: var(--red-light); color: var(--red); }
+    .tt-pill.warn { background: var(--amber-light); color: var(--amber); }
+
+    /* Syntax colours */
+    .sk { color: var(--syn-key); }
+    .ss { color: var(--syn-str); }
+    .sn { color: var(--syn-num); }
+    .sb { color: var(--syn-bool); font-weight: 600; }
+    .sz { color: var(--syn-null); font-style: italic; }
+    .sp { color: var(--syn-punct); }
+    .xt { color: var(--syn-tag); }
+    .xa { color: var(--syn-attr); }
+    .xv { color: var(--syn-str); }
+    .xc { color: var(--syn-com); font-style: italic; }
+    .xd { color: var(--syn-com); }
+    .qk { color: var(--syn-kw); font-weight: 700; }
+    .qf { color: var(--syn-attr); }
+    .tk { cursor: pointer; border-radius: 3px; }
+    .tk:hover { background: var(--accent-light); }
+
+    /* Compare */
+    .tt-diff-wrap { background: var(--surface); border: 1.5px solid var(--border); border-radius: 12px; overflow: hidden; }
+    .tt-diff-head { display: flex; flex-wrap: wrap; align-items: center; gap: .5rem; padding: .6rem .75rem; border-bottom: 1.5px solid var(--border); }
+    .tt-diff-head h3 { margin: 0; font-size: .88rem; color: var(--navy); }
+    .tt-diff-sum { display: flex; flex-wrap: wrap; gap: .35rem; }
+    .tt-diff-nav { margin-left: auto; display: flex; gap: .3rem; }
+    .tt-diff { max-height: 640px; overflow: auto; }
+    .tt-dt { width: 100%; border-collapse: collapse; table-layout: fixed; font-family: var(--mono); font-size: .74rem; line-height: 1.55; font-variant-ligatures: none; }
+    .tt-dt col.n { width: 3.2rem; }
+    .tt-dt td { padding: .1rem .45rem; vertical-align: top; color: var(--navy); white-space: pre-wrap; overflow-wrap: anywhere; tab-size: 4; }
+    .tt-dt td.n { color: var(--navy-30); text-align: right; user-select: none; background: var(--navy-06); }
+    .tt-dt td.sep { border-left: 1.5px solid var(--border); }
+    .tt-dt tr.d-del td.l, .tt-dt tr.d-chg td.l { background: var(--red-light); }
+    .tt-dt tr.d-ins td.r, .tt-dt tr.d-chg td.r { background: var(--green-light); }
+    .tt-dt tr.d-del td.r, .tt-dt tr.d-ins td.l { background: var(--navy-06); }
+    .tt-dt del { background: var(--red); color: var(--surface); text-decoration: none; border-radius: 2px; }
+    .tt-dt ins { background: var(--green); color: var(--surface); text-decoration: none; border-radius: 2px; }
+    .tt-dt tr.d-skip td { text-align: center; background: var(--accent-light); padding: .25rem; }
+    .tt-dt tr.d-skip button { border: 0; background: none; color: var(--accent); font-family: var(--font); font-size: .74rem; font-weight: 600; cursor: pointer; }
+    .tt-dt tr.d-cur td { box-shadow: inset 0 2px 0 var(--accent); }
+    @media (max-width: 600px) {
+      .tt-editor, .tt-out { height: 380px; }
+      .tt-find input[type=text] { width: 100%; }
+      .tt-dt col.n { width: 2.2rem; }
+      .tt-menu { position: static; }
+      .tt-menu-list { left: 16px; right: 16px; min-width: 0; }
+      .tt-toolbar { position: relative; }
+    }
+    .tt-stack { display: flex; flex-direction: column; gap: .75rem; }
+    .tt [hidden] { display: none !important; }
   </style>
 </head>
 <body>
@@ -1743,6 +2041,13 @@
           <line x1="8" y1="17" x2="13" y2="17"/>
         </svg>
         Log Analyser
+      </button>
+      <button class="snav-btn" id="snavTools" role="tab" aria-selected="false">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+          <polyline points="16 18 22 12 16 6"/>
+          <polyline points="8 6 2 12 8 18"/>
+        </svg>
+        Formatter &amp; Tools
       </button>
     </nav>
 
@@ -1871,6 +2176,189 @@
       </div>
     </div><!-- /view-log -->
 
+    <!-- ── View: Formatter & Tools ─────────────────────────────────────── -->
+    <div id="view-tools" class="section-view">
+      <div class="tt">
+        <div class="tt-top">
+          <div class="tt-modes" role="tablist" aria-label="Tool">
+            <button class="tt-mode active" id="ttModeEdit" role="tab" aria-selected="true">Format &amp; edit</button>
+            <button class="tt-mode" id="ttModeCmp" role="tab" aria-selected="false">Compare</button>
+          </div>
+          <p class="tt-note">Runs only in this browser. Nothing you paste is saved or sent anywhere.</p>
+        </div>
+
+        <!-- Format & edit -->
+        <div id="ttEdit" class="tt-stack">
+          <div class="tt-toolbar" role="toolbar" aria-label="Formatter">
+            <label class="tt-field">Type
+              <select id="ttLang">
+                <option value="auto">Auto-detect</option>
+                <option value="json">JSON</option>
+                <option value="xml">XML / SOAP</option>
+                <option value="sql">SQL</option>
+                <option value="jwt">JWT</option>
+                <option value="text">Plain text</option>
+              </select>
+            </label>
+            <label class="tt-field">Indent
+              <select id="ttIndent">
+                <option value="2">2 spaces</option>
+                <option value="4">4 spaces</option>
+                <option value="tab">Tab</option>
+              </select>
+            </label>
+            <button class="la-btn tt-btn-main" id="ttBeautify" title="Format the input text (Ctrl+Enter)">Beautify</button>
+            <button class="la-btn" id="ttMinify" title="Put the input on as few characters as possible">Minify</button>
+            <label class="tt-check" title="Sort JSON object keys alphabetically"><input type="checkbox" id="ttSort"> Sort keys</label>
+            <span class="tt-tsep" aria-hidden="true"></span>
+            <details class="tt-menu"><summary class="la-btn">Lines</summary>
+              <div class="tt-menu-list">
+                <div class="tt-mh">Works on the selection, or everything</div>
+                <button data-op="sortAsc">Sort A to Z</button>
+                <button data-op="sortDesc">Sort Z to A</button>
+                <button data-op="sortNum">Sort by number</button>
+                <button data-op="dedupe">Remove duplicate lines</button>
+                <button data-op="noBlank">Remove blank lines</button>
+                <button data-op="trimEnd">Trim trailing spaces</button>
+                <button data-op="trimBoth">Trim leading and trailing spaces</button>
+                <button data-op="reverse">Reverse line order</button>
+                <hr>
+                <button data-op="joinSpace">Join lines with spaces</button>
+                <button data-op="joinComma">Join lines with commas</button>
+                <button data-op="splitComma">Split commas onto new lines</button>
+                <button data-op="sqlIn">Make SQL IN list <small>'a','b'</small></button>
+                <hr>
+                <button data-op="dupLine">Duplicate line <small>Ctrl+D</small></button>
+                <button data-op="moveUp">Move line up <small>Ctrl+Shift+&#8593;</small></button>
+                <button data-op="moveDown">Move line down <small>Ctrl+Shift+&#8595;</small></button>
+              </div>
+            </details>
+            <details class="tt-menu"><summary class="la-btn">Case</summary>
+              <div class="tt-menu-list">
+                <button data-op="upper">UPPERCASE</button>
+                <button data-op="lower">lowercase</button>
+                <button data-op="title">Title Case</button>
+                <button data-op="sentence">Sentence case</button>
+                <button data-op="invert">iNVERT cASE</button>
+                <button data-op="camel">camelCase</button>
+                <button data-op="snake">snake_case</button>
+              </div>
+            </details>
+            <details class="tt-menu"><summary class="la-btn">Encode</summary>
+              <div class="tt-menu-list">
+                <button data-op="b64enc">Base64 encode</button>
+                <button data-op="b64dec">Base64 decode</button>
+                <hr>
+                <button data-op="urlenc">URL encode</button>
+                <button data-op="urldec">URL decode</button>
+                <hr>
+                <button data-op="htmlenc">HTML entities encode</button>
+                <button data-op="htmldec">HTML entities decode</button>
+                <hr>
+                <button data-op="jsonesc">Escape as JSON string</button>
+                <button data-op="jsonunesc">Unescape JSON string</button>
+              </div>
+            </details>
+            <details class="tt-menu"><summary class="la-btn">Tools</summary>
+              <div class="tt-menu-list">
+                <button data-tool="jwt">Decode JWT token</button>
+                <button data-tool="time">Convert timestamps <small>epoch / date</small></button>
+                <button data-tool="hash">Hash <small>SHA-1 / 256 / 512</small></button>
+                <button data-op="mask">Mask sensitive data</button>
+                <hr>
+                <div class="tt-mh">Load a sample</div>
+                <button data-sample="json">Sample JSON (API response)</button>
+                <button data-sample="xml">Sample XML (SOAP)</button>
+                <button data-sample="sql">Sample SQL</button>
+                <button data-sample="jwt">Sample JWT</button>
+              </div>
+            </details>
+            <button class="la-btn" id="ttFindBtn" title="Find and replace (Ctrl+F, Ctrl+H)">Find</button>
+            <span class="tt-tsep" aria-hidden="true"></span>
+            <label class="tt-check"><input type="checkbox" id="ttWrapChk"> Wrap lines</label>
+            <button class="la-btn" id="ttOpen">Open file</button>
+            <input type="file" id="ttFile" hidden>
+            <button class="la-btn" id="ttClear">Clear</button>
+          </div>
+
+          <div class="tt-find" id="ttFind" hidden>
+            <input type="text" id="ttFindIn" placeholder="Find" aria-label="Find" spellcheck="false" autocomplete="off">
+            <input type="text" id="ttRepIn" placeholder="Replace with" aria-label="Replace with" spellcheck="false" autocomplete="off">
+            <label class="tt-check"><input type="checkbox" id="ttFCase"> Match case</label>
+            <label class="tt-check"><input type="checkbox" id="ttFWord"> Whole word</label>
+            <label class="tt-check"><input type="checkbox" id="ttFRe"> Regex</label>
+            <span class="tt-fcount" id="ttFCount" aria-live="polite"></span>
+            <button class="la-btn la-btn-sm" id="ttFPrev">Previous</button>
+            <button class="la-btn la-btn-sm" id="ttFNext">Next</button>
+            <button class="la-btn la-btn-sm" id="ttFRep">Replace</button>
+            <button class="la-btn la-btn-sm" id="ttFAll">Replace all</button>
+            <button class="la-btn la-btn-sm" id="ttFClose">Close</button>
+          </div>
+
+          <div class="tt-panes">
+            <section class="tt-pane" aria-label="Input">
+              <div class="tt-pane-head"><span class="tt-pane-title">Input</span><span class="tt-hint">Paste, drop a file, or Tools &rsaquo; Load a sample</span></div>
+              <div class="tt-editor" id="ttEditor">
+                <pre class="tt-gutter" id="ttGutter" aria-hidden="true">1</pre>
+                <div class="tt-ed-main">
+                  <div class="tt-hl" id="ttHl" aria-hidden="true"></div>
+                  <textarea class="tt-ta" id="ttIn" spellcheck="false" wrap="off" autocapitalize="off" autocomplete="off" aria-label="Input text" placeholder="Paste JSON, XML, SQL, a JWT or any text here"></textarea>
+                </div>
+              </div>
+              <div class="tt-status" id="ttStatus" aria-live="off">
+                <span id="ttStPos"></span><span id="ttStSel"></span><span id="ttStCount"></span><span id="ttStType"></span>
+                <label class="tt-goto">Go to line <input id="ttGoto" inputmode="numeric" aria-label="Go to line (Ctrl+G)"></label>
+              </div>
+            </section>
+            <section class="tt-pane" aria-label="Output">
+              <div class="tt-pane-head">
+                <span class="tt-pane-title">Output</span><span class="tt-badge" id="ttBadge">Waiting for input</span>
+                <div class="tt-out-actions">
+                  <button class="la-btn la-btn-sm" id="ttExpand">Expand all</button>
+                  <button class="la-btn la-btn-sm" id="ttCollapse">Collapse all</button>
+                  <button class="la-btn la-btn-sm" id="ttCopy">Copy</button>
+                  <button class="la-btn la-btn-sm" id="ttDownload">Download</button>
+                  <button class="la-btn la-btn-sm" id="ttUse" title="Replace the input with this output">Use as input</button>
+                </div>
+              </div>
+              <div class="tt-path" id="ttPath" hidden><span>Path</span><code id="ttPathCode"></code><button class="la-btn la-btn-sm" id="ttPathCopy">Copy path</button></div>
+              <div class="tt-out" id="ttOut" tabindex="0" aria-label="Formatted output"></div>
+            </section>
+          </div>
+        </div>
+
+        <!-- Compare -->
+        <div id="ttCmp" class="tt-stack" hidden>
+          <div class="tt-toolbar" role="toolbar" aria-label="Compare options">
+            <label class="tt-check"><input type="checkbox" id="ttCWs"> Ignore spaces</label>
+            <label class="tt-check"><input type="checkbox" id="ttCCase"> Ignore case</label>
+            <label class="tt-check" title="Beautify JSON or XML on both sides (JSON keys sorted) before comparing, so only real data changes show"><input type="checkbox" id="ttCFmt" checked> Format JSON / XML first</label>
+            <label class="tt-check"><input type="checkbox" id="ttCOnly" checked> Hide unchanged lines</label>
+            <span class="tt-tsep" aria-hidden="true"></span>
+            <button class="la-btn" id="ttCSwap">Swap sides</button>
+            <button class="la-btn" id="ttCClear">Clear both</button>
+          </div>
+          <div class="tt-panes">
+            <section class="tt-pane" aria-label="Original text">
+              <div class="tt-pane-head"><span class="tt-pane-title">Original</span><span class="tt-hint" id="ttAInfo"></span></div>
+              <div class="tt-editor is-short"><pre class="tt-gutter" aria-hidden="true">1</pre><div class="tt-ed-main"><textarea class="tt-ta" id="ttA" spellcheck="false" wrap="off" aria-label="Original text" placeholder="Paste the original version"></textarea></div></div>
+            </section>
+            <section class="tt-pane" aria-label="Changed text">
+              <div class="tt-pane-head"><span class="tt-pane-title">Changed</span><span class="tt-hint" id="ttBInfo"></span></div>
+              <div class="tt-editor is-short"><pre class="tt-gutter" aria-hidden="true">1</pre><div class="tt-ed-main"><textarea class="tt-ta" id="ttB" spellcheck="false" wrap="off" aria-label="Changed text" placeholder="Paste the changed version"></textarea></div></div>
+            </section>
+          </div>
+          <section class="tt-diff-wrap" aria-label="Differences">
+            <div class="tt-diff-head">
+              <h3>Differences</h3><div class="tt-diff-sum" id="ttDSum"></div>
+              <div class="tt-diff-nav"><button class="la-btn la-btn-sm" id="ttDPrev">Previous change</button><button class="la-btn la-btn-sm" id="ttDNext">Next change</button></div>
+            </div>
+            <div class="tt-diff" id="ttDiff"></div>
+          </section>
+        </div>
+      </div>
+    </div><!-- /view-tools -->
+
   </div>
 </main>
 
@@ -1967,6 +2455,36 @@
   </div>
 </div>
 
+<!-- ── Full log file reader ─────────────────────────────────────────────── -->
+<div class="fv-overlay" id="fvOverlay" aria-hidden="true">
+  <div class="fv-panel" role="dialog" aria-modal="true" aria-labelledby="fvTitle">
+    <div class="fv-bar">
+      <div class="fv-bar-row">
+        <div class="fv-title"><b id="fvTitle">Log file</b><span id="fvMeta"></span></div>
+        <div class="fv-find">
+          <input class="fv-input" id="fvFind" type="search" placeholder="Find in file (Ctrl+F)" aria-label="Find in file" autocomplete="off" spellcheck="false">
+          <button class="la-btn la-btn-sm" id="fvPrev" aria-label="Previous match">&#8593;</button>
+          <button class="la-btn la-btn-sm" id="fvNext" aria-label="Next match">&#8595;</button>
+          <span class="fv-count" id="fvCount" aria-live="polite"></span>
+        </div>
+        <input class="fv-input fv-goto" id="fvGoto" inputmode="numeric" placeholder="Go to line" aria-label="Go to line number">
+        <button class="la-btn" id="fvClose">Close <span class="la-n">Esc</span></button>
+      </div>
+      <div class="fv-bar-row">
+        <div class="fv-levels" id="fvLevels" role="group" aria-label="Colour and jump between levels"></div>
+        <span class="fv-hint">Click a level to colour it, arrows jump between them. The strip on the right marks where they are.</span>
+      </div>
+    </div>
+    <div class="fv-body">
+      <div class="fv-scroll" id="fvScroll" tabindex="0" aria-label="Log file contents">
+        <div class="fv-spacer" id="fvSpacer"><div class="fv-rows" id="fvRows"></div></div>
+      </div>
+      <div class="fv-map" id="fvMap" title="Overview of the whole file. Click to jump."><canvas id="fvCanvas"></canvas></div>
+    </div>
+    <div class="fv-foot"><span id="fvPos"></span><span>Showing the file exactly as uploaded. Lines longer than 4,000 characters are shortened on screen.</span></div>
+  </div>
+</div>
+
 <!-- ── Spotlight (Cmd/Ctrl+K) ──────────────────────────────────────────── -->
 <div class="spotlight-overlay" id="spotlightOverlay" aria-hidden="true">
   <div class="spotlight-box" role="dialog" aria-modal="true" aria-label="Quick search">
@@ -2027,6 +2545,12 @@ var SECTION_CONFIGS = {
     title: "Log<br>Explorer",
     sub: "Upload a log file to instantly surface errors, warnings and recurring patterns.",
     placeholder: "Filter log lines…"
+  },
+  tools: {
+    badge: "FORMATTER & TOOLS",
+    title: "Format<br>&amp; Fix",
+    sub: "Beautify and validate JSON, XML and SQL, decode tokens, compare versions and clean up text, all offline.",
+    placeholder: ""
   }
 };
 var currentSection = "tickets";
@@ -2075,9 +2599,11 @@ var modalALbl       = document.getElementById("modalAnswerLabel");
 var viewTickets    = document.getElementById("view-tickets");
 var viewDB         = document.getElementById("view-db");
 var viewLog        = document.getElementById("view-log");
+var viewTools      = document.getElementById("view-tools");
 var snavTickets    = document.getElementById("snavTickets");
 var snavDB         = document.getElementById("snavDB");
 var snavLog        = document.getElementById("snavLog");
+var snavTools      = document.getElementById("snavTools");
 var heroBadgeText  = document.getElementById("heroBadgeText");
 var heroTitle      = document.getElementById("heroTitle");
 var heroSub        = document.getElementById("heroSub");
@@ -2591,6 +3117,11 @@ function switchSection(section) {
   viewTickets.classList.toggle("active", section === "tickets");
   viewDB.classList.toggle("active", section === "db");
   viewLog.classList.toggle("active", section === "log");
+  viewTools.classList.toggle("active", section === "tools");
+  snavTools.classList.toggle("active", section === "tools");
+  snavTools.setAttribute("aria-selected", String(section === "tools"));
+  document.querySelector("main .content").classList.toggle("is-wide", section === "tools");
+  document.querySelector(".search-wrap").hidden = section === "tools";
   snavTickets.classList.toggle("active", section === "tickets");
   snavDB.classList.toggle("active", section === "db");
   snavLog.classList.toggle("active", section === "log");
@@ -2600,11 +3131,13 @@ function switchSection(section) {
   if (section === "tickets") { renderCategories(); renderFAQs(); }
   else if (section === "db") { renderDB(); }
   else if (section === "log") { laRefresh(); }
+  else if (section === "tools") { ttGutterFor(ttIn, ttGutter); ttPaintHl(); }
 }
 
 snavTickets.addEventListener("click", function(){ switchSection("tickets"); });
 snavDB.addEventListener("click",      function(){ switchSection("db"); });
 snavLog.addEventListener("click",     function(){ switchSection("log"); });
+snavTools.addEventListener("click",   function(){ switchSection("tools"); });
 
 /* ─── DB filter ───────────────────────────────────────────────────────── */
 function getDBFiltered() {
@@ -3029,7 +3562,7 @@ document.addEventListener("keydown", function(e){
 
   if (e.key==="/" && !inInput && !modalOpen) { e.preventDefault(); searchInput.focus(); searchInput.select(); return; }
   if (e.key==="Escape" && active===searchInput && !modalOpen) { searchClear.click(); searchInput.blur(); return; }
-  if ((e.key==="ArrowDown"||e.key==="ArrowUp") && !inInput && !modalOpen) {
+  if ((e.key==="ArrowDown"||e.key==="ArrowUp") && !inInput && !modalOpen && currentSection==="tickets") {
     var trgs = Array.from(faqList.querySelectorAll(".faq-trigger"));
     if (!trgs.length) return;
     var idx = trgs.indexOf(document.activeElement);
@@ -3385,7 +3918,13 @@ function laParse(text) {
   for (var f in fmtCount) if (fmtCount[f] > best) { best = fmtCount[f]; fmt = f; }
   if (!fmt && entries.length && entries[0].raw.trim().charAt(0) === "{") fmt = "JSON";
   entries.forEach(function(e) { e.sig = laSig(e.msg); });
-  return { lines: lines, entries: entries, format: fmt || "Plain text (no timestamps)" };
+  /* lineEntry[i] = index of the entry that file line i belongs to (stack traces belong to the entry above them) */
+  var lineEntry = new Int32Array(lines.length).fill(-1);
+  entries.forEach(function(e, ei) {
+    var end = ei + 1 < entries.length ? entries[ei + 1].n - 1 : lines.length;
+    for (var j = e.n - 1; j < end; j++) lineEntry[j] = ei;
+  });
+  return { lines: lines, entries: entries, format: fmt || "Plain text (no timestamps)", lineEntry: lineEntry };
 }
 
 /* ── Analysis ── */
@@ -3446,7 +3985,7 @@ function laAnalyse(P, file) {
   });
 
   var A = {
-    file: file, lines: P.lines, entries: E, format: P.format, counts: counts, groups: groups,
+    file: file, lines: P.lines, entries: E, lineEntry: P.lineEntry, format: P.format, counts: counts, groups: groups,
     services: services, exceptions: exc, ids: ids, tsMin: tsMin, tsMax: tsMax, tl: null
   };
   A.multiDay = tsMin !== null && new Date(tsMin).toDateString() !== new Date(tsMax).toDateString();
@@ -3618,6 +4157,7 @@ function laRender() {
       '<div class="la-meta">' + meta.join("") + '</div>' +
       '<span class="la-verdict ' + A.verdict.cls + '">' + A.verdict.text + '</span></div>' +
     '<div class="la-head-actions">' +
+      '<button class="la-btn tt-btn-main" data-act="read-full" title="Open every line of the file as uploaded, with fatal, error and warning lines coloured">' + LA_ICON.file + 'Read full file</button>' +
       '<button class="la-btn' + (logState.mask ? ' on' : '') + '" data-act="mask" aria-pressed="' + logState.mask + '" title="Hide card numbers, account numbers, PAN, Aadhaar, emails, phone numbers and secrets on screen and in anything you copy">' + LA_ICON.shield + 'Mask sensitive data</button>' +
       '<button class="la-btn" data-act="copy-summary">' + LA_ICON.copy + 'Copy summary</button>' +
       '<button class="la-btn" data-act="new-file">' + LA_ICON.upload + 'Load another file</button>' +
@@ -3782,7 +4322,7 @@ function laIssueBody(gi) {
   h += '<div><div class="la-lbl">Occurrences' + (g.count > LIMIT ? ' (first ' + LIMIT + ' of ' + g.count + ')' : '') + '</div><div class="la-occs">';
   g.items.slice(0, LIMIT).forEach(function(ix) {
     var e = E[ix];
-    h += '<div class="la-occ"><div class="la-occ-head"><span>Line ' + e.n + '</span>' + (e.ts !== null ? '<span>' + laWhen(e.ts) + '</span>' : '') + (e.service ? '<span>' + escapeHtml(e.service) + '</span>' : '') + '</div>' +
+    h += '<div class="la-occ"><div class="la-occ-head"><button class="la-linkbtn" data-act="open-line" data-n="' + e.n + '" title="Open the full file at this line">Line ' + e.n + '</button>' + (e.ts !== null ? '<span>' + laWhen(e.ts) + '</span>' : '') + (e.service ? '<span>' + escapeHtml(e.service) + '</span>' : '') + '</div>' +
       '<div class="la-occ-text">' + laHL(laEsc(e.raw)) + '</div>' +
       (e.extra.length ? '<details class="la-mini"><summary>Stack trace, ' + e.extra.length + ' line' + (e.extra.length > 1 ? 's' : '') + '</summary><pre class="la-pre">' +
         laEsc(e.extra.slice(0, 80).join("\n")) + (e.extra.length > 80 ? "\n… " + (e.extra.length - 80) + " more lines" : "") + '</pre></details>' : '') +
@@ -3824,7 +4364,7 @@ function laRawHtml(list) {
   if (!list.length) return h + '<p class="la-empty">No lines match these filters.</p>';
   h += '<div class="la-raw">';
   list.slice(0, logState.rawLimit).forEach(function(e) {
-    h += '<div class="la-row lv-' + e.level + '"><span class="n">' + e.n + '</span><span class="l">' + (e.level === "OTHER" ? "—" : e.level) + '</span><span class="t">' + laHL(laEsc(e.raw)) +
+    h += '<div class="la-row lv-' + e.level + '"><span class="n"><button class="la-linkbtn" data-act="open-line" data-n="' + e.n + '" title="Open the full file at line ' + e.n + '">' + e.n + '</button></span><span class="l">' + (e.level === "OTHER" ? "—" : e.level) + '</span><span class="t">' + laHL(laEsc(e.raw)) +
       (e.extra.length ? '<span class="la-tr">' + laHL(laEsc(e.extra.slice(0, 40).join("\n"))) + (e.extra.length > 40 ? "\n… " + (e.extra.length - 40) + " more lines" : "") + '</span>' : '') + '</span></div>';
   });
   h += '</div>';
@@ -3950,6 +4490,10 @@ logResults.addEventListener("click", function(ev) {
   } else if (act === "more") {
     logState.rawLimit += 500;
     laRefreshRaw();
+  } else if (act === "read-full") {
+    fvOpen();
+  } else if (act === "open-line") {
+    fvOpen(+b.getAttribute("data-n"));
   } else if (act === "mask") {
     logState.mask = !logState.mask;
     laRender();
@@ -4015,6 +4559,1485 @@ logDropZone.addEventListener("drop", function(e) {
   if (e.dataTransfer.files.length > 1) showToast("Only the first file was analysed");
   handleLogFile(e.dataTransfer.files[0]);
 });
+
+/* ─── Full log file reader ───────────────────────────────────────────── */
+var FV_RH = 20, FV_MAXLEN = 4000;
+var fvOverlay = document.getElementById("fvOverlay"), fvScroll = document.getElementById("fvScroll");
+var fvSpacer = document.getElementById("fvSpacer"), fvRows = document.getElementById("fvRows");
+var fvMap = document.getElementById("fvMap"), fvCanvas = document.getElementById("fvCanvas");
+var fvFind = document.getElementById("fvFind"), fvCount = document.getElementById("fvCount");
+var fvGoto = document.getElementById("fvGoto"), fvLevels = document.getElementById("fvLevels");
+var fvState = {
+  show: { FATAL: true, ERROR: true, WARN: true, INFO: false, DEBUG: false, TRACE: false, OTHER: false },
+  q: "", matches: [], mi: -1, cur: -1, range: [-1, -1], heads: null, base: null, returnFocus: null
+};
+var FV_LT_RE = /\b(FATAL|CRITICAL|CRIT|EMERG|ALERT|PANIC|SEVERE|ERROR|ERR|WARNING|WARN|NOTICE|INFO|INFORMATION|DEBUG|FINEST|FINER|FINE|TRACE)\b/;
+
+function fvOpen(lineNo) {
+  if (!logA) return;
+  var A = logA, heads = {};
+  LA_LEVELS.forEach(function(l) { heads[l] = []; });
+  A.entries.forEach(function(e) { heads[e.level].push(e.n - 1); });
+  fvState.heads = heads;
+  fvState.returnFocus = document.activeElement;
+  document.getElementById("fvTitle").textContent = A.file.name;
+  document.getElementById("fvMeta").textContent = A.lines.length.toLocaleString() + " lines · " + laSize(A.file.size) +
+    (A.tsMin !== null ? " · " + laDate(A.tsMin) + ", " + laClock(A.tsMin) + " to " + (A.multiDay ? laDate(A.tsMax) + ", " : "") + laClock(A.tsMax) : "") +
+    (logState.mask ? " · sensitive data masked" : "");
+  var maxLen = 0;
+  for (var i = 0; i < A.lines.length; i++) if (A.lines[i].length > maxLen) maxLen = A.lines[i].length;
+  fvSpacer.style.height = (A.lines.length * FV_RH) + "px";
+  fvSpacer.style.minWidth = "calc(" + Math.min(maxLen, FV_MAXLEN + 30) + "ch + 7rem)";
+  fvOverlay.classList.add("is-open");
+  fvOverlay.setAttribute("aria-hidden", "false");
+  document.body.style.overflow = "hidden";
+  fvFind.value = fvState.q;
+  fvLevelsRender();
+  fvState.range = [-1, -1];
+  fvScroll.scrollTop = 0; fvScroll.scrollLeft = 0;
+  fvSearch();
+  fvBuildMap();
+  if (lineNo) fvGo(lineNo - 1); else { fvState.cur = -1; fvRender(true); }
+  setTimeout(function() { (lineNo ? fvScroll : fvFind).focus(); }, 30);
+}
+
+function fvClose() {
+  fvOverlay.classList.remove("is-open");
+  fvOverlay.setAttribute("aria-hidden", "true");
+  document.body.style.overflow = "";
+  fvRows.innerHTML = "";
+  if (fvState.returnFocus && fvState.returnFocus.focus) fvState.returnFocus.focus();
+}
+
+function fvLevelsRender() {
+  var h = "", C = logA.counts;
+  LA_LEVELS.forEach(function(l) {
+    if (!C[l]) return;
+    var on = fvState.show[l];
+    h += '<span class="fv-lvl lv-' + l + (on ? ' on' : '') + '">' +
+      '<button class="fv-tog" data-lv="' + l + '" aria-pressed="' + on + '" title="' + (on ? "Stop colouring " : "Colour ") + LA_LABEL[l].toLowerCase() + ' lines">' +
+        (l === "OTHER" ? "No level" : LA_LABEL[l]) + ' <span class="n">' + C[l].toLocaleString() + '</span></button>' +
+      '<button class="fv-jump" data-lv="' + l + '" data-dir="-1" aria-label="Previous ' + LA_LABEL[l].toLowerCase() + '">&#8249;</button>' +
+      '<button class="fv-jump" data-lv="' + l + '" data-dir="1" aria-label="Next ' + LA_LABEL[l].toLowerCase() + '">&#8250;</button></span>';
+  });
+  fvLevels.innerHTML = h;
+}
+
+function fvHl(html) {
+  if (!fvState.q) return html;
+  var q = escapeHtml(fvState.q).replace(/[.*+?^${}()|[\]\\]/g, "\\$&");
+  return html.replace(new RegExp("(" + q + ")(?![^<]*>)", "gi"), "<mark>$1</mark>");
+}
+
+function fvRender(force) {
+  if (!logA || !fvOverlay.classList.contains("is-open")) return;
+  var A = logA, map = A.lineEntry, E = A.entries, n = A.lines.length;
+  var first = Math.max(0, Math.floor(fvScroll.scrollTop / FV_RH) - 25);
+  var last = Math.min(n, Math.ceil((fvScroll.scrollTop + fvScroll.clientHeight) / FV_RH) + 25);
+  if (!force && first === fvState.range[0] && last === fvState.range[1]) { fvPos(); return; }
+  fvState.range = [first, last];
+  var h = "";
+  for (var i = first; i < last; i++) {
+    var ei = map[i], e = ei > -1 ? E[ei] : null, lv = e ? e.level : "OTHER", head = !!e && e.n - 1 === i;
+    var on = !!e && fvState.show[lv];
+    var cls = "fv-row";
+    if (on) cls += " fv-on lv-" + lv + (head ? " fv-head" : " fv-cont") + (LA_RANK[lv] > 2 ? " fv-soft" : "");
+    if (i === fvState.cur) cls += " fv-cur";
+    var t = A.lines[i];
+    if (t.length > FV_MAXLEN) t = t.slice(0, FV_MAXLEN) + " … [+" + (t.length - FV_MAXLEN).toLocaleString() + " characters]";
+    var html = laEsc(t);
+    if (on && head) html = html.replace(FV_LT_RE, '<span class="fv-lt">$1</span>');
+    h += '<div class="' + cls + '"><span class="fv-n">' + (i + 1) + '</span><span class="fv-t">' + (fvHl(html) || " ") + '</span></div>';
+  }
+  fvRows.style.transform = "translateY(" + (first * FV_RH) + "px)";
+  fvRows.innerHTML = h;
+  fvPos();
+  fvDrawView();
+}
+
+function fvTopLine() { return Math.floor(fvScroll.scrollTop / FV_RH); }
+
+function fvPos() {
+  var top = fvTopLine() + 1, vis = Math.floor(fvScroll.clientHeight / FV_RH);
+  document.getElementById("fvPos").textContent = "Lines " + top.toLocaleString() + " to " +
+    Math.min(logA.lines.length, top + vis - 1).toLocaleString() + " of " + logA.lines.length.toLocaleString() +
+    (fvState.cur > -1 ? " · marked line " + (fvState.cur + 1).toLocaleString() : "");
+}
+
+function fvGo(idx) {
+  idx = Math.max(0, Math.min(logA.lines.length - 1, idx));
+  fvState.cur = idx;
+  fvScroll.scrollTop = Math.max(0, idx * FV_RH - fvScroll.clientHeight / 3);
+  fvRender(true);
+}
+
+function fvJump(level, dir) {
+  var arr = fvState.heads[level];
+  if (!arr || !arr.length) return;
+  var ref = fvState.cur > -1 ? fvState.cur : (dir > 0 ? fvTopLine() - 1 : fvTopLine() + 1);
+  var target = -1;
+  if (dir > 0) { for (var i = 0; i < arr.length; i++) if (arr[i] > ref) { target = arr[i]; break; } if (target < 0) target = arr[0]; }
+  else { for (var j = arr.length - 1; j >= 0; j--) if (arr[j] < ref) { target = arr[j]; break; } if (target < 0) target = arr[arr.length - 1]; }
+  if (!fvState.show[level]) { fvState.show[level] = true; fvLevelsRender(); fvBuildMap(); }
+  fvGo(target);
+  var pos = arr.indexOf(target) + 1;
+  document.getElementById("fvPos").textContent += " · " + LA_LABEL[level].toLowerCase().replace(/s$/, "") + " " + pos + " of " + arr.length;
+}
+
+function fvSearch() {
+  var q = fvFind.value.trim(), L = logA.lines, out = [];
+  fvState.q = q;
+  if (q) {
+    var lq = q.toLowerCase();
+    for (var i = 0; i < L.length && out.length < 50000; i++) if (L[i].toLowerCase().indexOf(lq) > -1) out.push(i);
+  }
+  fvState.matches = out;
+  fvState.mi = -1;
+  fvCount.textContent = q ? (out.length ? out.length.toLocaleString() + " lines" : "No matches") : "";
+}
+
+function fvStep(dir) {
+  var m = fvState.matches;
+  if (!m.length) return;
+  var ref = fvState.cur > -1 ? fvState.cur : fvTopLine() - 1, k = -1;
+  if (dir > 0) { for (var i = 0; i < m.length; i++) if (m[i] > ref) { k = i; break; } if (k < 0) k = 0; }
+  else { for (var j = m.length - 1; j >= 0; j--) if (m[j] < ref) { k = j; break; } if (k < 0) k = m.length - 1; }
+  fvState.mi = k;
+  fvCount.textContent = (k + 1).toLocaleString() + " / " + m.length.toLocaleString();
+  fvGo(m[k]);
+}
+
+function fvColor(name) { return getComputedStyle(document.documentElement).getPropertyValue(name).trim() || "#888"; }
+
+function fvBuildMap() {
+  var dpr = window.devicePixelRatio || 1, w = fvMap.clientWidth, hgt = fvMap.clientHeight, n = logA.lines.length;
+  if (!w || !hgt) return;
+  var base = document.createElement("canvas");
+  base.width = Math.round(w * dpr); base.height = Math.round(hgt * dpr);
+  var ctx = base.getContext("2d"), tick = Math.max(2, Math.round(2 * dpr));
+  function draw(lines, color, x0, x1) {
+    ctx.fillStyle = color;
+    for (var i = 0; i < lines.length; i++) ctx.fillRect(x0 * base.width, Math.floor(lines[i] / n * base.height), (x1 - x0) * base.width, tick);
+  }
+  var order = [["DEBUG", "--navy-30"], ["INFO", "--accent"], ["WARN", "--amber"], ["ERROR", "--red"], ["FATAL", "--fatal"]];
+  order.forEach(function(o) { if (fvState.show[o[0]] && fvState.heads[o[0]]) draw(fvState.heads[o[0]], fvColor(o[1]), 0, 0.62); });
+  if (fvState.matches.length) draw(fvState.matches, fvColor("--navy"), 0.66, 1);
+  fvState.base = base;
+  fvDrawView();
+}
+
+function fvDrawView() {
+  if (!fvState.base) return;
+  var dpr = window.devicePixelRatio || 1, w = fvMap.clientWidth, hgt = fvMap.clientHeight;
+  if (fvCanvas.width !== Math.round(w * dpr) || fvCanvas.height !== Math.round(hgt * dpr)) { fvCanvas.width = Math.round(w * dpr); fvCanvas.height = Math.round(hgt * dpr); }
+  var ctx = fvCanvas.getContext("2d"), total = fvSpacer.offsetHeight || 1;
+  ctx.clearRect(0, 0, fvCanvas.width, fvCanvas.height);
+  ctx.drawImage(fvState.base, 0, 0, fvCanvas.width, fvCanvas.height);
+  var y = fvScroll.scrollTop / total * fvCanvas.height, vh = Math.max(4 * dpr, fvScroll.clientHeight / total * fvCanvas.height);
+  ctx.fillStyle = fvColor("--navy-12");
+  ctx.fillRect(0, y, fvCanvas.width, vh);
+  ctx.strokeStyle = fvColor("--navy-60");
+  ctx.lineWidth = dpr;
+  ctx.strokeRect(dpr / 2, y + dpr / 2, fvCanvas.width - dpr, vh - dpr);
+}
+
+var fvRaf = 0;
+fvScroll.addEventListener("scroll", function() {
+  if (fvRaf) return;
+  fvRaf = requestAnimationFrame(function() { fvRaf = 0; fvRender(false); });
+}, { passive: true });
+
+(function() {
+  var dragging = false;
+  function seek(ev) {
+    var r = fvMap.getBoundingClientRect(), f = Math.max(0, Math.min(1, (ev.clientY - r.top) / r.height));
+    fvScroll.scrollTop = f * fvSpacer.offsetHeight - fvScroll.clientHeight / 2;
+  }
+  fvMap.addEventListener("pointerdown", function(ev) { dragging = true; fvMap.setPointerCapture(ev.pointerId); seek(ev); });
+  fvMap.addEventListener("pointermove", function(ev) { if (dragging) seek(ev); });
+  fvMap.addEventListener("pointerup", function() { dragging = false; });
+})();
+
+fvLevels.addEventListener("click", function(ev) {
+  var b = ev.target.closest("button");
+  if (!b) return;
+  var lv = b.getAttribute("data-lv");
+  var sel = b.classList.contains("fv-tog") ? '.fv-tog[data-lv="' + lv + '"]' : '.fv-jump[data-lv="' + lv + '"][data-dir="' + b.getAttribute("data-dir") + '"]';
+  if (b.classList.contains("fv-tog")) {
+    fvState.show[lv] = !fvState.show[lv];
+    fvLevelsRender(); fvBuildMap(); fvRender(true);
+  } else fvJump(lv, +b.getAttribute("data-dir"));
+  var again = fvLevels.querySelector(sel);
+  if (again) again.focus();
+});
+
+fvFind.addEventListener("input", debounce(function() { fvSearch(); fvBuildMap(); fvRender(true); }, 200));
+fvFind.addEventListener("keydown", function(e) { if (e.key === "Enter") { e.preventDefault(); fvStep(e.shiftKey ? -1 : 1); } });
+document.getElementById("fvNext").addEventListener("click", function() { fvStep(1); });
+document.getElementById("fvPrev").addEventListener("click", function() { fvStep(-1); });
+fvGoto.addEventListener("keydown", function(e) {
+  if (e.key !== "Enter") return;
+  e.preventDefault();
+  var v = parseInt(fvGoto.value, 10);
+  if (v > 0) { fvGo(v - 1); fvScroll.focus(); } else showToast("Type a line number");
+});
+document.getElementById("fvClose").addEventListener("click", fvClose);
+document.addEventListener("keydown", function(e) {
+  if (!fvOverlay.classList.contains("is-open")) return;
+  if (e.key === "Escape") { e.preventDefault(); e.stopPropagation(); fvClose(); }
+  else if ((e.ctrlKey || e.metaKey) && e.key.toLowerCase() === "f") { e.preventDefault(); fvFind.focus(); fvFind.select(); }
+  else if (e.key === "F3") { e.preventDefault(); fvStep(e.shiftKey ? -1 : 1); }
+});
+window.addEventListener("resize", debounce(function() { if (fvOverlay.classList.contains("is-open")) { fvBuildMap(); fvRender(true); } }, 150));
+
+/* ─── Formatter & Tools ──────────────────────────────────────────────── */
+var ttIn = document.getElementById("ttIn"), ttHl = document.getElementById("ttHl"), ttGutter = document.getElementById("ttGutter");
+var ttEditor = document.getElementById("ttEditor"), ttOut = document.getElementById("ttOut"), ttBadge = document.getElementById("ttBadge");
+var ttLang = document.getElementById("ttLang"), ttIndentSel = document.getElementById("ttIndent"), ttSort = document.getElementById("ttSort");
+var ttFind = document.getElementById("ttFind"), ttFindIn = document.getElementById("ttFindIn"), ttRepIn = document.getElementById("ttRepIn");
+var ttFCount = document.getElementById("ttFCount");
+var TT_LH = 20, TT_LIVE_MAX = 1500000;
+var tt = { out: null, rows: null, rowEls: null, hidden: null, errPos: -1, matches: [], mi: -1, tool: false, path: "" };
+
+function ttInd() { var v = ttIndentSel.value; return v === "tab" ? "\t" : v === "4" ? "    " : "  "; }
+function ttEscRe(s) { return s.replace(/[.*+?^${}()|[\]\\]/g, "\\$&"); }
+function ttLineCol(text, pos) {
+  var line = 1, last = -1;
+  for (var i = 0; i < pos && i < text.length; i++) if (text.charCodeAt(i) === 10) { line++; last = i; }
+  return { line: line, col: pos - last };
+}
+
+/* ── JSON: own parser so long numbers (account numbers) keep every digit ── */
+var TT_NUM_RE = /-?(?:0|[1-9]\d*)(?:\.\d+)?(?:[eE][+-]?\d+)?/y;
+function ttJsonParse(src) {
+  var i = 0, n = src.length, stats = { keys: 0, values: 0, depth: 0 };
+  if (src.charCodeAt(0) === 0xFEFF) i = 1;
+  function err(msg, at) { var e = new Error(msg); e.pos = at === undefined ? i : at; throw e; }
+  function ws() { while (i < n) { var c = src.charCodeAt(i); if (c === 32 || c === 9 || c === 10 || c === 13) i++; else break; } }
+  function str() {
+    var s = i; i++;
+    while (i < n) {
+      var c = src.charCodeAt(i);
+      if (c === 34) { i++; return src.slice(s, i); }
+      if (c === 92) {
+        var e = src.charAt(i + 1);
+        if ('"\\/bfnrt'.indexOf(e) > -1 && e) i += 2;
+        else if (e === "u" && /^[0-9a-fA-F]{4}$/.test(src.substr(i + 2, 4))) i += 6;
+        else err("Invalid escape sequence \\" + e + " inside a string");
+        continue;
+      }
+      if (c < 32) err(c === 10 ? "Line break inside a string. Close the string with \" or write \\n" : "Control character inside a string must be escaped");
+      i++;
+    }
+    err("This string is never closed. The ending \" is missing", s);
+  }
+  function val(depth) {
+    ws();
+    if (depth > stats.depth) stats.depth = depth;
+    if (i >= n) err("The input ends where a value was expected");
+    var c = src.charAt(i);
+    stats.values++;
+    if (c === "{") return obj(depth);
+    if (c === "[") return arr(depth);
+    if (c === '"') return { t: "s", raw: str() };
+    if (c === "-" || (c >= "0" && c <= "9")) {
+      TT_NUM_RE.lastIndex = i;
+      var m = TT_NUM_RE.exec(src);
+      if (!m) err("Invalid number");
+      i += m[0].length;
+      return { t: "n", raw: m[0] };
+    }
+    if (src.startsWith("true", i)) { i += 4; return { t: "b", raw: "true" }; }
+    if (src.startsWith("false", i)) { i += 5; return { t: "b", raw: "false" }; }
+    if (src.startsWith("null", i)) { i += 4; return { t: "z", raw: "null" }; }
+    if (c === "'") err("Strings must use double quotes (\"), not single quotes (')");
+    if (c === "}" || c === "]") err("Unexpected '" + c + "'. Is there a comma before it with nothing after?");
+    if (/[A-Za-z_]/.test(c)) err("Unquoted text. Text values must be in double quotes, and only true, false and null are allowed bare");
+    err("Unexpected character '" + c + "' where a value was expected");
+  }
+  function obj(depth) {
+    var node = { t: "o", k: [] }, open = i;
+    i++; ws();
+    if (src.charAt(i) === "}") { i++; return node; }
+    for (;;) {
+      ws();
+      if (i >= n) err("The input ends inside an object. A closing } is missing (the object starts on line " + ttLineCol(src, open).line + ")");
+      var c = src.charAt(i);
+      if (c !== '"') {
+        if (c === "}") err("Trailing comma: remove the comma before this }");
+        if (c === "'") err("Property names must use double quotes, not single quotes");
+        err("Expected a property name in double quotes");
+      }
+      var key = str();
+      ws();
+      if (src.charAt(i) !== ":") err(i >= n ? "The input ends after a property name" : "Expected a colon (:) after the property name " + key);
+      i++;
+      var v = val(depth + 1);
+      node.k.push([key, v]);
+      stats.keys++;
+      ws();
+      c = src.charAt(i);
+      if (c === ",") { i++; continue; }
+      if (c === "}") { i++; return node; }
+      if (i >= n) err("The input ends inside an object. A closing } is missing (the object starts on line " + ttLineCol(src, open).line + ")");
+      err(c === '"' ? "Missing comma between properties" : "Expected a comma (,) or } after the value");
+    }
+  }
+  function arr(depth) {
+    var node = { t: "a", v: [] }, open = i;
+    i++; ws();
+    if (src.charAt(i) === "]") { i++; return node; }
+    for (;;) {
+      ws();
+      if (src.charAt(i) === "]") err("Trailing comma: remove the comma before this ]");
+      node.v.push(val(depth + 1));
+      ws();
+      var c = src.charAt(i);
+      if (c === ",") { i++; continue; }
+      if (c === "]") { i++; return node; }
+      if (i >= n) err("The input ends inside a list. A closing ] is missing (the list starts on line " + ttLineCol(src, open).line + ")");
+      err("Expected a comma (,) or ] after the list item");
+    }
+  }
+  ws();
+  if (i >= n) err("The input is empty");
+  var root = val(0);
+  ws();
+  if (i < n) err("Extra content after the end of the JSON. Only one top-level value is allowed");
+  root.stats = stats;
+  return root;
+}
+
+function ttJsonItems(v, sort) {
+  if (v.t === "a") return v.v;
+  if (!sort) return v.k;
+  return v.k.slice().sort(function(a, b) { return a[0] < b[0] ? -1 : a[0] > b[0] ? 1 : 0; });
+}
+
+function ttJsonStr(v, ind, sort, pad) {
+  if (v.t !== "o" && v.t !== "a") return v.raw;
+  var items = ttJsonItems(v, sort), o = v.t === "o" ? "{" : "[", c = v.t === "o" ? "}" : "]";
+  if (!items.length) return o + c;
+  pad = pad || "";
+  if (ind === null) return o + items.map(function(it) { return v.t === "o" ? it[0] + ":" + ttJsonStr(it[1], null, sort) : ttJsonStr(it, null, sort); }).join(",") + c;
+  var inner = pad + ind;
+  return o + "\n" + items.map(function(it) {
+    return inner + (v.t === "o" ? it[0] + ": " + ttJsonStr(it[1], ind, sort, inner) : ttJsonStr(it, ind, sort, inner));
+  }).join(",\n") + "\n" + pad + c;
+}
+
+function ttJsonRows(root, ind, sort) {
+  var rows = [];
+  function push(h) { rows.push({ h: h, end: -1 }); return rows.length - 1; }
+  var P = function(s) { return '<span class="sp">' + s + '</span>'; };
+  var TC = { s: "ss", n: "sn", b: "sb", z: "sz" };
+  function walk(v, pad, prefix, path, comma) {
+    if (v.t === "o" || v.t === "a") {
+      var items = ttJsonItems(v, sort), o = v.t === "o" ? "{" : "[", c = v.t === "o" ? "}" : "]";
+      if (!items.length) { push(pad + prefix + P(o + c) + comma); return; }
+      var s = push(pad + prefix + P(o));
+      items.forEach(function(it, idx) {
+        var last = idx === items.length - 1 ? "" : P(",");
+        if (v.t === "o") {
+          var name = JSON.parse(it[0]);
+          var p = /^[A-Za-z_$][\w$]*$/.test(name) ? path + "." + name : path + "[" + it[0] + "]";
+          walk(it[1], pad + ind, '<span class="sk tk" data-p="' + escapeHtml(p) + '" title="Click to get the path">' + escapeHtml(it[0]) + '</span>' + P(": "), p, last);
+        } else walk(it, pad + ind, "", path + "[" + idx + "]", last);
+      });
+      var e = push(pad + P(c) + comma);
+      rows[s].end = e;
+      rows[s].sum = P(c) + (comma ? P(",") : "") + '<em>' + items.length + (v.t === "o" ? (items.length === 1 ? " key" : " keys") : (items.length === 1 ? " item" : " items")) + '</em>';
+    } else push(pad + prefix + '<span class="' + TC[v.t] + '">' + escapeHtml(v.raw) + '</span>' + comma);
+  }
+  walk(root, "", "", "$", "");
+  return rows;
+}
+
+/* ── XML ── */
+function ttXmlEscText(s) { return s.replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;"); }
+function ttXmlEscAttr(s) { return ttXmlEscText(s).replace(/"/g, "&quot;"); }
+function ttXmlParse(src) {
+  var decl = (src.match(/^﻿?\s*(<\?xml[^>]*\?>)/) || [])[1] || "";
+  var doc = new DOMParser().parseFromString(src, "application/xml");
+  var pe = doc.getElementsByTagName("parsererror");
+  for (var i = 0; i < pe.length; i++) {
+    if (pe[i].namespaceURI === "http://www.w3.org/1999/xhtml" || doc.documentElement.nodeName === "parsererror") {
+      var t = pe[i].textContent, m = t.match(/line (\d+) at column (\d+):\s*([^\n]+)/);
+      var e = new Error(m ? m[3].replace(/Below is a rendering[\s\S]*$/, "").replace(/\s+$/, "") : "This is not well-formed XML");
+      if (m) { e.line = +m[1]; e.col = +m[2]; }
+      throw e;
+    }
+  }
+  return { doc: doc, decl: decl };
+}
+function ttXmlKids(node) {
+  var out = [];
+  for (var c = node.firstChild; c; c = c.nextSibling) if (!(c.nodeType === 3 && !c.nodeValue.trim())) out.push(c);
+  return out;
+}
+function ttXmlWalk(x, emit) {
+  /* emit(kind, node, depth) drives both the text and the highlighted renderers */
+  function walk(node, depth) {
+    if (node.nodeType === 1) {
+      var kids = ttXmlKids(node);
+      if (!kids.length) emit("empty", node, depth);
+      else if (kids.length === 1 && kids[0].nodeType === 3 && kids[0].nodeValue.trim().indexOf("\n") === -1) emit("inline", node, depth, kids[0].nodeValue.trim());
+      else { emit("open", node, depth); kids.forEach(function(k) { walk(k, depth + 1); }); emit("close", node, depth); }
+    } else emit("node", node, depth);
+  }
+  for (var c = x.doc.firstChild; c; c = c.nextSibling) walk(c, 0);
+}
+function ttXmlOpenTag(el, hl) {
+  var s = hl ? '<span class="sp">&lt;</span><span class="xt">' + escapeHtml(el.nodeName) + '</span>' : "<" + el.nodeName;
+  for (var i = 0; i < el.attributes.length; i++) {
+    var a = el.attributes[i];
+    s += hl ? ' <span class="xa">' + escapeHtml(a.name) + '</span><span class="sp">=</span><span class="xv">"' + escapeHtml(ttXmlEscAttr(a.value)) + '"</span>'
+            : " " + a.name + '="' + ttXmlEscAttr(a.value) + '"';
+  }
+  return s;
+}
+function ttXmlNodeText(node) {
+  switch (node.nodeType) {
+    case 3: return ttXmlEscText(node.nodeValue.trim());
+    case 4: return "<![CDATA[" + node.nodeValue + "]]>";
+    case 8: return "<!--" + node.nodeValue + "-->";
+    case 7: return "<?" + node.target + " " + node.data + "?>";
+    case 10: return "<!DOCTYPE " + node.name + (node.publicId ? ' PUBLIC "' + node.publicId + '"' : "") + (node.systemId ? ' "' + node.systemId + '"' : "") + ">";
+  }
+  return "";
+}
+function ttXmlStr(x, ind) {
+  var out = [];
+  if (x.decl) out.push(x.decl);
+  if (ind === null) {
+    var s = new XMLSerializer();
+    (function strip(n) { for (var c = n.firstChild; c;) { var nx = c.nextSibling; if (c.nodeType === 3 && !c.nodeValue.trim()) n.removeChild(c); else if (c.nodeType === 1) strip(c); c = nx; } })(x.doc);
+    var body = "";
+    for (var c = x.doc.firstChild; c; c = c.nextSibling) body += s.serializeToString(c);
+    return (x.decl || "") + body;
+  }
+  ttXmlWalk(x, function(kind, node, d, text) {
+    var pad = new Array(d + 1).join(ind);
+    if (kind === "empty") out.push(pad + ttXmlOpenTag(node) + "/>");
+    else if (kind === "inline") out.push(pad + ttXmlOpenTag(node) + ">" + ttXmlEscText(text) + "</" + node.nodeName + ">");
+    else if (kind === "open") out.push(pad + ttXmlOpenTag(node) + ">");
+    else if (kind === "close") out.push(pad + "</" + node.nodeName + ">");
+    else ttXmlNodeText(node).split("\n").forEach(function(l, i) { out.push((i ? "" : pad) + l); });
+  });
+  return out.join("\n");
+}
+function ttXmlRows(x, ind) {
+  var rows = [], stack = [], elems = 0;
+  function push(h) { rows.push({ h: h, end: -1 }); return rows.length - 1; }
+  if (x.decl) push('<span class="xd">' + escapeHtml(x.decl) + '</span>');
+  ttXmlWalk(x, function(kind, node, d, text) {
+    var pad = new Array(d + 1).join(ind);
+    if (kind === "empty") { elems++; push(pad + ttXmlOpenTag(node, true) + '<span class="sp">/&gt;</span>'); }
+    else if (kind === "inline") { elems++; push(pad + ttXmlOpenTag(node, true) + '<span class="sp">&gt;</span>' + escapeHtml(ttXmlEscText(text)) + '<span class="sp">&lt;/</span><span class="xt">' + escapeHtml(node.nodeName) + '</span><span class="sp">&gt;</span>'); }
+    else if (kind === "open") { elems++; stack.push(push(pad + ttXmlOpenTag(node, true) + '<span class="sp">&gt;</span>')); }
+    else if (kind === "close") {
+      var s = stack.pop(), e = push(pad + '<span class="sp">&lt;/</span><span class="xt">' + escapeHtml(node.nodeName) + '</span><span class="sp">&gt;</span>');
+      rows[s].end = e;
+      var kids = ttXmlKids(node).length;
+      rows[s].sum = '<span class="sp">&lt;/</span><span class="xt">' + escapeHtml(node.nodeName) + '</span><span class="sp">&gt;</span><em>' + kids + (kids === 1 ? " child" : " children") + '</em>';
+    } else {
+      var cls = node.nodeType === 8 ? "xc" : node.nodeType === 4 ? "xv" : node.nodeType === 3 ? "" : "xd";
+      ttXmlNodeText(node).split("\n").forEach(function(l, i) { push((i ? "" : pad) + (cls ? '<span class="' + cls + '">' + escapeHtml(l) + '</span>' : escapeHtml(l))); });
+    }
+  });
+  rows.elems = elems;
+  return rows;
+}
+
+/* ── SQL (formatted for reading; not validated against a database) ── */
+var TT_SQL_KW = {};
+("SELECT FROM WHERE AND OR NOT IN IS NULL LIKE ILIKE BETWEEN EXISTS AS ON JOIN LEFT RIGHT INNER OUTER FULL CROSS GROUP BY ORDER HAVING LIMIT OFFSET " +
+ "UNION ALL DISTINCT INSERT INTO VALUES UPDATE SET DELETE CREATE TABLE ALTER DROP INDEX VIEW WITH CASE WHEN THEN ELSE END ASC DESC TOP FETCH NEXT " +
+ "FIRST ROWS ROW ONLY RETURNING PRIMARY KEY FOREIGN REFERENCES DEFAULT CONSTRAINT UNIQUE CHECK TRUNCATE MERGE USING MATCHED BEGIN COMMIT ROLLBACK " +
+ "TRANSACTION COUNT SUM AVG MIN MAX COALESCE NVL NULLIF CAST CONVERT INTERVAL CURRENT_DATE CURRENT_TIMESTAMP NOW OVER PARTITION ROW_NUMBER RANK " +
+ "DENSE_RANK LATERAL EXCEPT INTERSECT MINUS TRUE FALSE IF REPLACE SUBSTRING TRIM UPPER LOWER LENGTH DATE TO_DATE TO_CHAR EXTRACT SYSDATE ROWNUM " +
+ "GRANT REVOKE PROCEDURE FUNCTION TRIGGER DECLARE EXEC EXECUTE NOLOCK FOR SOME ANY").split(" ").forEach(function(k) { TT_SQL_KW[k] = 1; });
+var TT_SQL_FN = { COUNT: 1, SUM: 1, AVG: 1, MIN: 1, MAX: 1, COALESCE: 1, NVL: 1, NULLIF: 1, CAST: 1, CONVERT: 1, NOW: 1, ROW_NUMBER: 1, RANK: 1, DENSE_RANK: 1,
+  REPLACE: 1, SUBSTRING: 1, TRIM: 1, UPPER: 1, LOWER: 1, LENGTH: 1, DATE: 1, TO_DATE: 1, TO_CHAR: 1, EXTRACT: 1, IF: 1, EXISTS: 0 };
+var TT_SQL_RE = /(--[^\n]*|\/\*[\s\S]*?(?:\*\/|$))|('(?:[^']|'')*'?)|("(?:[^"]|"")*"?|`[^`]*`?|\[[^\]\n]*\]?)|(\b\d+(?:\.\d+)?\b)|([A-Za-z_][\w$#]*|@@?\w+|:\w+|\$\d+|\?)|(\s+)|(<>|!=|<=|>=|\|\||::|[(),;=<>+\-*\/%.])|([\s\S])/g;
+function ttSqlTokens(s) {
+  var out = [], m;
+  TT_SQL_RE.lastIndex = 0;
+  while ((m = TT_SQL_RE.exec(s))) {
+    var t = m[1] ? "c" : m[2] ? "s" : m[3] ? "q" : m[4] ? "n" : m[5] ? "w" : m[6] ? "ws" : m[7] ? "p" : "x";
+    out.push({ t: t, v: m[0] });
+  }
+  return out;
+}
+function ttSqlHl(line) {
+  return ttSqlTokens(line).map(function(t) {
+    var e = escapeHtml(t.v);
+    if (t.t === "c") return '<span class="xc">' + e + '</span>';
+    if (t.t === "s") return '<span class="ss">' + e + '</span>';
+    if (t.t === "n") return '<span class="sn">' + e + '</span>';
+    if (t.t === "w" && TT_SQL_KW[t.v.toUpperCase()]) return '<span class="qk">' + e + '</span>';
+    return e;
+  }).join("");
+}
+function ttSqlFormat(src, ind) {
+  var toks = ttSqlTokens(src).filter(function(t) { return t.t !== "ws"; });
+  var lines = [], cur = null, base = 0, stack = [], clause = "", prev = null, between = false;
+  var MAJOR = { "SELECT": 1, "FROM": 1, "WHERE": 1, "GROUP BY": 1, "ORDER BY": 1, "HAVING": 1, "LIMIT": 1, "OFFSET": 1, "UNION": 1, "UNION ALL": 1,
+    "EXCEPT": 1, "INTERSECT": 1, "MINUS": 1, "VALUES": 1, "SET": 1, "INSERT INTO": 1, "UPDATE": 1, "DELETE FROM": 1, "DELETE": 1, "WITH": 1, "RETURNING": 1, "FETCH": 1 };
+  function nl(level) { if (cur && cur.t) lines.push(cur); cur = { lv: Math.max(0, level), t: "" }; }
+  function add(text, tight) { if (!cur) nl(base); if (cur.t && !tight) cur.t += " "; cur.t += text; }
+  for (var i = 0; i < toks.length; i++) {
+    var t = toks[i], v = t.v, up = t.t === "w" ? v.toUpperCase() : v;
+    var next = toks[i + 1], nup = next && next.t === "w" ? next.v.toUpperCase() : "";
+    if (t.t === "w" && TT_SQL_KW[up]) {
+      if ((up === "GROUP" || up === "ORDER" || up === "PARTITION") && nup === "BY") { up += " BY"; i++; }
+      else if (up === "UNION" && nup === "ALL") { up = "UNION ALL"; i++; }
+      else if ((up === "INSERT" && nup === "INTO") || (up === "DELETE" && nup === "FROM")) { up += " " + nup; i++; }
+      else if (/^(LEFT|RIGHT|INNER|FULL|CROSS)$/.test(up)) {
+        var j = i + 1, words = [up];
+        while (toks[j] && toks[j].t === "w" && /^(OUTER|JOIN)$/i.test(toks[j].v)) { words.push(toks[j].v.toUpperCase()); if (/^JOIN$/i.test(toks[j].v)) break; j++; }
+        if (words[words.length - 1] === "JOIN") { up = words.join(" "); i = j; }
+      }
+      v = up;
+    }
+    var inPar = stack.length && !stack[stack.length - 1].sub;
+    if (t.t === "c") { add(v); if (v.indexOf("--") === 0) nl(base + 1); prev = t; continue; }
+    if (MAJOR[up] && !inPar && t.t === "w") {
+      clause = up;
+      nl(base); add(up); nl(base + 1);
+    } else if (/JOIN$/.test(up) && !inPar && t.t === "w") {
+      nl(base + 1); add(up);
+    } else if (up === "ON" && !inPar && t.t === "w") {
+      nl(base + 2); add(up);
+    } else if (up === "AND" && between) {
+      between = false; add(up);
+    } else if ((up === "AND" || up === "OR") && !inPar && clause !== "SELECT" && t.t === "w") {
+      nl(base + 1); add(up);
+    } else if (v === "(") {
+      var isSub = nup === "SELECT" || nup === "WITH";
+      var tight = prev && (prev.t === "w" || prev.t === "q") && !(TT_SQL_KW[prev.v.toUpperCase()] && !TT_SQL_FN[prev.v.toUpperCase()]);
+      add("(", tight);
+      stack.push({ sub: isSub, base: base, clause: clause });
+      if (isSub) { base += 2; clause = ""; }
+    } else if (v === ")") {
+      var fr = stack.pop() || { sub: false, base: 0, clause: "" };
+      if (fr.sub) { base = fr.base; clause = fr.clause; nl(base + 1); add(")"); }
+      else add(")", true);
+    } else if (v === ",") {
+      add(",", true);
+      if (!inPar && (clause === "SELECT" || clause === "GROUP BY" || clause === "ORDER BY" || clause === "SET" || clause === "VALUES" || clause === "WITH" || clause === "RETURNING")) nl(base + 1);
+    } else if (v === ";") {
+      add(";", true); nl(0); lines.push({ lv: 0, t: "" }); base = 0; stack = []; clause = "";
+    } else if (v === ".") add(".", true);
+    else if (up === "BETWEEN" && t.t === "w") { between = true; add(v); }
+    else add(v, prev && (prev.v === "(" || prev.v === "."));
+    prev = { t: t.t, v: v };
+  }
+  if (cur && cur.t) lines.push(cur);
+  while (lines.length && !lines[lines.length - 1].t) lines.pop();
+  return lines.map(function(l) { return l.t ? new Array(l.lv + 1).join(ind) + l.t : ""; }).join("\n");
+}
+function ttSqlMin(src) {
+  return ttSqlTokens(src).map(function(t) {
+    if (t.t === "ws") return " ";
+    if (t.t === "c") return t.v.indexOf("--") === 0 ? "/*" + t.v.slice(2) + " */" : t.v;
+    return t.v;
+  }).join("").replace(/\s+/g, " ").replace(/\s*([(),;])\s*/g, function(m, p) { return p === "," ? ", " : p; }).trim();
+}
+function ttSqlCheck(src) {
+  var depth = 0, warn = [];
+  ttSqlTokens(src).forEach(function(t) {
+    if (t.v === "(") depth++;
+    if (t.v === ")") depth--;
+    if (t.t === "s" && (t.v.length < 2 || t.v.charAt(t.v.length - 1) !== "'")) warn.push("A text value in single quotes is never closed");
+  });
+  if (depth > 0) warn.push(depth + " opening bracket" + (depth > 1 ? "s are" : " is") + " not closed");
+  if (depth < 0) warn.push("There " + (depth < -1 ? "are " + (-depth) + " closing brackets" : "is a closing bracket") + " without a matching (");
+  return warn;
+}
+
+/* ── Detection ── */
+var TT_JWT_RE = /^(?:Bearer\s+)?([A-Za-z0-9_-]{8,})\.([A-Za-z0-9_-]{8,})\.([A-Za-z0-9_-]*)$/;
+function ttDetect(text) {
+  var t = text.replace(/^﻿/, "").trim();
+  if (!t) return "text";
+  var c = t.charAt(0);
+  if (c === "{" || c === "[") return "json";
+  if (c === "<") return "xml";
+  if (TT_JWT_RE.test(t)) return "jwt";
+  if (/^(select|with|insert|update|delete|create|alter|drop|merge|truncate|exec|execute|declare|begin|grant)\b/i.test(t)) return "sql";
+  if (/^"(?:\{|\[)/.test(t) && /\\"/.test(t)) return "json";
+  return "text";
+}
+var TT_LANG_NAME = { json: "JSON", xml: "XML", sql: "SQL", jwt: "JWT", text: "Plain text" };
+
+/* ── Output viewer ── */
+var TT_VIRT = 2000;
+function ttRowHtml(r, i) {
+  return '<div class="tt-r' + (r.collapsed ? ' collapsed' : '') + '" data-i="' + i + '"><span class="tt-ln">' + (i + 1) + '</span><span class="tt-fg">' +
+    (r.end > -1 ? '<button class="tt-fold" data-f="' + i + '" aria-label="Fold lines ' + (i + 1) + ' to ' + (r.end + 1) + '" aria-expanded="' + !r.collapsed + '">&#9662;</button>' : '') +
+    '</span><span class="tt-c">' + (r.h || " ") + (r.end > -1 ? '<span class="tt-sum"> <button data-f="' + i + '" aria-label="Unfold">&hellip;</button> ' + r.sum + '</span>' : '') + '</span></div>';
+}
+function ttRowsHtml(rows) {
+  var h = [];
+  for (var i = 0; i < rows.length; i++) h.push(ttRowHtml(rows[i], i));
+  return '<div class="tt-rows">' + h.join("") + '</div>';
+}
+/* Small outputs are drawn in full; big ones only draw the rows in view so a multi-MB JSON stays responsive. */
+function ttShowRows(rows, wrap) {
+  tt.rows = rows;
+  tt.hidden = new Int32Array(rows.length);
+  tt.virtual = rows.length > TT_VIRT;
+  ttOut.classList.toggle("is-wrap", !!wrap && !tt.virtual);
+  ttOut.scrollTop = 0;
+  if (tt.virtual) {
+    ttOut.innerHTML = '<div class="tt-vspace"><div class="tt-rows tt-vrows"></div></div>';
+    tt.vspace = ttOut.firstChild;
+    tt.vrows = tt.vspace.firstChild;
+    ttVisRebuild();
+    ttVRender();
+  } else {
+    ttOut.innerHTML = ttRowsHtml(rows);
+    tt.rowEls = ttOut.querySelectorAll(".tt-r");
+  }
+}
+function ttVisRebuild() {
+  var n = tt.rows.length, vis = new Int32Array(n), c = 0;
+  for (var i = 0; i < n; i++) if (!tt.hidden[i]) vis[c++] = i;
+  tt.vis = vis.subarray(0, c);
+  tt.vspace.style.height = (c * TT_LH + 20) + "px";
+}
+function ttVRender() {
+  if (!tt.virtual || !tt.rows || !tt.vrows) return;
+  var first = Math.max(0, Math.floor(ttOut.scrollTop / TT_LH) - 40);
+  var last = Math.min(tt.vis.length, Math.ceil((ttOut.scrollTop + ttOut.clientHeight) / TT_LH) + 40), h = [];
+  for (var k = first; k < last; k++) h.push(ttRowHtml(tt.rows[tt.vis[k]], tt.vis[k]));
+  tt.vrows.style.transform = "translateY(" + (first * TT_LH + 10) + "px)";
+  tt.vrows.innerHTML = h.join("");
+}
+var ttVRaf = 0;
+ttOut.addEventListener("scroll", function() {
+  if (!tt.virtual || ttVRaf) return;
+  ttVRaf = requestAnimationFrame(function() { ttVRaf = 0; ttVRender(); });
+}, { passive: true });
+function ttFold(i, collapse, batch) {
+  var r = tt.rows[i];
+  if (!r || r.end < 0 || !!r.collapsed === collapse) return;
+  r.collapsed = collapse;
+  for (var j = i + 1; j <= r.end; j++) {
+    tt.hidden[j] += collapse ? 1 : -1;
+    if (!tt.virtual) tt.rowEls[j].style.display = tt.hidden[j] > 0 ? "none" : "";
+  }
+  if (!tt.virtual) {
+    var el = tt.rowEls[i], fb = el.querySelector(".tt-fold");
+    el.classList.toggle("collapsed", collapse);
+    if (fb) fb.setAttribute("aria-expanded", String(!collapse));
+  } else if (!batch) { ttVisRebuild(); ttVRender(); }
+}
+function ttFoldAll(collapse) {
+  if (!tt.rows) return;
+  if (!collapse) {
+    for (var i = 0; i < tt.rows.length; i++) {
+      tt.rows[i].collapsed = false; tt.hidden[i] = 0;
+      if (!tt.virtual) { tt.rowEls[i].style.display = ""; tt.rowEls[i].classList.remove("collapsed"); }
+    }
+  } else {
+    /* row 0 stays open so the top-level shape is still visible */
+    for (var k = tt.rows.length - 1; k >= 1; k--) if (tt.rows[k].end > -1) ttFold(k, true, true);
+  }
+  if (tt.virtual) { ttVisRebuild(); ttOut.scrollTop = 0; ttVRender(); }
+}
+function ttEmpty(html) { tt.rows = null; ttOut.classList.remove("is-wrap"); ttOut.innerHTML = '<div class="tt-empty">' + html + '</div>'; }
+function ttSetBadge(text, cls) { ttBadge.textContent = text; ttBadge.className = "tt-badge" + (cls ? " " + cls : ""); }
+
+function ttErrorView(kind, text, msg, line, col, hint) {
+  var L = text.split("\n"), from = Math.max(0, line - 3), to = Math.min(L.length, line + 2), frame = "";
+  var w = String(to).length;
+  for (var i = from; i < to; i++) {
+    var no = String(i + 1); while (no.length < w) no = " " + no;
+    var l = L[i].length > 200 ? L[i].slice(0, 200) + " …" : L[i];
+    if (i === line - 1) {
+      frame += '<span class="hl">' + no + " | " + escapeHtml(l) + "</span>\n";
+      frame += new Array(w + 4).join(" ") + l.slice(0, Math.max(0, col - 1)).replace(/[^\t]/g, " ") + '<span class="caret">^ here</span>\n';
+    } else frame += no + " | " + escapeHtml(l) + "\n";
+  }
+  ttOut.classList.remove("is-wrap");
+  tt.rows = null;
+  ttOut.innerHTML = '<div class="tt-err" role="alert"><h4>Not valid ' + kind + '</h4>' +
+    '<p><b>Line ' + line + ', column ' + col + ':</b> ' + escapeHtml(msg) + '</p>' +
+    (hint ? '<p>' + hint + '</p>' : '') +
+    '<pre>' + frame + '</pre><button class="la-btn la-btn-sm" id="ttGoErr">Go to this spot in the input</button></div>';
+  ttSetBadge("Invalid " + kind, "bad");
+}
+
+function ttRender() {
+  var text = ttIn.value;
+  tt.tool = false; tt.errPos = -1; tt.out = null;
+  document.getElementById("ttPath").hidden = true;
+  var lang = ttLang.value === "auto" ? ttDetect(text) : ttLang.value;
+  document.getElementById("ttStType").innerHTML = "Type <b>" + TT_LANG_NAME[lang] + (ttLang.value === "auto" && text.trim() ? " (auto)" : "") + "</b>";
+  if (!text.trim()) {
+    ttSetBadge("Waiting for input");
+    ttEmpty("Paste <b>JSON</b>, <b>XML</b>, <b>SQL</b>, a <b>JWT</b> or any text on the left. The formatted result appears here as you type.<br><br>" +
+      "Shortcuts: <b>Ctrl+Enter</b> beautify, <b>Ctrl+F</b> find, <b>Ctrl+H</b> replace, <b>Ctrl+G</b> go to line, <b>Ctrl+D</b> duplicate line, <b>Ctrl+Shift+&#8593;/&#8595;</b> move line, <b>Tab / Shift+Tab</b> indent.");
+    ttPaintHl(); return;
+  }
+  if (text.length > TT_LIVE_MAX && !tt.force) {
+    ttSetBadge("Large input", "info");
+    ttEmpty("This input is " + laSize(text.length) + ", so the preview does not refresh while you type. Beautify, Minify and every menu still work.<br><br>" +
+      '<button class="la-btn tt-btn-main" id="ttForce">Show the formatted view</button>');
+    ttPaintHl(); return;
+  }
+  var ind = ttInd(), sort = ttSort.checked;
+  if (lang === "json") {
+    try {
+      var root = ttJsonParse(text);
+      ttShowRows(ttJsonRows(root, ind, sort));
+      tt.out = { text: ttJsonStr(root, ind, sort), ext: "json" };
+      ttSetBadge("Valid JSON · " + root.stats.keys.toLocaleString() + " keys · " + (root.stats.depth + 1) + " levels deep", "ok");
+    } catch (e) {
+      if (e.pos === undefined) throw e;
+      var lc = ttLineCol(text, e.pos), hint = "";
+      var t = text.trim();
+      if (/^"\{|^"\[/.test(t) || /\{\\"/.test(t)) hint = "This looks like JSON that was escaped into a string. Try <b>Encode &rsaquo; Unescape JSON string</b> first.";
+      else if (/'[^']*'\s*:/.test(t)) hint = "Single quotes are not allowed in JSON. Use <b>Find</b> with Replace all to change ' into \".";
+      tt.errPos = e.pos;
+      ttErrorView("JSON", text, e.message, lc.line, lc.col, hint);
+    }
+  } else if (lang === "xml") {
+    try {
+      var x = ttXmlParse(text), rows = ttXmlRows(x, ind);
+      ttShowRows(rows);
+      tt.out = { text: ttXmlStr(x, ind), ext: "xml" };
+      ttSetBadge("Valid XML · " + rows.elems.toLocaleString() + " elements", "ok");
+    } catch (e2) {
+      if (!e2.line) { ttSetBadge("Invalid XML", "bad"); ttEmpty(escapeHtml(e2.message)); }
+      else {
+        var lines = text.split("\n"), pos = 0;
+        for (var i = 0; i < e2.line - 1 && i < lines.length; i++) pos += lines[i].length + 1;
+        tt.errPos = pos + Math.max(0, e2.col - 1);
+        ttErrorView("XML", text, e2.message, e2.line, e2.col, "");
+      }
+    }
+  } else if (lang === "sql") {
+    var f = ttSqlFormat(text, ind);
+    ttShowRows(f.split("\n").map(function(l) { return { h: ttSqlHl(l), end: -1 }; }));
+    tt.out = { text: f, ext: "sql" };
+    var warn = ttSqlCheck(text);
+    ttSetBadge(warn.length ? warn[0] : "SQL formatted (layout only, not run or validated)", warn.length ? "bad" : "info");
+  } else if (lang === "jwt") {
+    ttJwtView(text);
+  } else {
+    ttShowRows(text.split("\n").map(function(l) { return { h: escapeHtml(l), end: -1 }; }), ttWrapChk.checked);
+    tt.out = { text: text, ext: "txt" };
+    ttSetBadge(TT_LANG_NAME.text);
+  }
+  ttPaintHl();
+}
+
+/* ── Editor plumbing: line numbers, highlight layer, status ── */
+var ttWrapChk = document.getElementById("ttWrapChk");
+function ttGutterFor(ta, gutter) {
+  var n = 1, v = ta.value;
+  for (var i = 0; i < v.length; i++) if (v.charCodeAt(i) === 10) n++;
+  if (gutter._n !== n) {
+    var s = "";
+    for (var k = 1; k <= n; k++) s += k + "\n";
+    gutter.textContent = s;
+    gutter._n = n;
+  }
+  gutter.scrollTop = ta.scrollTop;
+}
+function ttSyncScroll() {
+  ttGutter.scrollTop = ttIn.scrollTop;
+  ttHl.scrollTop = ttIn.scrollTop;
+  ttHl.scrollLeft = ttIn.scrollLeft;
+}
+function ttPaintHl() {
+  var v = ttIn.value, marks = [];
+  if (!ttFind.hidden && tt.matches.length && v.length < 1500000) marks = tt.matches.slice(0, 5000).map(function(m, k) { return [m[0], m[1], k === tt.mi ? "cur" : ""]; });
+  var h = "";
+  if (tt.errPos > -1) {
+    var ls = v.lastIndexOf("\n", tt.errPos - 1) + 1, le = v.indexOf("\n", tt.errPos);
+    if (le < 0) le = v.length;
+    marks.push([ls, Math.max(le, ls + 1), "err"]);
+    marks.sort(function(a, b) { return a[0] - b[0]; });
+  }
+  if (marks.length) {
+    var p = 0;
+    marks.forEach(function(m) {
+      if (m[0] < p) return;
+      h += escapeHtml(v.slice(p, m[0]));
+      var inner = escapeHtml(v.slice(m[0], m[1])) || " ";
+      h += m[2] === "err" ? '<span class="err">' + inner + '</span>' : '<mark' + (m[2] ? ' class="cur"' : '') + '>' + inner + '</mark>';
+      p = m[1];
+    });
+    h += escapeHtml(v.slice(p)) + "\n";
+  }
+  ttHl.innerHTML = h;
+  ttHl.style.width = ttIn.clientWidth + "px";
+  ttSyncScroll();
+}
+function ttStatus() {
+  var v = ttIn.value, s = ttIn.selectionStart, e = ttIn.selectionEnd, lc = ttLineCol(v, s);
+  var lines = 1;
+  for (var i = 0; i < v.length; i++) if (v.charCodeAt(i) === 10) lines++;
+  var words = v.length < 2000000 ? (v.match(/\S+/g) || []).length : null;
+  document.getElementById("ttStPos").innerHTML = "Ln <b>" + lc.line + "</b>, Col <b>" + lc.col + "</b>";
+  document.getElementById("ttStSel").innerHTML = e > s ? "Selected <b>" + (e - s).toLocaleString() + "</b> chars" : "";
+  document.getElementById("ttStCount").innerHTML = "<b>" + lines.toLocaleString() + "</b> lines · " + (words === null ? "" : "<b>" + words.toLocaleString() + "</b> words · ") + "<b>" + v.length.toLocaleString() + "</b> chars";
+}
+
+/* Replace a range and keep Ctrl+Z working */
+/* Replace a range and keep Ctrl+Z working. Very large edits skip the undo-friendly path, which is too slow for megabytes. */
+function ttReplace(ta, start, end, text) {
+  ta.focus();
+  ta.setSelectionRange(start, end);
+  var ok = false;
+  tt.undoable = text.length + (end - start) < 400000;
+  if (tt.undoable) { try { ok = document.execCommand("insertText", false, text); } catch (e) { ok = false; } }
+  if (!ok || ta.value.substr(start, text.length) !== text) {
+    ta.setRangeText(text, start, end, "end");
+    ta.dispatchEvent(new Event("input", { bubbles: true }));
+  }
+}
+function ttSetAll(text) { ttReplace(ttIn, 0, ttIn.value.length, text); ttIn.setSelectionRange(0, 0); ttIn.scrollTop = 0; ttSyncScroll(); }
+
+function ttApply(fn, lines) {
+  var v = ttIn.value, s = ttIn.selectionStart, e = ttIn.selectionEnd, whole = s === e;
+  if (!v) { showToast("The input is empty"); return; }
+  if (whole) { s = 0; e = v.length; }
+  else if (lines) {
+    s = v.lastIndexOf("\n", s - 1) + 1;
+    if (e > s && v.charAt(e - 1) === "\n") e--;
+    var nx = v.indexOf("\n", e);
+    e = nx < 0 ? v.length : nx;
+  }
+  var src = v.slice(s, e), res;
+  try { res = fn(src); } catch (err) { showToast(err.message || "That did not work on this text"); return; }
+  if (res === src) { showToast("Nothing to change"); return; }
+  ttReplace(ttIn, s, e, res);
+  if (!whole) ttIn.setSelectionRange(s, s + res.length);
+}
+
+/* ── Notepad++-style operations ── */
+function ttL(fn) { return function(t) { return fn(t.split("\n")).join("\n"); }; }
+var TT_COLL = typeof Intl !== "undefined" ? new Intl.Collator(undefined, { numeric: true, sensitivity: "base" }) : null;
+function ttCmpStr(a, b) { return TT_COLL ? TT_COLL.compare(a, b) : (a < b ? -1 : a > b ? 1 : 0); }
+function ttNum(s) { var m = s.match(/-?\d+(?:\.\d+)?/); return m ? parseFloat(m[0]) : Infinity; }
+function ttWords(line) { return line.replace(/([a-z0-9])([A-Z])/g, "$1 $2").split(/[^A-Za-z0-9]+/).filter(Boolean); }
+function ttUtf8B64(t) {
+  var bytes = new TextEncoder().encode(t), bin = "";
+  for (var i = 0; i < bytes.length; i += 0x8000) bin += String.fromCharCode.apply(null, bytes.subarray(i, i + 0x8000));
+  return btoa(bin);
+}
+function ttB64Utf8(t) {
+  var c = t.replace(/\s+/g, "").replace(/-/g, "+").replace(/_/g, "/");
+  while (c.length % 4) c += "=";
+  var bin;
+  try { bin = atob(c); } catch (e) { throw new Error("This is not valid Base64"); }
+  var bytes = new Uint8Array(bin.length);
+  for (var i = 0; i < bin.length; i++) bytes[i] = bin.charCodeAt(i);
+  return new TextDecoder("utf-8").decode(bytes);
+}
+var TT_ENT = { amp: "&", lt: "<", gt: ">", quot: "\"", apos: "'", nbsp: " ", copy: "©", reg: "®", euro: "€", pound: "£", rupee: "₹" };
+var TT_OPS = {
+  sortAsc:   { lines: true, f: ttL(function(a) { return a.sort(ttCmpStr); }) },
+  sortDesc:  { lines: true, f: ttL(function(a) { return a.sort(ttCmpStr).reverse(); }) },
+  sortNum:   { lines: true, f: ttL(function(a) { return a.sort(function(x, y) { return ttNum(x) - ttNum(y) || ttCmpStr(x, y); }); }) },
+  dedupe:    { lines: true, f: ttL(function(a) { var seen = {}; return a.filter(function(l) { if (seen["$" + l]) return false; seen["$" + l] = 1; return true; }); }), done: "Duplicate lines removed" },
+  noBlank:   { lines: true, f: ttL(function(a) { return a.filter(function(l) { return l.trim(); }); }) },
+  trimEnd:   { lines: true, f: ttL(function(a) { return a.map(function(l) { return l.replace(/\s+$/, ""); }); }) },
+  trimBoth:  { lines: true, f: ttL(function(a) { return a.map(function(l) { return l.trim(); }); }) },
+  reverse:   { lines: true, f: ttL(function(a) { return a.reverse(); }) },
+  joinSpace: { lines: true, f: function(t) { return t.split("\n").map(function(l) { return l.trim(); }).filter(Boolean).join(" "); } },
+  joinComma: { lines: true, f: function(t) { return t.split("\n").map(function(l) { return l.trim(); }).filter(Boolean).join(", "); } },
+  splitComma:{ lines: true, f: function(t) { return t.split(/\s*,\s*/).join("\n"); } },
+  sqlIn:     { lines: true, f: function(t) {
+    var items = t.split(/[\n,]/).map(function(l) { return l.trim().replace(/^['"]|['"]$/g, ""); }).filter(Boolean);
+    var allNum = items.every(function(x) { return /^-?\d+(\.\d+)?$/.test(x) && x.length < 16; });
+    return "(" + items.map(function(x) { return allNum ? x : "'" + x.replace(/'/g, "''") + "'"; }).join(", ") + ")";
+  } },
+  upper:    { f: function(t) { return t.toUpperCase(); } },
+  lower:    { f: function(t) { return t.toLowerCase(); } },
+  title:    { f: function(t) { return t.toLowerCase().replace(/(^|[\s\-_(\[{"'\/])(\p{L})/gu, function(m, a, b) { return a + b.toUpperCase(); }); } },
+  sentence: { f: function(t) { return t.toLowerCase().replace(/(^\s*|[.!?]\s+)(\p{L})/gu, function(m, a, b) { return a + b.toUpperCase(); }); } },
+  invert:   { f: function(t) { return t.replace(/\p{L}/gu, function(c) { var u = c.toUpperCase(); return c === u ? c.toLowerCase() : u; }); } },
+  camel:    { lines: true, f: ttL(function(a) { return a.map(function(l) { var w = ttWords(l); return w.map(function(x, i) { x = x.toLowerCase(); return i ? x.charAt(0).toUpperCase() + x.slice(1) : x; }).join(""); }); }) },
+  snake:    { lines: true, f: ttL(function(a) { return a.map(function(l) { return ttWords(l).map(function(x) { return x.toLowerCase(); }).join("_"); }); }) },
+  b64enc:   { f: ttUtf8B64 },
+  b64dec:   { f: ttB64Utf8 },
+  urlenc:   { f: function(t) { return encodeURIComponent(t); } },
+  urldec:   { f: function(t) { try { return decodeURIComponent(t.replace(/\+/g, " ")); } catch (e) { throw new Error("This text has a broken % sequence and cannot be URL-decoded"); } } },
+  htmlenc:  { f: function(t) { return t.replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;").replace(/"/g, "&quot;").replace(/'/g, "&#39;"); } },
+  htmldec:  { f: function(t) {
+    return t.replace(/&(#x[0-9a-f]+|#\d+|[a-z]+);/gi, function(m, e) {
+      if (e.charAt(0) === "#") { var cp = e.charAt(1).toLowerCase() === "x" ? parseInt(e.slice(2), 16) : parseInt(e.slice(1), 10); return cp > 0 && cp < 0x110000 ? String.fromCodePoint(cp) : m; }
+      return TT_ENT[e.toLowerCase()] || m;
+    });
+  } },
+  jsonesc:  { f: function(t) { return JSON.stringify(t).slice(1, -1); } },
+  jsonunesc:{ f: function(t) {
+    var s = t.trim();
+    try { return JSON.parse(s.charAt(0) === '"' && s.charAt(s.length - 1) === '"' ? s : '"' + s.replace(/(^|[^\\])"/g, '$1\\"') + '"'); }
+    catch (e) { throw new Error("This is not a valid escaped JSON string"); }
+  } },
+  mask:     { f: function(t) { var m = logState.mask; logState.mask = true; try { return laMask(t); } finally { logState.mask = m; } }, done: "Sensitive data masked" }
+};
+
+function ttLineBlock() {
+  var v = ttIn.value, s = ttIn.selectionStart, e = ttIn.selectionEnd;
+  var a = v.lastIndexOf("\n", s - 1) + 1;
+  if (e > s && v.charAt(e - 1) === "\n") e--;
+  var b = v.indexOf("\n", e); if (b < 0) b = v.length;
+  return { a: a, b: b, s: s, e: ttIn.selectionEnd, v: v };
+}
+function ttDupLine() {
+  var k = ttLineBlock(), block = k.v.slice(k.a, k.b);
+  ttReplace(ttIn, k.b, k.b, "\n" + block);
+  var off = block.length + 1;
+  ttIn.setSelectionRange(k.s + off, k.e + off);
+}
+function ttMoveLine(dir) {
+  var k = ttLineBlock(), v = k.v, block = v.slice(k.a, k.b);
+  if (dir < 0) {
+    if (k.a === 0) return;
+    var pa = v.lastIndexOf("\n", k.a - 2) + 1, prev = v.slice(pa, k.a - 1);
+    ttReplace(ttIn, pa, k.b, block + "\n" + prev);
+    ttIn.setSelectionRange(k.s - prev.length - 1, k.e - prev.length - 1);
+  } else {
+    if (k.b >= v.length) return;
+    var nb = v.indexOf("\n", k.b + 1); if (nb < 0) nb = v.length;
+    var nxt = v.slice(k.b + 1, nb);
+    ttReplace(ttIn, k.a, nb, nxt + "\n" + block);
+    ttIn.setSelectionRange(k.s + nxt.length + 1, k.e + nxt.length + 1);
+  }
+}
+function ttIndentLines(out) {
+  var k = ttLineBlock(), ind = ttInd(), lines = k.v.slice(k.a, k.b).split("\n"), first = 0, total = 0;
+  var res = lines.map(function(l, i) {
+    if (!out) { if (i === 0) first = ind.length; total += ind.length; return ind + l; }
+    var m = l.match(/^(\t| {1,4})/), cut = m ? (ind === "\t" && m[1] !== "\t" ? m[1].length : (m[1] === "\t" ? 1 : Math.min(m[1].length, ind.length))) : 0;
+    if (i === 0) first = -cut; total -= cut;
+    return l.slice(cut);
+  }).join("\n");
+  ttReplace(ttIn, k.a, k.b, res);
+  ttIn.setSelectionRange(Math.max(k.a, k.s + first), Math.max(k.a, k.e + total));
+}
+
+/* ── Find & replace ── */
+function ttFindRe() {
+  var q = ttFindIn.value;
+  if (!q) return null;
+  var src = document.getElementById("ttFRe").checked ? q : ttEscRe(q);
+  if (document.getElementById("ttFWord").checked) src = "\\b(?:" + src + ")\\b";
+  try { return new RegExp(src, "gm" + (document.getElementById("ttFCase").checked ? "" : "i")); } catch (e) { return false; }
+}
+function ttFindAll(keep) {
+  var re = ttFindRe(), v = ttIn.value, out = [], m;
+  ttFCount.classList.remove("bad");
+  if (re === false) { tt.matches = []; ttFCount.textContent = "Invalid regex"; ttFCount.classList.add("bad"); ttPaintHl(); return; }
+  if (re) while ((m = re.exec(v)) && out.length < 100000) { if (!m[0].length) { re.lastIndex++; continue; } out.push([m.index, m.index + m[0].length]); }
+  tt.matches = out;
+  if (!keep) tt.mi = -1;
+  ttFCount.textContent = !re ? "" : out.length ? (tt.mi > -1 ? (tt.mi + 1) + " of " : "") + out.length.toLocaleString() + " match" + (out.length > 1 ? "es" : "") : "No matches";
+  ttPaintHl();
+}
+function ttScrollTo(pos) {
+  var lc = ttLineCol(ttIn.value, pos);
+  var top = (lc.line - 1) * TT_LH;
+  if (top < ttIn.scrollTop + TT_LH || top > ttIn.scrollTop + ttIn.clientHeight - 2 * TT_LH) ttIn.scrollTop = Math.max(0, top - ttIn.clientHeight / 3);
+  var x = (lc.col - 1) * 7.6;
+  if (!ttWrapChk.checked && (x < ttIn.scrollLeft || x > ttIn.scrollLeft + ttIn.clientWidth - 60)) ttIn.scrollLeft = Math.max(0, x - 80);
+  ttSyncScroll();
+}
+function ttFindStep(dir) {
+  ttFindAll(true);
+  var M = tt.matches;
+  if (!M.length) return;
+  var caret = dir > 0 ? ttIn.selectionEnd : ttIn.selectionStart, k = -1;
+  if (tt.mi > -1 && M[tt.mi] && ttIn.selectionStart === M[tt.mi][0] && ttIn.selectionEnd === M[tt.mi][1]) k = (tt.mi + dir + M.length) % M.length;
+  else if (dir > 0) { for (var i = 0; i < M.length; i++) if (M[i][0] >= caret) { k = i; break; } if (k < 0) k = 0; }
+  else { for (var j = M.length - 1; j >= 0; j--) if (M[j][1] <= caret) { k = j; break; } if (k < 0) k = M.length - 1; }
+  tt.mi = k;
+  ttIn.setSelectionRange(M[k][0], M[k][1]);
+  ttScrollTo(M[k][0]);
+  ttFCount.textContent = (k + 1) + " of " + M.length.toLocaleString() + " match" + (M.length > 1 ? "es" : "");
+  ttPaintHl();
+  ttStatus();
+}
+function ttReplText() {
+  var r = ttRepIn.value;
+  return document.getElementById("ttFRe").checked ? r.replace(/\\n/g, "\n").replace(/\\t/g, "\t") : r.replace(/\$/g, "$$$$");
+}
+function ttReplaceOne() {
+  var re = ttFindRe();
+  if (!re) return;
+  var s = ttIn.selectionStart, e = ttIn.selectionEnd, M = tt.matches, cur = tt.mi > -1 ? M[tt.mi] : null;
+  if (cur && cur[0] === s && cur[1] === e) {
+    var one = new RegExp(re.source, re.flags.replace("g", ""));
+    var rep = ttIn.value.slice(s, e).replace(one, ttReplText());
+    ttReplace(ttIn, s, e, rep);
+    ttIn.setSelectionRange(s + rep.length, s + rep.length);
+    tt.mi = -1;
+  }
+  ttFindStep(1);
+}
+function ttReplaceAll() {
+  var re = ttFindRe();
+  if (!re) return;
+  var v = ttIn.value, n = (v.match(re) || []).length;
+  var res = v.replace(re, ttReplText());
+  if (!n) { showToast("No matches to replace"); return; }
+  ttSetAll(res);
+  ttFindAll();
+  showToast(n.toLocaleString() + " replaced." + (tt.undoable ? " Ctrl+Z undoes it." : ""));
+}
+function ttOpenFind(replace) {
+  ttFind.hidden = false;
+  var sel = ttIn.value.slice(ttIn.selectionStart, ttIn.selectionEnd);
+  if (sel && sel.length < 200 && sel.indexOf("\n") < 0) ttFindIn.value = sel;
+  ttFindAll();
+  (replace ? ttRepIn : ttFindIn).focus();
+  (replace ? ttRepIn : ttFindIn).select();
+}
+
+/* ── Tools: JWT, timestamps, hashes ── */
+function ttRel(ms) {
+  var d = Math.abs(ms - Date.now()), past = ms < Date.now();
+  var t = d < 60000 ? Math.round(d / 1000) + " seconds" : d < 3600000 ? Math.round(d / 60000) + " minutes" : d < 172800000 ? Math.round(d / 3600000) + " hours" : Math.round(d / 86400000) + " days";
+  return past ? t + " ago" : "in " + t;
+}
+function ttFmtDate(ms) { var d = new Date(ms); return laDate(ms) + ", " + laClock(ms) + " (local) · " + d.toISOString(); }
+function ttShowTool(title, badge, html, text, ext) {
+  tt.tool = true; tt.rows = null;
+  tt.out = { text: text, ext: ext || "txt" };
+  ttOut.classList.remove("is-wrap");
+  ttOut.innerHTML = '<div class="tt-tool">' + html + '</div>';
+  ttSetBadge(badge || title, "info");
+}
+function ttJsonBox(raw) {
+  try { var r = ttJsonParse(raw); return '<div class="tt-box">' + ttRowsHtml(ttJsonRows(r, "  ", false).map(function(x) { x.end = -1; return x; })) + '</div>'; }
+  catch (e) { return '<div class="tt-box"><pre class="la-pre" style="margin:0">' + escapeHtml(raw) + '</pre></div>'; }
+}
+function ttJwtView(text) {
+  var m = text.trim().match(TT_JWT_RE);
+  if (!m) { ttShowTool("JWT", "Not a JWT", '<p>A JWT has three parts separated by dots: <code>header.payload.signature</code>. Paste the token, with or without "Bearer".</p>', ""); ttSetBadge("Not a JWT", "bad"); return; }
+  var head, pay;
+  try { head = ttB64Utf8(m[1]); pay = ttB64Utf8(m[2]); } catch (e) { ttShowTool("JWT", "Bad JWT", "<p>The token parts are not valid Base64URL.</p>", ""); ttSetBadge("Invalid JWT", "bad"); return; }
+  var claims = {};
+  try { claims = JSON.parse(pay); } catch (e) { claims = {}; }
+  var rows = "", now = Date.now(), status = "";
+  [["exp", "Expires"], ["iat", "Issued at"], ["nbf", "Not valid before"], ["auth_time", "Signed in at"]].forEach(function(c) {
+    if (typeof claims[c[0]] !== "number") return;
+    var ms = claims[c[0]] * 1000;
+    if (c[0] === "exp") status = ms < now ? '<span class="tt-pill bad">Expired ' + ttRel(ms) + '</span>' : '<span class="tt-pill ok">Valid, expires ' + ttRel(ms) + '</span>';
+    rows += "<tr><th>" + c[1] + " (" + c[0] + ")</th><td>" + escapeHtml(ttFmtDate(ms)) + " · " + ttRel(ms) + "</td></tr>";
+  });
+  ["iss", "sub", "aud", "scope", "client_id", "jti"].forEach(function(k) {
+    if (claims[k] !== undefined) rows += "<tr><th>" + k + "</th><td><code>" + laEsc(typeof claims[k] === "string" ? claims[k] : JSON.stringify(claims[k])) + "</code></td></tr>";
+  });
+  var html = (status ? "<div>" + status + "</div>" : "") +
+    (rows ? '<div class="tt-table-wrap"><table class="tt-table"><tbody>' + rows + '</tbody></table></div>' : "") +
+    "<h4>Header</h4>" + ttJsonBox(head) + "<h4>Payload</h4>" + ttJsonBox(pay) +
+    "<p>The signature is <b>not checked</b>. Checking it needs the issuer's key, and this page never contacts anything.</p>";
+  var pretty = function(s) { try { return ttJsonStr(ttJsonParse(s), "  ", false); } catch (e) { return s; } };
+  ttShowTool("JWT", "Decoded JWT", html, "HEADER\n" + pretty(head) + "\n\nPAYLOAD\n" + pretty(pay), "json");
+}
+function ttTimeTool() {
+  var v = ttIn.value, s = ttIn.selectionStart, e = ttIn.selectionEnd, src = e > s ? v.slice(s, e) : v;
+  var found = [], seen = {}, m;
+  var re = /\b(\d{10}(?:\d{3})?)\b|(\d{4}-\d{2}-\d{2}[T ]\d{2}:\d{2}(?::\d{2}(?:[.,]\d{1,9})?)?(?:Z|[+-]\d{2}:?\d{2})?)/g;
+  while ((m = re.exec(src)) && found.length < 100) {
+    var raw = m[0], ms;
+    if (seen[raw]) continue;
+    seen[raw] = 1;
+    if (m[1]) { var nnum = +m[1]; ms = m[1].length === 13 ? nnum : nnum * 1000; if (ms < 315532800000 || ms > 4102444800000) continue; }
+    else { ms = Date.parse(raw.replace(" ", "T").replace(",", ".")); if (isNaN(ms)) continue; }
+    found.push([raw, m[1] ? (m[1].length === 13 ? "Epoch milliseconds" : "Epoch seconds") : "Date and time", ms]);
+  }
+  var nowMs = Date.now();
+  var rowsH = [["Now", "Current time", nowMs]].concat(found).map(function(r) {
+    var d = new Date(r[2]);
+    return "<tr><td><code>" + escapeHtml(r[0]) + "</code><br><small>" + r[1] + "</small></td><td>" + laDate(r[2]) + ", " + laClock(r[2]) + "<br><small>" + ttRel(r[2]) + "</small></td><td><code>" + d.toISOString() + "</code></td><td><code>" + Math.floor(r[2] / 1000) + "</code></td><td><code>" + r[2] + "</code></td></tr>";
+  }).join("");
+  var txt = ["Found\tLocal\tUTC ISO\tEpoch s\tEpoch ms"].concat(found.map(function(r) { return r[0] + "\t" + laDate(r[2]) + " " + laClock(r[2]) + "\t" + new Date(r[2]).toISOString() + "\t" + Math.floor(r[2] / 1000) + "\t" + r[2]; })).join("\n");
+  ttShowTool("Timestamps", found.length + " timestamp" + (found.length === 1 ? "" : "s") + " found",
+    "<p>" + (found.length ? "Timestamps found in the " + (e > s ? "selection" : "input") + ", converted to your local time zone and UTC." : "No epoch numbers or dates were found. Paste or select something like <code>1764146400</code> or <code>2026-11-26T09:00:00Z</code>.") + "</p>" +
+    '<div class="tt-table-wrap"><table class="tt-table"><thead><tr><th>Value</th><th>Local time</th><th>UTC</th><th>Epoch s</th><th>Epoch ms</th></tr></thead><tbody>' + rowsH + "</tbody></table></div>", txt);
+}
+function ttHashTool() {
+  var v = ttIn.value, s = ttIn.selectionStart, e = ttIn.selectionEnd, src = e > s ? v.slice(s, e) : v;
+  if (!window.crypto || !crypto.subtle) {
+    ttShowTool("Hash", "Hashing unavailable", "<p>This browser does not allow hashing for files opened this way. Open the page in Chrome or Edge directly from disk and try again.</p>", "");
+    return;
+  }
+  var bytes = new TextEncoder().encode(src), algs = ["SHA-1", "SHA-256", "SHA-512"];
+  Promise.all(algs.map(function(a) { return crypto.subtle.digest(a, bytes); })).then(function(res) {
+    var hex = res.map(function(buf) { return Array.prototype.map.call(new Uint8Array(buf), function(b) { return ("0" + b.toString(16)).slice(-2); }).join(""); });
+    ttShowTool("Hash", "Hashes of " + bytes.length.toLocaleString() + " bytes",
+      "<p>Hashes of the " + (e > s ? "selected text" : "whole input") + " encoded as UTF-8 (" + bytes.length.toLocaleString() + " bytes).</p>" +
+      '<div class="tt-table-wrap"><table class="tt-table"><tbody>' + algs.map(function(a, i) { return "<tr><th>" + a + "</th><td><code>" + hex[i] + "</code></td></tr>"; }).join("") + "</tbody></table></div>",
+      algs.map(function(a, i) { return a + ": " + hex[i]; }).join("\n"));
+  }).catch(function() { showToast("Hashing failed in this browser"); });
+}
+
+/* ── Samples ── */
+function ttB64Url(o) { return ttUtf8B64(JSON.stringify(o)).replace(/=+$/, "").replace(/\+/g, "-").replace(/\//g, "_"); }
+var TT_SAMPLES = {
+  json: function() {
+    return '{"status":"SUCCESS","requestId":"5f0c2a9e-7d41-4b8e-9a63-2c1f0d7e9b12","timestamp":"2026-11-26T09:42:30.478+05:30","customer":{"customerId":"CUST4883","name":"Ravi Kumar","kycVerified":true,"segment":null},' +
+      '"accounts":[{"accountNumber":50100123456789012345,"type":"SAVINGS","ifsc":"HDFC0001234","balance":{"available":152340.75,"currency":"INR"}},' +
+      '{"accountNumber":50100987654321098765,"type":"CURRENT","ifsc":"HDFC0001234","balance":{"available":-1200.00,"currency":"INR"},"flags":["OVERDRAWN","REVIEW"]}],' +
+      '"lastTransactions":[{"txnId":"TXN407943","utr":"SBIN22610469379","amount":25000,"mode":"NEFT","status":"FAILED","reason":"Timeout calling CoreBanking API"},{"txnId":"TXN812250","amount":980,"mode":"UPI","status":"SUCCESS"}]}';
+  },
+  xml: function() {
+    return '<?xml version="1.0" encoding="UTF-8"?><soapenv:Envelope xmlns:soapenv="http://schemas.xmlsoap.org/soap/envelope/" xmlns:ft="http://bank.example.com/fundtransfer/v2"><soapenv:Header><ft:AuthHeader channel="IB" version="2.1"><ft:SessionId>a91f03c2e7</ft:SessionId></ft:AuthHeader></soapenv:Header>' +
+      '<soapenv:Body><ft:FundTransferResponse><!-- response from CoreBanking --><ft:Status code="503">FAILED</ft:Status><ft:TxnId>TXN407943</ft:TxnId><ft:Utr>SBIN22610469379</ft:Utr><ft:Amount currency="INR">25000.00</ft:Amount>' +
+      '<ft:Error><ft:Code>CBS-TIMEOUT</ft:Code><ft:Message><![CDATA[Timeout calling CoreBanking API after 30000ms]]></ft:Message></ft:Error></ft:FundTransferResponse></soapenv:Body></soapenv:Envelope>';
+  },
+  sql: function() {
+    return "select t.txn_id, t.utr, t.amount, t.status, c.customer_id, c.name, count(r.retry_id) as retries from transactions t inner join customers c on c.customer_id = t.customer_id left join txn_retries r on r.txn_id = t.txn_id " +
+      "where t.status in ('FAILED','PENDING') and t.created_at between '2026-11-26 09:40:00' and '2026-11-26 09:55:00' and t.amount > 1000 and t.customer_id in (select customer_id from customers where segment = 'RETAIL') " +
+      "group by t.txn_id, t.utr, t.amount, t.status, c.customer_id, c.name having count(r.retry_id) >= 2 order by t.created_at desc limit 50;";
+  },
+  jwt: function() {
+    var now = Math.floor(Date.now() / 1000);
+    return "Bearer " + ttB64Url({ alg: "RS256", typ: "JWT", kid: "ib-2026-11" }) + "." +
+      ttB64Url({ iss: "https://auth.bank.example.com", sub: "CUST4883", aud: "payments-api", scope: "accounts:read payments:write", iat: now - 3000, nbf: now - 3000, exp: now + 600, jti: "8c1e2f6a" }) +
+      ".c2lnbmF0dXJlLW5vdC1jaGVja2VkLWluLXRoaXMtc2FtcGxl";
+  }
+};
+
+/* ── Compare (side-by-side diff) ── */
+var ttA = document.getElementById("ttA"), ttB = document.getElementById("ttB"), ttDiffEl = document.getElementById("ttDiff");
+var ttDiffState = { expanded: {}, changes: [], ci: -1 };
+function ttMyers(a, b) {
+  var N = a.length, M = b.length, MAX = N + M, off = MAX + 1, v = new Int32Array(2 * MAX + 3), trace = [];
+  for (var d = 0; d <= MAX; d++) {
+    trace.push(v.slice(off - d - 1, off + d + 2));
+    for (var k = -d; k <= d; k += 2) {
+      var x = (k === -d || (k !== d && v[off + k - 1] < v[off + k + 1])) ? v[off + k + 1] : v[off + k - 1] + 1, y = x - k;
+      while (x < N && y < M && a[x] === b[y]) { x++; y++; }
+      v[off + k] = x;
+      if (x >= N && y >= M) return ttBack(trace, d, N, M);
+    }
+    if (d > 3000) return null;
+  }
+  return [];
+}
+function ttBack(trace, D, x, y) {
+  var ops = [];
+  for (var d = D; d > 0; d--) {
+    var vv = trace[d], k = x - y, g = function(kk) { return vv[kk + d + 1]; };
+    var pk = (k === -d || (k !== d && g(k - 1) < g(k + 1))) ? k + 1 : k - 1, px = g(pk), py = px - pk;
+    while (x > px && y > py) { ops.push(["=", x - 1, y - 1]); x--; y--; }
+    if (x === px) ops.push(["+", -1, py]); else ops.push(["-", px, -1]);
+    x = px; y = py;
+  }
+  while (x > 0 && y > 0) { ops.push(["=", x - 1, y - 1]); x--; y--; }
+  return ops.reverse();
+}
+function ttNormSide(text) {
+  if (!document.getElementById("ttCFmt").checked) return text;
+  var lang = ttDetect(text);
+  try {
+    if (lang === "json") return ttJsonStr(ttJsonParse(text), "  ", true);
+    if (lang === "xml") return ttXmlStr(ttXmlParse(text), "  ");
+  } catch (e) { /* not valid, compare as typed */ }
+  return text;
+}
+function ttInline(a, b) {
+  var p = 0, s = 0;
+  while (p < a.length && p < b.length && a.charAt(p) === b.charAt(p)) p++;
+  while (s < a.length - p && s < b.length - p && a.charAt(a.length - 1 - s) === b.charAt(b.length - 1 - s)) s++;
+  var w = function(t, tag) { var mid = t.slice(p, t.length - s); return escapeHtml(t.slice(0, p)) + (mid ? "<" + tag + ">" + escapeHtml(mid) + "</" + tag + ">" : "") + escapeHtml(t.slice(t.length - s)); };
+  return [w(a, "del"), w(b, "ins")];
+}
+function ttCompare() {
+  var A = ttNormSide(ttA.value), B = ttNormSide(ttB.value), sum = document.getElementById("ttDSum");
+  document.getElementById("ttAInfo").textContent = ttA.value ? TT_LANG_NAME[ttDetect(ttA.value)] : "";
+  document.getElementById("ttBInfo").textContent = ttB.value ? TT_LANG_NAME[ttDetect(ttB.value)] : "";
+  if (!ttA.value && !ttB.value) { sum.innerHTML = ""; ttDiffEl.innerHTML = '<div class="tt-empty">Paste the original on the left and the changed version on the right. Differences show here as you type.</div>'; return; }
+  var la = A.split("\n"), lb = B.split("\n"), ws = document.getElementById("ttCWs").checked, ic = document.getElementById("ttCCase").checked;
+  var key = function(l) { if (ws) l = l.trim().replace(/\s+/g, " "); if (ic) l = l.toLowerCase(); return l; };
+  var ops = ttMyers(la.map(key), lb.map(key));
+  if (!ops) { sum.innerHTML = '<span class="tt-pill warn">Too different to compare line by line</span>'; ttDiffEl.innerHTML = ""; return; }
+  var rows = [], i = 0;
+  while (i < ops.length) {
+    if (ops[i][0] === "=") { rows.push({ t: "eq", a: ops[i][1], b: ops[i][2] }); i++; continue; }
+    var dels = [], ins = [];
+    while (i < ops.length && ops[i][0] !== "=") { if (ops[i][0] === "-") dels.push(ops[i][1]); else ins.push(ops[i][2]); i++; }
+    /* Pair each removed line with the added line that has the same key or very similar text, so edits line up */
+    var j = 0, block = [];
+    dels.forEach(function(da) {
+      var hit = -1;
+      for (var q = j; q < ins.length && hit < 0; q++) if (ttSimilar(la[da], lb[ins[q]])) hit = q;
+      if (hit < 0) { block.push({ t: "del", a: da, b: -1 }); return; }
+      for (; j < hit; j++) block.push({ t: "ins", a: -1, b: ins[j] });
+      block.push({ t: "chg", a: da, b: ins[hit] });
+      j = hit + 1;
+    });
+    for (; j < ins.length; j++) block.push({ t: "ins", a: -1, b: ins[j] });
+    block[0].first = true;
+    rows = rows.concat(block);
+  }
+  var nC = 0, nA = 0, nD = 0;
+  rows.forEach(function(r) { if (r.t === "chg") nC++; else if (r.t === "ins") nA++; else if (r.t === "del") nD++; });
+  sum.innerHTML = !nC && !nA && !nD ? '<span class="tt-pill ok">Identical' + (ws || ic || document.getElementById("ttCFmt").checked ? " (with the options above)" : "") + '</span>' :
+    (nC ? '<span class="tt-pill warn">' + nC + ' changed</span>' : '') + (nA ? '<span class="tt-pill ok">' + nA + ' added</span>' : '') + (nD ? '<span class="tt-pill bad">' + nD + ' removed</span>' : '');
+  var only = document.getElementById("ttCOnly").checked, CTX = 3, h = '<table class="tt-dt"><colgroup><col class="n"><col><col class="n"><col></colgroup><tbody>';
+  var near = new Uint8Array(rows.length);
+  rows.forEach(function(r, idx) { if (r.t !== "eq") for (var q = Math.max(0, idx - CTX); q <= Math.min(rows.length - 1, idx + CTX); q++) near[q] = 1; });
+  var changes = [], r0 = 0;
+  while (r0 < rows.length) {
+    if (only && !near[r0] && rows[r0].t === "eq") {
+      var st = r0; while (r0 < rows.length && !near[r0]) r0++;
+      if (!ttDiffState.expanded[st]) { h += '<tr class="d-skip"><td colspan="4"><button data-skip="' + st + '">Show ' + (r0 - st) + ' unchanged line' + (r0 - st > 1 ? 's' : '') + '</button></td></tr>'; continue; }
+      r0 = st;
+      while (r0 < rows.length && !near[r0]) { h += ttDiffRow(rows[r0], la, lb, r0); r0++; }
+      continue;
+    }
+    if (rows[r0].t !== "eq" && rows[r0].first) changes.push(r0);
+    h += ttDiffRow(rows[r0], la, lb, r0);
+    r0++;
+  }
+  ttDiffEl.innerHTML = h + "</tbody></table>";
+  ttDiffState.changes = changes;
+  ttDiffState.ci = -1;
+}
+function ttSimilar(a, b) {
+  var KR = /^\s*("(?:[^"\\]|\\.)*"|[\w.$-]+)\s*[:=]/, ka = a.match(KR), kb = b.match(KR);
+  if (ka && kb) return ka[1] === kb[1];
+  var p = 0, s = 0, n = Math.max(a.length, b.length);
+  if (!n) return true;
+  while (p < a.length && p < b.length && a.charAt(p) === b.charAt(p)) p++;
+  while (s < a.length - p && s < b.length - p && a.charAt(a.length - 1 - s) === b.charAt(b.length - 1 - s)) s++;
+  return p === Math.min(a.length, b.length) || (p + s) / n >= 0.4;
+}
+function ttDiffRow(r, la, lb, idx) {
+  var ta = r.a > -1 ? la[r.a] : "", tb = r.b > -1 ? lb[r.b] : "", ha = escapeHtml(ta), hb = escapeHtml(tb);
+  if (r.t === "chg") { var x = ttInline(ta, tb); ha = x[0]; hb = x[1]; }
+  return '<tr class="d-' + r.t + '" data-r="' + idx + '"><td class="n">' + (r.a > -1 ? r.a + 1 : "") + '</td><td class="l">' + (ha || " ") + '</td><td class="n sep">' + (r.b > -1 ? r.b + 1 : "") + '</td><td class="r">' + (hb || " ") + '</td></tr>';
+}
+function ttDiffStep(dir) {
+  var C = ttDiffState.changes;
+  if (!C.length) { showToast("No changes"); return; }
+  ttDiffState.ci = (ttDiffState.ci + dir + C.length) % C.length;
+  ttDiffEl.querySelectorAll("tr.d-cur").forEach(function(t) { t.classList.remove("d-cur"); });
+  var tr = ttDiffEl.querySelector('tr[data-r="' + C[ttDiffState.ci] + '"]');
+  if (tr) { tr.classList.add("d-cur"); ttDiffEl.scrollTop = tr.offsetTop - 40; }
+}
+
+/* ── Wiring ── */
+var ttLive = debounce(function() { ttRender(); if (!ttFind.hidden) ttFindAll(true); }, 250);
+ttIn.addEventListener("input", function() { ttGutterFor(ttIn, ttGutter); ttStatus(); tt.errPos = -1; ttLive(); });
+ttIn.addEventListener("scroll", ttSyncScroll, { passive: true });
+["keyup", "click", "select"].forEach(function(ev) { ttIn.addEventListener(ev, ttStatus); });
+ttIn.addEventListener("keydown", function(e) {
+  var mod = e.ctrlKey || e.metaKey;
+  if (e.key === "Tab" && !mod && !e.altKey) {
+    e.preventDefault();
+    var s = ttIn.selectionStart, en = ttIn.selectionEnd;
+    if (!e.shiftKey && (s === en || ttIn.value.slice(s, en).indexOf("\n") < 0)) ttReplace(ttIn, s, en, ttInd());
+    else ttIndentLines(e.shiftKey);
+  } else if (mod && e.key === "Enter") { e.preventDefault(); ttBeautify(false); }
+  else if (mod && !e.shiftKey && e.key.toLowerCase() === "d") { e.preventDefault(); ttDupLine(); }
+  else if (mod && e.shiftKey && e.key === "ArrowUp") { e.preventDefault(); ttMoveLine(-1); }
+  else if (mod && e.shiftKey && e.key === "ArrowDown") { e.preventDefault(); ttMoveLine(1); }
+});
+[ttA, ttB].forEach(function(ta) {
+  var g = ta.closest(".tt-editor").querySelector(".tt-gutter");
+  ta.addEventListener("input", function() { ttGutterFor(ta, g); ttCmpLive(); });
+  ta.addEventListener("scroll", function() { g.scrollTop = ta.scrollTop; }, { passive: true });
+});
+var ttCmpLive = debounce(function() { ttDiffState.expanded = {}; ttCompare(); }, 300);
+["ttCWs", "ttCCase", "ttCFmt", "ttCOnly"].forEach(function(id) { document.getElementById(id).addEventListener("change", function() { ttDiffState.expanded = {}; ttCompare(); }); });
+ttDiffEl.addEventListener("click", function(e) { var b = e.target.closest("[data-skip]"); if (b) { ttDiffState.expanded[b.getAttribute("data-skip")] = 1; ttCompare(); } });
+document.getElementById("ttDPrev").addEventListener("click", function() { ttDiffStep(-1); });
+document.getElementById("ttDNext").addEventListener("click", function() { ttDiffStep(1); });
+document.getElementById("ttCSwap").addEventListener("click", function() { var t = ttA.value; ttA.value = ttB.value; ttB.value = t; [ttA, ttB].forEach(function(ta) { ttGutterFor(ta, ta.closest(".tt-editor").querySelector(".tt-gutter")); }); ttCompare(); });
+document.getElementById("ttCClear").addEventListener("click", function() { ttA.value = ""; ttB.value = ""; [ttA, ttB].forEach(function(ta) { ttGutterFor(ta, ta.closest(".tt-editor").querySelector(".tt-gutter")); }); ttCompare(); });
+
+function ttMode(cmp) {
+  document.getElementById("ttEdit").hidden = cmp;
+  document.getElementById("ttCmp").hidden = !cmp;
+  document.getElementById("ttModeEdit").classList.toggle("active", !cmp);
+  document.getElementById("ttModeCmp").classList.toggle("active", cmp);
+  document.getElementById("ttModeEdit").setAttribute("aria-selected", String(!cmp));
+  document.getElementById("ttModeCmp").setAttribute("aria-selected", String(cmp));
+  if (cmp) ttCompare(); else { ttGutterFor(ttIn, ttGutter); ttPaintHl(); }
+}
+document.getElementById("ttModeEdit").addEventListener("click", function() { ttMode(false); });
+document.getElementById("ttModeCmp").addEventListener("click", function() { ttMode(true); });
+
+function ttBeautify(minify) {
+  var text = ttIn.value;
+  if (!text.trim()) { showToast("The input is empty"); return; }
+  var lang = ttLang.value === "auto" ? ttDetect(text) : ttLang.value, ind = minify ? null : ttInd(), res;
+  try {
+    if (lang === "json") res = ttJsonStr(ttJsonParse(text), ind, ttSort.checked);
+    else if (lang === "xml") res = ttXmlStr(ttXmlParse(text), ind);
+    else if (lang === "sql") res = minify ? ttSqlMin(text) : ttSqlFormat(text, ind);
+    else if (lang === "jwt") { showToast("A JWT is decoded on the right. Use Copy to take the readable version."); return; }
+    else { res = minify ? text.split("\n").map(function(l) { return l.trim(); }).filter(Boolean).join(" ") : text.split("\n").map(function(l) { return l.replace(/\s+$/, ""); }).join("\n"); }
+  } catch (e) {
+    ttRender();
+    showToast("Fix the error shown on the right first");
+    return;
+  }
+  if (res === text) { showToast(minify ? "Already minified" : "Already formatted"); return; }
+  ttSetAll(res);
+  showToast((minify ? "Minified" : "Beautified") + " as " + TT_LANG_NAME[lang] + "." + (tt.undoable ? " Ctrl+Z undoes it." : ""));
+}
+document.getElementById("ttBeautify").addEventListener("click", function() { ttBeautify(false); });
+document.getElementById("ttMinify").addEventListener("click", function() { ttBeautify(true); });
+[ttLang, ttIndentSel, ttSort].forEach(function(el) { el.addEventListener("change", function() { ttSavePrefs(); ttRender(); }); });
+ttWrapChk.addEventListener("change", function() {
+  ttEditor.classList.toggle("tt-wrap", ttWrapChk.checked);
+  ttIn.setAttribute("wrap", ttWrapChk.checked ? "soft" : "off");
+  ttSavePrefs(); ttPaintHl();
+  if (tt.rows && !tt.tool) ttOut.classList.toggle("is-wrap", ttWrapChk.checked);
+});
+
+document.querySelectorAll("#ttEdit .tt-menu-list").forEach(function(list) {
+  list.addEventListener("click", function(e) {
+    var b = e.target.closest("button");
+    if (!b) return;
+    b.closest("details").open = false;
+    var op = b.getAttribute("data-op"), tool = b.getAttribute("data-tool"), sample = b.getAttribute("data-sample");
+    if (op === "dupLine") ttDupLine();
+    else if (op === "moveUp") ttMoveLine(-1);
+    else if (op === "moveDown") ttMoveLine(1);
+    else if (op) { var o = TT_OPS[op]; ttApply(o.f, o.lines); if (o.done) showToast(o.done); }
+    else if (tool === "jwt") { if (!ttIn.value.trim()) { showToast("Paste a JWT first, or load the sample"); return; } ttJwtView(ttIn.value); }
+    else if (tool === "time") ttTimeTool();
+    else if (tool === "hash") ttHashTool();
+    else if (sample) { ttLang.value = "auto"; ttSetAll(TT_SAMPLES[sample]()); ttRender(); }
+  });
+});
+document.addEventListener("click", function(e) {
+  document.querySelectorAll(".tt-menu[open]").forEach(function(d) { if (!d.contains(e.target)) d.open = false; });
+});
+document.querySelectorAll(".tt-menu").forEach(function(d) {
+  d.addEventListener("toggle", function() {
+    if (!d.open) return;
+    document.querySelectorAll(".tt-menu[open]").forEach(function(o) { if (o !== d) o.open = false; });
+  });
+  d.addEventListener("keydown", function(e) { if (e.key === "Escape") { d.open = false; d.querySelector("summary").focus(); } });
+});
+
+ttOut.addEventListener("click", function(e) {
+  var f = e.target.closest("[data-f]");
+  if (f && tt.rows) { var i = +f.getAttribute("data-f"); ttFold(i, !tt.rows[i].collapsed); return; }
+  var k = e.target.closest(".tk");
+  if (k) {
+    tt.path = k.getAttribute("data-p");
+    document.getElementById("ttPathCode").textContent = tt.path;
+    document.getElementById("ttPath").hidden = false;
+    return;
+  }
+  if (e.target.id === "ttForce") {
+    e.target.textContent = "Formatting\u2026";
+    setTimeout(function() { tt.force = true; try { ttRender(); } finally { tt.force = false; } }, 20);
+    return;
+  }
+  if (e.target.id === "ttGoErr" && tt.errPos > -1) {
+    ttIn.focus();
+    ttIn.setSelectionRange(tt.errPos, Math.min(ttIn.value.length, tt.errPos + 1));
+    ttScrollTo(tt.errPos); ttStatus();
+  }
+});
+document.getElementById("ttPathCopy").addEventListener("click", function() { writeClipboard(tt.path, function() { showToast("Path copied"); }); });
+document.getElementById("ttExpand").addEventListener("click", function() { ttFoldAll(false); });
+document.getElementById("ttCollapse").addEventListener("click", function() { ttFoldAll(true); });
+document.getElementById("ttCopy").addEventListener("click", function() {
+  if (!tt.out || !tt.out.text) { showToast("Nothing to copy yet"); return; }
+  writeClipboard(tt.out.text, function() { showToast("Output copied"); });
+});
+document.getElementById("ttDownload").addEventListener("click", function() {
+  if (!tt.out || !tt.out.text) { showToast("Nothing to download yet"); return; }
+  var a = document.createElement("a");
+  a.href = URL.createObjectURL(new Blob([tt.out.text], { type: "text/plain;charset=utf-8" }));
+  a.download = "formatted." + tt.out.ext;
+  document.body.appendChild(a); a.click();
+  setTimeout(function() { URL.revokeObjectURL(a.href); a.remove(); }, 1000);
+});
+document.getElementById("ttUse").addEventListener("click", function() {
+  if (!tt.out || !tt.out.text) { showToast("Nothing to use yet"); return; }
+  if (tt.out.text === ttIn.value) { showToast("The input already matches"); return; }
+  ttSetAll(tt.out.text);
+  showToast("Output moved to the input." + (tt.undoable ? " Ctrl+Z undoes it." : ""));
+});
+document.getElementById("ttClear").addEventListener("click", function() { if (ttIn.value) ttSetAll(""); ttIn.focus(); });
+document.getElementById("ttFindBtn").addEventListener("click", function() { ttOpenFind(false); });
+document.getElementById("ttFClose").addEventListener("click", function() { ttFind.hidden = true; tt.matches = []; ttPaintHl(); ttIn.focus(); });
+document.getElementById("ttFNext").addEventListener("click", function() { ttFindStep(1); });
+document.getElementById("ttFPrev").addEventListener("click", function() { ttFindStep(-1); });
+document.getElementById("ttFRep").addEventListener("click", ttReplaceOne);
+document.getElementById("ttFAll").addEventListener("click", ttReplaceAll);
+["ttFCase", "ttFWord", "ttFRe"].forEach(function(id) { document.getElementById(id).addEventListener("change", function() { ttFindAll(); }); });
+ttFindIn.addEventListener("input", debounce(function() { ttFindAll(); }, 150));
+[ttFindIn, ttRepIn].forEach(function(inp) {
+  inp.addEventListener("keydown", function(e) {
+    if (e.key === "Enter") { e.preventDefault(); if (inp === ttRepIn && (e.ctrlKey || e.metaKey)) ttReplaceAll(); else if (inp === ttRepIn) ttReplaceOne(); else ttFindStep(e.shiftKey ? -1 : 1); }
+    else if (e.key === "Escape") { e.preventDefault(); document.getElementById("ttFClose").click(); }
+  });
+});
+var ttGoto = document.getElementById("ttGoto");
+ttGoto.addEventListener("keydown", function(e) {
+  if (e.key !== "Enter") return;
+  e.preventDefault();
+  var n = parseInt(ttGoto.value, 10), v = ttIn.value;
+  if (!(n > 0)) return;
+  var pos = 0;
+  for (var l = 1; l < n; l++) { var nx = v.indexOf("\n", pos); if (nx < 0) break; pos = nx + 1; }
+  ttIn.focus(); ttIn.setSelectionRange(pos, pos); ttScrollTo(pos); ttStatus();
+});
+
+function ttLoadFile(file) {
+  if (!file) return;
+  if (file.size > 50 * 1048576) { showToast("That file is over 50 MB. Open a smaller one."); return; }
+  var r = new FileReader();
+  r.onload = function() { ttSetAll(String(r.result)); ttRender(); showToast("Opened " + file.name); };
+  r.onerror = function() { showToast("Could not read that file"); };
+  r.readAsText(file);
+}
+document.getElementById("ttOpen").addEventListener("click", function() { document.getElementById("ttFile").click(); });
+document.getElementById("ttFile").addEventListener("change", function(e) { ttLoadFile(e.target.files[0]); e.target.value = ""; });
+ttEditor.addEventListener("dragover", function(e) { if (e.dataTransfer && Array.prototype.indexOf.call(e.dataTransfer.types, "Files") > -1) { e.preventDefault(); ttEditor.classList.add("drag-over"); } });
+ttEditor.addEventListener("dragleave", function() { ttEditor.classList.remove("drag-over"); });
+ttEditor.addEventListener("drop", function(e) { if (e.dataTransfer.files.length) { e.preventDefault(); ttEditor.classList.remove("drag-over"); ttLoadFile(e.dataTransfer.files[0]); } });
+
+document.addEventListener("keydown", function(e) {
+  if (currentSection !== "tools" || modalOverlay.classList.contains("is-open") || fvOverlay.classList.contains("is-open")) return;
+  if (document.getElementById("ttEdit").hidden) return;
+  var mod = e.ctrlKey || e.metaKey, k = e.key.toLowerCase();
+  if (mod && !e.shiftKey && k === "f") { e.preventDefault(); ttOpenFind(false); }
+  else if (mod && !e.shiftKey && k === "h") { e.preventDefault(); ttOpenFind(true); }
+  else if (mod && !e.shiftKey && k === "g") { e.preventDefault(); ttGoto.focus(); ttGoto.select(); }
+  else if (e.key === "F3") { e.preventDefault(); if (ttFind.hidden) ttOpenFind(false); else ttFindStep(e.shiftKey ? -1 : 1); }
+});
+window.addEventListener("resize", debounce(function() { if (currentSection === "tools") ttPaintHl(); }, 150));
+
+function ttSavePrefs() {
+  try { localStorage.setItem("ohb-tt", JSON.stringify({ lang: ttLang.value, ind: ttIndentSel.value, sort: ttSort.checked, wrap: ttWrapChk.checked })); } catch (e) { /* storage blocked */ }
+}
+(function() {
+  var p = null;
+  try { p = JSON.parse(localStorage.getItem("ohb-tt") || "null"); } catch (e) { p = null; }
+  if (p) {
+    if (p.lang) ttLang.value = p.lang;
+    if (p.ind) ttIndentSel.value = p.ind;
+    ttSort.checked = !!p.sort;
+    ttWrapChk.checked = !!p.wrap;
+    ttEditor.classList.toggle("tt-wrap", ttWrapChk.checked);
+    ttIn.setAttribute("wrap", ttWrapChk.checked ? "soft" : "off");
+  }
+  ttGutterFor(ttIn, ttGutter);
+  ttStatus();
+  ttRender();
+})();
 
 /* Try to load operate-data.js from the same folder.
    If found → use its data. If not found → use the embedded defaults.
