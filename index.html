@@ -3487,21 +3487,30 @@ function renderSpotlight(q) {
     });
   }
   if (!q) {
-    spotlightResults.innerHTML = '<div class="spotlight-hint">Start typing to search replies and SQL queries…</div>';
+    spotlightResults.innerHTML = '<div class="spotlight-empty">Start typing to search reply templates and SQL queries.<br>Press Enter to copy the highlighted result.</div>';
     return;
   }
   if (!results.length) {
-    spotlightResults.innerHTML = '<div class="spotlight-hint">No results for "' + escapeHtml(q) + '"</div>';
+    spotlightResults.innerHTML = '<div class="spotlight-empty">No replies or queries match \u201C' + escapeHtml(q) + '\u201D</div>';
     return;
   }
-  var html = "";
-  results.slice(0, 12).forEach(function(r, i) {
-    html += '<div class="spotlight-item'+(i===spotlightActiveIdx?' spotlight-item--active':'')+'" data-idx="'+i+'">' +
-      '<span class="spotlight-badge">' + r.section + '</span>' +
-      '<span class="spotlight-label">' + highlightText(escapeHtml(r.label), q) + '</span>' +
-      '<span class="spotlight-sub">' + escapeHtml(r.sub) + '</span>' +
-      '</div>';
+  var SP_ICON = {
+    faq: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg>',
+    db: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><ellipse cx="12" cy="5" rx="9" ry="3"/><path d="M21 12c0 1.66-4 3-9 3s-9-1.34-9-3"/><path d="M3 5v14c0 1.66 4 3 9 3s9-1.34 9-3V5"/></svg>'
+  };
+  var html = "", shown = results.slice(0, 12), lastMode = "";
+  shown.forEach(function(r, i) {
+    if (r._mode !== lastMode) {
+      lastMode = r._mode;
+      html += '<div class="spotlight-group-label">' + (r._mode === "faq" ? "Ticket replies" : "SQL queries") + '</div>';
+    }
+    html += '<div class="spotlight-row spotlight-item" role="option" data-idx="' + i + '">' +
+      '<span class="spotlight-row-icon">' + SP_ICON[r._mode] + '</span>' +
+      '<span class="spotlight-row-info"><span class="spotlight-row-name" style="display:block">' + highlightText(r.label, q) + '</span>' +
+      '<span class="spotlight-row-sub" style="display:block">' + escapeHtml(r.sub || "") + '</span></span>' +
+      '<span class="spotlight-row-hint">' + (r._mode === "faq" ? "Copy reply" : "Copy SQL") + '</span></div>';
   });
+  if (results.length > shown.length) html += '<div class="spotlight-group-label">' + (results.length - shown.length) + ' more, keep typing to narrow down</div>';
   spotlightResults.innerHTML = html;
   spotlightResults.querySelectorAll(".spotlight-item").forEach(function(el) {
     el.addEventListener("mousedown", function(e) { e.preventDefault(); });
@@ -3531,15 +3540,16 @@ spotlightInput.addEventListener("keydown", function(e) {
   if (e.key === "ArrowDown") {
     e.preventDefault();
     spotlightActiveIdx = Math.min(spotlightActiveIdx + 1, items.length - 1);
-    items.forEach(function(el, i){ el.classList.toggle("spotlight-item--active", i===spotlightActiveIdx); });
+    items.forEach(function(el, i){ el.classList.toggle("sp-active", i===spotlightActiveIdx); el.setAttribute("aria-selected", String(i===spotlightActiveIdx)); });
     if (items[spotlightActiveIdx]) items[spotlightActiveIdx].scrollIntoView({ block: "nearest" });
   } else if (e.key === "ArrowUp") {
     e.preventDefault();
     spotlightActiveIdx = Math.max(spotlightActiveIdx - 1, 0);
-    items.forEach(function(el, i){ el.classList.toggle("spotlight-item--active", i===spotlightActiveIdx); });
+    items.forEach(function(el, i){ el.classList.toggle("sp-active", i===spotlightActiveIdx); el.setAttribute("aria-selected", String(i===spotlightActiveIdx)); });
     if (items[spotlightActiveIdx]) items[spotlightActiveIdx].scrollIntoView({ block: "nearest" });
   } else if (e.key === "Enter") {
-    if (items[spotlightActiveIdx]) items[spotlightActiveIdx].click();
+    var pick = items[spotlightActiveIdx] || items[0];
+    if (pick) pick.click();
   } else if (e.key === "Escape") {
     closeSpotlight();
   }
