@@ -45,6 +45,7 @@
       --syn-attr:     #7c2d92;
       --syn-kw:       #1d4ed8;
       --syn-com:      #6b7280;
+      --hit-row:      rgba(250,204,21,.22);
     }
 
     /* ── Dark tokens ─────────────────────────────────────────────────── */
@@ -80,6 +81,7 @@
       --syn-attr:     #d8b4fe;
       --syn-kw:       #93c5fd;
       --syn-com:      #9ca3af;
+      --hit-row:      rgba(250,204,21,.12);
     }
 
     html { scroll-behavior: smooth; font-size: 16px; }
@@ -1870,6 +1872,26 @@
     /* Output viewer */
     .tt-path { display: flex; align-items: center; gap: .5rem; padding: .35rem .7rem; border-bottom: 1px solid var(--border); background: var(--accent-light); font-size: .72rem; color: var(--navy); }
     .tt-path code { font-family: var(--mono); font-size: .74rem; word-break: break-all; flex: 1; min-width: 0; }
+    .tt-osearch { display: flex; align-items: center; gap: .4rem; flex-wrap: wrap; padding: .4rem .7rem; border-bottom: 1px solid var(--border); }
+    .tt-osearch svg { width: 14px; height: 14px; color: var(--navy-60); flex-shrink: 0; }
+    .tt-osearch input {
+      flex: 1 1 160px; min-width: 0; font-family: var(--font); font-size: .78rem; color: var(--navy);
+      background: var(--bg); border: 1.5px solid var(--border); border-radius: 999px; padding: .3rem .75rem;
+    }
+    .tt-osearch input:focus-visible { outline: 2px solid var(--accent); outline-offset: 1px; }
+    .tt-ocount { font-size: .72rem; color: var(--navy-60); font-variant-numeric: tabular-nums; white-space: nowrap; }
+    .tt-ocount b { color: var(--navy); }
+    .tt-ocount.bad { color: var(--red); }
+    .tt-path #ttBlkInfo { font-weight: 600; white-space: nowrap; }
+    .tt-out.tt-blockable .tt-r { cursor: pointer; }
+    .tt-r.tt-blk, .tt-r.tt-blk .tt-ln, .tt-r.tt-blk .tt-fg { background: linear-gradient(var(--accent-light), var(--accent-light)), var(--surface); }
+    .tt-r.tt-blk .tt-c { box-shadow: inset 3px 0 0 var(--accent); }
+    .tt-r.tt-blk-s .tt-ln, .tt-r.tt-blk-e .tt-ln { color: var(--accent); font-weight: 700; }
+    .tt-r.tt-blk-s { box-shadow: inset 0 1.5px 0 var(--accent); }
+    .tt-r.tt-blk-e { box-shadow: inset 0 -1.5px 0 var(--accent); }
+    .tt-r.tt-hit, .tt-r.tt-hit .tt-ln, .tt-r.tt-hit .tt-fg { background: linear-gradient(var(--hit-row), var(--hit-row)), var(--surface); }
+    .tt-r.tt-hit-cur { outline: 2px solid var(--accent); outline-offset: -2px; }
+    mark.tt-m { background: var(--highlight); color: inherit; border-radius: 2px; }
     .tt-out { height: 520px; overflow: auto; font-family: var(--mono); font-size: .76rem; line-height: 20px; color: var(--navy); }
     .tt-out.is-wrap .tt-c { white-space: pre-wrap; overflow-wrap: anywhere; }
     .tt-rows { min-width: max-content; padding: .6rem 0; }
@@ -2391,7 +2413,14 @@
                   <button class="la-btn la-btn-sm" id="ttUse" title="Replace the input with this output">Use as input</button>
                 </div>
               </div>
-              <div class="tt-path" id="ttPath" hidden><span>Path</span><code id="ttPathCode"></code><button class="la-btn la-btn-sm" id="ttPathCopy">Copy path</button></div>
+              <div class="tt-osearch" role="search">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="11" cy="11" r="7"/><line x1="21" y1="21" x2="16.6" y2="16.6"/></svg>
+                <input id="ttOSearch" type="search" placeholder="Search the formatted output" aria-label="Search the formatted output" autocomplete="off" spellcheck="false">
+                <span class="tt-ocount" id="ttOCount" aria-live="polite"></span>
+                <button class="la-btn la-btn-sm" id="ttOPrev" aria-label="Previous matching line">&#8593;</button>
+                <button class="la-btn la-btn-sm" id="ttONext" aria-label="Next matching line">&#8595;</button>
+              </div>
+              <div class="tt-path" id="ttPath" hidden><span id="ttBlkInfo"></span><code id="ttPathCode"></code><button class="la-btn la-btn-sm" id="ttPathCopy">Copy path</button><button class="la-btn la-btn-sm" id="ttBlkClear">Clear</button></div>
               <div class="tt-out" id="ttOut" tabindex="0" aria-label="Formatted output"></div>
             </section>
           </div>
@@ -5249,6 +5278,7 @@ function ttJsonRows(root, ind, sort) {
       });
       var e = push(pad + P(c) + comma);
       rows[s].end = e;
+      rows[s].lab = (v.t === "o" ? "object, " : "list, ") + items.length + (v.t === "o" ? (items.length === 1 ? " key" : " keys") : (items.length === 1 ? " item" : " items"));
       rows[s].sum = P(c) + (comma ? P(",") : "") + '<em>' + items.length + (v.t === "o" ? (items.length === 1 ? " key" : " keys") : (items.length === 1 ? " item" : " items")) + '</em>';
     } else push(pad + prefix + '<span class="' + TC[v.t] + '">' + escapeHtml(v.raw) + '</span>' + comma);
   }
@@ -5342,6 +5372,7 @@ function ttXmlRows(x, ind) {
       var s = stack.pop(), e = push(pad + '<span class="sp">&lt;/</span><span class="xt">' + escapeHtml(node.nodeName) + '</span><span class="sp">&gt;</span>');
       rows[s].end = e;
       var kids = ttXmlKids(node).length;
+      rows[s].lab = "<" + node.nodeName + ">, " + kids + (kids === 1 ? " child" : " children");
       rows[s].sum = '<span class="sp">&lt;/</span><span class="xt">' + escapeHtml(node.nodeName) + '</span><span class="sp">&gt;</span><em>' + kids + (kids === 1 ? " child" : " children") + '</em>';
     } else {
       var cls = node.nodeType === 8 ? "xc" : node.nodeType === 4 ? "xv" : node.nodeType === 3 ? "" : "xd";
@@ -5476,10 +5507,137 @@ var TT_LANG_NAME = { json: "JSON", xml: "XML", sql: "SQL", jwt: "JWT", text: "Pl
 
 /* ── Output viewer ── */
 var TT_VIRT = 2000;
+function ttRowClass(r, i) {
+  var c = "tt-r" + (r.collapsed ? " collapsed" : "");
+  if (tt.rows && r === tt.rows[i]) {
+    if (tt.hitSet && tt.hitSet[i]) c += " tt-hit" + (tt.hi > -1 && tt.hits[tt.hi] === i ? " tt-hit-cur" : "");
+    if (tt.blk && i >= tt.blk[0] && i <= tt.blk[1]) c += " tt-blk" + (i === tt.blk[0] ? " tt-blk-s" : "") + (i === tt.blk[1] ? " tt-blk-e" : "");
+  }
+  return c;
+}
+function ttRowContent(r, i) {
+  var h = r.h || " ";
+  if (tt.q && tt.rows && r === tt.rows[i] && tt.hitSet && tt.hitSet[i]) h = ttMarkHtml(h, tt.q);
+  return h + (r.end > -1 ? '<span class="tt-sum"> <button data-f="' + i + '" aria-label="Unfold">&hellip;</button> ' + r.sum + '</span>' : '');
+}
 function ttRowHtml(r, i) {
-  return '<div class="tt-r' + (r.collapsed ? ' collapsed' : '') + '" data-i="' + i + '"><span class="tt-ln">' + (i + 1) + '</span><span class="tt-fg">' +
+  return '<div class="' + ttRowClass(r, i) + '" data-i="' + i + '"><span class="tt-ln">' + (i + 1) + '</span><span class="tt-fg">' +
     (r.end > -1 ? '<button class="tt-fold" data-f="' + i + '" aria-label="Fold lines ' + (i + 1) + ' to ' + (r.end + 1) + '" aria-expanded="' + !r.collapsed + '">&#9662;</button>' : '') +
-    '</span><span class="tt-c">' + (r.h || " ") + (r.end > -1 ? '<span class="tt-sum"> <button data-f="' + i + '" aria-label="Unfold">&hellip;</button> ' + r.sum + '</span>' : '') + '</span></div>';
+    '</span><span class="tt-c">' + ttRowContent(r, i) + '</span></div>';
+}
+function ttUnesc(t) { return t.replace(/&lt;/g, "<").replace(/&gt;/g, ">").replace(/&quot;/g, '"').replace(/&#39;/g, "'").replace(/&amp;/g, "&"); }
+function ttPlain(r) { if (r.t === undefined) r.t = ttUnesc((r.h || "").replace(/<[^>]+>/g, "")); return r.t; }
+/* Marks matches only in text between tags, so markup and entities are never split */
+function ttMarkHtml(html, q) {
+  var lq = q.toLowerCase();
+  return html.replace(/(<[^>]*>)|([^<]+)/g, function(m, tag, text) {
+    if (tag) return tag;
+    var plain = ttUnesc(text), low = plain.toLowerCase(), out = "", p = 0, k;
+    while ((k = low.indexOf(lq, p)) > -1) { out += escapeHtml(plain.slice(p, k)) + '<mark class="tt-m">' + escapeHtml(plain.slice(k, k + q.length)) + '</mark>'; p = k + q.length; }
+    return out + escapeHtml(plain.slice(p));
+  });
+}
+function ttRepaint(list) {
+  if (!tt.rows) return;
+  if (tt.virtual) { ttVRender(); return; }
+  var seen = {};
+  list.forEach(function(i) {
+    if (i < 0 || seen[i] || !tt.rowEls[i]) return;
+    seen[i] = 1;
+    var el = tt.rowEls[i], r = tt.rows[i];
+    el.className = ttRowClass(r, i);
+    el.querySelector(".tt-c").innerHTML = ttRowContent(r, i);
+  });
+}
+function ttRange(b) { var out = []; if (b) for (var i = b[0]; i <= b[1]; i++) out.push(i); return out; }
+
+/* ── Search in the formatted output ── */
+var ttOSearch = document.getElementById("ttOSearch"), ttOCount = document.getElementById("ttOCount");
+function ttSearch(q) {
+  var old = tt.hits ? tt.hits.slice() : [];
+  tt.q = q; tt.hits = []; tt.hi = -1; tt.hitSet = null; tt.occ = 0;
+  ttOCount.classList.remove("bad");
+  if (!tt.rows || tt.tool) { ttOCount.textContent = q ? "Nothing to search yet" : ""; return; }
+  if (q) {
+    var lq = q.toLowerCase();
+    tt.hitSet = new Uint8Array(tt.rows.length);
+    for (var i = 0; i < tt.rows.length; i++) {
+      var low = ttPlain(tt.rows[i]).toLowerCase(), k = low.indexOf(lq);
+      if (k < 0) continue;
+      tt.hitSet[i] = 1; tt.hits.push(i);
+      while (k > -1) { tt.occ++; k = low.indexOf(lq, k + lq.length); }
+    }
+  }
+  ttCountText();
+  ttRepaint(old.concat(tt.hits));
+}
+function ttCountText() {
+  if (!tt.q) { ttOCount.textContent = ""; return; }
+  var n = tt.hits.length;
+  if (!n) { ttOCount.textContent = "No matching lines"; ttOCount.classList.add("bad"); return; }
+  ttOCount.innerHTML = (tt.hi > -1 ? "<b>" + (tt.hi + 1) + "</b> of " : "") + "<b>" + n.toLocaleString() + "</b> line" + (n > 1 ? "s" : "") + " match" + (n > 1 ? "" : "es") +
+    (tt.occ > n ? " \u00B7 " + tt.occ.toLocaleString() + " hits" : "") + " of " + tt.rows.length.toLocaleString();
+}
+function ttReveal(i) {
+  /* open any folded block that hides this line */
+  var chain = [];
+  for (var a = tt.par[i]; a > -1; a = tt.par[a]) chain.push(a);
+  chain.reverse().forEach(function(a) { if (tt.rows[a].collapsed) ttFold(a, false); });
+}
+function ttScrollRow(i) {
+  if (tt.virtual) {
+    var lo = 0, hi = tt.vis.length - 1;
+    while (lo < hi) { var mid = (lo + hi) >> 1; if (tt.vis[mid] < i) lo = mid + 1; else hi = mid; }
+    ttOut.scrollTop = Math.max(0, lo * TT_LH + 10 - ttOut.clientHeight / 3);
+    ttVRender();
+  } else {
+    var el = tt.rowEls[i];
+    ttOut.scrollTop += el.getBoundingClientRect().top - ttOut.getBoundingClientRect().top - ttOut.clientHeight / 3;
+  }
+}
+function ttHitStep(dir) {
+  if (!tt.hits.length) return;
+  var prev = tt.hi > -1 ? tt.hits[tt.hi] : -1;
+  tt.hi = tt.hi < 0 ? (dir > 0 ? 0 : tt.hits.length - 1) : (tt.hi + dir + tt.hits.length) % tt.hits.length;
+  var row = tt.hits[tt.hi];
+  ttReveal(row);
+  ttRepaint([prev, row]);
+  ttScrollRow(row);
+  ttCountText();
+}
+ttOSearch.addEventListener("input", debounce(function() { ttSearch(ttOSearch.value); }, 150));
+ttOSearch.addEventListener("keydown", function(e) {
+  if (e.key === "Enter") { e.preventDefault(); ttHitStep(e.shiftKey ? -1 : 1); }
+  else if (e.key === "Escape" && ttOSearch.value) { e.preventDefault(); e.stopPropagation(); ttOSearch.value = ""; ttSearch(""); }
+});
+document.getElementById("ttONext").addEventListener("click", function() { ttHitStep(1); });
+document.getElementById("ttOPrev").addEventListener("click", function() { ttHitStep(-1); });
+
+/* ── Click a line to highlight the whole JSON / XML block around it ── */
+function ttBlockOf(i) {
+  if (!tt.rows || !tt.rows[i]) return -1;
+  if (tt.rows[i].end > -1) return i;
+  if (tt.closer[i] > -1) return tt.closer[i];
+  return tt.par[i];
+}
+function ttSelectBlock(s, path) {
+  var old = tt.blk;
+  tt.blk = s > -1 ? [s, tt.rows[s].end] : null;
+  ttRepaint(ttRange(old).concat(ttRange(tt.blk)));
+  ttBlkInfo(path);
+}
+function ttBlkInfo(path) {
+  var bar = document.getElementById("ttPath"), info = document.getElementById("ttBlkInfo");
+  if (path !== undefined) tt.path = path;
+  if (!tt.blk && !tt.path) { bar.hidden = true; return; }
+  bar.hidden = false;
+  info.textContent = tt.blk ? "Block: lines " + (tt.blk[0] + 1) + " to " + (tt.blk[1] + 1) + (tt.rows[tt.blk[0]].lab ? " \u00B7 " + tt.rows[tt.blk[0]].lab : "") : "";
+  document.getElementById("ttPathCode").textContent = tt.path || "";
+  document.getElementById("ttPathCopy").hidden = !tt.path;
+}
+function ttBlockPath(s) {
+  var m = (tt.rows[s].h || "").match(/data-p="([^"]*)"/);
+  return m ? ttUnesc(m[1]) : (tt.par[s] < 0 && tt.out && tt.out.ext === "json" ? "$" : "");
 }
 function ttRowsHtml(rows) {
   var h = [];
@@ -5490,6 +5648,24 @@ function ttRowsHtml(rows) {
 function ttShowRows(rows, wrap) {
   tt.rows = rows;
   tt.hidden = new Int32Array(rows.length);
+  tt.par = new Int32Array(rows.length).fill(-1);
+  tt.closer = new Int32Array(rows.length).fill(-1);
+  for (var pi = 0, st = []; pi < rows.length; pi++) {
+    while (st.length && rows[st[st.length - 1]].end < pi) st.pop();
+    if (st.length) tt.par[pi] = st[st.length - 1];
+    if (rows[pi].end > -1) { tt.closer[rows[pi].end] = pi; st.push(pi); }
+  }
+  tt.blk = null; tt.path = ""; tt.hits = []; tt.hitSet = null; tt.hi = -1;
+  if (tt.q) {
+    var lq = tt.q.toLowerCase(); tt.hitSet = new Uint8Array(rows.length); tt.occ = 0;
+    for (var hi = 0; hi < rows.length; hi++) {
+      var low = ttPlain(rows[hi]).toLowerCase(), k = low.indexOf(lq);
+      if (k < 0) continue;
+      tt.hitSet[hi] = 1; tt.hits.push(hi);
+      while (k > -1) { tt.occ++; k = low.indexOf(lq, k + lq.length); }
+    }
+  }
+  ttOut.classList.toggle("tt-blockable", rows.some(function(r) { return r.end > -1; }));
   tt.virtual = rows.length > TT_VIRT;
   ttOut.classList.toggle("is-wrap", !!wrap && !tt.virtual);
   ttOut.scrollTop = 0;
@@ -5503,6 +5679,8 @@ function ttShowRows(rows, wrap) {
     ttOut.innerHTML = ttRowsHtml(rows);
     tt.rowEls = ttOut.querySelectorAll(".tt-r");
   }
+  ttCountText();
+  ttBlkInfo();
 }
 function ttVisRebuild() {
   var n = tt.rows.length, vis = new Int32Array(n), c = 0;
@@ -5550,7 +5728,7 @@ function ttFoldAll(collapse) {
   }
   if (tt.virtual) { ttVisRebuild(); ttOut.scrollTop = 0; ttVRender(); }
 }
-function ttEmpty(html) { tt.rows = null; ttOut.classList.remove("is-wrap"); ttOut.innerHTML = '<div class="tt-empty">' + html + '</div>'; }
+function ttEmpty(html) { tt.rows = null; tt.blk = null; ttOut.classList.remove("is-wrap", "tt-blockable"); ttOut.innerHTML = '<div class="tt-empty">' + html + '</div>'; ttSearch(tt.q || ""); }
 function ttSetBadge(text, cls) { ttBadge.textContent = text; ttBadge.className = "tt-badge" + (cls ? " " + cls : ""); }
 
 function ttErrorView(kind, text, msg, line, col, hint) {
@@ -5570,6 +5748,7 @@ function ttErrorView(kind, text, msg, line, col, hint) {
     '<p><b>Line ' + line + ', column ' + col + ':</b> ' + escapeHtml(msg) + '</p>' +
     (hint ? '<p>' + hint + '</p>' : '') +
     '<pre>' + frame + '</pre><button class="la-btn la-btn-sm" id="ttGoErr">Go to this spot in the input</button></div>';
+  ttOut.classList.remove("tt-blockable"); tt.blk = null; ttBlkInfo(""); ttSearch(tt.q || "");
   ttSetBadge("Invalid " + kind, "bad");
 }
 
@@ -5917,6 +6096,7 @@ function ttShowTool(title, badge, html, text, ext) {
   tt.out = { text: text, ext: ext || "txt" };
   ttOut.classList.remove("is-wrap");
   ttOut.innerHTML = '<div class="tt-tool">' + html + '</div>';
+  ttOut.classList.remove("tt-blockable"); tt.blk = null; ttBlkInfo(""); ttSearch(tt.q || "");
   ttSetBadge(badge || title, "info");
 }
 function ttJsonBox(raw) {
@@ -6233,11 +6413,13 @@ document.querySelectorAll(".tt-menu").forEach(function(d) {
 ttOut.addEventListener("click", function(e) {
   var f = e.target.closest("[data-f]");
   if (f && tt.rows) { var i = +f.getAttribute("data-f"); ttFold(i, !tt.rows[i].collapsed); return; }
-  var k = e.target.closest(".tk");
-  if (k) {
-    tt.path = k.getAttribute("data-p");
-    document.getElementById("ttPathCode").textContent = tt.path;
-    document.getElementById("ttPath").hidden = false;
+  var k = e.target.closest(".tk"), rowEl = e.target.closest(".tt-r");
+  if (rowEl && tt.rows && !tt.tool && !e.target.closest("button")) {
+    if (window.getSelection && String(window.getSelection()).length) return;
+    var ri = +rowEl.getAttribute("data-i"), bs = ttBlockOf(ri);
+    if (k) { ttSelectBlock(bs, k.getAttribute("data-p")); return; }
+    if (tt.blk && tt.blk[0] === bs && (ri === tt.blk[0] || ri === tt.blk[1])) { ttSelectBlock(-1, ""); return; }
+    ttSelectBlock(bs, bs > -1 ? ttBlockPath(bs) : "");
     return;
   }
   if (e.target.id === "ttForce") {
@@ -6252,6 +6434,8 @@ ttOut.addEventListener("click", function(e) {
   }
 });
 document.getElementById("ttPathCopy").addEventListener("click", function() { writeClipboard(tt.path, function() { showToast("Path copied"); }); });
+document.getElementById("ttBlkClear").addEventListener("click", function() { ttSelectBlock(-1, ""); });
+ttOut.addEventListener("keydown", function(e) { if (e.key === "Escape" && tt.blk) { e.stopPropagation(); ttSelectBlock(-1, ""); } });
 document.getElementById("ttExpand").addEventListener("click", function() { ttFoldAll(false); });
 document.getElementById("ttCollapse").addEventListener("click", function() { ttFoldAll(true); });
 document.getElementById("ttCopy").addEventListener("click", function() {
