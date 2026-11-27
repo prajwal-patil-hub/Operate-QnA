@@ -1694,6 +1694,77 @@
     .log-drop-zone.ds-loading { opacity: .7; pointer-events: none; }
     .la-fsep { color: var(--navy-60); }
     .la-stack { display: flex; flex-direction: column; gap: .85rem; }
+    /* Search in files */
+    .fs[hidden], #ttCol[hidden], .fs-sum-act[hidden] { display: none; }
+    .fs-top { margin-bottom: .9rem; }
+    .fs { display: flex; flex-direction: column; gap: .9rem; padding-bottom: 2.5rem; }
+    .fs-src, .fs-q { display: flex; flex-direction: column; gap: .7rem; }
+    .fs-drop { display: flex; flex-wrap: wrap; gap: .8rem 1.2rem; align-items: center; justify-content: space-between; border: 1.5px dashed var(--navy-30); border-radius: 12px; padding: .9rem 1rem; background: var(--navy-06); }
+    .fs-drop.drag-over { border-color: var(--accent); background: var(--accent-light); }
+    .fs-drop-main { min-width: 0; flex: 1 1 260px; }
+    .fs-drop-t { font-size: .92rem; font-weight: 800; color: var(--navy); margin-bottom: .15rem; }
+    .fs-filter-row { display: flex; flex-wrap: wrap; gap: .5rem 1rem; align-items: center; }
+    .fs-filter-row input, .ct-txt, .ct-num {
+      font-family: var(--mono); font-size: .76rem; color: var(--navy); background: var(--surface);
+      border: 1.5px solid var(--border); border-radius: 8px; padding: .3rem .5rem; min-width: 0;
+    }
+    .fs-filter-row input { width: 14rem; max-width: 100%; }
+    .fs-filter-row input:focus-visible, .ct-txt:focus-visible, .ct-num:focus-visible, .fs-qin:focus-visible { outline: 2px solid var(--accent); outline-offset: 1px; }
+    .fs-flist { list-style: none; margin: .4rem 0 0; padding: 0; max-height: 220px; overflow: auto; border: 1px solid var(--border); border-radius: 8px; }
+    .fs-flist li { display: flex; justify-content: space-between; gap: .8rem; padding: .2rem .55rem; font-family: var(--mono); font-size: .72rem; color: var(--navy); border-bottom: 1px solid var(--navy-06); }
+    .fs-flist li span { min-width: 0; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+    .fs-flist li small { color: var(--navy-60); white-space: nowrap; }
+    .fs-flist li.fs-off { opacity: .6; }
+    .fs-qrow { display: flex; gap: .5rem; }
+    .fs-qin {
+      flex: 1; min-width: 0; font-family: var(--mono); font-size: .9rem; color: var(--navy); background: var(--surface);
+      border: 1.5px solid var(--border); border-radius: 10px; padding: .55rem .75rem;
+    }
+    .fs-opts { display: flex; flex-wrap: wrap; gap: .5rem 1.1rem; align-items: center; }
+    .fs-sum { display: flex; flex-wrap: wrap; gap: .4rem 1rem; align-items: center; font-size: .84rem; color: var(--navy); margin-bottom: .6rem; }
+    .fs-sum-act { display: flex; flex-wrap: wrap; gap: .35rem; margin-left: auto; }
+    .fs-warn { font-size: .78rem; font-weight: 600; color: var(--amber); background: var(--amber-light); border-radius: 8px; padding: .45rem .7rem; margin: 0 0 .6rem; }
+    #fsOut { display: flex; flex-direction: column; gap: .5rem; }
+    .fs-file { border: 1.5px solid var(--border); border-left: 4px solid var(--accent); border-radius: 11px; background: var(--surface); overflow: hidden; }
+    .fs-file > summary { list-style: none; cursor: pointer; display: grid; grid-template-columns: minmax(0, 1fr) auto auto auto; gap: .7rem; align-items: center; padding: .6rem .8rem; }
+    .fs-file > summary::-webkit-details-marker { display: none; }
+    .fs-file > summary:hover { background: var(--navy-06); }
+    .fs-file > summary:focus-visible { outline: 2px solid var(--accent); outline-offset: -2px; }
+    .fs-file[open] .la-chev { transform: rotate(180deg); }
+    .fs-fname { font-family: var(--mono); font-size: .78rem; font-weight: 700; color: var(--navy); overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+    .fs-fn { font-size: .72rem; font-weight: 700; color: var(--accent); white-space: nowrap; }
+    @media (max-width: 560px) { .fs-file > summary { grid-template-columns: minmax(0, 1fr) auto; } .fs-fn { grid-column: 1; } }
+    .fs-body { border-top: 1px solid var(--border); max-height: 560px; overflow: auto; }
+    .fs-body:empty { display: none; }
+    .fs-row { display: grid; grid-template-columns: 4.2rem minmax(0, 1fr); gap: .6rem; padding: .1rem .7rem; font-family: var(--mono); font-size: .72rem; line-height: 1.6; color: var(--navy-60); }
+    .fs-row.hit { color: var(--navy); background: var(--hit-row, var(--navy-06)); }
+    .fs-ln { text-align: right; font-family: var(--mono); color: var(--navy-60); text-decoration: none; }
+    .fs-row.hit .fs-ln { color: var(--accent); font-weight: 700; }
+    .fs-t { white-space: pre-wrap; word-break: break-all; min-width: 0; }
+    .fs-gap { text-align: center; color: var(--navy-30); font-size: .7rem; line-height: 1.2; border-top: 1px dashed var(--border); border-bottom: 1px dashed var(--border); }
+    .fs-moreb { margin: .5rem .7rem; }
+    /* Column to SQL list */
+    .ct-presets { display: flex; flex-wrap: wrap; gap: .35rem; align-items: center; }
+    .ct-presets br { display: none; }
+    .ct-opts { display: grid; grid-template-columns: repeat(auto-fit, minmax(260px, 1fr)); gap: .6rem; }
+    .ct-group { margin: 0; border: 1.5px solid var(--border); border-radius: 12px; background: var(--surface); padding: .55rem .8rem .75rem; display: flex; flex-wrap: wrap; gap: .5rem .9rem; align-items: center; min-width: 0; }
+    .ct-group legend { font-size: .63rem; font-weight: 700; letter-spacing: .08em; text-transform: uppercase; color: var(--navy-60); padding: 0 .3rem; }
+    .ct-group .tt-field select { max-width: 100%; }
+    .ct-num { width: 4.5rem; }
+    .ct-txt { width: 11rem; }
+    .ct-tpl { width: 22rem; max-width: 100%; }
+    #ctTplRow .tt-field { flex: 1 1 100%; min-width: 0; flex-wrap: wrap; }
+    #ctTplRow .tt-field .ct-tpl { flex: 1 1 12rem; }
+    .ct-group .tt-field { max-width: 100%; }
+    #ctTplRow, #ctColRow { display: contents; }
+    #ctTplRow[hidden], #ctColRow[hidden] { display: none; }
+    .ct-cmp > summary { padding: .2rem 0; font-size: .82rem; }
+    .ct-cmp-in { position: relative; height: 150px; margin: .6rem 0; border: 1.5px solid var(--border); border-radius: 10px; overflow: hidden; }
+    .ct-cmp-in:focus-within { box-shadow: 0 0 0 2px var(--accent); }
+    .ct-cmp-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: .6rem; }
+    .ct-cmp-col { min-width: 0; border: 1px solid var(--border); border-radius: 10px; padding: .5rem .6rem; background: var(--surface); }
+    .ct-cmp-h { display: flex; flex-wrap: wrap; gap: .35rem; align-items: center; font-size: .78rem; color: var(--navy); margin-bottom: .35rem; }
+    .ct-cmp-pre { margin: 0; max-height: 220px; overflow: auto; font-family: var(--mono); font-size: .72rem; line-height: 1.55; color: var(--navy); white-space: pre; }
     .la-cmp-top { display: flex; flex-wrap: wrap; gap: .6rem; align-items: flex-end; }
     .la-cmp-sel { display: flex; flex-direction: column; gap: .3rem; font-size: .7rem; font-weight: 700; color: var(--navy-60); min-width: 0; flex: 1 1 260px; }
     .la-cmp-sel select { font-family: var(--font); font-size: .8rem; color: var(--navy); background: var(--surface); border: 1.5px solid var(--border); border-radius: 8px; padding: .35rem .55rem; max-width: 100%; }
@@ -2332,6 +2403,57 @@
     <!-- ── View: Log Analyser ──────────────────────────────────────────── -->
     <div id="view-log" class="section-view">
       <div style="padding-top:1rem">
+        <div class="tt-top fs-top">
+          <div class="tt-modes" role="tablist" aria-label="Log tool">
+            <button class="tt-mode active" id="fsModeAn" role="tab" aria-selected="true">Analyse logs</button>
+            <button class="tt-mode" id="fsModeFs" role="tab" aria-selected="false">Search in files</button>
+          </div>
+        </div>
+        <div id="fsPanel" class="fs" hidden>
+          <section class="la-card fs-src" aria-label="Where to search">
+            <div id="fsDrop" class="fs-drop">
+              <div class="fs-drop-main">
+                <div class="fs-drop-t">Choose a folder or files to search</div>
+                <div class="la-hint">Sub-folders are included. You can also drag a folder here. Files are read on this PC only.</div>
+              </div>
+              <div class="la-actions">
+                <button class="la-btn tt-btn-main" id="fsPickDir" type="button">Choose folder</button>
+                <button class="la-btn" id="fsPickFiles" type="button">Choose files</button>
+                <button class="la-btn" id="fsClearFiles" type="button" hidden>Clear list</button>
+              </div>
+              <input type="file" id="fsDirIn" webkitdirectory directory multiple hidden>
+              <input type="file" id="fsFileIn" multiple hidden>
+            </div>
+            <div class="fs-filter-row">
+              <label class="tt-field">Files to include <input type="text" id="fsExt" value="*" spellcheck="false" title="Patterns like *.log *.txt server*.out; * means all files"></label>
+              <span class="la-hint" id="fsCount">No files chosen yet</span>
+            </div>
+            <details class="la-mini"><summary>File list</summary><ul class="fs-flist" id="fsFiles"></ul></details>
+          </section>
+          <section class="la-card fs-q" aria-label="What to find">
+            <div class="fs-qrow">
+              <input type="search" id="fsQ" class="fs-qin" placeholder="Word, number, ID or phrase" spellcheck="false" aria-label="Find what">
+              <button class="la-btn tt-btn-main" id="fsGo" type="button">Find all</button>
+            </div>
+            <div class="fs-opts">
+              <label class="tt-field">Search mode
+                <select id="fsMode">
+                  <option value="normal">Normal</option>
+                  <option value="any">Any of these words</option>
+                  <option value="all">All of these words on the same line</option>
+                  <option value="regex">Regular expression</option>
+                </select>
+              </label>
+              <label class="tt-check"><input type="checkbox" id="fsCase"> Match case</label>
+              <label class="tt-check"><input type="checkbox" id="fsWord"> Whole word only</label>
+              <label class="tt-field">Lines around each match <select id="fsCtx"><option>0</option><option>1</option><option selected>2</option><option>3</option><option>5</option><option>10</option></select></label>
+              <label class="tt-check" title="Hide card numbers, account numbers, PAN, Aadhaar, emails, phone numbers and secrets in results, copies and exports"><input type="checkbox" id="fsMask"> Mask sensitive data</label>
+            </div>
+            <div class="la-hint" id="fsProg" aria-live="polite"></div>
+          </section>
+          <div id="fsOut" aria-live="polite"></div>
+        </div>
+        <div id="laPanel">
         <div id="logDropZone" class="log-drop-zone" role="button" tabindex="0" aria-label="Drop log files or click to choose">
           <input type="file" id="logFileInput" multiple style="display:none" aria-hidden="true">
           <div class="log-drop-icon" aria-hidden="true">
@@ -2355,6 +2477,7 @@
         </div>
         <div id="logHistBox"></div>
         <div id="logResults" style="display:none" aria-live="polite"></div>
+        </div>
       </div>
     </div><!-- /view-log -->
 
@@ -2365,6 +2488,7 @@
           <div class="tt-modes" role="tablist" aria-label="Tool">
             <button class="tt-mode active" id="ttModeEdit" role="tab" aria-selected="true">Format &amp; edit</button>
             <button class="tt-mode" id="ttModeCmp" role="tab" aria-selected="false">Compare</button>
+            <button class="tt-mode" id="ttModeCol" role="tab" aria-selected="false">Column to SQL list</button>
           </div>
           <p class="tt-note">Runs only in this browser. Nothing you paste is saved or sent anywhere.</p>
         </div>
@@ -2544,6 +2668,71 @@
             </div>
             <div class="tt-diff" id="ttDiff"></div>
           </section>
+        </div>
+
+        <!-- Column to SQL list -->
+        <div id="ttCol" class="tt-stack" hidden>
+          <div class="ct-presets" role="group" aria-label="Quick choices">
+            <span class="tt-hint">Quick:</span>
+            <button class="la-btn la-btn-sm on" data-ct-preset="inq">('a', 'b', 'c')</button>
+            <button class="la-btn la-btn-sm" data-ct-preset="where">WHERE col IN (…)</button>
+            <button class="la-btn la-btn-sm" data-ct-preset="lines">'a', one per line</button>
+            <button class="la-btn la-btn-sm" data-ct-preset="missing">Which IDs are missing in a table</button>
+            <button class="la-btn la-btn-sm" data-ct-preset="csv">a,b,c</button>
+          </div>
+          <div class="ct-opts">
+            <fieldset class="ct-group"><legend>Read the column</legend>
+              <label class="tt-check"><input type="checkbox" id="ctHeader"> First line is a header</label>
+              <label class="tt-field">Excel column no. <input type="number" id="ctCol" min="1" value="1" class="ct-num" title="When rows are copied from Excel (tab separated), take this column"></label>
+              <label class="tt-field">Also split on <select id="ctSplit"><option value="">Nothing (one value per line)</option><option value="comma">Commas</option><option value="space">Spaces</option></select></label>
+            </fieldset>
+            <fieldset class="ct-group"><legend>Clean</legend>
+              <label class="tt-check"><input type="checkbox" id="ctTrim" checked> Trim spaces</label>
+              <label class="tt-check"><input type="checkbox" id="ctUnq" checked> Remove existing quotes</label>
+              <label class="tt-check"><input type="checkbox" id="ctDedupe" checked> Remove duplicates</label>
+              <label class="tt-check"><input type="checkbox" id="ctDedupeCase"> Ignore case</label>
+              <label class="tt-field">Case <select id="ctCase"><option value="">Keep</option><option value="upper">UPPER</option><option value="lower">lower</option></select></label>
+              <label class="tt-field">Sort <select id="ctSort"><option value="">Keep order</option><option value="az">A to Z / 1 to 9</option><option value="za">Z to A</option></select></label>
+              <label class="tt-field" title="Pad numbers with zeros to this length, e.g. 5 → 00005">Pad numbers to <input type="number" id="ctLead0" min="0" max="40" placeholder="off" class="ct-num"></label>
+            </fieldset>
+            <fieldset class="ct-group"><legend>Output</legend>
+              <label class="tt-field">Format
+                <select id="ctFmt">
+                  <option value="in">( 'a', 'b' ) for IN</option>
+                  <option value="list">'a', 'b' (no brackets)</option>
+                  <option value="where">WHERE column IN ( … )</option>
+                  <option value="odci">Find values missing from a table (Oracle)</option>
+                  <option value="cte">Find missing, WITH … NOT EXISTS</option>
+                  <option value="dual">SELECT … FROM dual UNION ALL</option>
+                  <option value="lines">One quoted value per line</option>
+                  <option value="csv">Comma-separated</option>
+                  <option value="tpl">My own template</option>
+                </select>
+              </label>
+              <label class="tt-field">Quotes <select id="ctQuote"><option value="'">'single'</option><option value="auto">Auto (numbers bare)</option><option value='"'>"double"</option><option value="none">None</option></select></label>
+              <label class="tt-check"><input type="checkbox" id="ctPerLine"> One value per line</label>
+              <label class="tt-check" title="Oracle allows at most 1,000 values in one IN list (ORA-01795)"><input type="checkbox" id="ctChunk" checked> Split every 1,000</label>
+              <span id="ctColRow" hidden><label class="tt-field">Column name <input type="text" id="ctColName" value="account_no" spellcheck="false" class="ct-txt"></label></span>
+              <span id="ctTplRow" hidden><label class="tt-field">Template <input type="text" id="ctTpl" value="SELECT * FROM txn_master WHERE utr_no = {q};" spellcheck="false" class="ct-txt ct-tpl" title="{v} = value, {q} = value in single quotes, {n} = row number"></label><span class="tt-hint">{v} value · {q} 'quoted' · {n} row no.</span></span>
+            </fieldset>
+          </div>
+          <p class="fs-warn" id="ctWarn" hidden></p>
+          <div class="tt-panes">
+            <section class="tt-pane" aria-label="Column values">
+              <div class="tt-pane-head"><span class="tt-pane-title">Paste the column</span><span class="tt-hint" id="ctInfo"></span>
+                <div class="tt-out-actions"><button class="la-btn la-btn-sm" id="ctPaste">Paste</button><button class="la-btn la-btn-sm" id="ctClear">Clear</button></div></div>
+              <div class="tt-editor is-short"><pre class="tt-gutter" id="ctInGutter" aria-hidden="true">1</pre><div class="tt-ed-main"><textarea class="tt-ta" id="ctIn" spellcheck="false" wrap="off" aria-label="Column values" placeholder="One value per line, e.g.&#10;100234567890&#10;100234567891&#10;&#10;Rows copied from Excel work too."></textarea></div></div>
+            </section>
+            <section class="tt-pane" aria-label="SQL">
+              <div class="tt-pane-head"><span class="tt-pane-title">Ready for SQL</span>
+                <div class="tt-out-actions"><button class="la-btn la-btn-sm tt-btn-main" id="ctCopy"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg>Copy</button></div></div>
+              <div class="tt-editor is-short"><pre class="tt-gutter" id="ctOutGutter" aria-hidden="true">1</pre><div class="tt-ed-main"><textarea class="tt-ta" id="ctOut" spellcheck="false" wrap="off" readonly aria-label="SQL output"></textarea></div></div>
+            </section>
+          </div>
+          <details class="la-card la-mini ct-cmp"><summary>Check against a second list <span class="tt-hint">(find what is missing)</span></summary>
+            <div class="ct-cmp-in"><textarea class="tt-ta ct-b" id="ctB" spellcheck="false" wrap="off" aria-label="Second list" placeholder="Paste the second list here, for example the values your query returned"></textarea></div>
+            <div id="ctCmpRes"></div>
+          </details>
         </div>
       </div>
     </div><!-- /view-tools -->
@@ -6142,7 +6331,7 @@ function laReadFile(file) {
   });
 }
 
-function handleLogFiles(list) {
+function handleLogFiles(list, onDone) {
   var files = Array.prototype.slice.call(list || []).filter(Boolean);
   if (!files.length) return;
   if (files.length > 20) { showToast("Up to 20 files at a time; the first 20 were used"); files = files.slice(0, 20); }
@@ -6166,6 +6355,7 @@ function handleLogFiles(list) {
       logA = laAnalyse(logSrc.P);
       laRemember(true);
       laRender();
+      if (onDone) onDone();
     }, 20);
   });
 }
@@ -6183,6 +6373,255 @@ logDropZone.addEventListener("drop", function(e) {
   handleLogFiles(e.dataTransfer.files);
 });
 
+
+/* ─── Search in files (like Notepad++ Find in Files) ─────────────────── */
+var fs = { files: [], cache: new Map(), cacheBytes: 0, res: null, busy: false, stop: false, show: {} };
+var FS_CACHE_MAX = 400 * 1048576, FS_MAX_HITS = 50000, FS_SHOW = 200;
+var fsQ = document.getElementById("fsQ"), fsOut = document.getElementById("fsOut"), fsList = document.getElementById("fsFiles");
+
+function fsPath(f) { return f.fsPath || f.webkitRelativePath || f.name; }
+function fsAddFiles(list) {
+  var have = {}, added = 0;
+  fs.files.forEach(function(f) { have[fsPath(f) + "\u0001" + f.size] = 1; });
+  Array.prototype.forEach.call(list, function(f) {
+    var k = fsPath(f) + "\u0001" + f.size;
+    if (!have[k]) { have[k] = 1; fs.files.push(f); added++; }
+  });
+  fs.files.sort(function(a, b) { return fsPath(a).localeCompare(fsPath(b), undefined, { numeric: true }); });
+  fsRenderFiles();
+  if (added && fsQ.value.trim()) fsSearch(); else if (added) { fsQ.focus(); showToast(added + " file" + (added > 1 ? "s" : "") + " added. Type what to look for."); }
+}
+/* Dropped folders: walk them (Chrome gives entries for folders) */
+function fsWalk(entry, out) {
+  return new Promise(function(res) {
+    if (entry.isFile) entry.file(function(f) { try { f.fsPath = entry.fullPath.replace(/^\//, ""); } catch (e) {} out.push(f); res(); }, function() { res(); });
+    else if (entry.isDirectory) {
+      var r = entry.createReader(), all = [];
+      (function next() {
+        r.readEntries(function(batch) {
+          if (!batch.length) { Promise.all(all.map(function(e) { return fsWalk(e, out); })).then(res); return; }
+          all = all.concat(Array.prototype.slice.call(batch)); next();
+        }, function() { res(); });
+      })();
+    } else res();
+  });
+}
+function fsFilterMatch(f) {
+  var pat = document.getElementById("fsExt").value.trim();
+  if (!pat || pat === "*" || pat === "*.*") return true;
+  var name = f.name.toLowerCase();
+  return pat.split(/[\s,;]+/).filter(Boolean).some(function(p) {
+    var re = new RegExp("^" + p.toLowerCase().replace(/[.+^${}()|[\]\\]/g, "\\$&").replace(/\*/g, ".*").replace(/\?/g, ".") + "$");
+    return re.test(name);
+  });
+}
+function fsRenderFiles() {
+  var n = fs.files.length, sel = fs.files.filter(fsFilterMatch), tot = sel.reduce(function(s, f) { return s + f.size; }, 0);
+  document.getElementById("fsCount").textContent = n ? sel.length.toLocaleString() + " of " + n.toLocaleString() + " file" + (n > 1 ? "s" : "") + " will be searched, " + laSize(tot) : "No files chosen yet";
+  document.getElementById("fsClearFiles").hidden = !n;
+  fsList.innerHTML = n ? fs.files.slice(0, 300).map(function(f) {
+    var on = fsFilterMatch(f);
+    return '<li class="' + (on ? '' : 'fs-off') + '" title="' + laAttr(fsPath(f)) + '"><span>' + escapeHtml(fsPath(f)) + '</span><small>' + laSize(f.size) + (on ? '' : ' · filtered out') + '</small></li>';
+  }).join("") + (n > 300 ? '<li class="fs-more">+' + (n - 300) + ' more</li>' : '') : "";
+}
+async function fsText(f) {
+  var k = fsPath(f) + "\u0001" + f.size + "\u0001" + f.lastModified;
+  if (fs.cache.has(k)) return fs.cache.get(k);
+  var buf = await f.arrayBuffer(), b = new Uint8Array(buf), t;
+  var head = b.subarray(0, 4096), bin = false;
+  if (!(head[0] === 0xFF && head[1] === 0xFE) && !(head[0] === 0xFE && head[1] === 0xFF)) {
+    var z = 0; for (var i = 0; i < head.length; i++) if (head[i] === 0) z++;
+    bin = z > 0 && !(z > head.length / 4 && (head[1] === 0 || head[0] === 0)); /* many NULs in a pattern = UTF-16 without BOM */
+  }
+  if (bin || /^PK\u0003\u0004/.test(String.fromCharCode.apply(null, head.subarray(0, 4))) && !/\.(txt|log|csv)$/i.test(f.name)) t = null;
+  else t = laDecode(buf).replace(/\u001b\[[0-9;?]*[ -\/]*[@-~]/g, "");
+  if (t !== null && fs.cacheBytes + t.length * 2 < FS_CACHE_MAX) { fs.cache.set(k, t); fs.cacheBytes += t.length * 2; }
+  return t;
+}
+function fsMatcher() {
+  var q = fsQ.value, mode = document.getElementById("fsMode").value, mc = document.getElementById("fsCase").checked, ww = document.getElementById("fsWord").checked;
+  if (!q) return null;
+  var src;
+  if (mode === "regex") src = q;
+  else if (mode === "any" || mode === "all") {
+    var terms = q.split(/[\n,|]+/).map(function(x) { return x.trim(); }).filter(Boolean);
+    if (!terms.length) return null;
+    var parts = terms.map(function(t) { return t.replace(/[.*+?^${}()|[\]\\]/g, "\\$&"); });
+    if (mode === "all") return { all: parts.map(function(p) { return new RegExp(ww ? "(?<![\\w])" + p + "(?![\\w])" : p, mc ? "g" : "gi"); }), terms: terms };
+    src = parts.join("|");
+  } else src = q.replace(/[.*+?^${}()|[\]\\]/g, "\\$&");
+  if (ww) src = "(?<![\\w])(?:" + src + ")(?![\\w])";
+  try { return { re: new RegExp(src, mc ? "g" : "gi") }; } catch (e) { return { err: e.message }; }
+}
+async function fsSearch() {
+  if (fs.busy) { fs.stop = true; return; }
+  var M = fsMatcher();
+  if (!M) { fsOut.innerHTML = ""; return; }
+  if (M.err) { fsOut.innerHTML = '<p class="la-empty">That regular expression is not valid: ' + escapeHtml(M.err) + '</p>'; return; }
+  var files = fs.files.filter(fsFilterMatch);
+  if (!files.length) { fsOut.innerHTML = '<p class="la-empty">' + (fs.files.length ? 'No files match the file filter.' : 'Choose a folder or some files first.') + '</p>'; return; }
+  fs.busy = true; fs.stop = false; fs.show = {};
+  var btn = document.getElementById("fsGo"); btn.textContent = "Stop";
+  var t0 = performance.now(), res = { q: fsQ.value, files: [], hits: 0, lines: 0, searched: 0, skipped: [], capped: false, ctx: Math.max(0, Math.min(10, +document.getElementById("fsCtx").value || 0)) };
+  var bytes = 0, prog = document.getElementById("fsProg");
+  for (var fi = 0; fi < files.length && !fs.stop; fi++) {
+    var f = files[fi];
+    prog.textContent = "Searching " + (fi + 1) + " of " + files.length + ": " + fsPath(f);
+    if (fi % 3 === 0) await new Promise(function(r) { setTimeout(r, 0); });
+    var text;
+    try { text = await fsText(f); } catch (e) { res.skipped.push(fsPath(f) + " (could not be read)"); continue; }
+    if (text === null) { res.skipped.push(fsPath(f) + " (not a text file)"); continue; }
+    res.searched++; bytes += f.size;
+    var lines = text.split(/\r\n|\n|\r/), fr = { f: f, path: fsPath(f), lines: lines, hits: [], n: 0 };
+    for (var i = 0; i < lines.length; i++) {
+      var l = lines[i], c = 0, m;
+      if (M.all) {
+        var ok = true;
+        for (var a = 0; a < M.all.length; a++) { M.all[a].lastIndex = 0; if (!M.all[a].test(l)) { ok = false; break; } }
+        if (!ok) continue;
+        M.all.forEach(function(r) { r.lastIndex = 0; while ((m = r.exec(l))) { c++; if (!m[0].length) r.lastIndex++; } });
+      } else {
+        M.re.lastIndex = 0;
+        while ((m = M.re.exec(l))) { c++; if (!m[0].length) M.re.lastIndex++; if (c > 999) break; }
+      }
+      if (!c) continue;
+      fr.hits.push(i); fr.n += c;
+      if (res.lines + fr.hits.length >= FS_MAX_HITS) { res.capped = true; break; }
+    }
+    if (fr.hits.length) { res.files.push(fr); res.hits += fr.n; res.lines += fr.hits.length; }
+    else fr.lines = null;
+    if (res.capped) break;
+  }
+  res.ms = performance.now() - t0; res.bytes = bytes; res.stopped = fs.stop; res.M = M;
+  fs.res = res; fs.busy = false; fs.stop = false; btn.textContent = "Find all"; prog.textContent = "";
+  fsRender();
+}
+function fsMark(line, M) {
+  var s = line, cut = 0, MAXL = 1500;
+  if (s.length > MAXL) {
+    var r0 = M.all ? M.all[0] : M.re; r0.lastIndex = 0; var m0 = r0.exec(s), at = m0 ? m0.index : 0;
+    cut = Math.max(0, at - 300); s = (cut ? "…" : "") + s.slice(cut, cut + MAXL) + (cut + MAXL < line.length ? " … [+" + (line.length - cut - MAXL).toLocaleString() + " characters]" : "");
+  }
+  var res = laMask(s), out = "", last = 0, m, rs = M.all || [M.re], marks = [];
+  rs.forEach(function(r) { r.lastIndex = 0; while ((m = r.exec(res))) { if (!m[0].length) { r.lastIndex++; continue; } marks.push([m.index, m.index + m[0].length]); } });
+  marks.sort(function(a, b) { return a[0] - b[0]; });
+  marks.forEach(function(k) { if (k[0] < last) return; out += escapeHtml(res.slice(last, k[0])) + '<mark class="la-hl">' + escapeHtml(res.slice(k[0], k[1])) + '</mark>'; last = k[1]; });
+  return out + escapeHtml(res.slice(last));
+}
+function fsFileHtml(fr, fi) {
+  var R = fs.res, c = R.ctx, lim = fs.show[fi] || FS_SHOW, h = "", prevEnd = -1;
+  if (!fr.set) fr.set = new Set(fr.hits);
+  fr.hits.slice(0, lim).forEach(function(i, k) {
+    var from = Math.max(0, i - c), to = Math.min(fr.lines.length - 1, i + c);
+    if (c && prevEnd >= 0 && from > prevEnd + 1) h += '<div class="fs-gap" aria-hidden="true">⋯</div>';
+    for (var j = Math.max(from, prevEnd + 1); j <= to; j++) {
+      var hit = fr.set.has(j);
+      h += '<div class="fs-row' + (hit ? ' hit' : '') + '"><button class="la-linkbtn fs-ln" data-fs-open="' + fi + '" data-n="' + (j + 1) + '" title="Open this file in the Log Analyser at line ' + (j + 1) + '">' + (j + 1) + '</button><span class="fs-t">' + (hit ? fsMark(fr.lines[j], R.M) : laEsc(laTrunc(fr.lines[j], 600))) + '</span></div>';
+    }
+    prevEnd = to;
+  });
+  if (fr.hits.length > lim) h += '<button class="la-btn la-btn-sm fs-moreb" data-fs-more="' + fi + '">Show ' + Math.min(1000, fr.hits.length - lim).toLocaleString() + ' more of ' + (fr.hits.length - lim).toLocaleString() + '</button>';
+  return h;
+}
+function fsRender() {
+  var R = fs.res;
+  if (!R) { fsOut.innerHTML = ""; return; }
+  var h = '<div class="fs-sum"><span><b>' + R.hits.toLocaleString() + '</b> match' + (R.hits === 1 ? '' : 'es') + ' on <b>' + R.lines.toLocaleString() + '</b> line' + (R.lines === 1 ? '' : 's') + ' in <b>' + R.files.length + '</b> of ' + R.searched + ' file' + (R.searched === 1 ? '' : 's') + '</span>' +
+    '<span class="la-hint">' + laSize(R.bytes) + ' searched in ' + (R.ms < 1000 ? Math.round(R.ms) + ' ms' : (R.ms / 1000).toFixed(1) + ' s') + '</span>' +
+    (R.files.length ? '<span class="fs-sum-act"><button class="la-btn la-btn-sm" data-fs-act="copy">' + LA_ICON.copy + 'Copy results</button><button class="la-btn la-btn-sm" data-fs-act="csv">' + LA_ICON.down + 'Export CSV</button>' +
+      '<button class="la-btn la-btn-sm" data-fs-act="expand">Expand all</button><button class="la-btn la-btn-sm" data-fs-act="collapse">Collapse all</button></span>' : '') + '</div>';
+  if (R.capped) h += '<p class="fs-warn">Stopped at ' + FS_MAX_HITS.toLocaleString() + ' matching lines. Make the search more specific to see everything.</p>';
+  if (R.stopped) h += '<p class="fs-warn">Search stopped before all files were read.</p>';
+  if (R.skipped.length) h += '<details class="la-mini"><summary>' + R.skipped.length + ' file' + (R.skipped.length > 1 ? 's were' : ' was') + ' skipped</summary><pre class="la-pre">' + escapeHtml(R.skipped.join("\n")) + '</pre></details>';
+  if (!R.files.length) h += '<p class="la-empty">No matches for “' + escapeHtml(laTrunc(R.q, 80)) + '”.</p>';
+  R.files.forEach(function(fr, fi) {
+    h += '<details class="fs-file"' + (R.files.length <= 8 ? ' open' : '') + ' data-fi="' + fi + '"><summary><span class="fs-fname" title="' + laAttr(fr.path) + '">' + escapeHtml(fr.path) + '</span>' +
+      '<span class="fs-fn">' + fr.n.toLocaleString() + ' match' + (fr.n === 1 ? '' : 'es') + ', ' + fr.hits.length.toLocaleString() + ' line' + (fr.hits.length === 1 ? '' : 's') + '</span>' +
+      '<button class="la-btn la-btn-sm" data-fs-analyse="' + fi + '" title="Analyse this file in the Log Analyser">Analyse</button>' + LA_ICON.chev + '</summary><div class="fs-body"></div></details>';
+  });
+  fsOut.innerHTML = h;
+  fsOut.querySelectorAll(".fs-file[open]").forEach(function(d) { d.querySelector(".fs-body").innerHTML = fsFileHtml(R.files[+d.getAttribute("data-fi")], +d.getAttribute("data-fi")); });
+}
+function fsResultText() {
+  var R = fs.res, L = ['Search "' + R.q + '" (' + R.hits + ' hits in ' + R.files.length + ' files of ' + R.searched + ' searched)'];
+  R.files.forEach(function(fr) {
+    L.push("  " + fr.path + " (" + fr.n + " hits)");
+    fr.hits.forEach(function(i) { L.push("\tLine " + (i + 1) + ": " + laTrunc(fr.lines[i], 2000)); });
+  });
+  return laMask(L.join("\n"));
+}
+async function fsOpenInAnalyser(fi, line) {
+  var fr = fs.res.files[fi];
+  laMode(false);
+  handleLogFiles([fr.f], line ? function() { fvOpen(line); } : null);
+}
+
+/* events */
+document.getElementById("fsGo").addEventListener("click", fsSearch);
+fsQ.addEventListener("keydown", function(e) { if (e.key === "Enter" && !e.shiftKey) { e.preventDefault(); fsSearch(); } });
+["fsCase", "fsWord", "fsMode", "fsCtx"].forEach(function(id) { document.getElementById(id).addEventListener("change", function() { if (fs.res) fsSearch(); }); });
+document.getElementById("fsMode").addEventListener("change", function() {
+  var m = this.value;
+  fsQ.placeholder = m === "regex" ? "Regular expression, e.g. ORA-\\d{5}|timed? ?out" : m === "any" || m === "all" ? "Several words or numbers, separated by commas" : "Word, number, ID or phrase";
+});
+document.getElementById("fsExt").addEventListener("input", function() { fsRenderFiles(); });
+var fsDir = document.getElementById("fsDirIn"), fsFil = document.getElementById("fsFileIn");
+document.getElementById("fsPickDir").addEventListener("click", function() { fsDir.value = ""; fsDir.click(); });
+document.getElementById("fsPickFiles").addEventListener("click", function() { fsFil.value = ""; fsFil.click(); });
+fsDir.addEventListener("change", function() { fsAddFiles(fsDir.files); });
+fsFil.addEventListener("change", function() { fsAddFiles(fsFil.files); });
+document.getElementById("fsClearFiles").addEventListener("click", function() { fs.files = []; fs.cache.clear(); fs.cacheBytes = 0; fs.res = null; fsRenderFiles(); fsRender(); });
+var fsDrop = document.getElementById("fsDrop");
+fsDrop.addEventListener("dragover", function(e) { e.preventDefault(); fsDrop.classList.add("drag-over"); });
+fsDrop.addEventListener("dragleave", function() { fsDrop.classList.remove("drag-over"); });
+fsDrop.addEventListener("drop", function(e) {
+  e.preventDefault(); fsDrop.classList.remove("drag-over");
+  var items = e.dataTransfer.items, entries = [];
+  if (items && items.length && items[0].webkitGetAsEntry) {
+    for (var i = 0; i < items.length; i++) { var en = items[i].webkitGetAsEntry(); if (en) entries.push(en); }
+    var out = [];
+    Promise.all(entries.map(function(en) { return fsWalk(en, out); })).then(function() { fsAddFiles(out); });
+  } else fsAddFiles(e.dataTransfer.files);
+});
+fsOut.addEventListener("toggle", function(e) {
+  var d = e.target;
+  if (!d.classList || !d.classList.contains("fs-file") || !d.open) return;
+  var b = d.querySelector(".fs-body"); if (!b.hasChildNodes()) b.innerHTML = fsFileHtml(fs.res.files[+d.getAttribute("data-fi")], +d.getAttribute("data-fi"));
+}, true);
+fsOut.addEventListener("click", function(e) {
+  var t = e.target.closest("[data-fs-act],[data-fs-more],[data-fs-open],[data-fs-analyse]");
+  if (!t) return;
+  if (t.hasAttribute("data-fs-analyse")) { e.preventDefault(); fsOpenInAnalyser(+t.getAttribute("data-fs-analyse")); return; }
+  if (t.hasAttribute("data-fs-open")) { fsOpenInAnalyser(+t.getAttribute("data-fs-open"), +t.getAttribute("data-n")); return; }
+  if (t.hasAttribute("data-fs-more")) {
+    var fi = +t.getAttribute("data-fs-more"); fs.show[fi] = (fs.show[fi] || FS_SHOW) + 1000;
+    t.closest(".fs-body").innerHTML = fsFileHtml(fs.res.files[fi], fi); return;
+  }
+  var a = t.getAttribute("data-fs-act");
+  if (a === "copy") writeClipboard(fsResultText(), function() { showToast("Results copied" + (logState.mask ? " (masked)" : "")); });
+  else if (a === "csv") {
+    var rows = [["File", "Line", "Matches", "Text"]];
+    fs.res.files.forEach(function(fr) { fr.hits.forEach(function(i) {
+      var r = fs.res.M.all ? fs.res.M.all[0] : fs.res.M.re, n = 0; r.lastIndex = 0; while (r.exec(fr.lines[i]) && n < 999) n++;
+      rows.push([fr.path, i + 1, n, laTrunc(fr.lines[i], 30000)]); }); });
+    dsDownloadBlob(new Blob([laCsv(rows)], { type: "text/csv;charset=utf-8" }), "search-" + fs.res.q.replace(/[^\w.-]+/g, "_").slice(0, 40) + ".csv");
+  } else if (a === "expand" || a === "collapse") fsOut.querySelectorAll(".fs-file").forEach(function(d) { d.open = a === "expand"; });
+});
+document.getElementById("fsMask").addEventListener("change", function() { logState.mask = this.checked; fsRender(); });
+
+/* switch between analysing logs and searching files */
+function laMode(search) {
+  document.getElementById("fsPanel").hidden = !search;
+  document.getElementById("laPanel").hidden = search;
+  document.getElementById("fsModeAn").classList.toggle("active", !search);
+  document.getElementById("fsModeFs").classList.toggle("active", search);
+  document.getElementById("fsModeAn").setAttribute("aria-selected", String(!search));
+  document.getElementById("fsModeFs").setAttribute("aria-selected", String(search));
+  document.getElementById("fsMask").checked = logState.mask;
+  if (search) { fsRenderFiles(); setTimeout(function() { fsQ.focus(); }, 30); }
+}
+document.getElementById("fsModeAn").addEventListener("click", function() { laMode(false); });
+document.getElementById("fsModeFs").addEventListener("click", function() { laMode(true); });
 
 /* ─── Full log file reader ───────────────────────────────────────────── */
 var FV_RH = 20, FV_MAXLEN = 4000;
@@ -7639,17 +8078,141 @@ document.getElementById("ttDNext").addEventListener("click", function() { ttDiff
 document.getElementById("ttCSwap").addEventListener("click", function() { var t = ttA.value; ttA.value = ttB.value; ttB.value = t; [ttA, ttB].forEach(function(ta) { ttGutterFor(ta, ta.closest(".tt-editor").querySelector(".tt-gutter")); }); ttCompare(); });
 document.getElementById("ttCClear").addEventListener("click", function() { ttA.value = ""; ttB.value = ""; [ttA, ttB].forEach(function(ta) { ttGutterFor(ta, ta.closest(".tt-editor").querySelector(".tt-gutter")); }); ttCompare(); });
 
-function ttMode(cmp) {
-  document.getElementById("ttEdit").hidden = cmp;
-  document.getElementById("ttCmp").hidden = !cmp;
-  document.getElementById("ttModeEdit").classList.toggle("active", !cmp);
-  document.getElementById("ttModeCmp").classList.toggle("active", cmp);
-  document.getElementById("ttModeEdit").setAttribute("aria-selected", String(!cmp));
-  document.getElementById("ttModeCmp").setAttribute("aria-selected", String(cmp));
-  if (cmp) ttCompare(); else { ttGutterFor(ttIn, ttGutter); ttPaintHl(); }
+function ttMode(m) {
+  if (m === true) m = "cmp"; else if (m === false || !m) m = "edit";
+  [["edit", "ttEdit", "ttModeEdit"], ["cmp", "ttCmp", "ttModeCmp"], ["col", "ttCol", "ttModeCol"]].forEach(function(x) {
+    var on = x[0] === m;
+    document.getElementById(x[1]).hidden = !on;
+    document.getElementById(x[2]).classList.toggle("active", on);
+    document.getElementById(x[2]).setAttribute("aria-selected", String(on));
+  });
+  if (m === "cmp") ttCompare(); else if (m === "col") { ctBuild(); ctIn.focus(); } else { ttGutterFor(ttIn, ttGutter); ttPaintHl(); }
 }
-document.getElementById("ttModeEdit").addEventListener("click", function() { ttMode(false); });
-document.getElementById("ttModeCmp").addEventListener("click", function() { ttMode(true); });
+document.getElementById("ttModeEdit").addEventListener("click", function() { ttMode("edit"); });
+document.getElementById("ttModeCmp").addEventListener("click", function() { ttMode("cmp"); });
+document.getElementById("ttModeCol").addEventListener("click", function() { ttMode("col"); });
+
+/* ─── Column → SQL list ──────────────────────────────────────────────── */
+var ctIn = document.getElementById("ctIn"), ctOut = document.getElementById("ctOut"), ctB = document.getElementById("ctB");
+function ctVal(id) { var el = document.getElementById(id); return el.type === "checkbox" ? el.checked : el.value; }
+/* Values from pasted text: one per line; Excel / tab-separated rows give one column */
+function ctValues(text, o) {
+  var lines = text.replace(/\r\n?/g, "\n").split("\n"), st = { lines: 0, blank: 0, dup: 0, header: "" }, out = [], seen = {};
+  if (o.header && lines.length) { st.header = lines.shift(); }
+  var col = Math.max(1, +o.col || 1) - 1;
+  lines.forEach(function(l) {
+    st.lines++;
+    var cells;
+    if (l.indexOf("\t") > -1) { var tc = l.split("\t"); cells = [tc[col] === undefined ? "" : tc[col]]; } /* copied from Excel: take the chosen column */
+    else if (o.split === "comma") cells = l.split(",");
+    else if (o.split === "space") cells = l.split(/\s+/);
+    else cells = [l];
+    cells.forEach(function(v) {
+      if (o.trim) v = v.trim();
+      if (o.unquote) v = v.replace(/^(['"])(.*)\1,?$/, "$2").replace(/,$/, "");
+      if (o.casing === "upper") v = v.toUpperCase(); else if (o.casing === "lower") v = v.toLowerCase();
+      if (o.lead0 && /^\d+$/.test(v) && v.length < +o.lead0) v = ("0".repeat(+o.lead0) + v).slice(-o.lead0);
+      if (!v.trim()) { st.blank++; return; }
+      if (o.dedupe) { var k = o.dedupeCase ? v.toLowerCase() : v; if (seen[k]) { st.dup++; return; } seen[k] = 1; }
+      out.push(v);
+    });
+  });
+  if (o.sort === "az") out.sort(function(a, b) { return a.localeCompare(b, undefined, { numeric: true }); });
+  else if (o.sort === "za") out.sort(function(a, b) { return b.localeCompare(a, undefined, { numeric: true }); });
+  st.values = out.length;
+  return { v: out, st: st };
+}
+function ctQuote(v, o) {
+  var num = /^-?\d+(\.\d+)?$/.test(v) && !/^0\d/.test(v) && v.length < 16;
+  var q = o.quote === "auto" ? (num ? "" : "'") : o.quote === "none" ? "" : o.quote;
+  if (q === "'") v = v.replace(/'/g, "''");
+  else if (q === '"') v = v.replace(/"/g, '""');
+  return q + v + q;
+}
+function ctChunks(arr, n) { var out = []; for (var i = 0; i < arr.length; i += n) out.push(arr.slice(i, i + n)); return out; }
+function ctBuild() {
+  var o = {
+    header: ctVal("ctHeader"), col: ctVal("ctCol"), split: ctVal("ctSplit"), trim: ctVal("ctTrim"), unquote: ctVal("ctUnq"), casing: ctVal("ctCase"),
+    lead0: ctVal("ctLead0"), dedupe: ctVal("ctDedupe"), dedupeCase: ctVal("ctDedupeCase"), sort: ctVal("ctSort"), quote: ctVal("ctQuote"),
+    fmt: ctVal("ctFmt"), colName: ctVal("ctColName").trim() || "column_name", perLine: ctVal("ctPerLine"), chunk: ctVal("ctChunk"), tpl: ctVal("ctTpl")
+  };
+  document.getElementById("ctTplRow").hidden = o.fmt !== "tpl";
+  document.getElementById("ctColRow").hidden = !/^(where|odci|dual|cte)$/.test(o.fmt);
+  var R = ctValues(ctIn.value, o), V = R.v, st = R.st, out = "", ind = o.perLine ? "\n  " : "", sep = o.perLine ? ",\n" : ", ";
+  var isep = o.perLine ? ",\n  " : ", "; /* inside brackets every value is indented */
+  var q = V.map(function(v) { return ctQuote(v, o); }), lim = o.chunk ? 1000 : 1e9, parts = ctChunks(q, lim);
+  if (!V.length) out = "";
+  else if (o.fmt === "list") out = parts.map(function(p) { return p.join(sep); }).join(o.chunk && parts.length > 1 ? "\n\n-- next 1000\n" : sep);
+  else if (o.fmt === "in") out = parts.map(function(p) { return "(" + ind + p.join(isep) + (o.perLine ? "\n" : "") + ")"; }).join(o.chunk && parts.length > 1 ? "\n\n-- next 1000\n" : "");
+  else if (o.fmt === "where") out = "WHERE " + parts.map(function(p, i) { return (i ? "   OR " : "") + o.colName + " IN (" + ind + p.join(isep) + (o.perLine ? "\n" : "") + ")"; }).join("\n");
+  else if (o.fmt === "odci") {
+    var typ = V.every(function(v) { return /^-?\d+(\.\d+)?$/.test(v); }) && o.quote !== "'" ? "sys.odcinumberlist" : "sys.odcivarchar2list";
+    out = "-- Values that are NOT in the table:\nSELECT column_value AS " + o.colName + "\n  FROM TABLE(" + typ + "(" + ind + q.join(isep) + (o.perLine ? "\n" : "") + "))\nMINUS\nSELECT " + o.colName + " FROM your_table;";
+  }
+  else if (o.fmt === "dual") out = q.map(function(v, i) { return (i ? "UNION ALL " : "") + "SELECT " + v + " AS " + o.colName + " FROM dual"; }).join("\n");
+  else if (o.fmt === "cte") out = "WITH ids (" + o.colName + ") AS (\n" + q.map(function(v, i) { return "  " + (i ? "UNION ALL " : "") + "SELECT " + v + " FROM dual"; }).join("\n") + "\n)\nSELECT i." + o.colName + "\n  FROM ids i\n WHERE NOT EXISTS (SELECT 1 FROM your_table t WHERE t." + o.colName + " = i." + o.colName + ");";
+  else if (o.fmt === "csv") out = q.join(",");
+  else if (o.fmt === "lines") out = q.join("\n");
+  else if (o.fmt === "tpl") {
+    var t = o.tpl || "{v}";
+    out = V.map(function(v, i) { return t.replace(/\{q\}/g, ctQuote(v, { quote: "'" })).replace(/\{v\}/g, v).replace(/\{n\}/g, String(i + 1)); }).join("\n");
+  }
+  ctOut.value = out;
+  ttGutterFor(ctIn, document.getElementById("ctInGutter"));
+  ttGutterFor(ctOut, document.getElementById("ctOutGutter"));
+  var info = [];
+  info.push(st.values.toLocaleString() + " value" + (st.values === 1 ? "" : "s"));
+  if (st.dup) info.push(st.dup + " duplicate" + (st.dup > 1 ? "s" : "") + " removed");
+  if (st.blank) info.push(st.blank + " blank skipped");
+  if (st.header) info.push("header skipped: " + laTrunc(st.header.split("\t")[Math.max(0, (+o.col || 1) - 1)] || st.header, 24));
+  document.getElementById("ctInfo").textContent = info.join(" · ");
+  var warn = "";
+  if (V.length > 1000 && !o.chunk && /^(list|in|where)$/.test(o.fmt)) warn = "Oracle allows at most 1,000 values in one IN list (ORA-01795). Turn on \"Split every 1,000\".";
+  else if (V.length > 1000 && o.chunk && /^(list|in|where)$/.test(o.fmt)) warn = "Split into " + parts.length + " groups of up to 1,000" + (o.fmt === "where" ? ", joined with OR." : ".");
+  var mixed = o.quote === "none" && V.some(function(v) { return !/^-?\d+(\.\d+)?$/.test(v); });
+  if (mixed) warn = (warn ? warn + " " : "") + "Some values are not numbers but are not quoted.";
+  var w = document.getElementById("ctWarn"); w.textContent = warn; w.hidden = !warn;
+  ctCompare(V, o);
+}
+/* Optional: check the list against a second list */
+function ctCompare(V, o) {
+  var box = document.getElementById("ctCmpRes");
+  if (!ctB.value.trim()) { box.innerHTML = '<p class="tt-hint">Paste a second list (for example the IDs your query returned) to see which values are missing from it.</p>'; return; }
+  var B = ctValues(ctB.value, Object.assign({}, o, { header: false, col: 1, dedupe: true })).v;
+  var norm = function(x) { return o.dedupeCase ? x.toLowerCase() : x; };
+  var bs = {}, as = {}; B.forEach(function(x) { bs[norm(x)] = 1; }); V.forEach(function(x) { as[norm(x)] = 1; });
+  var onlyA = V.filter(function(x) { return !bs[norm(x)]; }), onlyB = B.filter(function(x) { return !as[norm(x)]; }), both = V.filter(function(x) { return bs[norm(x)]; });
+  function col(title, arr, key) {
+    return '<div class="ct-cmp-col"><div class="ct-cmp-h"><b>' + title + '</b> <span class="tt-badge' + (arr.length && key !== "both" ? ' bad' : '') + '">' + arr.length + '</span>' +
+      (arr.length ? '<button class="la-btn la-btn-sm" data-ct-copy="' + key + '">Copy</button><button class="la-btn la-btn-sm" data-ct-use="' + key + '" title="Put these values in the main list">Use as list</button>' : '') + '</div>' +
+      '<pre class="ct-cmp-pre">' + escapeHtml(arr.slice(0, 500).join("\n")) + (arr.length > 500 ? "\n… " + (arr.length - 500) + " more" : "") + '</pre></div>';
+  }
+  ctCompare.last = { a: onlyA, b: onlyB, both: both };
+  box.innerHTML = '<div class="ct-cmp-grid">' + col("Only in the main list", onlyA, "a") + col("Only in the second list", onlyB, "b") + col("In both", both, "both") + '</div>';
+}
+var ctT = null;
+function ctSchedule() { clearTimeout(ctT); ctT = setTimeout(ctBuild, ctIn.value.length > 200000 ? 300 : 60); }
+["ctIn", "ctB", "ctColName", "ctTpl", "ctCol", "ctLead0"].forEach(function(id) { document.getElementById(id).addEventListener("input", ctSchedule); });
+document.querySelectorAll("#ttCol select, #ttCol input[type=checkbox]").forEach(function(el) { el.addEventListener("change", ctBuild); });
+ctIn.addEventListener("scroll", function() { document.getElementById("ctInGutter").scrollTop = ctIn.scrollTop; });
+ctOut.addEventListener("scroll", function() { document.getElementById("ctOutGutter").scrollTop = ctOut.scrollTop; });
+document.getElementById("ctCopy").addEventListener("click", function() {
+  if (!ctOut.value) { showToast("Nothing to copy yet"); return; }
+  writeClipboard(ctOut.value, function() { showToast("Copied " + ctOut.value.split("\n").length + " line" + (ctOut.value.indexOf("\n") > -1 ? "s" : "")); });
+});
+document.getElementById("ctClear").addEventListener("click", function() { ctIn.value = ""; ctB.value = ""; ctBuild(); ctIn.focus(); });
+document.getElementById("ctPaste").addEventListener("click", function() { ctIn.focus(); showToast("Press Ctrl+V to paste your column"); });
+document.getElementById("ttCol").addEventListener("click", function(ev) {
+  var c = ev.target.closest("[data-ct-copy]"), u = ev.target.closest("[data-ct-use]"), p = ev.target.closest("[data-ct-preset]");
+  if (c) { var a = ctCompare.last[c.getAttribute("data-ct-copy")]; writeClipboard(a.join("\n"), function() { showToast(a.length + " values copied"); }); }
+  if (u) { ctIn.value = ctCompare.last[u.getAttribute("data-ct-use")].join("\n"); document.getElementById("ctHeader").checked = false; ctBuild(); }
+  if (p) {
+    var P = { inq: ["in", "'", false], where: ["where", "auto", false], missing: ["odci", "auto", false], lines: ["list", "'", true], csv: ["csv", "none", false] }[p.getAttribute("data-ct-preset")];
+    document.getElementById("ctFmt").value = P[0]; document.getElementById("ctQuote").value = P[1]; document.getElementById("ctPerLine").checked = P[2];
+    document.querySelectorAll("[data-ct-preset]").forEach(function(b) { b.classList.toggle("on", b === p); });
+    ctBuild();
+  }
+});
 
 function ttBeautify(minify) {
   var text = ttIn.value;
