@@ -1696,6 +1696,63 @@
     .la-stack { display: flex; flex-direction: column; gap: .85rem; }
     /* Search in files */
     .fs[hidden], #ttCol[hidden], .fs-sum-act[hidden] { display: none; }
+    /* Trace an ID */
+    .tr-intro { font-size: .84rem; color: var(--navy); line-height: 1.5; }
+    .tr-intro code, .tr-path code { font-family: var(--mono); font-size: .76rem; background: var(--navy-06); padding: 0 .25rem; border-radius: 4px; }
+    .tr-src { display: flex; flex-wrap: wrap; gap: .4rem .9rem; align-items: center; border: 1.5px dashed var(--border); border-radius: 10px; padding: .45rem .7rem; }
+    .tr-src.drag-over { border-color: var(--accent); background: var(--accent-light); }
+    .tr-src > .la-hint { flex: 1 1 260px; min-width: 0; font-size: .74rem; }
+    .tr-src b { color: var(--navy); }
+    .tr-out { display: flex; flex-direction: column; gap: .9rem; }
+    .tr-sum { display: flex; flex-direction: column; gap: .8rem; }
+    .tr-verdict { margin: 0; font-size: .92rem; line-height: 1.55; color: var(--navy); border-left: 4px solid var(--c, var(--navy-30)); padding: .5rem .75rem; background: var(--cl, var(--navy-06)); border-radius: 0 10px 10px 0; }
+    .tr-verdict.err { --c: var(--red); --cl: var(--red-light); }
+    .tr-verdict.warn { --c: var(--amber); --cl: var(--amber-light); }
+    .tr-verdict.ok { --c: var(--green); --cl: var(--green-light); }
+    .tr-verdict code { font-family: var(--mono); font-size: .8rem; word-break: break-word; }
+    .tr-path { display: flex; flex-wrap: wrap; align-items: stretch; gap: .35rem; }
+    .tr-arrow { align-self: center; color: var(--navy-60); font-weight: 700; }
+    .tr-lanebtn {
+      position: relative; display: flex; flex-direction: column; gap: .1rem; text-align: left; min-width: 0; max-width: 100%;
+      font-family: var(--font); font-size: .76rem; color: var(--navy); background: var(--surface); cursor: pointer;
+      border: 1.5px solid var(--border); border-top: 4px solid var(--lane); border-radius: 10px; padding: .4rem .65rem;
+    }
+    .tr-lanebtn b { font-family: var(--mono); font-size: .74rem; word-break: break-all; }
+    .tr-lanebtn small { font-size: .68rem; color: var(--navy-60); line-height: 1.4; }
+    .tr-lanebtn:hover { background: var(--navy-06); }
+    .tr-lanebtn:focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; }
+    .tr-lanebtn.off { opacity: .5; border-top-style: dashed; }
+    .tr-lanebtn.stop { border-color: var(--red); box-shadow: 0 0 0 1px var(--red); }
+    .tr-stop { font-size: .62rem; font-weight: 800; letter-spacing: .06em; text-transform: uppercase; color: var(--red); }
+    .c0 { --lane: #2563eb; } .c1 { --lane: #d97706; } .c2 { --lane: #059669; } .c3 { --lane: #7c3aed; } .c4 { --lane: #db2777; } .c5 { --lane: #0891b2; }
+    .tr-chip-bad { border-color: var(--red); }
+    .tr-code { display: inline-block; font-family: var(--mono); font-size: .68rem; font-weight: 700; border-radius: 5px; padding: .05rem .4rem; background: var(--navy-06); color: var(--navy-60); }
+    .tr-code.bad { background: var(--red-light); color: var(--red); }
+    .tr-keynote { margin: -.3rem 0 .6rem; }
+    .tr-rows { display: flex; flex-direction: column; border: 1.5px solid var(--border); border-radius: 10px; overflow: hidden; }
+    .tr-row { border-bottom: 1px solid var(--navy-06); border-left: 4px solid transparent; }
+    .tr-row:last-child { border-bottom: 0; }
+    .tr-row.lv-ERROR, .tr-row.lv-FATAL { border-left-color: var(--c); background: color-mix(in srgb, var(--cl) 60%, transparent); }
+    .tr-row.lv-WARN { border-left-color: var(--c); }
+    .tr-row > summary { list-style: none; cursor: pointer; display: grid; grid-template-columns: 6.6rem minmax(5rem, 10rem) auto minmax(0, 1fr); gap: .6rem; align-items: start; padding: .4rem .65rem; }
+    .tr-row > summary::-webkit-details-marker { display: none; }
+    .tr-row > summary:hover { background: var(--navy-06); }
+    .tr-row > summary:focus-visible { outline: 2px solid var(--accent); outline-offset: -2px; }
+    .tr-time { font-family: var(--mono); font-size: .74rem; font-weight: 700; color: var(--navy); display: flex; flex-direction: column; line-height: 1.35; }
+    .tr-time small { font-weight: 400; color: var(--navy-60); }
+    .tr-d { font-size: .66rem; }
+    .tr-d.slow { color: var(--amber); font-weight: 700; }
+    .tr-lane { font-family: var(--mono); font-size: .7rem; color: var(--navy); border-left: 4px solid var(--lane); padding-left: .4rem; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; line-height: 1.6; }
+    .tr-main { min-width: 0; display: flex; flex-direction: column; gap: .25rem; }
+    .tr-msg { font-family: var(--mono); font-size: .74rem; color: var(--navy); word-break: break-word; line-height: 1.5; }
+    .tr-tags { display: flex; flex-wrap: wrap; gap: .3rem .6rem; align-items: center; font-size: .7rem; }
+    .tr-api { font-family: var(--mono); font-size: .68rem; color: var(--accent); word-break: break-all; }
+    .tr-detail { padding: .5rem .75rem .75rem; display: flex; flex-direction: column; gap: .5rem; background: var(--navy-06); }
+    .tr-detail:empty { display: none; }
+    @media (max-width: 640px) {
+      .tr-row > summary { grid-template-columns: 5.4rem minmax(0, 1fr) auto; }
+      .tr-row .tr-main { grid-column: 1 / -1; }
+    }
     .fs-top { margin-bottom: .9rem; }
     .fs { display: flex; flex-direction: column; gap: .9rem; padding-bottom: 2.5rem; }
     .fs-src, .fs-q { display: flex; flex-direction: column; gap: .7rem; }
@@ -2407,7 +2464,26 @@
           <div class="tt-modes" role="tablist" aria-label="Log tool">
             <button class="tt-mode active" id="fsModeAn" role="tab" aria-selected="true">Analyse logs</button>
             <button class="tt-mode" id="fsModeFs" role="tab" aria-selected="false">Search in files</button>
+            <button class="tt-mode" id="fsModeTr" role="tab" aria-selected="false">Trace an ID</button>
           </div>
+        </div>
+        <div id="trPanel" class="fs" hidden>
+          <section class="la-card fs-q" aria-label="What to trace">
+            <div class="tr-intro"><b>Follow one application or transaction through every log.</b> <span class="la-hint">Enter an application / case ID, UTR, RRN or transaction ID. <code>HLOS-3214</code> also finds <code>HLOS-00000000003214</code>. Separate several IDs with commas.</span></div>
+            <div class="fs-qrow">
+              <input type="search" id="trQ" class="fs-qin" placeholder="e.g. HLOS-00000000003214, or a UTR / RRN" spellcheck="false" aria-label="ID to trace">
+              <button class="la-btn tt-btn-main" id="trGo" type="button">Trace</button>
+            </div>
+            <div id="trDrop" class="tr-src">
+              <span class="la-hint" id="trSrc"></span>
+              <span class="la-actions"><button class="la-btn la-btn-sm" id="trPickDir" type="button">Add folder</button><button class="la-btn la-btn-sm" id="trPickFiles" type="button">Add files</button></span>
+              <label class="tt-check"><input type="checkbox" id="trMask"> Mask sensitive data</label>
+              <input type="file" id="trDirIn" webkitdirectory directory multiple hidden>
+              <input type="file" id="trFileIn" multiple hidden>
+            </div>
+            <div class="la-hint" id="trProg" aria-live="polite"></div>
+          </section>
+          <div id="trOut" class="tr-out" aria-live="polite"></div>
         </div>
         <div id="fsPanel" class="fs" hidden>
           <section class="la-card fs-src" aria-label="Where to search">
@@ -4771,6 +4847,7 @@ function laEnrich(e) {
   if (cm) { e.caseId = cm[1]; e.msg = e.msg.slice(cm[0].length) || e.msg; }
   var t = laCap(e);
   e.kb = laKbMatch(t);
+  if (e.kb.length > 1) e.kb.sort(function(a, b) { return LA_RANK[a.s] - LA_RANK[b.s] || (a.r.map ? 1 : 0) - (b.r.map ? 1 : 0); }); /* most serious first; a named event before a bare code */
   var best = null;
   e.kb.forEach(function(x) { if (best === null || LA_RANK[x.s] < LA_RANK[best]) best = x.s; });
   /* Kubernetes only has Normal / Warning: a known problem sets the real severity */
@@ -6190,7 +6267,7 @@ var FS_CACHE_MAX = 400 * 1048576, FS_MAX_HITS = 50000, FS_SHOW = 200;
 var fsQ = document.getElementById("fsQ"), fsOut = document.getElementById("fsOut"), fsList = document.getElementById("fsFiles");
 
 function fsPath(f) { return f.fsPath || f.webkitRelativePath || f.name; }
-function fsAddFiles(list) {
+function fsAddFiles(list, quiet) {
   var have = {}, added = 0;
   fs.files.forEach(function(f) { have[fsPath(f) + "\u0001" + f.size] = 1; });
   Array.prototype.forEach.call(list, function(f) {
@@ -6199,6 +6276,7 @@ function fsAddFiles(list) {
   });
   fs.files.sort(function(a, b) { return fsPath(a).localeCompare(fsPath(b), undefined, { numeric: true }); });
   fsRenderFiles();
+  if (quiet) { if (added) showToast(added + " file" + (added > 1 ? "s" : "") + " added"); return; }
   if (added && fsQ.value.trim()) fsSearch(); else if (added) { fsQ.focus(); showToast(added + " file" + (added > 1 ? "s" : "") + " added. Type what to look for."); }
 }
 /* Dropped folders: walk them (Chrome gives entries for folders) */
@@ -6420,18 +6498,329 @@ fsOut.addEventListener("click", function(e) {
 document.getElementById("fsMask").addEventListener("change", function() { logState.mask = this.checked; fsRender(); });
 
 /* switch between analysing logs and searching files */
-function laMode(search) {
-  document.getElementById("fsPanel").hidden = !search;
-  document.getElementById("laPanel").hidden = search;
-  document.getElementById("fsModeAn").classList.toggle("active", !search);
-  document.getElementById("fsModeFs").classList.toggle("active", search);
-  document.getElementById("fsModeAn").setAttribute("aria-selected", String(!search));
-  document.getElementById("fsModeFs").setAttribute("aria-selected", String(search));
+function laMode(m) {
+  if (m === true) m = "fs"; else if (m === false || !m) m = "an";
+  [["an", "laPanel", "fsModeAn"], ["fs", "fsPanel", "fsModeFs"], ["tr", "trPanel", "fsModeTr"]].forEach(function(x) {
+    var on = x[0] === m;
+    document.getElementById(x[1]).hidden = !on;
+    document.getElementById(x[2]).classList.toggle("active", on);
+    document.getElementById(x[2]).setAttribute("aria-selected", String(on));
+  });
   document.getElementById("fsMask").checked = logState.mask;
-  if (search) { fsRenderFiles(); setTimeout(function() { fsQ.focus(); }, 30); }
+  document.getElementById("trMask").checked = logState.mask;
+  if (m === "fs") { fsRenderFiles(); setTimeout(function() { fsQ.focus(); }, 30); }
+  if (m === "tr") { trRenderSources(); if (tr.res) trRender(); setTimeout(function() { trQ.focus(); }, 30); }
 }
-document.getElementById("fsModeAn").addEventListener("click", function() { laMode(false); });
-document.getElementById("fsModeFs").addEventListener("click", function() { laMode(true); });
+document.getElementById("fsModeAn").addEventListener("click", function() { laMode("an"); });
+document.getElementById("fsModeFs").addEventListener("click", function() { laMode("fs"); });
+document.getElementById("fsModeTr").addEventListener("click", function() { laMode("tr"); });
+
+/* ─── Trace an ID (application / case ID, UTR, RRN, transaction ID) ───
+   Finds every entry that mentions the ID across the analysed logs and the "Search in files" list,
+   puts them in time order grouped by log file / system, and says where it stopped. */
+var tr = { parsed: new Map(), res: null, view: "key", lanesOff: {}, limit: 600 };
+var trQ = document.getElementById("trQ"), trOut = document.getElementById("trOut");
+var TR_CODE_RE = /\b(resp(?:onse)?[_ ]?code|responseCode|rc|err(?:or)?[_ ]?code|errCode|ErrorCode|statusCode|status[_ ]?code|reason[_ ]?code|action[_ ]?code|ORA)(["']?\s*(?:[:=]|==>|-)\s*["']?)([A-Za-z0-9]{1,8})\b/gi;
+var TR_OK_CODE = /^(0+|00|200|201|202|204|S|SUCCESS|OK|Y|true)$/i;
+
+/* "HLOS-3214" also matches HLOS-00000000003214; "3214" matches the number with or without a prefix */
+function trPattern(raw) {
+  var ids = raw.split(/[\s,;]+/).map(function(x) { return x.trim().replace(/^['"]|['"]$/g, ""); }).filter(Boolean), parts = [], warn = "";
+  ids.forEach(function(t) {
+    var m;
+    if ((m = /^([A-Za-z]{2,10})-?0*(\d+)$/.exec(t))) parts.push("\\b" + m[1] + "-?0*" + m[2] + "(?![\\d])");
+    else if ((m = /^0*(\d+)$/.exec(t))) {
+      if (m[1].length < 5) warn = "Short numbers like " + t + " can match unrelated values (times, amounts). Add the prefix, e.g. HLOS-" + m[1] + ".";
+      parts.push("(?<![\\w-])(?:[A-Za-z]{2,10}-)?0*" + m[1] + "(?![\\d])");
+    } else parts.push("(?<![\\w])" + t.replace(/[.*+?^${}()|[\]\\]/g, "\\$&") + "(?![\\w])");
+  });
+  if (!parts.length) return null;
+  return { re: new RegExp(parts.join("|"), "gi"), ids: ids, warn: warn };
+}
+
+/* Files to trace in: the analysed logs plus the Search in files list */
+function trSources() {
+  var out = [], seen = {};
+  if (logSrc) logSrc.files.forEach(function(f, i) { var k = f.name + "\u0001" + f.size; if (!seen[k]) { seen[k] = 1; out.push({ name: f.name, size: f.size, modified: f.modified, text: f.text, an: { P: logSrc.P, i: i } }); } });
+  fs.files.forEach(function(f) { var k = f.name + "\u0001" + f.size; if (!seen[k] && fsFilterMatch(f)) { seen[k] = 1; out.push({ name: fsPath(f), size: f.size, modified: f.lastModified, file: f }); } });
+  return out;
+}
+function trRenderSources() {
+  var S = trSources(), an = S.filter(function(s) { return s.an; }).length, tot = S.reduce(function(a, s) { return a + s.size; }, 0);
+  document.getElementById("trSrc").innerHTML = S.length
+    ? '<b>' + S.length + '</b> file' + (S.length > 1 ? 's' : '') + ' (' + laSize(tot) + ')' + (an ? ': ' + an + ' from the analysed logs' + (S.length > an ? ', ' + (S.length - an) + ' from the Search in files list' : '') : ' from the Search in files list')
+    : 'No files yet. Choose the folder that holds the logs of each system (gateway, application, CBS, switch), or analyse a log first.';
+}
+function trAdd(list) { fsAddFiles(list, true); trRenderSources(); if (trQ.value.trim()) trRun(); else trQ.focus(); }
+
+async function trParsed(s) {
+  var k = s.name + "\u0001" + s.size + "\u0001" + s.modified;
+  if (tr.parsed.has(k)) return tr.parsed.get(k);
+  var text = s.text !== undefined ? s.text : await fsText(s.file);
+  if (text === null) { tr.parsed.set(k, null); return null; }
+  if (s.file) text = laPrep(text);
+  var df = logSet.dayFirst === "auto" ? null : logSet.dayFirst === "day";
+  var P = laParse(text, { base: s.modified || Date.now(), dayFirst: df });
+  tr.parsed.set(k, P);
+  return P;
+}
+
+function trCodes(e) {
+  var t = e.raw.length > 4000 ? e.raw.slice(0, 2000) + " " + e.raw.slice(-2000) : e.raw, out = [], m, seen = {};
+  t += "\n" + e.extra.slice(0, 10).join("\n");
+  TR_CODE_RE.lastIndex = 0;
+  while ((m = TR_CODE_RE.exec(t)) && out.length < 5) {
+    var k = m[1].replace(/[_ ]/g, "").toLowerCase(), v = m[3], key = k + "=" + v;
+    if (seen[key] || (k === "ora" && !/^\d{5}$/.test(v))) continue;
+    seen[key] = 1;
+    out.push({ k: k === "ora" ? "ORA" : m[1], v: v, ok: TR_OK_CODE.test(v) });
+  }
+  if (e.http && !seen["http=" + e.http.code]) out.push({ k: "HTTP", v: String(e.http.code), ok: e.http.code < 400 });
+  return out;
+}
+
+async function trRun() {
+  var Q = trPattern(trQ.value);
+  if (!Q) { trOut.innerHTML = ""; return; }
+  var S = trSources();
+  if (!S.length) { trOut.innerHTML = '<p class="la-empty">Choose the log files or folder first, or analyse a log in "Analyse logs".</p>'; return; }
+  var btn = document.getElementById("trGo"); btn.disabled = true; btn.textContent = "Tracing…";
+  var prog = document.getElementById("trProg"), t0 = performance.now(), hits = [], lanes = [], skipped = [];
+  for (var si = 0; si < S.length; si++) {
+    prog.textContent = "Reading " + (si + 1) + " of " + S.length + ": " + S[si].name;
+    await new Promise(function(r) { setTimeout(r, 0); });
+    var P;
+    try { P = await trParsed(S[si]); } catch (e) { P = null; }
+    if (!P) { skipped.push(S[si].name); continue; }
+    var lane = { i: lanes.length, name: S[si].name, short: laTrunc(S[si].name.split("/").pop().replace(/\.(log|txt|out)$/i, ""), 26), src: S[si], n: 0, err: 0, first: null, last: null };
+    P.entries.forEach(function(e) {
+      Q.re.lastIndex = 0;
+      var hit = Q.re.test(e.raw);
+      if (!hit && e.extra.length) { Q.re.lastIndex = 0; hit = Q.re.test(e.extra.slice(0, 300).join("\n")); }
+      if (!hit) return;
+      if (!e.kb) laEnrich(e);
+      var h = { e: e, lane: lane, codes: trCodes(e) };
+      hits.push(h); lane.n++;
+      if (LA_RANK[e.level] <= 1) lane.err++;
+      laMinMax(lane, e.ts);
+    });
+    if (lane.n) lanes.push(lane);
+  }
+  hits.sort(function(a, b) {
+    if (a.e.ts !== null && b.e.ts !== null && a.e.ts !== b.e.ts) return a.e.ts - b.e.ts;
+    if (a.e.ts === null && b.e.ts !== null) return 1;
+    if (b.e.ts === null && a.e.ts !== null) return -1;
+    return a.lane.i - b.lane.i || a.e.n - b.e.n;
+  });
+  lanes.sort(function(a, b) { return (a.first === null) - (b.first === null) || a.first - b.first; });
+  lanes.forEach(function(l, i) { l.c = i % 6; });
+  tr.res = { Q: Q, hits: hits, lanes: lanes, skipped: skipped, files: S.length, ms: performance.now() - t0 };
+  tr.lanesOff = {}; tr.limit = 600;
+  tr.view = hits.length > 300 ? "key" : "all";
+  btn.disabled = false; btn.textContent = "Trace"; prog.textContent = "";
+  trRender();
+}
+
+/* Key steps: first and last line, errors and warnings, known problems, API calls and failure codes (first of each kind) */
+function trKey(hits) {
+  var seen = {}, out = [];
+  hits.forEach(function(h, i) {
+    var e = h.e, why = [];
+    if (i === 0) why.push("first");
+    if (i === hits.length - 1) why.push("last");
+    if (LA_RANK[e.level] <= 2) why.push(e.level.toLowerCase());
+    if (e.kb.length) why.push("known");
+    if (e.apis.length) why.push("api");
+    if (h.codes.some(function(c) { return !c.ok; })) why.push("code");
+    if (!why.length) return;
+    var k = h.lane.i + "\u0001" + e.sig;
+    if (seen[k] && why.indexOf("first") < 0 && why.indexOf("last") < 0) { seen[k].rep++; return; }
+    h.rep = 0; seen[k] = h; out.push(h);
+  });
+  return out;
+}
+
+function trVerdict(R) {
+  var H = R.hits, bad = H.filter(function(h) { return LA_RANK[h.e.level] <= 1 || h.e.kb.some(function(k) { return LA_RANK[k.s] <= 1; }); });
+  var last = H[H.length - 1];
+  if (bad.length) {
+    var b = bad[bad.length - 1], kb = b.e.kb[0];
+    return { cls: "err", lane: b.lane, h: b, text: "Last failure in <b>" + escapeHtml(b.lane.short) + "</b>" + (b.e.ts !== null ? " at <b>" + laWhen(b.e.ts) + "</b>" : "") + ": " +
+      (kb ? "<b>" + laEsc(kb.t) + "</b>. " : "") + "<code>" + trMark(laTrunc(b.e.msg || b.e.raw, 200)) + "</code>" + (b !== last ? '<br><span class="la-hint">The ID appears again after this, last in ' + escapeHtml(last.lane.short) + (last.e.ts !== null ? ' at ' + laWhen(last.e.ts) : '') + '.</span>' : '') };
+  }
+  var w = H.filter(function(h) { return h.e.level === "WARN"; });
+  if (w.length) return { cls: "warn", lane: w[w.length - 1].lane, h: w[w.length - 1], text: "No errors, " + w.length + " warning" + (w.length > 1 ? "s" : "") + ". Last step in <b>" + escapeHtml(last.lane.short) + "</b>: <code>" + trMark(laTrunc(last.e.msg || last.e.raw, 160)) + "</code>" };
+  return { cls: "ok", lane: last.lane, h: last, text: "No errors found for this ID. Last step in <b>" + escapeHtml(last.lane.short) + "</b>" + (last.e.ts !== null ? " at <b>" + laWhen(last.e.ts) + "</b>" : "") + ": <code>" + trMark(laTrunc(last.e.msg || last.e.raw, 160)) + "</code>" };
+}
+
+function trLinked(R) {
+  var ids = {}, q = R.Q.ids.map(function(x) { return x.toLowerCase(); }), cases = {};
+  R.hits.slice(0, 5000).forEach(function(h) {
+    var into = {};
+    laIds((h.e.raw.length > 3000 ? h.e.raw.slice(0, 3000) : h.e.raw) + "\n" + h.e.extra.slice(0, 20).join("\n"), into);
+    Object.keys(into).forEach(function(k) {
+      if (/Session|Trace|Span|User/.test(k)) return;
+      into[k].order.forEach(function(v) { var key = k + "\u0001" + v; if (q.indexOf(v.toLowerCase()) < 0 && v.length >= 5) ids[key] = (ids[key] || 0) + 1; });
+    });
+    if (h.e.caseId) cases[h.e.caseId] = (cases[h.e.caseId] || 0) + 1;
+  });
+  var out = Object.keys(cases).filter(function(c) { R.Q.re.lastIndex = 0; return !R.Q.re.test(c); }).map(function(c) { return { k: "Case", v: c, n: cases[c] }; });
+  Object.keys(ids).sort(function(a, b) { return ids[b] - ids[a]; }).slice(0, 14).forEach(function(k) { var p = k.split("\u0001"); out.push({ k: p[0], v: p[1], n: ids[k] }); });
+  return out.slice(0, 16);
+}
+
+function trRowHtml(h, prev, idx) {
+  var e = h.e, d = prev && prev.e.ts !== null && e.ts !== null ? e.ts - prev.e.ts : null;
+  var codes = h.codes.map(function(c) { return '<span class="tr-code' + (c.ok ? '' : ' bad') + '">' + laEsc(c.k + "=" + c.v) + '</span>'; }).join("");
+  var kb = e.kb.length ? '<span class="la-kbtag">' + laEsc(e.kb[0].t) + '</span>' : "";
+  var api = e.apis.length ? '<span class="tr-api" title="' + laAttr(e.apis.join(", ")) + '">→ ' + laEsc(laTrunc(e.apis[0], 60)) + '</span>' : "";
+  return '<details class="tr-row lv-' + e.level + '" data-i="' + idx + '"><summary>' +
+    '<span class="tr-time">' + (e.ts !== null ? laClock(e.ts) + '<small>.' + ("00" + new Date(e.ts).getMilliseconds()).slice(-3) + '</small>' : '<small>no time</small>') +
+      (d !== null ? '<small class="tr-d' + (d >= 10000 ? ' slow' : '') + '">' + (d < 1000 ? '+' + d + ' ms' : '+' + laDur(d)) + '</small>' : '') + '</span>' +
+    '<span class="tr-lane c' + h.lane.c + '" title="' + laAttr(h.lane.name) + '">' + escapeHtml(h.lane.short) + '</span>' +
+    '<span class="la-badge">' + (e.level === "OTHER" ? "LOG" : e.level) + '</span>' +
+    '<span class="tr-main"><span class="tr-msg">' + trMark(laTrunc(e.msg || e.raw, 600)) + '</span>' +
+      ((codes || kb || api || h.rep) ? '<span class="tr-tags">' + codes + kb + api + (h.rep ? '<span class="la-n">+' + h.rep + ' similar</span>' : '') + '</span>' : '') + '</span>' +
+    '</summary><div class="tr-detail"></div></details>';
+}
+function trMark(s) {
+  var R = tr.res, t = laMask(s), out = "", last = 0, m;
+  R.Q.re.lastIndex = 0;
+  while ((m = R.Q.re.exec(t))) { if (!m[0].length) { R.Q.re.lastIndex++; continue; } out += escapeHtml(t.slice(last, m.index)) + '<mark class="la-hl">' + escapeHtml(m[0]) + '</mark>'; last = m.index + m[0].length; }
+  return out + escapeHtml(t.slice(last));
+}
+function trDetail(h) {
+  var e = h.e;
+  return '<div class="la-occ-head"><button class="la-linkbtn" data-tr-open="' + h.lane.i + '" data-n="' + e.n + '">Open ' + escapeHtml(h.lane.short) + ' at line ' + e.n + '</button>' +
+      (e.ts !== null ? '<span>' + laDate(e.ts) + ' ' + laClock(e.ts) + '</span>' : '') + (e.service ? '<span>' + escapeHtml(e.service) + '</span>' : '') + (e.caseId ? '<span>' + laEsc(e.caseId) + '</span>' : '') + '</div>' +
+    '<div class="la-occ-text">' + trMark(laTrunc(e.raw, 6000)) + '</div>' +
+    (e.root ? '<div class="la-root"><span class="la-lbl">Root cause</span> <code>' + laEsc(e.root) + '</code></div>' : '') +
+    (e.kb.length ? '<div class="la-kb-explain la-kb-in"><div><div class="la-lbl">' + laEsc(e.kb[0].t) + '</div><p>' + laEsc(e.kb[0].m) + '</p></div><div><div class="la-lbl">What to check</div><p>' + laEsc(e.kb[0].k) + '</p></div></div>' : '') +
+    (e.extra.length ? '<pre class="la-pre">' + laEsc(e.extra.slice(0, 120).map(function(x) { return laTrunc(x, 2000); }).join("\n")) + (e.extra.length > 120 ? "\n… " + (e.extra.length - 120) + " more lines" : "") + '</pre>' : '');
+}
+
+function trRows() {
+  var R = tr.res, base = tr.view === "key" ? trKey(R.hits) : tr.view === "bad" ? R.hits.filter(function(h) { return LA_RANK[h.e.level] <= 2 || h.e.kb.length; }) : R.hits;
+  return base.filter(function(h) { return !tr.lanesOff[h.lane.i]; });
+}
+function trRender() {
+  var R = tr.res;
+  if (!R) { trOut.innerHTML = ""; return; }
+  var h = "";
+  if (R.Q.warn) h += '<p class="fs-warn">' + escapeHtml(R.Q.warn) + '</p>';
+  if (!R.hits.length) {
+    trOut.innerHTML = h + '<section class="la-card"><p class="la-empty">“' + escapeHtml(R.Q.ids.join(", ")) + '” was not found in ' + R.files + ' file' + (R.files > 1 ? 's' : '') + '.' +
+      (R.skipped.length ? ' ' + R.skipped.length + ' could not be read.' : '') + ' Check the ID, or add the logs of the other systems.</p></section>';
+    return;
+  }
+  var H = R.hits, first = H[0].e, lastT = null, firstT = null, V = trVerdict(R);
+  H.forEach(function(x) { if (x.e.ts !== null) { if (firstT === null) firstT = x.e.ts; lastT = x.e.ts; } });
+  var errs = H.filter(function(x) { return LA_RANK[x.e.level] <= 1; }).length, warns = H.filter(function(x) { return x.e.level === "WARN"; }).length;
+  h += '<section class="la-card tr-sum" aria-label="Trace summary"><div class="la-eyebrow">Trace of ' + laEsc(R.Q.ids.join(", ")) + '</div>' +
+    '<p class="tr-verdict ' + V.cls + '">' + V.text + '</p>' +
+    '<div class="la-kv"><span><b>' + H.length.toLocaleString() + '</b> entries in <b>' + R.lanes.length + '</b> of ' + R.files + ' file' + (R.files > 1 ? 's' : '') + '</span>' +
+      (firstT !== null ? '<span>From <b>' + laDate(firstT) + ' ' + laClock(firstT) + '</b> to <b>' + (laDate(lastT) !== laDate(firstT) ? laDate(lastT) + ' ' : '') + laClock(lastT) + '</b></span><span>Took <b>' + laDur(lastT - firstT) + '</b></span>' : '') +
+      '<span>Errors <b class="' + (errs ? 'la-bad' : '') + '">' + errs + '</b></span><span>Warnings <b>' + warns + '</b></span><span class="la-hint">found in ' + (R.ms < 1000 ? Math.round(R.ms) + ' ms' : (R.ms / 1000).toFixed(1) + ' s') + '</span></div>';
+  /* systems path */
+  h += '<div><div class="la-lbl">Path through the systems <span class="la-hint">(in order of first appearance; click to show or hide)</span></div><div class="tr-path">' +
+    R.lanes.map(function(l, i) {
+      return (i ? '<span class="tr-arrow" aria-hidden="true">→</span>' : '') + '<button class="tr-lanebtn c' + l.c + (tr.lanesOff[l.i] ? ' off' : '') + (V.lane === l && V.cls === "err" ? ' stop' : '') + '" data-tr-lane="' + l.i + '" aria-pressed="' + !tr.lanesOff[l.i] + '" title="' + laAttr(l.name) + '">' +
+        '<b>' + escapeHtml(l.short) + '</b><small>' + l.n + ' entr' + (l.n > 1 ? 'ies' : 'y') + (l.err ? ', <span class="la-bad">' + l.err + ' error' + (l.err > 1 ? 's' : '') + '</span>' : '') +
+        (l.first !== null ? '<br>' + laClock(l.first) + (l.last > l.first ? ' – ' + laClock(l.last) : '') : '') + '</small>' + (V.lane === l && V.cls === "err" ? '<span class="tr-stop">stopped here</span>' : '') + '</button>';
+    }).join("") + '</div></div>';
+  /* APIs and codes */
+  var apis = {}, codes = {};
+  H.forEach(function(x) {
+    x.e.apis.forEach(function(a) { var o = apis[a] || (apis[a] = { n: 0, bad: 0 }); o.n++; if (LA_RANK[x.e.level] <= 1 || x.e.apiErr) o.bad++; });
+    x.codes.forEach(function(c) { if (!c.ok) { var k = c.k + "=" + c.v; codes[k] = (codes[k] || 0) + 1; } });
+  });
+  var ak = Object.keys(apis);
+  if (ak.length) h += '<div><div class="la-lbl">APIs called for this ID</div><div class="la-chips">' + ak.slice(0, 16).map(function(a) { return '<span class="la-chip' + (apis[a].bad ? ' tr-chip-bad' : '') + '"><code>' + laEsc(laTrunc(a, 80)) + '</code> <b>' + apis[a].n + (apis[a].bad ? ', ' + apis[a].bad + ' failed' : '') + '</b></span>'; }).join("") + '</div></div>';
+  var ck = Object.keys(codes);
+  if (ck.length) h += '<div><div class="la-lbl">Failure codes seen</div><div class="la-chips">' + ck.map(function(c) { return '<span class="tr-code bad">' + laEsc(c) + (codes[c] > 1 ? ' ×' + codes[c] : '') + '</span>'; }).join("") + '</div></div>';
+  var L = trLinked(R);
+  if (L.length) h += '<div><div class="la-lbl">Linked IDs found with it <span class="la-hint">(click to trace them together)</span></div><div class="la-chips">' + L.map(function(x) {
+    return '<button class="la-chip la-chip-btn" data-tr-add="' + laAttr(x.v) + '" title="Add to the trace">' + escapeHtml(x.k) + ' <code>' + laEsc(x.v) + '</code> <b>' + x.n + '</b></button>'; }).join("") + '</div></div>';
+  h += '<div class="la-actions"><button class="la-btn" data-tr-act="copy">' + LA_ICON.copy + 'Copy trace for ticket</button><button class="la-btn" data-tr-act="csv">' + LA_ICON.down + 'Export CSV</button></div>';
+  if (R.skipped.length) h += '<p class="la-hint">Not read (not text): ' + escapeHtml(R.skipped.join(", ")) + '</p>';
+  h += '</section>';
+  /* timeline */
+  var rows = trRows(), keyN = trKey(H).length;
+  h += '<section class="la-card" aria-label="Timeline"><div class="la-h-row"><h3 class="la-h">Timeline <small>every entry with this ID, oldest first</small></h3>' +
+    '<div class="la-tabs" role="group" aria-label="Show">' +
+      [["key", "Key steps", keyN], ["bad", "Errors and warnings", H.filter(function(x) { return LA_RANK[x.e.level] <= 2 || x.e.kb.length; }).length], ["all", "Everything", H.length]].map(function(t) {
+        return '<button class="la-btn' + (tr.view === t[0] ? ' on' : '') + '" data-tr-view="' + t[0] + '" aria-pressed="' + (tr.view === t[0]) + '">' + t[1] + ' <span class="la-n">' + t[2].toLocaleString() + '</span></button>';
+      }).join("") + '</div></div>' +
+    (tr.view === "key" ? '<p class="la-hint tr-keynote">Key steps: first and last entry, errors, warnings, known problems, API calls and failure codes. Repeats of the same step are counted, not listed.</p>' : '') +
+    '<div class="tr-rows">';
+  var prev = null;
+  rows.slice(0, tr.limit).forEach(function(x, i) { h += trRowHtml(x, prev, i); prev = x; });
+  h += '</div>' + (rows.length > tr.limit ? '<button class="la-btn la-more" data-tr-act="more">Show ' + Math.min(1000, rows.length - tr.limit).toLocaleString() + ' more of ' + (rows.length - tr.limit).toLocaleString() + '</button>' : '') + '</section>';
+  trOut.innerHTML = h;
+  tr.rows = rows;
+}
+
+function trText() {
+  var R = tr.res, V = trVerdict(R), L = ["TRACE: " + R.Q.ids.join(", ")];
+  L.push("Result: " + V.text.replace(/<br>/g, " ").replace(/<[^>]+>/g, "").replace(/&quot;/g, '"').replace(/&lt;/g, "<").replace(/&gt;/g, ">").replace(/&amp;/g, "&"));
+  L.push("Systems: " + R.lanes.map(function(l) { return l.short + " (" + l.n + (l.err ? ", " + l.err + " errors" : "") + ")"; }).join(" -> "));
+  L.push("", "Key steps:");
+  trKey(R.hits).forEach(function(h) {
+    var e = h.e;
+    L.push((e.ts !== null ? laDate(e.ts) + " " + laClock(e.ts) : "(no time)") + " | " + h.lane.short + " | " + e.level + " | " + laTrunc(e.msg || e.raw, 300) +
+      (h.codes.length ? " | " + h.codes.map(function(c) { return c.k + "=" + c.v; }).join(" ") : "") + (e.kb.length ? " | " + e.kb[0].t : "") + (h.rep ? " (+" + h.rep + " similar)" : ""));
+  });
+  return laMask(L.join("\n"));
+}
+
+/* events */
+document.getElementById("trGo").addEventListener("click", trRun);
+trQ.addEventListener("keydown", function(e) { if (e.key === "Enter") { e.preventDefault(); trRun(); } });
+var trDir = document.getElementById("trDirIn"), trFil = document.getElementById("trFileIn");
+document.getElementById("trPickDir").addEventListener("click", function() { trDir.value = ""; trDir.click(); });
+document.getElementById("trPickFiles").addEventListener("click", function() { trFil.value = ""; trFil.click(); });
+trDir.addEventListener("change", function() { trAdd(trDir.files); });
+trFil.addEventListener("change", function() { trAdd(trFil.files); });
+var trDrop = document.getElementById("trDrop");
+trDrop.addEventListener("dragover", function(e) { e.preventDefault(); trDrop.classList.add("drag-over"); });
+trDrop.addEventListener("dragleave", function() { trDrop.classList.remove("drag-over"); });
+trDrop.addEventListener("drop", function(e) {
+  e.preventDefault(); trDrop.classList.remove("drag-over");
+  var items = e.dataTransfer.items, out = [], en = [];
+  if (items && items.length && items[0].webkitGetAsEntry) {
+    for (var i = 0; i < items.length; i++) { var x = items[i].webkitGetAsEntry(); if (x) en.push(x); }
+    Promise.all(en.map(function(x) { return fsWalk(x, out); })).then(function() { trAdd(out); });
+  } else trAdd(e.dataTransfer.files);
+});
+trOut.addEventListener("toggle", function(e) {
+  var d = e.target;
+  if (!d.classList || !d.classList.contains("tr-row") || !d.open) return;
+  var b = d.querySelector(".tr-detail"); if (!b.hasChildNodes()) b.innerHTML = trDetail(tr.rows[+d.getAttribute("data-i")]);
+}, true);
+trOut.addEventListener("click", function(e) {
+  var t = e.target.closest("[data-tr-lane],[data-tr-view],[data-tr-act],[data-tr-add],[data-tr-open]");
+  if (!t) return;
+  if (t.hasAttribute("data-tr-lane")) { var li = +t.getAttribute("data-tr-lane"); tr.lanesOff[li] = !tr.lanesOff[li]; trRender(); }
+  else if (t.hasAttribute("data-tr-view")) { tr.view = t.getAttribute("data-tr-view"); tr.limit = 600; trRender(); }
+  else if (t.hasAttribute("data-tr-add")) { trQ.value = trQ.value.trim() + ", " + t.getAttribute("data-tr-add"); trRun(); }
+  else if (t.hasAttribute("data-tr-open")) {
+    var lane = null; tr.res.lanes.forEach(function(l) { if (l.i === +t.getAttribute("data-tr-open")) lane = l; });
+    var n = +t.getAttribute("data-n"), s = lane.src;
+    if (s.an && logSrc && logSrc.P === s.an.P) { laMode("an"); fvOpen(s.an.P.files[s.an.i].off + n); }
+    else if (s.file) { laMode("an"); handleLogFiles([s.file], function() { fvOpen(n); }); }
+    else showToast("That log is no longer loaded. Load the file again to open it.", 3500);
+  } else {
+    var a = t.getAttribute("data-tr-act");
+    if (a === "more") { tr.limit += 1000; trRender(); }
+    else if (a === "copy") writeClipboard(trText(), function() { showToast("Trace copied" + (logState.mask ? " (masked)" : "")); });
+    else if (a === "csv") {
+      var rows = [["Time", "File", "Line", "Level", "Level inferred", "Service", "Case", "Codes", "Known problem", "Message"]];
+      tr.res.hits.forEach(function(h) { var e = h.e; rows.push([laStamp(e.ts), h.lane.name, e.n, e.level, e.inf ? "yes" : "", e.service, e.caseId || "", h.codes.map(function(c) { return c.k + "=" + c.v; }).join(" "), e.kb.length ? e.kb[0].t : "", laTrunc(e.raw, 30000)]); });
+      dsDownloadBlob(new Blob([laCsv(rows)], { type: "text/csv;charset=utf-8" }), "trace-" + tr.res.Q.ids.join("_").replace(/[^\w.-]+/g, "_").slice(0, 50) + ".csv");
+    }
+  }
+});
+document.getElementById("trMask").addEventListener("change", function() { logState.mask = this.checked; trRender(); });
 
 /* ─── Full log file reader ───────────────────────────────────────────── */
 var FV_RH = 20, FV_MAXLEN = 4000;
