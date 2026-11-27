@@ -1884,11 +1884,18 @@
     .tt-ocount.bad { color: var(--red); }
     .tt-path #ttBlkInfo { font-weight: 600; white-space: nowrap; }
     .tt-out.tt-blockable .tt-r { cursor: pointer; }
-    .tt-r.tt-blk, .tt-r.tt-blk .tt-ln, .tt-r.tt-blk .tt-fg { background: linear-gradient(var(--accent-light), var(--accent-light)), var(--surface); }
-    .tt-r.tt-blk .tt-c { box-shadow: inset 3px 0 0 var(--accent); }
+    /* Selected block: a bracket guide at the block's own indentation, like a code editor */
+    .tt-c { position: relative; padding-left: .7ch; }
+    .tt-r.tt-blk .tt-c::before, .tt-r.tt-blk-s .tt-c::after, .tt-r.tt-blk-e .tt-c::after {
+      content: ""; position: absolute; left: calc(var(--blk-ind, 0) * 1ch - .45ch); background: var(--accent); pointer-events: none;
+    }
+    .tt-r.tt-blk .tt-c::before { top: 0; bottom: 0; width: 2px; }
+    .tt-r.tt-blk-s .tt-c::before { top: 50%; border-radius: 2px 0 0 0; }
+    .tt-r.tt-blk-e .tt-c::before { bottom: 50%; border-radius: 0 0 0 2px; }
+    .tt-r.tt-blk-s .tt-c::after { top: calc(50% - 1px); width: .65ch; height: 2px; }
+    .tt-r.tt-blk-e .tt-c::after { top: calc(50% - 1px); width: .65ch; height: 2px; }
+    .tt-r.tt-blk-s.collapsed .tt-c::before { display: none; }
     .tt-r.tt-blk-s .tt-ln, .tt-r.tt-blk-e .tt-ln { color: var(--accent); font-weight: 700; }
-    .tt-r.tt-blk-s { box-shadow: inset 0 1.5px 0 var(--accent); }
-    .tt-r.tt-blk-e { box-shadow: inset 0 -1.5px 0 var(--accent); }
     .tt-r.tt-hit, .tt-r.tt-hit .tt-ln, .tt-r.tt-hit .tt-fg { background: linear-gradient(var(--hit-row), var(--hit-row)), var(--surface); }
     .tt-r.tt-hit-cur { outline: 2px solid var(--accent); outline-offset: -2px; }
     mark.tt-m { background: var(--highlight); color: inherit; border-radius: 2px; }
@@ -5623,6 +5630,11 @@ function ttBlockOf(i) {
 function ttSelectBlock(s, path) {
   var old = tt.blk;
   tt.blk = s > -1 ? [s, tt.rows[s].end] : null;
+  if (tt.blk) {
+    var lead = (ttPlain(tt.rows[s]).match(/^[ \t]*/) || [""])[0], ind = 0;
+    for (var ci = 0; ci < lead.length; ci++) ind += lead.charAt(ci) === "\t" ? 4 : 1;
+    ttOut.style.setProperty("--blk-ind", ind);
+  }
   ttRepaint(ttRange(old).concat(ttRange(tt.blk)));
   ttBlkInfo(path);
 }
