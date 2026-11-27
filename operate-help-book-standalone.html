@@ -1081,6 +1081,12 @@
       padding: 3px;
       gap: 2px;
       margin-bottom: 2rem;
+      flex-wrap: wrap;
+      max-width: 100%;
+    }
+    .section-nav .snav-btn { padding: .42rem .8rem; white-space: nowrap; }
+    @media (max-width: 760px) {
+      .section-nav { display: flex; justify-content: center; border-radius: 18px; }
     }
 
     .snav-btn {
@@ -1960,6 +1966,66 @@
     }
     .tt-stack { display: flex; flex-direction: column; gap: .75rem; }
     .tt [hidden] { display: none !important; }
+
+    /* ── Data Sanitizer ──────────────────────────────────────────────────── */
+    .ds { padding: .5rem 0 2.5rem; }
+    .ds [hidden] { display: none !important; }
+    .ds-stack { display: flex; flex-direction: column; gap: 1rem; margin-top: 1rem; }
+    .ds-drop.ds-compact {
+      display: grid; grid-template-columns: auto minmax(0, 1fr) auto; align-items: center; gap: .9rem;
+      text-align: left; padding: .9rem 1.1rem; margin: .5rem 0 0;
+    }
+    .ds-drop.ds-compact .log-drop-icon { margin: 0; width: 40px; height: 40px; }
+    .ds-drop.ds-compact .log-drop-sub { display: none; }
+    .ds-drop.ds-compact .log-drop-title { margin: 0; }
+    .ds-drop.ds-loading { opacity: .7; pointer-events: none; }
+    @media (max-width: 560px) { .ds-drop.ds-compact { grid-template-columns: minmax(0, 1fr); text-align: center; } .ds-drop.ds-compact .log-drop-icon { margin: 0 auto; } }
+    .ds-help { font-size: .8rem; color: var(--navy-60); margin: 0 0 .75rem; line-height: 1.55; }
+    .ds-help code, .ds-cats code, .ds-prev code {
+      font-family: var(--mono); font-size: .74rem; background: var(--navy-06); padding: .05rem .3rem; border-radius: 4px;
+      word-break: break-all; font-variant-ligatures: none;
+    }
+    .ds-muted { color: var(--navy-60); }
+    .ds-note { font-size: .74rem; color: var(--navy-60); }
+    .ds-files td:first-child b { word-break: break-all; }
+    .ds-seg { display: inline-flex; border: 1.5px solid var(--border); border-radius: 999px; overflow: hidden; background: var(--surface); flex-wrap: nowrap; }
+    .ds-seg-b {
+      border: 0; background: transparent; font-family: var(--font); font-size: .74rem; font-weight: 600;
+      color: var(--navy-60); padding: .3rem .65rem; cursor: pointer; white-space: nowrap;
+    }
+    .ds-seg-b + .ds-seg-b { border-left: 1px solid var(--border); }
+    .ds-seg-b:hover { background: var(--navy-06); color: var(--navy); }
+    .ds-seg-b:focus-visible { outline: 2px solid var(--accent); outline-offset: -2px; }
+    .ds-seg-b.on { color: var(--bg); }
+    .ds-seg-b.on.ds-keep { background: var(--navy-60); }
+    .ds-seg-b.on.ds-mask { background: var(--accent); }
+    .ds-seg-b.on.ds-tag { background: var(--amber); }
+    .ds-seg-b.on.ds-remove { background: var(--red); }
+    .ds-cats td { vertical-align: middle; }
+    .ds-cats small { font-size: .7rem; }
+    .ds-after { color: var(--navy); }
+    .ds-ctx { font-family: var(--mono); font-size: .72rem; color: var(--navy-60); word-break: break-all; font-variant-ligatures: none; }
+    .ds-ctx mark { background: var(--highlight); color: var(--navy); border-radius: 2px; }
+    .ds-prev-wrap { max-height: 460px; overflow: auto; }
+    .ds-cols-wrap { max-height: 420px; overflow: auto; }
+    .ds-col-on td { background: var(--accent-light); }
+    .ds-colsel {
+      font-family: var(--font); font-size: .76rem; color: var(--navy); background: var(--surface);
+      border: 1.5px solid var(--border); border-radius: 8px; padding: .25rem .4rem; max-width: 100%;
+    }
+    .ds-colsel:focus-visible { outline: 2px solid var(--accent); outline-offset: 1px; }
+    .ds-showall { margin-top: .75rem; }
+    .ds-opt { white-space: normal; align-items: flex-start; line-height: 1.45; }
+    .ds-outs { display: flex; flex-direction: column; gap: .4rem; margin-top: .85rem; }
+    .ds-out {
+      display: flex; justify-content: space-between; align-items: center; gap: .75rem; flex-wrap: wrap;
+      padding: .5rem .7rem; border: 1px solid var(--border); border-radius: 9px; font-size: .8rem; color: var(--navy);
+    }
+    .ds-out b { word-break: break-all; }
+    .ds-verify { margin-top: .85rem; padding: .65rem .8rem; border-radius: 9px; font-size: .82rem; line-height: 1.5; color: var(--navy); }
+    .ds-verify.ok { background: var(--green-light); border: 1.5px solid var(--green-border); }
+    .ds-verify.bad { background: var(--red-light); border: 1.5px solid var(--red); }
+    .ds-limits { margin: .85rem 0 0; }
   </style>
 </head>
 <body>
@@ -2045,6 +2111,12 @@
           <polyline points="8 6 2 12 8 18"/>
         </svg>
         Formatter &amp; Tools
+      </button>
+      <button class="snav-btn" id="snavSan" role="tab" aria-selected="false">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+          <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/>
+        </svg>
+        Data Sanitizer
       </button>
     </nav>
 
@@ -2355,6 +2427,27 @@
         </div>
       </div>
     </div><!-- /view-tools -->
+
+    <!-- ── View: Data Sanitizer ────────────────────────────────────────── -->
+    <div id="view-sanitize" class="section-view">
+      <div class="ds">
+        <div id="dsDrop" class="log-drop-zone ds-drop" role="button" tabindex="0" aria-label="Drop files to sanitize, or press Enter to choose files">
+          <input type="file" id="dsInput" multiple hidden>
+          <div class="log-drop-icon" aria-hidden="true">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/><polyline points="9 12 11 14 15 10"/></svg>
+          </div>
+          <div class="ds-drop-text">
+            <div class="log-drop-title">Drop files to sanitize</div>
+            <div class="log-drop-sub">Excel (.xlsx), Word (.docx), PowerPoint (.pptx), CSV and any text file such as .txt, .log, .json, .xml or .sql. Several at once is fine. Files are read on this PC only.</div>
+          </div>
+          <button class="log-drop-btn" id="dsPick" type="button">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="width:14px;height:14px" aria-hidden="true"><polyline points="16 16 12 12 8 16"/><line x1="12" y1="12" x2="12" y2="21"/><path d="M20.39 18.39A5 5 0 0 0 18 9h-1.26A8 8 0 1 0 3 16.3"/></svg>
+            Choose files
+          </button>
+        </div>
+        <div id="dsWork" hidden aria-live="polite"></div>
+      </div>
+    </div><!-- /view-sanitize -->
 
   </div>
 </main>
@@ -2738,6 +2831,12 @@ var SECTION_CONFIGS = {
     title: "Format<br>&amp; Fix",
     sub: "Beautify and validate JSON, XML and SQL, decode tokens, compare versions and clean up text, all offline.",
     placeholder: ""
+  },
+  sanitize: {
+    badge: "DATA SANITIZER",
+    title: "Mask<br>&amp; Remove",
+    sub: "Add Excel, Word, PowerPoint, CSV or text files. Sensitive data is found, then masked, tagged or removed before you share them.",
+    placeholder: ""
   }
 };
 var currentSection = "tickets";
@@ -2787,10 +2886,12 @@ var viewTickets    = document.getElementById("view-tickets");
 var viewDB         = document.getElementById("view-db");
 var viewLog        = document.getElementById("view-log");
 var viewTools      = document.getElementById("view-tools");
+var viewSan        = document.getElementById("view-sanitize");
 var snavTickets    = document.getElementById("snavTickets");
 var snavDB         = document.getElementById("snavDB");
 var snavLog        = document.getElementById("snavLog");
 var snavTools      = document.getElementById("snavTools");
+var snavSan        = document.getElementById("snavSan");
 var heroBadgeText  = document.getElementById("heroBadgeText");
 var heroTitle      = document.getElementById("heroTitle");
 var heroSub        = document.getElementById("heroSub");
@@ -3307,8 +3408,11 @@ function switchSection(section) {
   viewTools.classList.toggle("active", section === "tools");
   snavTools.classList.toggle("active", section === "tools");
   snavTools.setAttribute("aria-selected", String(section === "tools"));
-  document.querySelector("main .content").classList.toggle("is-wide", section === "tools");
-  document.querySelector(".search-wrap").hidden = section === "tools";
+  viewSan.classList.toggle("active", section === "sanitize");
+  snavSan.classList.toggle("active", section === "sanitize");
+  snavSan.setAttribute("aria-selected", String(section === "sanitize"));
+  document.querySelector("main .content").classList.toggle("is-wide", section === "tools" || section === "sanitize");
+  document.querySelector(".search-wrap").hidden = section === "tools" || section === "sanitize";
   snavTickets.classList.toggle("active", section === "tickets");
   snavDB.classList.toggle("active", section === "db");
   snavLog.classList.toggle("active", section === "log");
@@ -3325,6 +3429,7 @@ snavTickets.addEventListener("click", function(){ switchSection("tickets"); });
 snavDB.addEventListener("click",      function(){ switchSection("db"); });
 snavLog.addEventListener("click",     function(){ switchSection("log"); });
 snavTools.addEventListener("click",   function(){ switchSection("tools"); });
+snavSan.addEventListener("click",     function(){ switchSection("sanitize"); });
 
 /* ─── DB filter ───────────────────────────────────────────────────────── */
 function getDBFiltered() {
@@ -5479,7 +5584,7 @@ function ttRender() {
       "Shortcuts: <b>Ctrl+Enter</b> beautify, <b>Ctrl+F</b> find, <b>Ctrl+H</b> replace, <b>Ctrl+G</b> go to line, <b>Ctrl+D</b> duplicate line, <b>Ctrl+Shift+&#8593;/&#8595;</b> move line, <b>Tab / Shift+Tab</b> indent.");
     ttPaintHl(); return;
   }
-  if (text.length > TT_LIVE_MAX && !tt.force) {
+  if (text.length > TT_LIVE_MAX && !tt.force && tt.forcedText !== text) {
     ttSetBadge("Large input", "info");
     ttEmpty("This input is " + laSize(text.length) + ", so the preview does not refresh while you type. Beautify, Minify and every menu still work.<br><br>" +
       '<button class="la-btn tt-btn-main" id="ttForce">Show the formatted view</button>');
@@ -6136,7 +6241,7 @@ ttOut.addEventListener("click", function(e) {
   }
   if (e.target.id === "ttForce") {
     e.target.textContent = "Formatting\u2026";
-    setTimeout(function() { tt.force = true; try { ttRender(); } finally { tt.force = false; } }, 20);
+    setTimeout(function() { tt.forcedText = ttIn.value; tt.force = true; try { ttRender(); } finally { tt.force = false; } }, 20);
     return;
   }
   if (e.target.id === "ttGoErr" && tt.errPos > -1) {
@@ -6235,6 +6340,992 @@ function ttSavePrefs() {
   ttStatus();
   ttRender();
 })();
+
+/* ─── Data Sanitizer ─────────────────────────────────────────────────── */
+var DS_W = "http://schemas.openxmlformats.org/wordprocessingml/2006/main";
+var DS_A = "http://schemas.openxmlformats.org/drawingml/2006/main";
+var DS_S = "http://schemas.openxmlformats.org/spreadsheetml/2006/main";
+var DS_R = "http://schemas.openxmlformats.org/officeDocument/2006/relationships";
+var DS_PR = "http://schemas.openxmlformats.org/package/2006/relationships";
+var DS_XML = "http://www.w3.org/XML/1998/namespace";
+
+var DS_CATS = [
+  { id: "card", label: "Card numbers", tag: "CARD", def: "mask", hint: "13 to 19 digits that pass the card checksum" },
+  { id: "aadhaar", label: "Aadhaar numbers", tag: "AADHAAR", def: "mask", hint: "12 digits that pass the Aadhaar checksum, when labelled or written 4-4-4" },
+  { id: "pan", label: "PAN", tag: "PAN", def: "mask", hint: "Like ABCPE1234F" },
+  { id: "account", label: "Bank account numbers", tag: "ACCOUNT", def: "mask", hint: "Digits after account, a/c or acct, or in an account column" },
+  { id: "mobile", label: "Mobile numbers", tag: "MOBILE", def: "mask", hint: "Indian mobile numbers, with or without +91" },
+  { id: "email", label: "Email addresses", tag: "EMAIL", def: "mask" },
+  { id: "upi", label: "UPI IDs", tag: "UPI", def: "mask", hint: "Like ravi@okhdfcbank" },
+  { id: "secret", label: "Passwords, OTPs, PINs, CVVs, tokens", tag: "SECRET", def: "remove", hint: "Values after password=, otp:, cvv:, Bearer and similar, and JWT tokens" },
+  { id: "name", label: "Names", tag: "NAME", def: "mask", hint: "When labelled (Name:, Mr., Customer name) or in a name column" },
+  { id: "address", label: "Addresses", tag: "ADDRESS", def: "mask", hint: "When labelled address, or in an address or pincode column" },
+  { id: "dob", label: "Dates of birth", tag: "DOB", def: "mask", hint: "Dates labelled DOB or date of birth, or in a birth date column" },
+  { id: "passport", label: "Passport numbers", tag: "PASSPORT", def: "mask", hint: "When labelled passport, or in a passport column" },
+  { id: "ip", label: "IP addresses", tag: "IP", def: "keep", hint: "Kept by default; switch to mask for files leaving the bank" },
+  { id: "ifsc", label: "IFSC codes", tag: "IFSC", def: "keep", hint: "Branch codes are public, so they are kept by default" },
+  { id: "gstin", label: "GSTIN", tag: "GSTIN", def: "keep", hint: "Business tax IDs" }
+];
+var DS_CAT = {};
+DS_CATS.forEach(function(c) { DS_CAT[c.id] = c; });
+var DS_ACT_LABEL = { keep: "Keep", mask: "Mask", tag: "Tag", remove: "Remove" };
+
+/* Checksums cut false alarms: random digit runs rarely pass them */
+var DS_VD = [[0,1,2,3,4,5,6,7,8,9],[1,2,3,4,0,6,7,8,9,5],[2,3,4,0,1,7,8,9,5,6],[3,4,0,1,2,8,9,5,6,7],[4,0,1,2,3,9,5,6,7,8],[5,9,8,7,6,0,4,3,2,1],[6,5,9,8,7,1,0,4,3,2],[7,6,5,9,8,2,1,0,4,3],[8,7,6,5,9,3,2,1,0,4],[9,8,7,6,5,4,3,2,1,0]];
+var DS_VP = [[0,1,2,3,4,5,6,7,8,9],[1,5,7,6,2,8,3,0,9,4],[5,8,0,3,7,9,6,1,4,2],[8,9,1,6,0,4,3,5,2,7],[9,4,5,3,1,2,6,8,7,0],[4,2,8,6,5,7,3,9,0,1],[2,7,9,3,8,0,6,4,1,5],[7,0,4,6,9,1,3,2,5,8]];
+function dsVerhoeff(num) {
+  var c = 0, a = num.split("").reverse();
+  for (var i = 0; i < a.length; i++) c = DS_VD[c][DS_VP[i % 8][+a[i]]];
+  return c === 0;
+}
+var DS_NAME_EXCL = /(file|bank|branch|product|scheme|host|user|service|app|application|table|column|field|server|key|class|method|job|queue|company|merchant|plan|city|state|country|sheet|report|event|device|domain|db|database|schema|display|module|package|bucket|template|test|step|role|group|org|organisation|organization|channel|partner|vendor|network)[ _-]*$/i;
+function dsNamePart(v) {
+  var m = v.match(/^[A-Z][A-Za-z.'-]+(?: +[A-Z][A-Za-z.'-]*){0,4}/);
+  if (!m || /[0-9_]/.test(v.charAt(m[0].length))) return null;
+  var t = m[0].replace(/[ .'-]+$/, "");
+  if (t.length < 2 || /^(NULL|NONE|NIL|NA|TRUE|FALSE|UNKNOWN|SUCCESS|FAILED|PENDING|ACTIVE|INACTIVE|YES|NO)$/i.test(t)) return null;
+  return [0, t.length];
+}
+
+/* Detectors run in this order; once text is claimed by one, later ones skip it */
+var DS_DET = [
+  { cat: "secret", re: /\b(password|passwd|pwd|passcode|pin|mpin|tpin|otp|cvv2?|cvc|secret|client[_-]?secret|api[_-]?key|apikey|access[_-]?token|auth[_-]?token|refresh[_-]?token|token|private[_-]?key)\b(["']?[ \t]*[:=][ \t]*["']?)([^\s"',;&<>]+)/gid, g: 3, ok: function(v, text, s, ctx, m) {
+    if (/^[*X]+$/.test(v)) return false;
+    /* after a value is removed, the next word must not be mistaken for a new secret */
+    return !(ctx.verify && /[ \t]["']?$/.test(m[2]) && /^[A-Za-z]+$/.test(v));
+  } },
+  { cat: "secret", re: /\bBearer[ \t]+([A-Za-z0-9\-._~+\/]{8,}=*)/gid, g: 1 },
+  { cat: "secret", re: /\beyJ[A-Za-z0-9_-]{8,}\.[A-Za-z0-9_-]{8,}\.[A-Za-z0-9_-]*/gd, g: 0 },
+  { cat: "email", re: /[A-Za-z0-9._%+-]+@[A-Za-z0-9-]+(?:\.[A-Za-z0-9-]+)*\.[A-Za-z]{2,}\b/gd, g: 0 },
+  { cat: "upi", re: /(?<![\w.-])[A-Za-z0-9._-]{2,64}@[A-Za-z]{2,20}\b(?![.@\w-])/gd, g: 0 },
+  { cat: "card", re: /(?<![\dA-Za-z])[2-6]\d{3}(?:[ -]?\d){9,15}(?![\dA-Za-z])/gd, g: 0,
+    ok: function(v, text, s, ctx) {
+      var d = v.replace(/\D/g, "");
+      if (d.length < 13 || d.length > 19 || /^(\d)\1+$/.test(d) || !laLuhn(d)) return false;
+      if (ctx.col === "account") return false;
+      /* an account number can pass the card checksum by chance; the words before it decide */
+      var before = text.slice(Math.max(0, s - 32), s);
+      return !(/(\baccount|\bacct|\ba\/c|\bacc[ _.-]*(no|num|number)\b)[^\n]*$/i.test(before) && !/card/i.test(before));
+    } },
+  { cat: "aadhaar", re: /(?<![\dA-Za-z])[2-9]\d{3}([ -]?)\d{4}\1\d{4}(?![\dA-Za-z])/gd, g: 0,
+    ok: function(v, text, s, ctx) {
+      if (!dsVerhoeff(v.replace(/\D/g, ""))) return false;
+      return /[ -]/.test(v) || ctx.col === "aadhaar" || /aadh?aar|\buid\b|uidai/i.test(text.slice(Math.max(0, s - 40), s));
+    } },
+  { cat: "gstin", re: /\b\d{2}[A-Z]{5}\d{4}[A-Z][1-9A-Z]Z[0-9A-Z]\b/gd, g: 0 },
+  { cat: "pan", re: /\b[A-Z]{3}[PCHFATBLJG][A-Z]\d{4}[A-Z]\b/gd, g: 0 },
+  { cat: "ifsc", re: /\b[A-Z]{4}0[A-Z0-9]{6}\b/gd, g: 0 },
+  { cat: "passport", re: /\bpassport\b[^A-Za-z0-9\n]{0,15}(?:(?:no|num|number)\b\.?[^A-Za-z0-9\n]{0,5})?([A-Z][0-9]{7})\b/gid, g: 1 },
+  { cat: "account", re: /\b(?:acc(?:ount)?|a\/c|acct)(?:[ _.-]*(?:no|num|number|id|#))?\.?["']?[ \t]*[:=#-]?[ \t]*["']?(\d(?:[ -]?\d){5,19})(?!\d)/gid, g: 1 },
+  { cat: "mobile", re: /(?<![\dA-Za-z+])(?:\+91[ -]?|91[ -]|0)?[6-9]\d{4}[ -]?\d{5}(?![\dA-Za-z])/gd, g: 0 },
+  { cat: "dob", re: /\b(?:dob|d\.o\.b\.?|date[ _-]?of[ _-]?birth|birth[ _-]?date|birthdate)\b["']?[ \t]*[:=-]?[ \t]*["']?(\d{1,4}[\/.-]\d{1,2}[\/.-]\d{1,4}|\d{1,2}[ -](?:jan|feb|mar|apr|may|jun|jul|aug|sep|sept|oct|nov|dec)[a-z]*[ -]\d{2,4})/gid, g: 1 },
+  { cat: "ip", re: /(?<![\d.])(?:(?:25[0-5]|2[0-4]\d|1\d\d|[1-9]?\d)\.){3}(?:25[0-5]|2[0-4]\d|1\d\d|[1-9]?\d)(?![\d.])/gd, g: 0 },
+  { cat: "name", re: /\b(?:Mr|Mrs|Ms|Miss|Dr|Shri|Smt|Kumari)\.?[ \t]+([A-Z][a-z]+(?:[ \t]+[A-Z][a-z]+){0,3})\b/gd, g: 1 },
+  { cat: "name", re: /(?<![A-Za-z])((?:customer|cust|full|first|last|middle|account[ _-]?holder|holder|beneficiary|applicant|nominee|guardian|spouse|father'?s?|mother'?s?)?[ _-]?name)(?![A-Za-z])["']?[ \t]*[:=][ \t]*["']?([^\n"',;<>|{}\[\]]{2,60})/gid, g: 2, post: dsNamePart,
+    ok: function(v, text, s, ctx, m) { return !(/^[ _-]?name$/i.test(m[1]) && DS_NAME_EXCL.test(text.slice(Math.max(0, m.index - 24), m.index + (m[0].search(/name/i))))); } },
+  /* keywords in any case, but the name itself must start with capitals */
+  { cat: "name", re: new RegExp("\\b(?:" + "prepared|reviewed|approved|signed|submitted|raised|reported|handled|verified|checked|assigned|authorised|authorized|requested|escalated|called".split("|").map(function(w) { return "[" + w.charAt(0).toUpperCase() + w.charAt(0) + "]" + w.slice(1); }).join("|") + ")[ \\t]+[Bb]y[ \\t:]+([A-Z][a-z]+(?:[ \\t]+[A-Z][a-z]+){0,3})\\b", "gd"), g: 1 },
+  { cat: "name", re: /\b(?:Dear|Regards,?|Thanks,?|Sincerely,?)[ \t\r\n]+([A-Z][a-z]+(?:[ \t]+[A-Z][a-z]+){0,3})\b/gd, g: 1,
+    ok: function(v) { return !/^(Sir|Madam|Customer|Team|All|Valued|Client|Team Lead)$/.test(v); } },
+  { cat: "name", re: /(?<![A-Za-z])(?:customer|client|beneficiary|payee|payer|remitter|account[ _-]?holder|card[ _-]?holder|cardholder|applicant|nominee|caller|complainant)["']?[ \t]*[:=-][ \t]*["']?([^\n"',;<>|{}\[\]]{2,60})/gid, g: 1, post: dsNamePart },
+  { cat: "address", re: /(?<![A-Za-z])(?:address|addr)(?:[ _-]?(?:line)?[ _-]?\d)?(?![A-Za-z])["']?[ \t]*[:=][ \t]*["']?([^\n"<>|{}\[\]]{6,160})/gid, g: 1,
+    post: function(v) { var t = v.replace(/[\s,;'"]+$/, ""); return t.length >= 6 && /[A-Za-z]/.test(t) ? [0, t.length] : null; } }
+];
+
+function dsDetect(text, ctx) {
+  if (!text || text.length < 3) return [];
+  var occ = null, out = [];
+  for (var di = 0; di < DS_DET.length; di++) {
+    var d = DS_DET[di], m;
+    d.re.lastIndex = 0;
+    while ((m = d.re.exec(text))) {
+      if (!m[0].length) { d.re.lastIndex++; continue; }
+      var gi = m.indices[d.g];
+      if (!gi) continue;
+      var s = gi[0], v = m[d.g];
+      if (d.post) { var r = d.post(v); if (!r) continue; s += r[0]; v = v.slice(r[0], r[1]); }
+      if (!v) continue;
+      if (d.ok && !d.ok(v, text, s, ctx, m)) continue;
+      if (ctx.verify && /X{3,}|\*{3,}|^\[[A-Z]+-\d+\]$/.test(v)) continue;
+      var e = s + v.length, clash = false;
+      if (!occ) occ = new Uint8Array(text.length);
+      for (var k = s; k < e; k++) if (occ[k]) { clash = true; break; }
+      if (clash) continue;
+      occ.fill(1, s, e);
+      out.push({ s: s, e: e, cat: d.cat, v: v });
+    }
+  }
+  out.sort(function(a, b) { return a.s - b.s; });
+  return out;
+}
+
+/* ── Turning a value into its masked / tagged / removed form ── */
+function dsMaskDigits(v, keep) {
+  var pre = "", m = v.match(/^(\+91[ -]?|91[ -])/);
+  if (m) { pre = m[0]; v = v.slice(pre.length); }
+  var total = (v.match(/\d/g) || []).length, seen = 0;
+  return pre + v.replace(/\d/g, function(d) { return ++seen > total - keep ? d : "X"; });
+}
+function dsMaskWords(v) { return v.replace(/[A-Za-z][A-Za-z'.-]*/g, function(w) { return w.charAt(0) + w.slice(1).replace(/[A-Za-z]/g, "*"); }); }
+function dsMask(cat, v) {
+  switch (cat) {
+    case "card": case "aadhaar": case "account": case "mobile": return dsMaskDigits(v, 4);
+    case "pan": case "passport": case "gstin": return v.slice(0, -4).replace(/[A-Za-z0-9]/g, "X") + v.slice(-4);
+    case "ifsc": return v.slice(0, 4) + v.slice(4).replace(/[A-Za-z0-9]/g, "X");
+    case "email": case "upi": var at = v.indexOf("@"); return at > 0 ? v.charAt(0) + "***" + v.slice(at) : "***";
+    case "secret": return "****";
+    case "name": return dsMaskWords(v);
+    case "address":
+      var pin = v.match(/\b\d{6}\b(?=[^\d]*$)/);
+      var cut = pin ? pin.index : v.length;
+      return v.slice(0, cut).replace(/[A-Za-z0-9]/g, "X") + v.slice(cut);
+    case "dob": return v.replace(/\d{4}|\d/g, function(x) { return x.length === 4 ? x : "X"; }).replace(/[A-Za-z]{3,}/g, "XXX");
+    case "ip": var p = v.split("."); return p[0] + "." + p[1] + ".x.x";
+  }
+  return v.replace(/[A-Za-z0-9]/g, "X");
+}
+function dsTransform(cat, v, R) {
+  var a = ds.actions[cat] || "keep";
+  if (a === "keep") return v;
+  if (a === "remove") return "";
+  if (a === "tag") {
+    var key = v.replace(/[\s\-]/g, "").toLowerCase(), t = R.tags[cat] || (R.tags[cat] = { n: 0, map: {} });
+    if (!t.map[key]) t.map[key] = ++t.n;
+    return "[" + DS_CAT[cat].tag + "-" + t.map[key] + "]";
+  }
+  return dsMask(cat, v);
+}
+
+/* ── Recording what was found / changed ── */
+function dsRecorder(apply, verify) {
+  return { apply: apply, verify: verify, counts: {}, perCat: {}, samples: [], report: [], tags: {}, meta: 0, metaSeen: [], images: 0, notes: [] };
+}
+function dsNote(R, ctx, cat, before, after, full, s) {
+  R.counts[cat] = (R.counts[cat] || 0) + 1;
+  var loc = null;
+  if (!R.apply && !R.verify && R.samples.length < 600 && (R.perCat[cat] || 0) < 80) {
+    R.perCat[cat] = (R.perCat[cat] || 0) + 1;
+    loc = typeof ctx.loc === "function" ? ctx.loc(s) : ctx.loc;
+    var cx = full ? [full.slice(Math.max(0, s - 28), s), full.slice(s + before.length, s + before.length + 28)] : ["", ""];
+    R.samples.push({ file: ctx.file, loc: loc, cat: cat, before: before, ctx: cx, col: !!ctx.whole });
+  }
+  if (R.apply && R.report.length < 100000) {
+    if (loc === null) loc = typeof ctx.loc === "function" ? ctx.loc(s) : ctx.loc;
+    R.report.push([ctx.file, loc, DS_CAT[cat].label, DS_ACT_LABEL[ds.actions[cat] || "keep"], after]);
+  }
+}
+function dsCountable(R, cat) { return !R.verify || (ds.actions[cat] && ds.actions[cat] !== "keep"); }
+
+/* Sanitise a plain string; returns the new string (the same one when only scanning) */
+function dsText(text, ctx, R) {
+  ctx.verify = R.verify;
+  var f = dsDetect(text, ctx);
+  if (!f.length) return text;
+  var out = [], p = 0;
+  for (var i = 0; i < f.length; i++) {
+    var x = f[i];
+    if (!dsCountable(R, x.cat)) continue;
+    var rep = R.apply ? dsTransform(x.cat, x.v, R) : x.v;
+    dsNote(R, ctx, x.cat, x.v, rep, text, x.s);
+    if (R.apply) { out.push(text.slice(p, x.s), R.marks && rep !== x.v ? "\u0001" + rep + "\u0002" : rep); p = x.e; }
+  }
+  if (!R.apply) return text;
+  out.push(text.slice(p));
+  return out.join("");
+}
+/* A whole cell / field that sits in a column known to hold this kind of data */
+function dsWhole(cat, value, ctx, R) {
+  var v = String(value), t = v.trim();
+  if (!t || /^(n\/?a|null|none|nil|-+|0|\*+|x+)$/i.test(t)) return v;
+  if (R.verify) return v;
+  if (cat === "dob" && /^\d{4,5}(\.\d+)?$/.test(t) && +t > 1000 && +t < 80000) {
+    /* Excel stores dates as day numbers; show them as a date before masking */
+    var dt = new Date(Math.round((+t - 25569) * 86400000));
+    t = laPad(dt.getUTCDate()) + "/" + laPad(dt.getUTCMonth() + 1) + "/" + dt.getUTCFullYear();
+  }
+  var c2 = { file: ctx.file, loc: ctx.loc, whole: true };
+  var rep = R.apply ? dsTransform(cat, t, R) : t;
+  dsNote(R, c2, cat, t, rep, null, 0);
+  return R.apply ? rep : v;
+}
+/* Text split across several XML nodes (Word runs, rich text): match on the joined text, then write back */
+function dsNodes(nodes, ctx, R) {
+  if (!nodes.length) return false;
+  var texts = nodes.map(function(n) { return n.textContent; }), full = texts.join("");
+  ctx.verify = R.verify;
+  var f = dsDetect(full, ctx);
+  if (!f.length) return false;
+  var reps = [];
+  f.forEach(function(x) {
+    if (!dsCountable(R, x.cat)) return;
+    var rep = R.apply ? dsTransform(x.cat, x.v, R) : x.v;
+    dsNote(R, ctx, x.cat, x.v, rep, full, x.s);
+    if (R.apply && rep !== x.v) reps.push({ s: x.s, e: x.e, rep: rep });
+  });
+  if (!reps.length) return false;
+  var starts = [], acc = 0;
+  texts.forEach(function(t) { starts.push(acc); acc += t.length; });
+  function at(pos) { for (var i = 0; i < texts.length; i++) if (pos >= starts[i] && pos < starts[i] + texts[i].length) return i; return texts.length - 1; }
+  var nt = texts.slice();
+  for (var k = reps.length - 1; k >= 0; k--) {
+    var r = reps[k], i = at(r.s), j = at(r.e - 1);
+    if (i === j) nt[i] = nt[i].slice(0, r.s - starts[i]) + r.rep + nt[i].slice(r.e - starts[i]);
+    else {
+      nt[i] = nt[i].slice(0, r.s - starts[i]) + r.rep;
+      for (var q = i + 1; q < j; q++) nt[q] = "";
+      nt[j] = nt[j].slice(r.e - starts[j]);
+    }
+  }
+  nodes.forEach(function(n, i) {
+    if (nt[i] === texts[i]) return;
+    n.textContent = nt[i];
+    if (n.namespaceURI === DS_W || n.namespaceURI === DS_S) n.setAttributeNS(DS_XML, "xml:space", "preserve");
+  });
+  return true;
+}
+
+/* ── Zip (Office files are zip archives of XML) ── */
+var DS_CRC = (function() { var t = new Uint32Array(256); for (var n = 0; n < 256; n++) { var c = n; for (var k = 0; k < 8; k++) c = c & 1 ? 0xEDB88320 ^ (c >>> 1) : c >>> 1; t[n] = c >>> 0; } return t; })();
+function dsCrc(u8) { var c = 0xFFFFFFFF; for (var i = 0; i < u8.length; i++) c = DS_CRC[(c ^ u8[i]) & 255] ^ (c >>> 8); return (c ^ 0xFFFFFFFF) >>> 0; }
+async function dsStream(u8, stream) { return new Uint8Array(await new Response(new Blob([u8]).stream().pipeThrough(stream)).arrayBuffer()); }
+async function dsUnzip(buf) {
+  var dv = new DataView(buf.buffer, buf.byteOffset, buf.byteLength), n = buf.length, eocd = -1;
+  for (var i = n - 22; i >= Math.max(0, n - 65557); i--) if (dv.getUint32(i, true) === 0x06054b50) { eocd = i; break; }
+  if (eocd < 0) throw new Error("This file looks damaged: it is not a valid Office/zip file.");
+  var count = dv.getUint16(eocd + 10, true), p = dv.getUint32(eocd + 16, true), out = [];
+  if (p === 0xFFFFFFFF) throw new Error("This file is too large for the sanitizer (over 4 GB).");
+  for (var k = 0; k < count; k++) {
+    if (dv.getUint32(p, true) !== 0x02014b50) throw new Error("This file looks damaged: its contents list is broken.");
+    var flags = dv.getUint16(p + 8, true), method = dv.getUint16(p + 10, true), csize = dv.getUint32(p + 20, true);
+    var nlen = dv.getUint16(p + 28, true), xlen = dv.getUint16(p + 30, true), clen = dv.getUint16(p + 32, true), lho = dv.getUint32(p + 42, true);
+    var name = new TextDecoder().decode(buf.subarray(p + 46, p + 46 + nlen));
+    if (flags & 1) throw new Error("This file is password-protected. Remove the password in Office first, then try again.");
+    var start = lho + 30 + dv.getUint16(lho + 26, true) + dv.getUint16(lho + 28, true);
+    out.push({ name: name, method: method, data: buf.subarray(start, start + csize) });
+    p += 46 + nlen + xlen + clen;
+  }
+  for (var j = 0; j < out.length; j++) {
+    var e = out[j];
+    if (e.method === 0) e.bytes = e.data;
+    else if (e.method === 8) e.bytes = await dsStream(e.data, new DecompressionStream("deflate-raw"));
+    else throw new Error("This file uses an unusual compression method the sanitizer cannot read.");
+    delete e.data;
+  }
+  return out;
+}
+async function dsZip(entries) {
+  var enc = new TextEncoder(), parts = [], central = [], off = 0, d = new Date();
+  var time = (d.getHours() << 11) | (d.getMinutes() << 5) | (d.getSeconds() >> 1), date = ((d.getFullYear() - 1980) << 9) | ((d.getMonth() + 1) << 5) | d.getDate();
+  for (var i = 0; i < entries.length; i++) {
+    var e = entries[i], name = enc.encode(e.name), raw = e.bytes, crc = dsCrc(raw), data = raw, method = 0;
+    if (raw.length > 128) { var c = await dsStream(raw, new CompressionStream("deflate-raw")); if (c.length < raw.length) { data = c; method = 8; } }
+    var lh = new DataView(new ArrayBuffer(30));
+    lh.setUint32(0, 0x04034b50, true); lh.setUint16(4, 20, true); lh.setUint16(6, 0x0800, true); lh.setUint16(8, method, true);
+    lh.setUint16(10, time, true); lh.setUint16(12, date, true); lh.setUint32(14, crc, true); lh.setUint32(18, data.length, true);
+    lh.setUint32(22, raw.length, true); lh.setUint16(26, name.length, true); lh.setUint16(28, 0, true);
+    parts.push(new Uint8Array(lh.buffer), name, data);
+    var ch = new DataView(new ArrayBuffer(46));
+    ch.setUint32(0, 0x02014b50, true); ch.setUint16(4, 20, true); ch.setUint16(6, 20, true); ch.setUint16(8, 0x0800, true); ch.setUint16(10, method, true);
+    ch.setUint16(12, time, true); ch.setUint16(14, date, true); ch.setUint32(16, crc, true); ch.setUint32(20, data.length, true); ch.setUint32(24, raw.length, true);
+    ch.setUint16(28, name.length, true); ch.setUint32(42, off, true);
+    central.push(new Uint8Array(ch.buffer), name);
+    off += 30 + name.length + data.length;
+  }
+  var cdSize = central.reduce(function(a, b) { return a + b.length; }, 0), eo = new DataView(new ArrayBuffer(22));
+  eo.setUint32(0, 0x06054b50, true); eo.setUint16(8, entries.length, true); eo.setUint16(10, entries.length, true);
+  eo.setUint32(12, cdSize, true); eo.setUint32(16, off, true);
+  return new Blob(parts.concat(central, [new Uint8Array(eo.buffer)]));
+}
+
+/* ── Office packages ── */
+function dsPkg(entries) {
+  var pkg = { list: [], map: {} };
+  entries.forEach(function(e) { var p = { name: e.name, bytes: e.bytes, doc: null, dirty: false }; pkg.list.push(p); pkg.map[e.name] = p; });
+  return pkg;
+}
+function dsXmlDoc(pkg, name) {
+  var p = pkg.map[name];
+  if (!p) return null;
+  if (!p.doc) {
+    var t = new TextDecoder().decode(p.bytes);
+    p.decl = (t.match(/^﻿?\s*(<\?xml[^?]*\?>)/) || [])[1] || "";
+    p.doc = new DOMParser().parseFromString(t, "application/xml");
+    if (p.doc.getElementsByTagName("parsererror").length && p.doc.documentElement.nodeName === "parsererror") { p.doc = null; return null; }
+  }
+  return p.doc;
+}
+function dsResolve(base, target) {
+  if (!target) return "";
+  if (target.charAt(0) === "/") return target.slice(1);
+  var parts = (base + target).split("/"), out = [];
+  parts.forEach(function(s) { if (s === "..") out.pop(); else if (s !== "." && s !== "") out.push(s); });
+  return out.join("/");
+}
+function dsKids(el, ns, local) { var out = []; for (var c = el.firstElementChild; c; c = c.nextElementSibling) if (c.namespaceURI === ns && c.localName === local) out.push(c); return out; }
+function dsOwnText(p, ns, names) {
+  /* text nodes of a paragraph, skipping text boxes nested inside it */
+  var out = [];
+  names.forEach(function(nm) { Array.prototype.push.apply(out, Array.from(p.getElementsByTagNameNS(ns, nm))); });
+  out = out.filter(function(t) { var a = t.parentNode; while (a && !(a.namespaceURI === ns && a.localName === "p")) a = a.parentNode; return a === p; });
+  out.sort(function(a, b) { return a.compareDocumentPosition(b) & Node.DOCUMENT_POSITION_FOLLOWING ? -1 : 1; });
+  return out;
+}
+var DS_SKIP_PART = /(^\[Content_Types\]\.xml$|\/styles\.xml$|\/theme\/|\/fontTable\.xml$|\/settings\.xml$|\/webSettings\.xml$|\/numbering\.xml$|\/calcChain\.xml$|\/tables\/|presProps\.xml$|viewProps\.xml$|tableStyles\.xml$|^docProps\/)/;
+function dsDeepClean(doc, ctx, R) {
+  var changed = false, w = doc.createTreeWalker(doc, NodeFilter.SHOW_TEXT), n, nodes = [];
+  while ((n = w.nextNode())) if (n.nodeValue.trim().length > 2) nodes.push(n);
+  nodes.forEach(function(t) { var v = dsText(t.nodeValue, ctx, R); if (R.apply && v !== t.nodeValue) { t.nodeValue = v; changed = true; } });
+  Array.from(doc.getElementsByTagName("*")).forEach(function(el) {
+    ["v", "Target", "displayText"].forEach(function(a) {
+      if (!el.hasAttribute(a)) return;
+      if (a === "Target" && el.getAttribute("TargetMode") !== "External") return;
+      var o = el.getAttribute(a), v = dsText(o, ctx, R);
+      if (R.apply && v !== o) { el.setAttribute(a, v); changed = true; }
+    });
+  });
+  return changed;
+}
+function dsMetaClean(pkg, R) {
+  /* Author names and company in document properties, comment and tracked-change authors */
+  var hits = [];
+  function clearEls(doc, ns, local) {
+    Array.from(doc.getElementsByTagNameNS(ns, local)).forEach(function(el) { if (el.textContent.trim()) { hits.push(el.textContent.trim()); if (R.apply && ds.meta) el.textContent = ""; } });
+  }
+  var core = dsXmlDoc(pkg, "docProps/core.xml");
+  if (core) {
+    clearEls(core, "http://purl.org/dc/elements/1.1/", "creator");
+    clearEls(core, "http://schemas.openxmlformats.org/package/2006/metadata/core-properties", "lastModifiedBy");
+    pkg.map["docProps/core.xml"].dirty = true;
+  }
+  var app = dsXmlDoc(pkg, "docProps/app.xml");
+  if (app) {
+    var EP = "http://schemas.openxmlformats.org/officeDocument/2006/extended-properties";
+    clearEls(app, EP, "Company"); clearEls(app, EP, "Manager");
+    pkg.map["docProps/app.xml"].dirty = true;
+  }
+  pkg.list.forEach(function(p) {
+    if (!/\.xml$/.test(p.name) || /^docProps\//.test(p.name) || DS_SKIP_PART.test(p.name)) return;
+    if (!/^(word|xl|ppt)\/(document|comments|people|commentAuthors|persons|threadedComments|header|footer|footnotes|endnotes|comments\/)/.test(p.name) && !/comment|people|person/i.test(p.name)) return;
+    var doc = dsXmlDoc(pkg, p.name);
+    if (!doc) return;
+    Array.from(doc.getElementsByTagName("*")).forEach(function(el) {
+      for (var i = 0; i < el.attributes.length; i++) {
+        var a = el.attributes[i];
+        if (!/^(author|initials|name|displayName)$/.test(a.localName)) continue;
+        if (a.localName === "name" && !/cmAuthor$/.test(el.localName)) continue;
+        if (a.localName === "displayName" && el.localName !== "person") continue;
+        if (!a.value.trim()) continue;
+        if (a.localName !== "initials") hits.push(a.value);
+        if (R.apply && ds.meta) { a.value = a.localName === "initials" ? "R" : "Reviewer"; p.dirty = true; }
+      }
+    });
+    if (/comment/i.test(p.name) && p.name.indexOf("xl/") === 0) {
+      Array.from(doc.getElementsByTagNameNS(DS_S, "author")).forEach(function(el) { if (el.textContent.trim()) { hits.push(el.textContent); if (R.apply && ds.meta) { el.textContent = "Reviewer"; p.dirty = true; } } });
+    }
+  });
+  var uniq = {};
+  hits.forEach(function(h) { uniq[h] = 1; });
+  R.meta += Object.keys(uniq).length;
+  Object.keys(uniq).slice(0, 5).forEach(function(h) { if (R.metaSeen.indexOf(h) < 0) R.metaSeen.push(h); });
+}
+
+async function dsOffice(pkg, kind, R, file, depth) {
+  var done = {};
+  pkg.list.forEach(function(p) { if (/(^|\/)media\/.+\.(png|jpe?g|gif|bmp|tiff?|emf|wmf|svg)$/i.test(p.name)) R.images++; });
+  if (kind === "xlsx") dsXlsx(pkg, R, file, done);
+  else if (kind === "docx") {
+    pkg.list.forEach(function(p) {
+      var m = p.name.match(/^word\/(document|header(\d+)|footer(\d+)|footnotes|endnotes|comments)\.xml$/);
+      if (!m) return;
+      var doc = dsXmlDoc(pkg, p.name);
+      if (!doc) return;
+      done[p.name] = 1;
+      var label = m[1] === "document" ? "Paragraph" : /^header/.test(m[1]) ? "Header " + m[2] + ", paragraph" : /^footer/.test(m[1]) ? "Footer " + m[3] + ", paragraph" : m[1].charAt(0).toUpperCase() + m[1].slice(1) + ", paragraph";
+      Array.from(doc.getElementsByTagNameNS(DS_W, "p")).forEach(function(par, i) {
+        if (dsNodes(dsOwnText(par, DS_W, ["t", "delText"]), { file: file, loc: label + " " + (i + 1) }, R)) p.dirty = true;
+      });
+      Array.from(doc.getElementsByTagNameNS(DS_W, "instrText")).forEach(function(t) {
+        var v = dsText(t.textContent, { file: file, loc: label.split(",")[0] + " field code" }, R);
+        if (R.apply && v !== t.textContent) { t.textContent = v; p.dirty = true; }
+      });
+    });
+  } else if (kind === "pptx") {
+    pkg.list.forEach(function(p) {
+      var m = p.name.match(/^ppt\/(slides\/slide|notesSlides\/notesSlide)(\d+)\.xml$/);
+      if (!m) return;
+      var doc = dsXmlDoc(pkg, p.name);
+      if (!doc) return;
+      done[p.name] = 1;
+      var label = (m[1].indexOf("notes") === 0 ? "Notes of slide " : "Slide ") + m[2];
+      Array.from(doc.getElementsByTagNameNS(DS_A, "p")).forEach(function(par) {
+        if (dsNodes(dsOwnText(par, DS_A, ["t"]), { file: file, loc: label }, R)) p.dirty = true;
+      });
+    });
+  }
+  pkg.list.forEach(function(p) {
+    if (done[p.name] || DS_SKIP_PART.test(p.name)) return;
+    if (!/\.(xml|rels|vml)$/i.test(p.name)) return;
+    var doc = dsXmlDoc(pkg, p.name);
+    if (doc && dsDeepClean(doc, { file: file, loc: dsPartLabel(p.name) }, R)) p.dirty = true;
+  });
+  for (var i = 0; i < pkg.list.length && depth < 2; i++) {
+    var e = pkg.list[i], em = e.name.match(/\/embeddings\/[^/]+\.(xlsx|xlsm|docx|docm|pptx)$/i);
+    if (!em) continue;
+    try {
+      var sub = dsPkg(await dsUnzip(e.bytes)), sk = dsOfficeKind(sub);
+      if (!sk) continue;
+      await dsOffice(sub, sk, R, file + " › embedded " + e.name.split("/").pop(), depth + 1);
+      if (R.apply && dsPkgDirty(sub)) { e.bytes = new Uint8Array(await (await dsPkgOut(sub)).arrayBuffer()); e.dirty = true; e.doc = null; e.raw = true; }
+    } catch (err) { R.notes.push("An embedded file (" + e.name.split("/").pop() + ") could not be checked."); }
+  }
+  dsMetaClean(pkg, R);
+}
+function dsPartLabel(name) {
+  if (/comments/i.test(name)) return "Comments";
+  if (/chart/i.test(name)) return "Chart";
+  if (/pivotCache/i.test(name)) return "Pivot table cache";
+  if (/customXml/i.test(name)) return "Stored form data";
+  if (/drawing/i.test(name)) return "Drawing / text box";
+  if (/\.rels$/i.test(name)) return "Hyperlink";
+  if (/slideMaster|slideLayout/i.test(name)) return "Slide layout";
+  return name;
+}
+function dsOfficeKind(pkg) {
+  if (pkg.map["word/document.xml"]) return "docx";
+  if (pkg.map["xl/workbook.xml"]) return "xlsx";
+  if (pkg.map["ppt/presentation.xml"]) return "pptx";
+  return "";
+}
+function dsPkgDirty(pkg) { return pkg.list.some(function(p) { return p.dirty; }); }
+async function dsPkgOut(pkg) {
+  return dsZip(pkg.list.map(function(p) {
+    if (!p.dirty || p.raw || !p.doc) return { name: p.name, bytes: p.bytes };
+    var s = new XMLSerializer().serializeToString(p.doc);
+    if (p.decl && !/^\s*<\?xml/.test(s)) s = p.decl + "\r\n" + s;
+    return { name: p.name, bytes: new TextEncoder().encode(s) };
+  }));
+}
+
+/* Excel: cells are sanitised in place so formatting, formulas and other sheets stay as they were */
+function dsColName(ref) { return (ref.match(/^[A-Z]+/) || [""])[0]; }
+function dsColCat(header) {
+  var h = String(header || "").trim();
+  if (!h) return "";
+  var rules = [
+    ["secret", /password|passwd|\bpin\b|\botp\b|\bcvv|\bcvc\b|secret|\btoken\b/i],
+    ["aadhaar", /aadh?aar|\buid\b/i],
+    ["pan", /^\s*pan\b|\bpan[ _-]?(no|num|number|card)\b|permanent account/i],
+    ["gstin", /\bgst/i], ["ifsc", /\bifsc/i], ["upi", /\bupi\b|\bvpa\b/i],
+    ["email", /e-?mail/i],
+    ["mobile", /mobile|phone|\bmob\b|\bcell\b|contact[ _-]?(no|num|number)|whatsapp/i],
+    ["dob", /\bdob\b|birth/i], ["passport", /passport/i],
+    ["card", /(debit|credit)?[ _-]?card[ _-]?(no|num|number)|^\s*card\s*$/i],
+    ["name", /name/i],
+    ["account", /\bacc(oun)?t\b|a\/c|\bacct|account[ _-]?(no|num|number)/i],
+    ["address", /address|\baddr\b|street|locality|pin[ _-]?code|pincode|postal|\bzip\b/i],
+    ["ip", /\bip\b|ip[ _-]?addr/i]
+  ];
+  for (var i = 0; i < rules.length; i++) {
+    if (!rules[i][1].test(h)) continue;
+    var c = rules[i][0];
+    if (c === "name" && DS_NAME_EXCL.test(h.replace(/[ _-]*name.*$/i, "")) ) return "";
+    if (c === "name" && /user[ _-]?name|login|file|bank|branch|product|scheme|merchant|company|city|state|country/i.test(h)) return "";
+    if (c === "account" && /type|status|open|clos|date|branch|balance|currency|category|product|\bcount\b|manager|officer|holder/i.test(h)) return "";
+    if (c === "card" && /type|status|network|variant|expiry|limit/i.test(h)) return "";
+    if (c === "mobile" && /verified|type|status|flag/i.test(h)) return "";
+    return c;
+  }
+  return "";
+}
+function dsColKey(file, sheet, col) { return file + "\u0001" + sheet + "\u0001" + col; }
+function dsXlsx(pkg, R, file, done) {
+  var wb = dsXmlDoc(pkg, "xl/workbook.xml");
+  if (!wb) throw new Error("This workbook could not be read.");
+  done["xl/workbook.xml"] = 1;
+  var rels = dsXmlDoc(pkg, "xl/_rels/workbook.xml.rels"), relMap = {};
+  if (rels) Array.from(rels.getElementsByTagNameNS(DS_PR, "Relationship")).forEach(function(r) { relMap[r.getAttribute("Id")] = r.getAttribute("Target"); });
+  var sstPart = pkg.map["xl/sharedStrings.xml"] ? "xl/sharedStrings.xml" : null;
+  var sst = sstPart ? dsXmlDoc(pkg, sstPart) : null;
+  if (sstPart) done[sstPart] = 1;
+  var siEls = sst ? Array.from(sst.getElementsByTagNameNS(DS_S, "si")) : [];
+  var siNodes = siEls.map(function(si) {
+    return Array.from(si.getElementsByTagNameNS(DS_S, "t")).filter(function(t) { var a = t.parentNode; while (a && a !== si) { if (a.localName === "rPh") return false; a = a.parentNode; } return true; });
+  });
+  var siText = siNodes.map(function(ns) { return ns.map(function(t) { return t.textContent; }).join(""); });
+  var refs = new Int32Array(siEls.length), origRefs, firstLoc = new Array(siEls.length), calcReset = false;
+  var sheets = Array.from(wb.getElementsByTagNameNS(DS_S, "sheet")).map(function(sh) {
+    return { name: sh.getAttribute("name"), path: dsResolve("xl/", relMap[sh.getAttributeNS(DS_R, "id")]) };
+  });
+  function cellText(c) {
+    var t = c.getAttribute("t"), v = dsKids(c, DS_S, "v")[0];
+    if (t === "s") return v ? (siText[+v.textContent] || "") : "";
+    if (t === "inlineStr") { var is = dsKids(c, DS_S, "is")[0]; return is ? is.textContent : ""; }
+    if (t === "b" || t === "e") return "";
+    return v ? v.textContent : "";
+  }
+  function setInline(c, text) {
+    dsKids(c, DS_S, "v").concat(dsKids(c, DS_S, "is")).forEach(function(k) { c.removeChild(k); });
+    if (text === "") { c.removeAttribute("t"); return; }
+    var doc = c.ownerDocument, is = doc.createElementNS(DS_S, "is"), t = doc.createElementNS(DS_S, "t");
+    t.setAttributeNS(DS_XML, "xml:space", "preserve");
+    t.textContent = text;
+    is.appendChild(t);
+    var ext = dsKids(c, DS_S, "extLst")[0];
+    c.insertBefore(is, ext || null);
+    c.setAttribute("t", "inlineStr");
+  }
+  sheets.forEach(function(sh) {
+    sh.doc = sh.path ? dsXmlDoc(pkg, sh.path) : null;
+    if (!sh.doc) return;
+    done[sh.path] = 1;
+    sh.cells = Array.from(sh.doc.getElementsByTagNameNS(DS_S, "c"));
+    sh.cells.forEach(function(c) { if (c.getAttribute("t") === "s") { var v = dsKids(c, DS_S, "v")[0]; if (v) refs[+v.textContent]++; } });
+  });
+  origRefs = refs.slice();
+  sheets.forEach(function(sh) {
+    if (!sh.doc) return;
+    var rows = Array.from(sh.doc.getElementsByTagNameNS(DS_S, "row")).slice(0, 15), headerRow = 0, headers = {};
+    for (var r = 0; r < rows.length; r++) {
+      var cs = dsKids(rows[r], DS_S, "c"), texts = cs.map(function(c) { return [dsColName(c.getAttribute("r") || ""), cellText(c)]; }).filter(function(x) { return x[1].trim() && isNaN(+x[1]); });
+      if (texts.length >= 2) { headerRow = +rows[r].getAttribute("r") || r + 1; texts.forEach(function(x) { headers[x[0]] = x[1].trim(); }); break; }
+    }
+    var colCat = {};
+    Object.keys(headers).forEach(function(col) {
+      var key = dsColKey(file, sh.name, col), auto = dsColCat(headers[col]);
+      if (!R.apply && !R.verify && !ds.colSeen[key]) { ds.colSeen[key] = 1; ds.columns.push({ key: key, file: file, sheet: sh.name, col: col, header: headers[col], auto: auto }); }
+      colCat[col] = R.verify ? "" : (ds.colOverride[key] !== undefined ? ds.colOverride[key] : auto);
+    });
+    sh.cells.forEach(function(c) {
+      var ref = c.getAttribute("r") || "", row = +(ref.match(/\d+$/) || [0])[0], col = dsColName(ref), t = c.getAttribute("t");
+      var loc = sh.name + "!" + ref, cat = row > headerRow ? colCat[col] : "";
+      var hasF = dsKids(c, DS_S, "f").length > 0, txt = cellText(c);
+      if (!txt) return;
+      if (cat && (!R.apply || (ds.actions[cat] || "keep") !== "keep")) {
+        if (hasF) { if (R.apply) { dsKids(c, DS_S, "v").forEach(function(k) { c.removeChild(k); }); if (t === "str") c.removeAttribute("t"); calcReset = true; sh.dirty = true; } return; }
+        if (t === "s") refs[+dsKids(c, DS_S, "v")[0].textContent]--;
+        var nv = dsWhole(cat, txt, { file: file, loc: loc }, R);
+        if (R.apply && nv !== txt) { setInline(c, nv); sh.dirty = true; }
+        else if (R.apply && t === "s") refs[+dsKids(c, DS_S, "v")[0].textContent]++;
+        return;
+      }
+      var ctx = { file: file, loc: loc, col: cat };
+      if (t === "s") { var idx = +dsKids(c, DS_S, "v")[0].textContent; if (!firstLoc[idx]) firstLoc[idx] = loc; return; }
+      if (t === "inlineStr") { var is = dsKids(c, DS_S, "is")[0]; if (is && dsNodes(Array.from(is.getElementsByTagNameNS(DS_S, "t")), ctx, R)) sh.dirty = true; return; }
+      var out = dsText(txt, ctx, R);
+      if (R.apply && out !== txt) {
+        if (hasF) { dsKids(c, DS_S, "v").forEach(function(k) { c.removeChild(k); }); if (t === "str") c.removeAttribute("t"); calcReset = true; }
+        else setInline(c, out);
+        sh.dirty = true;
+      }
+    });
+    if (sh.dirty) pkg.map[sh.path].dirty = true;
+  });
+  siEls.forEach(function(si, i) {
+    if (origRefs[i] > 0 && refs[i] <= 0) {
+      if (R.apply) { siNodes[i].forEach(function(t) { t.textContent = ""; }); if (siNodes[i].length) pkg.map[sstPart].dirty = true; }
+      return;
+    }
+    if (dsNodes(siNodes[i], { file: file, loc: firstLoc[i] || "Unused text stored in the workbook" }, R)) pkg.map[sstPart].dirty = true;
+  });
+  if (calcReset && R.apply) {
+    var cp = wb.getElementsByTagNameNS(DS_S, "calcPr")[0];
+    if (!cp) { cp = wb.createElementNS(DS_S, "calcPr"); var anchor = wb.getElementsByTagNameNS(DS_S, "sheets")[0]; anchor.parentNode.insertBefore(cp, anchor.nextSibling); }
+    cp.setAttribute("fullCalcOnLoad", "1");
+    pkg.map["xl/workbook.xml"].dirty = true;
+    R.notes.push("Some formulas used masked cells; Excel will recalculate them when the file is opened.");
+  }
+}
+
+/* ── Plain text and CSV ── */
+function dsDecode(bytes) {
+  if (bytes[0] === 0xEF && bytes[1] === 0xBB && bytes[2] === 0xBF) return { text: new TextDecoder("utf-8").decode(bytes.subarray(3)), enc: "utf8bom" };
+  if (bytes[0] === 0xFF && bytes[1] === 0xFE) return { text: new TextDecoder("utf-16le").decode(bytes.subarray(2)), enc: "utf16le" };
+  if (bytes[0] === 0xFE && bytes[1] === 0xFF) return { text: new TextDecoder("utf-16be").decode(bytes.subarray(2)), enc: "utf16be" };
+  for (var i = 0, n = Math.min(bytes.length, 16384); i < n; i++) if (bytes[i] === 0) return null;
+  try { return { text: new TextDecoder("utf-8", { fatal: true }).decode(bytes), enc: "utf8" }; }
+  catch (e) { return { text: new TextDecoder("windows-1252").decode(bytes), enc: "ansi" }; }
+}
+function dsEncode(text, enc) {
+  if (enc === "utf16le" || enc === "utf16be") {
+    var out = new Uint8Array(2 + text.length * 2), le = enc === "utf16le";
+    out[0] = le ? 0xFF : 0xFE; out[1] = le ? 0xFE : 0xFF;
+    for (var i = 0; i < text.length; i++) { var c = text.charCodeAt(i); out[2 + i * 2] = le ? c & 255 : c >> 8; out[3 + i * 2] = le ? c >> 8 : c & 255; }
+    return out;
+  }
+  var u = new TextEncoder().encode(text);
+  if (enc !== "utf8bom") return u;
+  var b = new Uint8Array(u.length + 3);
+  b.set([0xEF, 0xBB, 0xBF]); b.set(u, 3);
+  return b;
+}
+function dsLineLoc(text) {
+  var starts = null;
+  return function(pos) {
+    if (!starts) { starts = [0]; for (var i = 0; i < text.length; i++) if (text.charCodeAt(i) === 10) starts.push(i + 1); }
+    var lo = 0, hi = starts.length - 1;
+    while (lo < hi) { var mid = (lo + hi + 1) >> 1; if (starts[mid] <= pos) lo = mid; else hi = mid - 1; }
+    return "Line " + (lo + 1);
+  };
+}
+function dsCsvDelim(text) {
+  var lines = text.split(/\r?\n/, 12).filter(function(l) { return l.trim(); }), best = ",", bestScore = 0;
+  [",", ";", "\t", "|"].forEach(function(d) {
+    var counts = lines.map(function(l) { return l.split(d).length - 1; }), min = Math.min.apply(null, counts);
+    if (min > 0 && min >= bestScore) { if (min > bestScore || d === ",") { best = d; bestScore = min; } }
+  });
+  return best;
+}
+function dsCsvParse(text, d) {
+  var rows = [], row = [], f = "", q = false, inQ = false, i = 0, n = text.length;
+  while (i < n) {
+    var c = text.charAt(i);
+    if (inQ) {
+      if (c === '"') { if (text.charAt(i + 1) === '"') { f += '"'; i += 2; continue; } inQ = false; i++; continue; }
+      f += c; i++; continue;
+    }
+    if (c === '"' && f === "") { inQ = true; q = true; i++; continue; }
+    if (c === d) { row.push({ v: f, q: q }); f = ""; q = false; i++; continue; }
+    if (c === "\r" || c === "\n") {
+      row.push({ v: f, q: q }); rows.push(row); row = []; f = ""; q = false;
+      i += c === "\r" && text.charAt(i + 1) === "\n" ? 2 : 1;
+      continue;
+    }
+    f += c; i++;
+  }
+  if (f !== "" || q || row.length) { row.push({ v: f, q: q }); rows.push(row); }
+  return rows;
+}
+function dsCsvOut(rows, d, eol, endNl) {
+  return rows.map(function(r) {
+    return r.map(function(c) {
+      return c.q || c.v.indexOf(d) > -1 || /["\r\n]/.test(c.v) ? '"' + c.v.replace(/"/g, '""') + '"' : c.v;
+    }).join(d);
+  }).join(eol) + (endNl ? eol : "");
+}
+function dsCsv(f, R) {
+  var text = f.text, d = f.ext === "tsv" ? "\t" : dsCsvDelim(text), eol = text.indexOf("\r\n") > -1 ? "\r\n" : "\n";
+  var rows = dsCsvParse(text, d), sheet = "CSV", headers = rows[0] || [], colCat = [];
+  headers.forEach(function(h, ci) {
+    var col = "C" + (ci + 1), key = dsColKey(f.name, sheet, col), auto = dsColCat(h.v);
+    if (!R.apply && !R.verify && !ds.colSeen[key]) { ds.colSeen[key] = 1; ds.columns.push({ key: key, file: f.name, sheet: "", col: "Column " + (ci + 1), header: h.v, auto: auto }); }
+    colCat[ci] = R.verify ? "" : (ds.colOverride[key] !== undefined ? ds.colOverride[key] : auto);
+  });
+  rows.forEach(function(r, ri) {
+    r.forEach(function(c, ci) {
+      if (!c.v) return;
+      var loc = "Row " + (ri + 1) + ", " + (headers[ci] && headers[ci].v ? headers[ci].v : "column " + (ci + 1)), cat = ri > 0 ? colCat[ci] : "";
+      if (cat && (!R.apply || (ds.actions[cat] || "keep") !== "keep")) { var nv = dsWhole(cat, c.v, { file: f.name, loc: loc }, R); if (R.apply) c.v = nv; return; }
+      var out = dsText(c.v, { file: f.name, loc: loc, col: cat }, R);
+      if (R.apply) c.v = out;
+    });
+  });
+  return R.apply ? dsCsvOut(rows, d, eol, /\r?\n$/.test(text)) : null;
+}
+
+/* Older spreadsheet formats go through the spreadsheet library and come out as .xlsx */
+function dsSheetJs(f, R) {
+  var wb = XLSX.read(f.bytes, { type: "array" });
+  wb.SheetNames.forEach(function(sn) {
+    var ws = wb.Sheets[sn];
+    if (!ws || !ws["!ref"]) return;
+    var rg = XLSX.utils.decode_range(ws["!ref"]), headerRow = -1, headers = {}, colCat = {};
+    for (var r = rg.s.r; r <= Math.min(rg.e.r, rg.s.r + 14) && headerRow < 0; r++) {
+      var found = [];
+      for (var c = rg.s.c; c <= rg.e.c; c++) { var cell = ws[XLSX.utils.encode_cell({ r: r, c: c })]; if (cell && cell.t === "s" && String(cell.v).trim()) found.push([c, String(cell.v).trim()]); }
+      if (found.length >= 2) { headerRow = r; found.forEach(function(x) { headers[x[0]] = x[1]; }); }
+    }
+    Object.keys(headers).forEach(function(c) {
+      var col = XLSX.utils.encode_col(+c), key = dsColKey(f.name, sn, col), auto = dsColCat(headers[c]);
+      if (!R.apply && !R.verify && !ds.colSeen[key]) { ds.colSeen[key] = 1; ds.columns.push({ key: key, file: f.name, sheet: sn, col: col, header: headers[c], auto: auto }); }
+      colCat[c] = R.verify ? "" : (ds.colOverride[key] !== undefined ? ds.colOverride[key] : auto);
+    });
+    for (var rr = rg.s.r; rr <= rg.e.r; rr++) for (var cc = rg.s.c; cc <= rg.e.c; cc++) {
+      var addr = XLSX.utils.encode_cell({ r: rr, c: cc }), cl = ws[addr];
+      if (!cl || cl.v === undefined || cl.v === null || cl.t === "b" || cl.t === "e") continue;
+      var txt = String(cl.v), cat = rr > headerRow ? colCat[cc] : "", loc = sn + "!" + addr, nv;
+      if (cat && (!R.apply || (ds.actions[cat] || "keep") !== "keep")) nv = dsWhole(cat, txt, { file: f.name, loc: loc }, R);
+      else nv = dsText(txt, { file: f.name, loc: loc, col: cat }, R);
+      if (R.apply && nv !== txt) { ws[addr] = nv === "" ? { t: "z" } : { t: "s", v: nv }; }
+    }
+  });
+  return R.apply ? new Uint8Array(XLSX.write(wb, { bookType: "xlsx", type: "array" })) : null;
+}
+
+/* ── Loading files ── */
+var ds = { files: [], actions: {}, colOverride: {}, columns: [], colSeen: {}, meta: true, showOrig: true, showAll: false, busy: false, outputs: null, verify: null };
+DS_CATS.forEach(function(c) { ds.actions[c.id] = c.def; });
+var DS_TEXT_EXT = /^(txt|log|out|err|trc|json|xml|sql|md|html?|xhtml|ya?ml|properties|ini|conf|cfg|env|sh|bat|ps1|js|ts|py|java|cs|eml|ldif|srt|rtf|tsv|csv|psv|dat|text|soap|wsdl|xsd|toml|lst|tmp)$/;
+var DS_MIME = { xlsx: "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet", docx: "application/vnd.openxmlformats-officedocument.wordprocessingml.document", pptx: "application/vnd.openxmlformats-officedocument.presentationml.presentation" };
+
+async function dsLoad(file) {
+  var f = { name: file.name, size: file.size, ext: ((file.name.match(/\.([^.]+)$/) || [, ""])[1] || "").toLowerCase(), status: "ok", note: "", kind: "" };
+  if (file.size > 150 * 1048576) { f.status = "bad"; f.note = "Over 150 MB. Split the file and try again."; return f; }
+  var bytes = new Uint8Array(await file.arrayBuffer());
+  f.bytes = bytes;
+  var head = String.fromCharCode.apply(null, bytes.subarray(0, 8));
+  if (head.indexOf("%PDF") === 0 || f.ext === "pdf") { f.status = "bad"; f.note = "PDFs can't be edited safely in the browser. Save it as Word (.docx) or text first."; return f; }
+  if (/^(png|jpe?g|gif|bmp|tiff?|webp|heic)$/.test(f.ext) || /^\x89PNG|^\xFF\xD8\xFF|^GIF8/.test(head)) { f.status = "bad"; f.note = "Images can't be checked: text inside pictures isn't readable here."; return f; }
+  if (bytes[0] === 0x50 && bytes[1] === 0x4B) {
+    try {
+      var entries = await dsUnzip(bytes), pkg = dsPkg(entries), kind = dsOfficeKind(pkg);
+      if (kind) { f.kind = "office"; f.sub = kind; f.entries = entries; f.label = { docx: "Word", xlsx: "Excel", pptx: "PowerPoint" }[kind]; return f; }
+      if (pkg.map["content.xml"] && /ods/.test(f.ext)) { f.kind = "sheetjs"; f.label = "Spreadsheet (ODS)"; f.note = "Saved back as .xlsx."; return f; }
+      f.status = "bad"; f.note = "This is a zip archive. Unzip it and add the files inside."; return f;
+    } catch (e) { f.status = "bad"; f.note = e.message; return f; }
+  }
+  if (bytes[0] === 0xD0 && bytes[1] === 0xCF && bytes[2] === 0x11 && bytes[3] === 0xE0) {
+    if (/^xls$/.test(f.ext)) { f.status = "bad"; f.note = "Old .xls format: open it in Excel and Save As .xlsx, then add it here."; return f; }
+    f.status = "bad"; f.note = "Old Office format (" + (f.ext || "binary") + "): save it as .docx / .xlsx / .pptx first."; return f;
+  }
+  if (/^(xlsb|ods|numbers)$/.test(f.ext)) { f.kind = "sheetjs"; f.label = "Spreadsheet"; f.note = "Saved back as .xlsx; cell formatting may change."; return f; }
+  var dec = dsDecode(bytes);
+  if (!dec) { f.status = "bad"; f.note = "This looks like a binary file, not text or an Office document."; return f; }
+  f.text = dec.text; f.enc = dec.enc;
+  if (dec.enc === "ansi") f.note = "Read as Windows text (ANSI); saved back as UTF-8.";
+  f.kind = /^(csv|tsv|psv)$/.test(f.ext) ? "csv" : "text";
+  f.label = f.kind === "csv" ? "CSV table" : (DS_TEXT_EXT.test(f.ext) ? f.ext.toUpperCase() + " text" : "Text");
+  return f;
+}
+
+async function dsRun(f, R) {
+  if (f.kind === "text") {
+    var out = dsText(f.text, { file: f.name, loc: dsLineLoc(f.text) }, R);
+    return R.apply ? new Blob([dsEncode(out, f.enc === "ansi" ? "utf8" : f.enc)], { type: "text/plain" }) : null;
+  }
+  if (f.kind === "csv") { var c = dsCsv(f, R); return R.apply ? new Blob([dsEncode(c, f.enc === "ansi" ? "utf8" : f.enc)], { type: "text/csv" }) : null; }
+  if (f.kind === "sheetjs") { var x = dsSheetJs(f, R); return R.apply ? new Blob([x], { type: DS_MIME.xlsx }) : null; }
+  if (f.kind === "office") {
+    var pkg = dsPkg(f.entries.map(function(e) { return { name: e.name, bytes: e.bytes }; }));
+    await dsOffice(pkg, f.sub, R, f.name, 0);
+    if (!R.apply) return null;
+    return new Blob([await (await dsPkgOut(pkg)).arrayBuffer()], { type: DS_MIME[f.sub] });
+  }
+  return null;
+}
+function dsOutName(f) {
+  var base = f.name.replace(/\.[^.]+$/, ""), ext = f.kind === "sheetjs" ? "xlsx" : (f.ext || "txt");
+  return base + "-sanitized." + ext;
+}
+
+async function dsScanAll() {
+  ds.columns = []; ds.colSeen = {};
+  for (var i = 0; i < ds.files.length; i++) {
+    var f = ds.files[i];
+    if (f.status === "bad") continue;
+    var R = dsRecorder(false, false);
+    try { await dsRun(f, R); f.scan = R; f.status = "ok"; }
+    catch (e) { f.status = "bad"; f.note = "Could not read this file: " + (e.message || e); f.scan = null; }
+  }
+  ds.outputs = null; ds.verify = null;
+}
+
+/* ── UI ── */
+var dsDrop = document.getElementById("dsDrop"), dsInput = document.getElementById("dsInput"), dsWork = document.getElementById("dsWork");
+function dsTotals() {
+  var t = { counts: {}, samples: [], meta: 0, metaSeen: [], images: 0, notes: [] };
+  ds.files.forEach(function(f) {
+    if (!f.scan) return;
+    Object.keys(f.scan.counts).forEach(function(k) { t.counts[k] = (t.counts[k] || 0) + f.scan.counts[k]; });
+    t.samples = t.samples.concat(f.scan.samples);
+    t.meta += f.scan.meta; t.images += f.scan.images;
+    f.scan.metaSeen.forEach(function(m) { if (t.metaSeen.indexOf(m) < 0) t.metaSeen.push(m); });
+    t.notes = t.notes.concat(f.scan.notes);
+  });
+  return t;
+}
+function dsFmtSize(b) { return laSize(b); }
+function dsSeg(cat) {
+  var a = ds.actions[cat];
+  return '<span class="ds-seg" role="radiogroup" aria-label="' + escapeHtml(DS_CAT[cat].label) + '">' +
+    ["keep", "mask", "tag", "remove"].map(function(x) {
+      return '<button type="button" role="radio" aria-checked="' + (a === x) + '" class="ds-seg-b' + (a === x ? ' on ds-' + x : '') + '" data-ds-cat="' + cat + '" data-ds-act="' + x + '">' + DS_ACT_LABEL[x] + '</button>';
+    }).join("") + '</span>';
+}
+function dsExample(cat, v) {
+  var R = { tags: {} };
+  return dsTransform(cat, v, R);
+}
+function dsRender() {
+  var T = dsTotals(), ok = ds.files.filter(function(f) { return f.status !== "bad"; }), totalFound = 0;
+  Object.keys(T.counts).forEach(function(k) { totalFound += T.counts[k]; });
+  var h = '<div class="ds-stack">';
+
+  h += '<section class="la-card"><div class="la-h-row"><h3 class="la-h">Files <small>' + ds.files.length + ' added</small></h3>' +
+    '<div class="la-actions"><button class="la-btn la-btn-sm" data-ds="add">Add more files</button><button class="la-btn la-btn-sm" data-ds="reset">Start over</button></div></div>' +
+    '<div class="tt-table-wrap"><table class="tt-table ds-files"><thead><tr><th>File</th><th>Type</th><th>Size</th><th>Sensitive items</th><th>Notes</th></tr></thead><tbody>' +
+    ds.files.map(function(f) {
+      var n = 0; if (f.scan) Object.keys(f.scan.counts).forEach(function(k) { n += f.scan.counts[k]; });
+      var notes = [f.note].concat(f.scan ? f.scan.notes : []);
+      if (f.scan && f.scan.images) notes.push(f.scan.images + " picture" + (f.scan.images > 1 ? "s" : "") + " inside: text in pictures can't be checked");
+      return '<tr><td><b>' + escapeHtml(f.name) + '</b></td><td>' + (f.status === "bad" ? '<span class="tt-pill bad">Not supported</span>' : escapeHtml(f.label || "")) + '</td><td>' + dsFmtSize(f.size) + '</td>' +
+        '<td>' + (f.status === "bad" ? "—" : '<b>' + n.toLocaleString() + '</b>') + '</td><td class="ds-note">' + notes.filter(Boolean).map(escapeHtml).join("<br>") + '</td></tr>';
+    }).join("") + '</tbody></table></div></section>';
+
+  if (!ok.length) { h += '</div>'; dsWork.innerHTML = h; dsWork.hidden = false; return; }
+
+  var shown = DS_CATS.filter(function(c) { return ds.showAll || T.counts[c.id]; });
+  h += '<section class="la-card"><div class="la-h-row"><h3 class="la-h">What to do with each type of data <small>' + totalFound.toLocaleString() + ' items found</small></h3>' +
+    '<div class="la-actions"><button class="la-btn la-btn-sm" data-ds="preset-rec">Recommended</button><button class="la-btn la-btn-sm" data-ds="preset-mask">Mask all</button><button class="la-btn la-btn-sm" data-ds="preset-tag">Tag all</button><button class="la-btn la-btn-sm" data-ds="preset-remove">Remove all</button></div></div>' +
+    '<p class="ds-help"><b>Keep</b> leaves it as is. <b>Mask</b> hides most of it (<code>XXXX-XXXX-XXXX-1234</code>). <b>Tag</b> swaps it for a label such as <code>[PAN-1]</code>; the same value always gets the same label, so records still line up. <b>Remove</b> deletes it.</p>';
+  if (!shown.length) h += '<p class="la-empty">No sensitive data was found. You can still check the categories below or set columns by hand.</p>';
+  else {
+    h += '<div class="tt-table-wrap"><table class="tt-table ds-cats"><thead><tr><th>Type</th><th>Found</th><th>Action</th><th>Example</th></tr></thead><tbody>';
+    shown.forEach(function(c) {
+      var smp = null;
+      for (var i = 0; i < T.samples.length; i++) if (T.samples[i].cat === c.id) { smp = T.samples[i]; break; }
+      var ex = smp ? (ds.showOrig ? '<code>' + escapeHtml(laTrunc(smp.before, 40)) + '</code> &rarr; ' : '') + '<code class="ds-after">' + (escapeHtml(laTrunc(dsExample(c.id, smp.before), 40)) || '<i>removed</i>') + '</code>' : '<span class="ds-muted">none found</span>';
+      h += '<tr><td><b>' + escapeHtml(c.label) + '</b>' + (c.hint ? '<br><small class="ds-muted">' + escapeHtml(c.hint) + '</small>' : '') + '</td><td><b>' + (T.counts[c.id] || 0).toLocaleString() + '</b></td><td>' + dsSeg(c.id) + '</td><td>' + ex + '</td></tr>';
+    });
+    h += '</tbody></table></div>';
+  }
+  h += '<button class="la-btn la-btn-sm ds-showall" data-ds="showall">' + (ds.showAll ? 'Show only types that were found' : 'Show all ' + DS_CATS.length + ' data types') + '</button></section>';
+
+  if (ds.columns.length) {
+    var opts = [["", "Not sensitive"]].concat(DS_CATS.map(function(c) { return [c.id, c.label]; }));
+    h += '<section class="la-card"><div class="la-h-row"><h3 class="la-h">Spreadsheet columns <small>every value in a column marked here is treated as that type</small></h3></div>' +
+      '<p class="ds-help">Names and addresses can\'t be spotted by pattern, so columns are matched by their header. Change any row the sanitizer got wrong.</p>' +
+      '<div class="tt-table-wrap ds-cols-wrap"><table class="tt-table"><thead><tr><th>File / sheet</th><th>Column</th><th>Header</th><th>Treat as</th></tr></thead><tbody>' +
+      ds.columns.map(function(c) {
+        var cur = ds.colOverride[c.key] !== undefined ? ds.colOverride[c.key] : c.auto;
+        return '<tr' + (cur ? ' class="ds-col-on"' : '') + '><td>' + escapeHtml(c.file) + (c.sheet ? ' <span class="ds-muted">› ' + escapeHtml(c.sheet) + '</span>' : '') + '</td><td>' + escapeHtml(c.col) + '</td><td><b>' + escapeHtml(laTrunc(c.header, 40)) + '</b></td><td>' +
+          '<select class="ds-colsel" data-ds-col="' + escapeHtml(c.key) + '" aria-label="Treat column ' + escapeHtml(c.header) + ' as">' + opts.map(function(o) { return '<option value="' + o[0] + '"' + (o[0] === cur ? ' selected' : '') + '>' + escapeHtml(o[1]) + (o[0] && o[0] === c.auto ? ' (detected)' : '') + '</option>'; }).join("") + '</select></td></tr>';
+      }).join("") + '</tbody></table></div></section>';
+  }
+
+  if (ok.some(function(f) { return f.kind === "office"; })) {
+    h += '<section class="la-card"><h3 class="la-h">Document details</h3><label class="tt-check ds-opt"><input type="checkbox" data-ds="meta"' + (ds.meta ? ' checked' : '') + '> Remove author, last-edited-by and company names, and comment / tracked-change author names</label>' +
+      (T.metaSeen.length ? '<p class="ds-help">Found in the files: ' + T.metaSeen.slice(0, 5).map(function(m) { return '<code>' + escapeHtml(laTrunc(m, 30)) + '</code>'; }).join(", ") + (T.meta > 5 ? " and more" : "") + '.</p>' : '<p class="ds-help">No author or company names were found in the document properties.</p>') + '</section>';
+  }
+
+  var smp = T.samples.filter(function(s) { return (ds.actions[s.cat] || "keep") !== "keep"; }).slice(0, 150);
+  h += '<section class="la-card"><div class="la-h-row"><h3 class="la-h">Preview of changes <small>' + (smp.length ? "first " + smp.length + " shown" : "nothing will change with these settings") + '</small></h3>' +
+    '<label class="tt-check"><input type="checkbox" data-ds="orig"' + (ds.showOrig ? ' checked' : '') + '> Show original values</label></div>';
+  if (smp.length) {
+    var tg = { tags: {} };
+    h += '<div class="tt-table-wrap ds-prev-wrap"><table class="tt-table ds-prev"><thead><tr><th>Where</th><th>Type</th>' + (ds.showOrig ? '<th>Before</th>' : '') + '<th>After</th></tr></thead><tbody>' +
+      smp.map(function(s) {
+        var after = dsTransform(s.cat, s.before, tg);
+        var before = s.col ? '<code>' + escapeHtml(laTrunc(s.before, 60)) + '</code> <span class="ds-muted">(column)</span>' : '<span class="ds-ctx">' + escapeHtml(laTrunc(s.ctx[0], 28)) + '<mark>' + escapeHtml(laTrunc(s.before, 60)) + '</mark>' + escapeHtml(laTrunc(s.ctx[1], 28)) + '</span>';
+        return '<tr><td><span class="ds-muted">' + escapeHtml(laTrunc(s.file, 26)) + '</span><br>' + escapeHtml(s.loc || "") + '</td><td>' + escapeHtml(DS_CAT[s.cat].label) + '</td>' +
+          (ds.showOrig ? '<td>' + before + '</td>' : '') + '<td><code class="ds-after">' + (escapeHtml(laTrunc(after, 60)) || '<i>removed</i>') + '</code></td></tr>';
+      }).join("") + '</tbody></table></div>';
+  }
+  h += '</section>';
+
+  h += '<section class="la-card ds-go"><h3 class="la-h">Download</h3>' +
+    '<div class="la-actions"><button class="la-btn tt-btn-main" data-ds="download"' + (ds.busy ? ' disabled' : '') + '>' + (ds.busy ? 'Working…' : ok.length > 1 ? 'Sanitize and download all (.zip)' : 'Sanitize and download') + '</button>' +
+    '<button class="la-btn" data-ds="report"' + (ds.outputs ? '' : ' disabled title="Download the sanitized files first"') + '>Download change report (.csv)</button></div>';
+  if (ds.outputs) {
+    h += '<div class="ds-outs">' + ds.outputs.map(function(o, i) {
+      return '<div class="ds-out"><span><b>' + escapeHtml(o.name) + '</b> <span class="ds-muted">' + dsFmtSize(o.blob.size) + ' · ' + o.changes.toLocaleString() + ' change' + (o.changes === 1 ? '' : 's') + '</span></span><button class="la-btn la-btn-sm" data-ds="one" data-i="' + i + '">Download</button></div>';
+    }).join("") + '</div>';
+  }
+  if (ds.verify) {
+    var left = Object.keys(ds.verify).filter(function(k) { return ds.verify[k] > 0; });
+    h += left.length ? '<div class="ds-verify bad"><b>Check after sanitizing:</b> ' + left.map(function(k) { return ds.verify[k] + " " + DS_CAT[k].label.toLowerCase(); }).join(", ") + ' still found in the output. Review the file before sharing it.</div>'
+      : '<div class="ds-verify ok"><b>Checked:</b> the sanitized files were scanned again and none of the data types set to mask, tag or remove were found.</div>';
+  }
+  h += '<p class="ds-help ds-limits">Names and addresses are only found when they are labelled or sit in a name / address column, so a name written freely in a sentence can slip through. Look over the result before sharing it. Everything runs on this PC; nothing is uploaded.</p></section>';
+  h += '</div>';
+  dsWork.innerHTML = h;
+  dsWork.hidden = false;
+}
+
+async function dsAddFiles(list) {
+  if (!list || !list.length) return;
+  dsDrop.classList.add("ds-loading");
+  dsDrop.querySelector(".log-drop-title").textContent = "Reading " + list.length + " file" + (list.length > 1 ? "s" : "") + "…";
+  for (var i = 0; i < list.length; i++) ds.files.push(await dsLoad(list[i]));
+  await dsScanAll();
+  dsDrop.classList.remove("ds-loading");
+  dsDrop.querySelector(".log-drop-title").textContent = "Drop more files here";
+  dsDrop.classList.add("ds-compact");
+  dsRender();
+}
+
+function dsDownloadBlob(blob, name) {
+  var a = document.createElement("a");
+  a.href = URL.createObjectURL(blob);
+  a.download = name;
+  document.body.appendChild(a); a.click();
+  setTimeout(function() { URL.revokeObjectURL(a.href); a.remove(); }, 1500);
+}
+
+async function dsBuild() {
+  ds.busy = true; dsRender();
+  try {
+    var ok = ds.files.filter(function(f) { return f.status !== "bad"; }), outs = [], tags = {}, report = [], verify = {};
+    for (var i = 0; i < ok.length; i++) {
+      var R = dsRecorder(true, false);
+      R.tags = tags;
+      var blob = await dsRun(ok[i], R), n = 0;
+      Object.keys(R.counts).forEach(function(k) { if ((ds.actions[k] || "keep") !== "keep") n += R.counts[k]; });
+      outs.push({ name: dsOutName(ok[i]), blob: blob, changes: n });
+      report = report.concat(R.report);
+      var vf = { name: ok[i].name, ext: ok[i].kind === "sheetjs" ? "xlsx" : ok[i].ext, kind: ok[i].kind, sub: ok[i].sub, size: blob.size, status: "ok" };
+      var bytes = new Uint8Array(await blob.arrayBuffer());
+      if (vf.kind === "office") vf.entries = await dsUnzip(bytes);
+      else if (vf.kind === "sheetjs") { vf.kind = "office"; vf.sub = "xlsx"; vf.entries = await dsUnzip(bytes); }
+      else { var dd = dsDecode(bytes); vf.text = dd ? dd.text : ""; vf.enc = dd ? dd.enc : "utf8"; }
+      var V = dsRecorder(false, true);
+      await dsRun(vf, V);
+      Object.keys(V.counts).forEach(function(k) { verify[k] = (verify[k] || 0) + V.counts[k]; });
+    }
+    ds.outputs = outs; ds.report = report; ds.verify = verify;
+    if (outs.length === 1) dsDownloadBlob(outs[0].blob, outs[0].name);
+    else {
+      var entries = [];
+      for (var j = 0; j < outs.length; j++) entries.push({ name: outs[j].name, bytes: new Uint8Array(await outs[j].blob.arrayBuffer()) });
+      dsDownloadBlob(await dsZip(entries), "sanitized-files.zip");
+    }
+    showToast("Sanitized " + outs.length + " file" + (outs.length > 1 ? "s" : ""));
+  } catch (e) {
+    showToast("Could not sanitize: " + (e.message || e));
+  } finally {
+    ds.busy = false; dsRender();
+  }
+}
+function dsReportCsv() {
+  var esc = function(v) { v = String(v == null ? "" : v); return /[",\r\n]/.test(v) ? '"' + v.replace(/"/g, '""') + '"' : v; };
+  var rows = [["File", "Location", "Data type", "Action", "Value now in the file"]].concat(ds.report);
+  return "﻿" + rows.map(function(r) { return r.map(esc).join(","); }).join("\r\n");
+}
+
+dsInput.addEventListener("change", function(e) { dsAddFiles(Array.from(e.target.files)); e.target.value = ""; });
+document.getElementById("dsPick").addEventListener("click", function(e) { e.stopPropagation(); dsInput.click(); });
+dsDrop.addEventListener("click", function() { dsInput.click(); });
+dsDrop.addEventListener("keydown", function(e) { if (e.key === "Enter" || e.key === " ") { e.preventDefault(); dsInput.click(); } });
+dsDrop.addEventListener("dragover", function(e) { e.preventDefault(); dsDrop.classList.add("drag-over"); });
+dsDrop.addEventListener("dragleave", function() { dsDrop.classList.remove("drag-over"); });
+dsDrop.addEventListener("drop", function(e) { e.preventDefault(); dsDrop.classList.remove("drag-over"); dsAddFiles(Array.from(e.dataTransfer.files)); });
+
+dsWork.addEventListener("click", function(e) {
+  var seg = e.target.closest("[data-ds-act]");
+  if (seg) { ds.actions[seg.getAttribute("data-ds-cat")] = seg.getAttribute("data-ds-act"); ds.outputs = null; ds.verify = null; dsRender(); return; }
+  var b = e.target.closest("[data-ds]");
+  if (!b || b.tagName === "INPUT") return;
+  var act = b.getAttribute("data-ds");
+  if (act === "add") dsInput.click();
+  else if (act === "reset") { ds.files = []; ds.columns = []; ds.colSeen = {}; ds.colOverride = {}; ds.outputs = null; ds.verify = null; dsWork.hidden = true; dsWork.innerHTML = ""; dsDrop.classList.remove("ds-compact"); dsDrop.querySelector(".log-drop-title").textContent = "Drop files to sanitize"; }
+  else if (/^preset-/.test(act)) {
+    var p = act.slice(7);
+    DS_CATS.forEach(function(c) { ds.actions[c.id] = p === "rec" ? c.def : p; });
+    ds.outputs = null; ds.verify = null; dsRender();
+  }
+  else if (act === "showall") { ds.showAll = !ds.showAll; dsRender(); }
+  else if (act === "download") { if (!ds.busy) dsBuild(); }
+  else if (act === "report") { if (ds.report) dsDownloadBlob(new Blob([dsReportCsv()], { type: "text/csv" }), "sanitization-report.csv"); }
+  else if (act === "one") { var o = ds.outputs[+b.getAttribute("data-i")]; dsDownloadBlob(o.blob, o.name); }
+});
+dsWork.addEventListener("change", async function(e) {
+  var t = e.target;
+  if (t.matches("[data-ds-col]")) {
+    ds.colOverride[t.getAttribute("data-ds-col")] = t.value;
+    await dsScanAll();
+    dsRender();
+  } else if (t.matches('[data-ds="meta"]')) { ds.meta = t.checked; ds.outputs = null; ds.verify = null; dsRender(); }
+  else if (t.matches('[data-ds="orig"]')) { ds.showOrig = t.checked; dsRender(); }
+});
 
 /* Try to load operate-data.js from the same folder.
    If found → use its data. If not found → use the embedded defaults.
